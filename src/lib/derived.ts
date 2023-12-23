@@ -6,7 +6,7 @@ import { Error } from '../utils';
 import { grain } from './grain';
 import { readonly } from './readonly';
 
-export const derived = <Dependencies extends [Grain<any>, ...Grain<any>[]], R>(
+export const derived = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
     deps: Dependencies,
     fn: (values: GrainValue<Dependencies>) => R,
     initial?: R
@@ -27,7 +27,7 @@ export const derived = <Dependencies extends [Grain<any>, ...Grain<any>[]], R>(
     };
 
     deps.forEach((grain) => {
-        const invalidate = grain.subscribe((value) =>
+        const invalidate = grain.subscribe(() =>
             derived.set(fn(deps.map((grain) => grain()) as GrainValue<Dependencies>))
         );
 
@@ -36,3 +36,7 @@ export const derived = <Dependencies extends [Grain<any>, ...Grain<any>[]], R>(
 
     return [readonly(derived), destroy];
 };
+
+const name = grain('Sebastian');
+const count = readonly(grain(0));
+const [person] = derived([name, count], ([name, count]) => `${name} is ${count} years old`);

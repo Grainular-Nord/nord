@@ -1,3 +1,8 @@
 /** @format */
 
-export type ReadonlyGrain<V> = Omit<Grain<V>, 'set' | 'update'>;
+import { Subscriber } from './subscriber';
+
+export type ReadonlyGrain<V> = {
+    (): V;
+    subscribe: (subscriber: Subscriber<V>, seed?: boolean) => () => void;
+};
