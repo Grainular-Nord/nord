@@ -1412,6 +1412,11 @@ builtins@^5.0.0:
   dependencies:
     semver "^7.0.0"
 
+byndly@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/byndly/-/byndly-1.2.0.tgz#9965f8c7c1592b0b1550f3a16fe4bc1dd3a3da91"
+  integrity sha512-jPEMIzTcneRxjbgyCGXLqv6FPQnZXhXLQn1Y1lfGUB4pDYNHn2nT5LTdvyNGAUfIrkfMD4r97yRuHhOKMJHrJw==
+
 c8@^7.13.0:
   version "7.13.0"
   resolved "https://registry.yarnpkg.com/c8/-/c8-7.13.0.tgz#a2a70a851278709df5a9247d62d7f3d4bcb5f2e4"
