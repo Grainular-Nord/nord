@@ -1,3 +1,3 @@
 /** @format */
-export { grain, readonly } from './lib';
-export type { Subscriber, Grain, Updater, ComparisonFunc } from './types';
+export { grain, readonly, derived } from './lib';
+export type { Subscriber, Grain, Updater, ComparisonFunc, ReadonlyGrain } from './types';
