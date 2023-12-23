@@ -1,8 +1,8 @@
 /** @format */
 
 import { Component } from '../../types/component';
+import { Error } from '../../types/enums/error.enum';
 import { Selector } from '../../types/selector';
-import { Error } from '../../utils';
 import { createNamespace } from '../create-namespace';
 
 export const registerComponent = <S extends string>(selector: Selector<S>, component: Component) => {
