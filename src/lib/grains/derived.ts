@@ -1,8 +1,8 @@
 /** @format */
 
 import { ReadonlyGrain } from '../../types';
+import { Error } from '../../types/enums/error.enum';
 import { GrainValue } from '../../types/grain-value';
-import { Error } from '../../utils';
 import { grain } from './grain';
 import { readonly } from './readonly';
 
