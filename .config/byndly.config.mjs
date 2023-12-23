@@ -4,12 +4,21 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render }) => {
+const bootstrap = ({ createComponent, render, grain }) => {
     console.log({ createComponent, render });
     // Your bootstrapping code goes here.
     const comp = createComponent({
         selector: 'Test',
-        template: (html) => html`<div>Hello World</div>`,
+        template: (html, { $onMount }) => {
+            $onMount(() => {
+                console.log('Component Mounted');
+            });
+
+            const count = grain(0);
+            const increment = () => count.update((c) => c++);
+
+            return html`<button ${{ '@click': () => increment() }}>${count}</button>`;
+        },
     });
 
     render(comp, { target: document.querySelector('body') });
