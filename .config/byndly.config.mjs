@@ -5,7 +5,6 @@
  */
 
 const bootstrap = ({ createComponent, render, grain }) => {
-    console.log({ createComponent, render });
     // Your bootstrapping code goes here.
     const comp = createComponent({
         selector: 'Test',
