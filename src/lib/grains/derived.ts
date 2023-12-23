@@ -1,8 +1,8 @@
 /** @format */
 
-import { Grain, ReadonlyGrain } from '../types';
-import { GrainValue } from '../types/grain-value';
-import { Error } from '../utils';
+import { ReadonlyGrain } from '../../types';
+import { GrainValue } from '../../types/grain-value';
+import { Error } from '../../utils';
 import { grain } from './grain';
 import { readonly } from './readonly';
 
@@ -36,7 +36,3 @@ export const derived = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGra
 
     return [readonly(derived), destroy];
 };
-
-const name = grain('Sebastian');
-const count = readonly(grain(0));
-const [person] = derived([name, count], ([name, count]) => `${name} is ${count} years old`);

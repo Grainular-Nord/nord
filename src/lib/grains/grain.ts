@@ -1,11 +1,15 @@
 /** @format */
 
-import { ComparisonFunc, Subscriber, Updater, Grain } from '../types';
+import { ComparisonFunc, Subscriber, Updater, Grain } from '../../types';
+import { øInjectGrainMetaData } from './inject-grain-metadata';
 
 export const grain = <V = unknown>(value: V, comparisonFunc?: ComparisonFunc<V>): Grain<V> => {
     let _val: V = value;
     const compareForEquality = comparisonFunc ?? ((prev: V, curr: V) => prev !== curr);
-    const Grain = () => _val;
+    const _grain = () => _val;
+
+    // inject meta data
+    øInjectGrainMetaData(_grain);
 
     const subscribers: Subscriber<V>[] = [];
     const notifySubscribers = () => {
@@ -38,9 +42,9 @@ export const grain = <V = unknown>(value: V, comparisonFunc?: ComparisonFunc<V>)
         };
     };
 
-    Grain.set = set;
-    Grain.subscribe = subscribe;
-    Grain.update = update;
+    _grain.set = set;
+    _grain.subscribe = subscribe;
+    _grain.update = update;
 
-    return Grain;
+    return _grain;
 };

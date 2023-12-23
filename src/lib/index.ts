@@ -1,5 +1,5 @@
 /** @format */
 
-export { grain } from './grain';
-export { readonly } from './readonly';
-export { derived } from './derived';
+export { grain } from './grains/grain';
+export { readonly } from './grains/readonly';
+export { derived } from './grains/derived';
