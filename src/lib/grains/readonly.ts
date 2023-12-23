@@ -2,11 +2,11 @@
 
 import { Grain, ReadonlyGrain, Subscriber } from '../../types';
 import { Error } from '../../utils';
-import { assertIsGrain } from '../../utils/assert-is-grain';
+import { isGrain } from '../../utils/is-grain';
 import { øInjectGrainMetaData } from './inject-grain-metadata';
 
 export const readonly = <V>(grain: Grain<V>): ReadonlyGrain<V> => {
-    if (!assertIsGrain(grain)) {
+    if (!isGrain(grain)) {
         throw new TypeError(Error.NOT_A_GRAIN);
     }
 
