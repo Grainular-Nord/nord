@@ -14,9 +14,11 @@ const bootstrap = ({ createComponent, render, grain }) => {
             });
 
             const count = grain(0);
-            const increment = () => count.update((c) => c++);
+            const increment = () => count.update((c) => c + 1);
 
-            return html`<button ${{ '@click': () => increment() }}>${count}</button>`;
+            return html` <button class="btn" called="${count}" ${{ '@click': () => increment() }}>
+                Count is: ${count}
+            </button>`;
         },
     });
 
