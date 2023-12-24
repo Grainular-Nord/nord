@@ -4,18 +4,23 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render, grain, If }) => {
+const bootstrap = ({ createComponent, render, grain, derived }) => {
     const app = createComponent({
-        template: (html, { bool }) => html`
-            <main>
-                <div>${If(bool, (cond) => (cond ? html`<div>True</div>` : html`<div>False</div>`))}</div>
-                <button ${{ '@click': () => bool.update((b) => !b) }}>Change</button>
-            </main>
-        `,
+        template: (html, { count }) => {
+            const [doubled] = derived([count], ([count]) => count * 2);
+
+            return html`
+                <main>
+                    <button ${{ '@click': () => count.update((c) => c + 1) }}>
+                        Count is: ${count}, Doubled is: ${doubled}
+                    </button>
+                </main>
+            `;
+        },
     });
 
-    const bool = grain(false);
-    render(app, { target: document.querySelector('body'), props: { bool } });
+    const count = grain(0);
+    render(app, { target: document.querySelector('body'), props: { count } });
 };
 
 /**
