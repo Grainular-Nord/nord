@@ -11,6 +11,7 @@ export {
     If,
     derived,
     On,
+    Use,
 } from './lib';
 export type {
     Subscriber,

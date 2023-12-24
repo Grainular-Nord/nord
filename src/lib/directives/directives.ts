@@ -6,6 +6,10 @@ import { createTemplateDirective } from './create-template-directive';
 
 export const directives = [
     /**
+     * Use directive. Used to execute arbitrary code on a node
+     */
+    createElementDirective('@use', (element, handler) => handler(element)),
+    /**
      * Prop directive. This directive is used to create and pass data to child components
      */
     createElementDirective('@props', (element, data) => {
