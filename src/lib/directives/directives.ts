@@ -26,9 +26,7 @@ export const directives = [
      * For Each directive. This directive is used to loop over multiple elements and update the node list when a
      * underlying value changes (if it can change reactively)
      */
-    createTemplateDirective('&forEach', (element, handler) => {
-        handler(element);
-    }),
+    createTemplateDirective('&forEach', (element, handler) => handler(element)),
     // Event handlers
     createElementDirective('@click', (element, handler) => {
         element.addEventListener('click', (ev) => handler(ev));

@@ -28,5 +28,5 @@ export const ForEach = <T>(value: T[] | ReadonlyGrain<T[]>, run: (elem: T, index
     };
 
     // Return the created template directive
-    return { '*forEach': forEach };
+    return { '&forEach': forEach };
 };
