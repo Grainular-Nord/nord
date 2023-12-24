@@ -3,7 +3,6 @@
 import { isElement } from '../../utils/is-element';
 
 export const øEqualizeNodeLists = (root: Element, list: Node[]) => {
-    console.log({ list });
     // Normalize the root node
     root.normalize();
 
