@@ -5,17 +5,29 @@
  */
 
 const bootstrap = ({ createComponent, render, grain, createDirective }) => {
-    // Your bootstrapping code goes here.
-    const comp = createComponent({
-        selector: 'Test',
-        template: (html) => {
-            const count = grain(0);
-
-            return html` <button ${{ '@click': () => count.update((c) => c + 1) }}>Count is: ${count}</button>`;
+    const child = createComponent({
+        selector: 'Child',
+        template: (html, { name, $children }) => {
+            return html`<h3>Hello, ${name}</h3>
+                <div class="children">${$children}</div>`;
         },
     });
 
-    render(comp, {
+    const parent = createComponent({
+        selector: 'Parent',
+        template: (html) => {
+            const name = grain('World');
+
+            return html`<div>
+                <Child ${{ '@props': { name } }}>
+                    <div class="Test">Hello, im child content</div>
+                </Child>
+                <button ${{ '@click': () => name.set('Sebastian') }}>Change Name</button>
+            </div>`;
+        },
+    });
+
+    render(parent, {
         target: document.querySelector('body'),
     });
 };
