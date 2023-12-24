@@ -1,9 +1,10 @@
 /** @format */
 
 import { Directive } from '../../types';
+import { TemplateDirective } from '../../types/template-directive';
 import { createNamespace } from '../create-namespace';
 
-export const registerDirective = ({ name, directive }: Directive) => {
+export const registerDirective = ({ name, directive }: Directive | TemplateDirective) => {
     if (!window.$$nord) createNamespace();
 
     const registry = window.$$nord.directives;

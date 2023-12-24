@@ -4,29 +4,20 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render, grain, createDirective }) => {
-    const counter = createComponent({
-        selector: 'Counter',
-        template: (html) => {
-            const count = grain(0);
-
-            return html`<button ${{ '@click': () => count.update((c) => c + 1) }}>${count}</button>`;
-        },
-    });
-
-    const name = createComponent({
-        selector: 'Name',
-        template: (html, { name }) => html`<div>${name}</div>`,
-    });
-
+const bootstrap = ({ createComponent, render, grain, ForEach }) => {
     const app = createComponent({
         template: (html, { name }) => html`<main>
-            <Counter></Counter>
-            <Counter></Counter>
-            <Name ${{ '@props': { name } }}></Name>
-        </main>`,
+                ${ForEach(name, (name) => html`<div key="${name}">${name}</div>`)}
+            </main>
+            <button ${{ '@click': () => name.update((n) => [...n, `new Name ${n.length}`]) }}>Add Name</button>
+            <button ${{ '@click': () => name.update((n) => [...n.filter((elem) => elem !== 'new Name 5')]) }}>
+                Remove Name
+            </button>`,
     });
-    render(app, { target: document.querySelector('body'), props: { name: grain('Sebastian') } });
+
+    const name = grain(['new Name 0']);
+    name.subscribe((names) => console.log({ names }));
+    render(app, { target: document.querySelector('body'), props: { name } });
 };
 
 /**

@@ -17,7 +17,7 @@ declare global {
     interface Window {
         $$nord: {
             components: Map<string, Component>;
-            directives: Map<string, DirectiveHandler>;
+            directives: Map<string, DirectiveHandler<Element> | DirectiveHandler<Text>>;
         };
     }
 }

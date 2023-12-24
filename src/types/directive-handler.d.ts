@@ -1,3 +1,3 @@
 /** @format */
 
-export type DirectiveHandler = (element: Element, arg: any) => void;
+export type DirectiveHandler<NodeType extends Text | Element = Element> = (element: NodeType, arg: any) => void;

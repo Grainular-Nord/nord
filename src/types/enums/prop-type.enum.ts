@@ -5,4 +5,5 @@ export enum PropType {
     GRAIN = 'grain',
     DIRECTIVE = 'directive',
     NODE_LIST = 'node-list',
+    TEMPLATE_DIRECTIVE = 'template-directive',
 }

@@ -1,13 +1,14 @@
 /** @format */
 
 import { toPascalCase } from '../../utils/to-pascal-case';
-import { createDirective } from './create-directive';
+import { createElementDirective } from './create-element-directive';
+import { createTemplateDirective } from './create-template-directive';
 
 export const directives = [
     /**
-     * Prop directive. This directive is used to mark child components
+     * Prop directive. This directive is used to create and pass data to child components
      */
-    createDirective('@props', (element, data) => {
+    createElementDirective('@props', (element, data) => {
         // check if the component exists in the global component registry
         // to check, tagName needs to be converted to pascal case
         if (!window.$$nord.components.has(toPascalCase`${element.tagName}`)) {
@@ -22,7 +23,7 @@ export const directives = [
         element.replaceWith(...component(data, element.childNodes));
     }),
     // Event handlers
-    createDirective('@click', (element, handler) => {
+    createElementDirective('@click', (element, handler) => {
         element.addEventListener('click', (ev) => handler(ev));
     }),
 ];

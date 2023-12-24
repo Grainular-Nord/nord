@@ -3,7 +3,7 @@
 import { Directive } from '../../types';
 import { DirectiveHandler } from '../../types/directive-handler';
 
-export const createDirective = (name: `@${string}`, directive: DirectiveHandler): Directive => {
+export const createElementDirective = (name: `@${string}`, directive: DirectiveHandler<Element>): Directive => {
     return {
         name,
         directive,

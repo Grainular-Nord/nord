@@ -3,7 +3,7 @@
 import { ReadonlyGrain } from './readonly-grain';
 
 /**
- * This is considered a private API. This type should probably not be used.
+ * This is considered a private API. This type should probably not be used outside the library.
  */
 
 export type GrainValue<T extends ReadonlyGrain<any>[]> = {

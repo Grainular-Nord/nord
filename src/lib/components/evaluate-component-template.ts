@@ -1,22 +1,21 @@
 /** @format */
 
+import { Directive } from '../../../dist/types';
 import { ReadonlyGrain } from '../../types';
 import { ProcessorProp } from '../../types/processor-prop';
+import { TemplateDirective } from '../../types/template-directive';
+import { ToStringTypes } from '../../types/to-string-types';
 import { emptyNodeList } from '../../utils/empty-node-list';
 import { øGetProcessorByPropType } from './get-processor-by-prop-type';
 import { øGetPropTypeFromProp } from './get-prop-type-from-prop';
 import { øHydrate } from './hydrate';
-
-export type TemplateDirective = Record<`@${string}`, () => void>;
-export type ToStringTypes = string | number | boolean | BigInt | undefined | null | ToStringTypes[];
-export type TemplateFunction = (...args: any[]) => NodeList;
 
 // Create a new DomParser instance
 const parser = new DOMParser();
 
 export const øEvaluateComponentTemplate = (
     templateFragments: TemplateStringsArray,
-    ...injects: (ReadonlyGrain<any> | TemplateDirective | TemplateFunction | ToStringTypes)[]
+    ...injects: (ReadonlyGrain<any> | TemplateDirective | Directive | ToStringTypes | NodeList)[]
 ): NodeList => {
     const props: ProcessorProp[] = [];
     const evaluationResults = templateFragments.flatMap((fragment, index) => {
