@@ -82,13 +82,13 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             }
         },
     ],
-    // Directive Parser
+    // Element directive Parser
     [
-        PropType.DIRECTIVE,
+        PropType.ELEMENT_DIRECTIVE,
         (node, token, value: Record<string, any>) => {
             // Directives should only be added to elements as attributes.
             if (isText(node)) {
-                throw new TypeError(``, { cause: value });
+                throw new TypeError(Error.ELEMENT_DIRECTIVE_ON_TEXT, { cause: value });
             }
 
             if (isElement(node) && Object.keys(value).length === 1) {
@@ -121,7 +121,7 @@ const __øProcessors = new Map<PropType, PropProcessor>([
 
             // Template directives should ne be added to element attributes
             if (isElement(node)) {
-                throw new TypeError(``, { cause: value });
+                throw new TypeError(Error.TEMPLATE_DIRECTIVE_ON_TAG, { cause: value });
             }
         },
     ],
@@ -138,7 +138,7 @@ const __øProcessors = new Map<PropType, PropProcessor>([
 
             // NodeLits should only be added to elements as Text.
             if (isElement(node)) {
-                throw new TypeError(``, { cause: value });
+                throw new TypeError(Error.NODE_LIST_IN_TAG, { cause: value });
             }
         },
     ],

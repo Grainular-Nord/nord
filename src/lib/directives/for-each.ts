@@ -1,6 +1,7 @@
 /** @format */
 
 import { ReadonlyGrain } from '../../types';
+import { Error } from '../../types/enums/error.enum';
 import { isGrain } from '../../utils/is-grain';
 import { øEqualizeNodeLists } from '../components/equalize-node-list';
 
@@ -16,7 +17,7 @@ export const ForEach = <T>(value: T[] | ReadonlyGrain<T[]>, run: (elem: T, index
         if (isGrain(value)) {
             // Get the common ancestor for all nodes. If there is more then one ancestor, something went very wrong
             const [root, ...rest] = [...new Set(list.map((node) => node.parentElement))];
-            if (rest.length !== 0 || !root) throw new TypeError(`Add Error`, { cause: 'NodeListComparison' });
+            if (rest.length !== 0 || !root) throw new TypeError(Error.MULTIPLE_ROOTS, { cause: 'NodeListComparison' });
 
             // Subscribe to the grain and equalize the nodeLists whenever the value changes
             value.subscribe((value: T[]) => {

@@ -17,7 +17,7 @@ export const øGetPropTypeFromProp = (
     }
 
     if (isNonNull(prop) && isObject(prop) && Object.keys(prop).every((v) => v.startsWith('@'))) {
-        return PropType.DIRECTIVE;
+        return PropType.ELEMENT_DIRECTIVE;
     }
 
     if (isNonNull(prop) && isObject(prop) && Object.keys(prop).every((v) => v.startsWith('&'))) {
