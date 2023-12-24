@@ -28,7 +28,7 @@
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-esbuild": "^5.0.0",
-    "semantic-release": "^21.0.0",
+    "semantic-release": "^22.0.12",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   },
