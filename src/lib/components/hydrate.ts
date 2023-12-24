@@ -4,6 +4,7 @@ import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
 import { toPascalCase } from '../../utils/to-pascal-case';
 import { øCreateIdentifier } from './create-identifier';
+import { isolateTextNodes } from './isolate-text-nodes';
 
 /** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
@@ -48,8 +49,18 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
         if (node instanceof Text && [...tokens].some((token) => node.nodeValue?.includes(token))) {
             // get all props that are included in the node value of the node
             const processProps = props.filter((prop) => node.nodeValue?.includes(prop.token));
+
+            // create a new node consisting of all nodes and the isolated nodes
+            const nodes = isolateTextNodes(
+                node,
+                processProps.map(({ token }) => token)
+            );
+
+            node.replaceWith(...nodes);
             // Iterate over the matches and execute the prop processor, passing the node as argument
-            processProps.forEach(({ process, token }) => processInstructions.push({ node, token, process }));
+            processProps.forEach(({ process, token }) =>
+                processInstructions.push({ node: nodes.find((node) => node.data.includes(token))!, token, process })
+            );
         }
     }
 

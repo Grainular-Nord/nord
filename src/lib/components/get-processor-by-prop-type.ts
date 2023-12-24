@@ -11,13 +11,6 @@ import { getStringValue } from '../../utils/get-string-value';
 import { isElement } from '../../utils/is-element';
 import { isText } from '../../utils/is-text';
 
-const isolateNode = (node: Text, token: string) => {
-    const tokenIndex = node.data.indexOf(token);
-    const tokenNode = node.splitText(tokenIndex);
-    tokenNode.splitText(token.length);
-    return tokenNode;
-};
-
 const __øProcessors = new Map<PropType, PropProcessor>([
     // Primitive parser
     [
@@ -58,11 +51,9 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             // If the node is a text node, the text content is simply replaced without further processing,
             // after stringifying it
             if (isText(node)) {
-                const grainNode = isolateNode(node, token);
-
                 // set up the subscription of the grain
                 value.subscribe((val) => {
-                    grainNode.textContent = val;
+                    node.textContent = val;
                 }, true);
             }
 
@@ -110,12 +101,11 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             // Directives should only be added to elements as attributes.
             if (isText(node) && Object.keys(value).length === 1) {
                 // Isolate the node
-                const tokenNode = isolateNode(node, token);
 
                 Object.entries(value).forEach(([name, handler]) => {
                     const directive = window.$$nord.directives.get(name) as DirectiveHandler<Text> | undefined;
                     if (!directive) throw new TypeError(Error.DIRECTIVE_NOT_FOUND, { cause: name });
-                    directive(tokenNode, handler);
+                    directive(node, handler);
                 });
             }
 
@@ -132,8 +122,7 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             if (isText(node)) {
                 // Isolate the token in a single text node
                 // This should enable putting NodeLists into the middle of text
-                const tokenNode = isolateNode(node, token);
-                tokenNode.replaceWith(...value);
+                node.replaceWith(...value);
             }
 
             // NodeLits should only be added to elements as Text.
