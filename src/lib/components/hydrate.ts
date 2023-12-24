@@ -2,11 +2,13 @@
 
 import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
+import { toPascalCase } from '../../utils/to-pascal-case';
 
 /** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
     const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
+    const childInstruction: { node: Element }[] = [];
 
     // Create the NodeWalker and set up to show Elements and TextNodes.
     // As TreeWalkers are not able to access attribute nodes, attributes can be safely omitted.
@@ -21,8 +23,13 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     while (tw.nextNode()) {
         const node = tw.currentNode;
 
-        // check if the element has an attribute that is contained in the tokens set
+        // mark possible nested components
+        if (node instanceof Element && window.$$nord.components.has(toPascalCase`${node.tagName}`)) {
+            childInstruction.push({ node });
+        }
+
         if (node instanceof Element) {
+            // check if the element has an attribute that is contained in the tokens set
             const attributes = getElementAttributeEntries(node);
             if ([...tokens].some((token) => attributes.includes(token))) {
                 // get all props that are included as attribute on the node
@@ -48,6 +55,18 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
         if (instruction) {
             const { process, token, node } = instruction;
             process(token, node);
+        }
+    }
+
+    while (childInstruction.length) {
+        const instruction = childInstruction.shift();
+        if (instruction) {
+            const { node } = instruction;
+            const selector = toPascalCase`${node.tagName}`;
+            const component = window.$$nord.components.get(selector);
+            if (node.isConnected && component) {
+                node.replaceWith(...component({}, node.childNodes));
+            }
         }
     }
 };
