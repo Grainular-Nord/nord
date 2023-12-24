@@ -4,6 +4,9 @@ import { Component } from '../types/component';
 import { Error } from '../types/enums/error.enum';
 import { NordInit } from '../types/nord-init';
 import { createNamespace } from './create-namespace';
+import { createDirective } from './directives/create-directive';
+import { directives } from './directives/directives';
+import { registerDirective } from './directives/register-directive';
 
 export const render = (component: Component, options: NordInit) => {
     if (!component) {
@@ -17,6 +20,10 @@ export const render = (component: Component, options: NordInit) => {
 
     // Create the global namespace (If not already created)
     createNamespace();
+
+    // Add custom directives to the global namespace
+    const { directives: customDirectives = [] } = options;
+    [...directives, ...customDirectives].forEach((directive) => registerDirective(directive));
 
     target.append(...component({}));
 };

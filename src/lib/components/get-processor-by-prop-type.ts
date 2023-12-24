@@ -1,6 +1,7 @@
 /** @format */
 
 import { ReadonlyGrain } from '../../types';
+import { Error } from '../../types/enums/error.enum';
 import { PropType } from '../../types/enums/prop-type.enum';
 import { PropProcessor } from '../../types/prop-processor';
 import { getAttributeNameForValue } from '../../utils/get-attribute-name-for-value';
@@ -79,7 +80,21 @@ const __øProcessors = new Map<PropType, PropProcessor>([
     [
         PropType.DIRECTIVE,
         (node, token, value: TemplateDirective) => {
-            console.log({ node, token, value });
+            // Directives should only be added to elements as attributes.
+            if (isText(node)) {
+                throw new TypeError(``, { cause: value });
+            }
+
+            if (isElement(node)) {
+                // the way directives work, we can select the attribute directly and remove it
+                node.removeAttribute(token);
+                // For each directive passed, execute the directive from the global directive dict
+                Object.entries(value).forEach(([name, handler]) => {
+                    const directive = window.$$nord.directives.get(name);
+                    if (!directive) throw new TypeError(Error.DIRECTIVE_NOT_FOUND, { cause: name });
+                    directive(node, handler);
+                });
+            }
         },
     ],
 ]);
@@ -94,5 +109,6 @@ export const øGetProcessorByPropType = (type: PropType) => {
         return processor;
     }
 
-    throw new Error();
+    // This error will never be thrown, as a fallback processor will always be provided.
+    throw new TypeError();
 };
