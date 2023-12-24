@@ -5,31 +5,28 @@
  */
 
 const bootstrap = ({ createComponent, render, grain, createDirective }) => {
-    const child = createComponent({
-        selector: 'Child',
-        template: (html, { name, $children }) => {
-            return html`<h3>Hello, ${name}</h3>
-                <div class="children">${$children}</div>`;
-        },
-    });
-
-    const parent = createComponent({
-        selector: 'Parent',
+    const counter = createComponent({
+        selector: 'Counter',
         template: (html) => {
-            const name = grain('World');
+            const count = grain(0);
 
-            return html`<div>
-                <Child ${{ '@props': { name } }}>
-                    <div class="Test">Hello, im child content</div>
-                </Child>
-                <button ${{ '@click': () => name.set('Sebastian') }}>Change Name</button>
-            </div>`;
+            return html`<button ${{ '@click': () => count.update((c) => c + 1) }}>${count}</button>`;
         },
     });
 
-    render(parent, {
-        target: document.querySelector('body'),
+    const name = createComponent({
+        selector: 'Name',
+        template: (html, { name }) => html`<div>${name}</div>`,
     });
+
+    const app = createComponent({
+        template: (html, { name }) => html`<main>
+            <Counter></Counter>
+            <Counter></Counter>
+            <Name ${{ '@props': { name } }}></Name>
+        </main>`,
+    });
+    render(app, { target: document.querySelector('body'), props: { name: grain('Sebastian') } });
 };
 
 /**
