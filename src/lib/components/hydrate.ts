@@ -58,12 +58,12 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
         }
     }
 
+    // check all remaining children for having been processed, if not process them here
     while (childInstruction.length) {
         const instruction = childInstruction.shift();
         if (instruction) {
             const { node } = instruction;
-            const selector = toPascalCase`${node.tagName}`;
-            const component = window.$$nord.components.get(selector);
+            const component = window.$$nord.components.get(toPascalCase`${node.tagName}`);
             if (node.isConnected && component) {
                 node.replaceWith(...component({}, node.childNodes));
             }
