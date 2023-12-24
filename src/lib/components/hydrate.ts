@@ -6,6 +6,7 @@ import { getElementAttributeEntries } from '../../utils/get-element-attribute-en
 /** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
+    const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
 
     // Create the NodeWalker and set up to show Elements and TextNodes.
     // As TreeWalkers are not able to access attribute nodes, attributes can be safely omitted.
@@ -28,7 +29,7 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
                 props
                     .filter((prop) => attributes.includes(prop.token))
                     // Iterate over the matches and execute the prop processor, passing the node as argument
-                    .forEach(({ process, token }) => process(token, node));
+                    .forEach(({ process, token }) => processInstructions.push({ node, token, process }));
             }
         }
 
@@ -37,7 +38,16 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
             // get all props that are included in the node value of the node
             const processProps = props.filter((prop) => node.nodeValue?.includes(prop.token));
             // Iterate over the matches and execute the prop processor, passing the node as argument
-            processProps.forEach(({ process, token }) => process(token, node));
+            processProps.forEach(({ process, token }) => processInstructions.push({ node, token, process }));
+        }
+    }
+
+    // After the tree walker completes, process the found tokens
+    while (processInstructions.length) {
+        const instruction = processInstructions.shift();
+        if (instruction) {
+            const { process, token, node } = instruction;
+            process(token, node);
         }
     }
 };

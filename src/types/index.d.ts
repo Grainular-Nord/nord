@@ -16,7 +16,7 @@ export { Component };
 declare global {
     interface Window {
         $$nord: {
-            components: Map<Selector<string>, Component>;
+            components: Map<string, Component>;
             directives: Map<string, DirectiveHandler>;
         };
     }
