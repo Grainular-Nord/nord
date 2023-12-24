@@ -3,12 +3,14 @@
 import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
 import { toPascalCase } from '../../utils/to-pascal-case';
+import { øCreateIdentifier } from './create-identifier';
 
 /** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
     const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
     const childInstruction: { node: Element }[] = [];
+    const componentId = øCreateIdentifier();
 
     // Create the NodeWalker and set up to show Elements and TextNodes.
     // As TreeWalkers are not able to access attribute nodes, attributes can be safely omitted.
@@ -23,12 +25,12 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     while (tw.nextNode()) {
         const node = tw.currentNode;
 
-        // mark possible nested components
-        if (node instanceof Element && window.$$nord.components.has(toPascalCase`${node.tagName}`)) {
-            childInstruction.push({ node });
-        }
-
         if (node instanceof Element) {
+            // mark possible nested components
+            if (window.$$nord.components.has(toPascalCase`${node.tagName}`)) {
+                childInstruction.push({ node });
+            }
+
             // check if the element has an attribute that is contained in the tokens set
             const attributes = getElementAttributeEntries(node);
             if ([...tokens].some((token) => attributes.includes(token))) {
@@ -38,6 +40,8 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
                     // Iterate over the matches and execute the prop processor, passing the node as argument
                     .forEach(({ process, token }) => processInstructions.push({ node, token, process }));
             }
+
+            node.setAttribute(componentId, '');
         }
 
         // If the node is a instance of a text node, check if the node value contains a text
