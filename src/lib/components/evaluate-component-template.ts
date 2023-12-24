@@ -26,6 +26,7 @@ export const øEvaluateComponentTemplate = (
             token = crypto.randomUUID();
             props.push({
                 token,
+                raw: prop,
                 process: (token: string, el: Element | Text) => {
                     const propType = øGetPropTypeFromProp(prop);
                     const processor = øGetProcessorByPropType(propType);

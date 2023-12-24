@@ -9,7 +9,7 @@ import { isFunction } from '../../utils/is-function';
 import { øEvaluateComponentTemplate } from './evaluate-component-template';
 import { registerComponent } from './register-component';
 
-export const createComponent = <Props extends ComponentProps, S extends string | never = never>(
+export const createComponent = <Props extends ComponentProps = {}, S extends string | never = never>(
     init: ComponentInit<Props, S>
 ) => {
     // Set up lifecycle methods

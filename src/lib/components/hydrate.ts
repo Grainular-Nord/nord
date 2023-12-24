@@ -2,11 +2,11 @@
 
 import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
+import { isObject } from '../../utils/is-object';
 import { toPascalCase } from '../../utils/to-pascal-case';
 import { øCreateIdentifier } from './create-identifier';
 import { isolateTextNodes } from './isolate-text-nodes';
 
-/** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
     const iteratorInstructions: ((...args: any[]) => void)[] = [];
@@ -40,7 +40,7 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
                 props
                     .filter((prop) => attributes.includes(prop.token))
                     // Iterate over the matches and execute the prop processor, passing the node as argument
-                    .forEach(({ process, token }) => processInstructions.push({ node, token, process }));
+                    .forEach((prop) => processInstructions.push({ node, ...prop }));
             }
 
             node.setAttribute(componentId, '');
@@ -61,10 +61,41 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
             iteratorInstructions.push(() => node.replaceWith(...nodes));
 
             // Iterate over the matches and execute the prop processor, passing the node as argument
-            processProps.forEach(({ process, token }) =>
-                processInstructions.push({ node: nodes.find((node) => node.data.includes(token))!, token, process })
+            processProps.forEach((prop) =>
+                processInstructions.push({
+                    node: nodes.find((node) => node.data.includes(prop.token))!,
+                    ...prop,
+                })
             );
         }
+    }
+
+    // check all remaining children for having been processed, if not process them here
+    while (childInstruction.length) {
+        const instruction = childInstruction.shift();
+        if (!instruction) break;
+
+        const { node } = instruction;
+        const component = window.$$nord.components.get(toPascalCase`${node.tagName}`);
+
+        if (!component || !node.isConnected) {
+            break;
+        }
+
+        let componentProps = {};
+        const attrs = node.getAttributeNames();
+        if (attrs.includes('props')) {
+            const token = node.getAttribute('props');
+            const _props = props.find((prop) => prop.token === token);
+            if (isObject(_props?.raw)) {
+                componentProps = {
+                    ...componentProps,
+                    ..._props.raw,
+                };
+            }
+        }
+
+        node.replaceWith(...component({ ...componentProps }, node.childNodes));
     }
 
     while (iteratorInstructions.length) {
@@ -80,18 +111,6 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
         if (instruction) {
             const { process, token, node } = instruction;
             process(token, node);
-        }
-    }
-
-    // check all remaining children for having been processed, if not process them here
-    while (childInstruction.length) {
-        const instruction = childInstruction.shift();
-        if (instruction) {
-            const { node } = instruction;
-            const component = window.$$nord.components.get(toPascalCase`${node.tagName}`);
-            if (node.isConnected && component) {
-                node.replaceWith(...component({}, node.childNodes));
-            }
         }
     }
 };
