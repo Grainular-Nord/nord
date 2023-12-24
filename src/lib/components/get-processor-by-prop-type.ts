@@ -97,6 +97,26 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             }
         },
     ],
+    // NodeList parser
+    [
+        PropType.NODE_LIST,
+        (node, token, value: NodeList) => {
+            if (isText(node)) {
+                // Isolate the token in a single text node
+                // This should enable putting NodeLists into the middle of text
+                const tokenIndex = node.data.indexOf(token);
+                const tokenNode = node.splitText(tokenIndex);
+                tokenNode.splitText(token.length);
+
+                tokenNode.replaceWith(...value);
+            }
+
+            // NodeLits should only be added to elements as Text.
+            if (isElement(node)) {
+                throw new TypeError(``, { cause: value });
+            }
+        },
+    ],
 ]);
 
 export const øGetProcessorByPropType = (type: PropType) => {
