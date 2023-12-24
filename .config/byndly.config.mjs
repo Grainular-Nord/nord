@@ -4,25 +4,20 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render, grain }) => {
+const bootstrap = ({ createComponent, render, grain, createDirective }) => {
     // Your bootstrapping code goes here.
     const comp = createComponent({
         selector: 'Test',
-        template: (html, { $onMount }) => {
-            $onMount(() => {
-                console.log('Component Mounted');
-            });
-
+        template: (html) => {
             const count = grain(0);
-            const increment = () => count.update((c) => c + 1);
 
-            return html` <button class="btn" called="${count}" ${{ '@click': () => increment() }}>
-                Count is: ${count}
-            </button>`;
+            return html` <button ${{ '@click': () => count.update((c) => c + 1) }}>Count is: ${count}</button>`;
         },
     });
 
-    render(comp, { target: document.querySelector('body') });
+    render(comp, {
+        target: document.querySelector('body'),
+    });
 };
 
 /**
