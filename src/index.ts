@@ -9,6 +9,7 @@ export {
     createTemplateDirective,
     ForEach,
     If,
+    derived,
 } from './lib';
 export type {
     Subscriber,
@@ -19,4 +20,5 @@ export type {
     Component,
     Directive,
     ComponentInit,
+    NordInit,
 } from './types';

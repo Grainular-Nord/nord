@@ -9,3 +9,4 @@ export { createElementDirective } from './directives/create-element-directive';
 export { createTemplateDirective } from './directives/create-template-directive';
 export { ForEach } from './directives/for-each';
 export { If } from './directives/if';
+export { derived } from './grains/derived';
