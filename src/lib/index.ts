@@ -10,3 +10,4 @@ export { createTemplateDirective } from './directives/create-template-directive'
 export { ForEach } from './directives/for-each';
 export { If } from './directives/if';
 export { derived } from './grains/derived';
+export { On } from './directives/on';

@@ -32,6 +32,9 @@ export const directives = [
      */
     createTemplateDirective('&if', (element, handler) => handler(element)),
     // Event handlers
+    createElementDirective('@event', (element, handler) => {
+        handler(element);
+    }),
     createElementDirective('@click', (element, handler) => {
         element.addEventListener('click', (ev) => handler(ev));
     }),

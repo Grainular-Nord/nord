@@ -10,6 +10,7 @@ export {
     ForEach,
     If,
     derived,
+    On,
 } from './lib';
 export type {
     Subscriber,
