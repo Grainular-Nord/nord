@@ -4,7 +4,8 @@
   "module": "dist/index.mjs",
   "exports": {
     "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+    "import": "./dist/index.mjs",
+    "types": "./dist/types/index.d.ts"
   },
   "types": "dist/types/index.d.ts",
   "license": "MIT",
