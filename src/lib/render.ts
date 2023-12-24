@@ -24,5 +24,5 @@ export const render = (component: Component, options: NordInit) => {
     const { directives: customDirectives = [] } = options;
     [...directives, ...customDirectives].forEach((directive) => registerDirective(directive));
 
-    target.append(...component(options.props ?? {}));
+    target.append(...component(options.hydrate ?? {}));
 };

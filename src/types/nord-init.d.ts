@@ -6,6 +6,6 @@ import { TemplateDirective } from './template-directive';
 
 export type NordInit = {
     target: Element | null;
-    props?: ComponentProps;
+    hydrate?: ComponentProps;
     directives?: (Directive | TemplateDirective)[];
 };
