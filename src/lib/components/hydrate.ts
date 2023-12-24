@@ -9,6 +9,7 @@ import { isolateTextNodes } from './isolate-text-nodes';
 /** @todo -> Implement correct substitution per prop. Set up subscriptions and event handlers */
 export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
+    const iteratorInstructions: ((...args: any[]) => void)[] = [];
     const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
     const childInstruction: { node: Element }[] = [];
     const componentId = øCreateIdentifier();
@@ -56,11 +57,20 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
                 processProps.map(({ token }) => token)
             );
 
-            node.replaceWith(...nodes);
+            // Add a instruction to replace the nodes
+            iteratorInstructions.push(() => node.replaceWith(...nodes));
+
             // Iterate over the matches and execute the prop processor, passing the node as argument
             processProps.forEach(({ process, token }) =>
                 processInstructions.push({ node: nodes.find((node) => node.data.includes(token))!, token, process })
             );
+        }
+    }
+
+    while (iteratorInstructions.length) {
+        const instruction = iteratorInstructions.shift();
+        if (instruction) {
+            instruction();
         }
     }
 
