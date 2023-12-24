@@ -57,5 +57,10 @@
       "--experimental-specifier-resolution=node"
     ]
   },
-  "unpkg": "./dist/index.browser.min.js"
+  "unpkg": "./dist/index.browser.min.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/IamSebastianDev/nord.git",
+  "author": "Sebastian <sebastian@iamsebastian.dev>"
 }
