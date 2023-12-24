@@ -12,6 +12,7 @@ export { ReadonlyGrain } from './readonly-grain';
 export { ComponentProps } from './component-props';
 export { NordInit } from './nord-init';
 export { Component };
+export { ComponentInit } from './component-init';
 // The global component registry
 declare global {
     interface Window {

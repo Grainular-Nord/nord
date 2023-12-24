@@ -27,6 +27,10 @@ export const directives = [
      * underlying value changes (if it can change reactively)
      */
     createTemplateDirective('&forEach', (element, handler) => handler(element)),
+    /**
+     * If directive. This directive is used to create a boolean switch and render its templates accordingly
+     */
+    createTemplateDirective('&if', (element, handler) => handler(element)),
     // Event handlers
     createElementDirective('@click', (element, handler) => {
         element.addEventListener('click', (ev) => handler(ev));

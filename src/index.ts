@@ -8,5 +8,15 @@ export {
     createElementDirective,
     createTemplateDirective,
     ForEach,
+    If,
 } from './lib';
-export type { Subscriber, Grain, Updater, ComparisonFunc, ReadonlyGrain, Component, Directive } from './types';
+export type {
+    Subscriber,
+    Grain,
+    Updater,
+    ComparisonFunc,
+    ReadonlyGrain,
+    Component,
+    Directive,
+    ComponentInit,
+} from './types';
