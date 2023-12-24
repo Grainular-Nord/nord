@@ -7,3 +7,4 @@ export { render } from './render';
 export { createComponent } from './components/create-component';
 export { createElementDirective } from './directives/create-element-directive';
 export { createTemplateDirective } from './directives/create-template-directive';
+export { ForEach } from './directives/for-each';
