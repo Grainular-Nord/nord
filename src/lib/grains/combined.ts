@@ -6,7 +6,7 @@ import { GrainValue } from '../../types/grain-value';
 import { grain } from './grain';
 import { readonly } from './readonly';
 
-export const derived = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
+export const combined = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
     deps: Dependencies,
     fn: (values: GrainValue<Dependencies>) => R,
     initial?: R

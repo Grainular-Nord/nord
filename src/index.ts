@@ -2,7 +2,7 @@
 export {
     grain,
     readonly,
-    derived,
+    combined,
     createComponent,
     render,
     createElementDirective,
