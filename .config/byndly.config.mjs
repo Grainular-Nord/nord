@@ -4,20 +4,18 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render, grain, ForEach }) => {
+const bootstrap = ({ createComponent, render, grain, If }) => {
     const app = createComponent({
-        template: (html, { name }) => html`<main>
-                ${ForEach(name, (name) => html`<div key="${name}">${name}</div>`)}
+        template: (html, { bool }) => html`
+            <main>
+                <div>${If(bool, (cond) => (cond ? html`<div>True</div>` : html`<div>False</div>`))}</div>
+                <button ${{ '@click': () => bool.update((b) => !b) }}>Change</button>
             </main>
-            <button ${{ '@click': () => name.update((n) => [...n, `new Name ${n.length}`]) }}>Add Name</button>
-            <button ${{ '@click': () => name.update((n) => [...n.filter((elem) => elem !== 'new Name 5')]) }}>
-                Remove Name
-            </button>`,
+        `,
     });
 
-    const name = grain(['new Name 0']);
-    name.subscribe((names) => console.log({ names }));
-    render(app, { target: document.querySelector('body'), props: { name } });
+    const bool = grain(false);
+    render(app, { target: document.querySelector('body'), props: { bool } });
 };
 
 /**
