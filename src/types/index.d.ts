@@ -1,5 +1,6 @@
 /** @format */
 
+import { Context } from './context';
 import { DirectiveHandler } from './directive-handler';
 export { ElementDirective } from './element-directive';
 export { Subscriber } from './subscriber';
@@ -16,7 +17,7 @@ export { TemplateDirective } from './template-directive';
 declare global {
     interface Window {
         $$nord: {
-            context: Map<string, unknown>;
+            context: Context<any>;
             directives: Map<string, DirectiveHandler<Element> | DirectiveHandler<Text>>;
         };
     }

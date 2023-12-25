@@ -36,7 +36,9 @@ import { øEvaluateComponentTemplate } from './evaluate-component-template';
  * });
  */
 
-export const createComponent = <Props extends ComponentProps = {}>(template: ComponentTemplate<Props>) => {
+export const createComponent = <Props extends ComponentProps = {}, Ctx extends Record<PropertyKey, unknown> = {}>(
+    template: ComponentTemplate<Props, Ctx>
+) => {
     // Set up lifecycle methods
     let onMount: null | (() => void) = null;
     let onDestroy: null | (() => void) = null;
@@ -51,7 +53,9 @@ export const createComponent = <Props extends ComponentProps = {}>(template: Com
 
     // Create the component function
     const component = (props: Props, children?: NodeList) => {
-        const _props: TypedProps<Props> = { ...props, $onMount, $onDestroy, $children: children ?? emptyNodeList() };
+        const $children = children ?? emptyNodeList();
+        const $ctx = window.$$nord.context;
+        const _props: TypedProps<Props, Ctx> = { ...props, $onMount, $onDestroy, $children, $ctx };
         const evaluatedTemplate = template(øEvaluateComponentTemplate(componentId), _props);
 
         // If after the template evaluation a onMount function is set and no longer null, execute the onMount function.
