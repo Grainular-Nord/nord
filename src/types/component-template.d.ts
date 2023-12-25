@@ -28,7 +28,7 @@ import { TypedProps } from './typed-props';
  * };
  */
 
-export type ComponentInit<Props extends ComponentProps = any, S extends string | never = never> = {
-    template: (parser: HtmlParserFunc, props: TypedProps<Props>) => ReturnType<HtmlParserFunc>;
-    selector?: S extends string ? Selector<S> : never;
-};
+export type ComponentTemplate<Props extends ComponentProps = any> = (
+    parser: HtmlParserFunc,
+    props: TypedProps<Props>
+) => ReturnType<HtmlParserFunc>;

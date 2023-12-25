@@ -22,6 +22,6 @@ export type {
     Component,
     ElementDirective,
     TemplateDirective,
-    ComponentInit,
+    ComponentTemplate,
     NordInit,
 } from './types';

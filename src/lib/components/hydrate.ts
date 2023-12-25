@@ -4,15 +4,12 @@ import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
 import { isObject } from '../../utils/is-object';
 import { toPascalCase } from '../../utils/to-pascal-case';
-import { øCreateIdentifier } from './create-identifier';
 import { isolateTextNodes } from './isolate-text-nodes';
 
-export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
+export const øHydrate = (componentId: string, nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
     const iteratorInstructions: ((...args: any[]) => void)[] = [];
     const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
-    const childInstruction: { node: Element }[] = [];
-    const componentId = øCreateIdentifier();
 
     // Create the NodeWalker and set up to show Elements and TextNodes.
     // As TreeWalkers are not able to access attribute nodes, attributes can be safely omitted.
@@ -28,11 +25,6 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
         const node = tw.currentNode;
 
         if (node instanceof Element) {
-            // mark possible nested components
-            if (window.$$nord.components.has(toPascalCase`${node.tagName}`)) {
-                childInstruction.push({ node });
-            }
-
             // check if the element has an attribute that is contained in the tokens set
             const attributes = getElementAttributeEntries(node);
             if ([...tokens].some((token) => attributes.includes(token))) {
@@ -71,33 +63,6 @@ export const øHydrate = (nodes: Document, ...props: ProcessorProp[]) => {
     }
 
     // check all remaining children for having been processed, if not process them here
-    while (childInstruction.length) {
-        const instruction = childInstruction.shift();
-        if (!instruction) break;
-
-        const { node } = instruction;
-        const component = window.$$nord.components.get(toPascalCase`${node.tagName}`);
-
-        if (!component || !node.isConnected) {
-            break;
-        }
-
-        let componentProps = {};
-        const attrs = node.getAttributeNames();
-        if (attrs.includes('props')) {
-            const token = node.getAttribute('props');
-            const _props = props.find((prop) => prop.token === token);
-            if (isObject(_props?.raw)) {
-                componentProps = {
-                    ...componentProps,
-                    ..._props.raw,
-                };
-            }
-        }
-
-        node.replaceWith(...component({ ...componentProps }, node.childNodes));
-    }
-
     while (iteratorInstructions.length) {
         const instruction = iteratorInstructions.shift();
         if (instruction) {
