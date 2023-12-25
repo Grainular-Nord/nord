@@ -3,7 +3,7 @@
 import { DirectiveHandler } from './directive-handler';
 import { Component } from './component';
 import { Selector } from './selector';
-export { Directive } from './directive';
+export { ElementDirective } from './element-directive';
 export { Subscriber } from './subscriber';
 export { Updater } from './updater';
 export { Grain } from './grain';
@@ -13,6 +13,7 @@ export { ComponentProps } from './component-props';
 export { NordInit } from './nord-init';
 export { Component };
 export { ComponentInit } from './component-init';
+export { TemplateDirective } from './template-directive';
 // The global component registry
 declare global {
     interface Window {

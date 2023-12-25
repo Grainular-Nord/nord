@@ -2,7 +2,7 @@
 
 import { DirectiveHandler } from './directive-handler';
 
-export type Directive = {
+export type ElementDirective = {
     name: `@${string}`;
     directive: DirectiveHandler<Element>;
 };

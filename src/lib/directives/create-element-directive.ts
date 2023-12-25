@@ -1,9 +1,9 @@
 /** @format */
 
-import { Directive } from '../../types';
+import { ElementDirective } from '../../types';
 import { DirectiveHandler } from '../../types/directive-handler';
 
-export const createElementDirective = (name: `@${string}`, directive: DirectiveHandler<Element>): Directive => {
+export const createElementDirective = (name: `@${string}`, directive: DirectiveHandler<Element>): ElementDirective => {
     return {
         name,
         directive,

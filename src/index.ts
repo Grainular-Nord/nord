@@ -20,7 +20,8 @@ export type {
     ComparisonFunc,
     ReadonlyGrain,
     Component,
-    Directive,
+    ElementDirective,
+    TemplateDirective,
     ComponentInit,
     NordInit,
 } from './types';
