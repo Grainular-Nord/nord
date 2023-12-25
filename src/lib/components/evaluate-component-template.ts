@@ -1,7 +1,7 @@
 /** @format */
 
-import { Directive } from '../../../dist/types';
-import { ReadonlyGrain } from '../../types';
+import { ComponentProps, ReadonlyGrain } from '../../types';
+import { NørdDirective } from '../../types/nord-directive';
 import { ProcessorProp } from '../../types/processor-prop';
 import { TemplateDirective } from '../../types/template-directive';
 import { ToStringTypes } from '../../types/to-string-types';
@@ -15,7 +15,7 @@ const parser = new DOMParser();
 
 export const øEvaluateComponentTemplate = (
     templateFragments: TemplateStringsArray,
-    ...injects: (ReadonlyGrain<any> | TemplateDirective | Directive | ToStringTypes | NodeList)[]
+    ...injects: (ReadonlyGrain<any> | NørdDirective | ToStringTypes | NodeList | ComponentProps)[]
 ): NodeList => {
     const props: ProcessorProp[] = [];
     const evaluationResults = templateFragments.flatMap((fragment, index) => {
