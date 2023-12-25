@@ -1,15 +1,13 @@
 /** @format */
 
-import { Component } from '../types/component';
+import { Context } from '../types/context';
 import { DirectiveHandler } from '../types/directive-handler';
-import { ElementDirective } from '../types/element-directive';
-import { Selector } from '../types/selector';
 
-export const createNamespace = () => {
+export const createNamespace = (context: Context<any>) => {
     if (!window.$$nord) {
         window.$$nord = {
             // Create a default namespace
-            components: new Map<Selector<string>, Component>(),
+            context: context,
             directives: new Map<string, DirectiveHandler<Text> | DirectiveHandler<Element>>(),
         };
     }

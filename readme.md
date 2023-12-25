@@ -25,9 +25,7 @@ Import the basic functions to create a small "Hello World" component.
 ```js
 import { createComponent, grain, render } from '@grainular/nord';
 
-const App = createComponent({
-    template: (html, { name }) => html`<h1>Hello, ${name}</h1>`,
-});
+const App = createComponent((html, { name }) => html`<h1>Hello, ${name}</h1>`);
 
 render(App, {
     target: document.querySelector('body'),

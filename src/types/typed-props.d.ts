@@ -1,6 +1,7 @@
 /** @format */
 
 import { ComponentProps } from './component-props';
+import { Context } from './context';
 import { LifecycleFunc } from './lifecycle-func';
 
 /**
@@ -37,8 +38,9 @@ import { LifecycleFunc } from './lifecycle-func';
  * // framework-specific properties within a component.
  */
 
-export type TypedProps<P extends ComponentProps> = P & {
+export type TypedProps<P extends ComponentProps, Ctx extends Record<PropertyKey, unknown> = {}> = P & {
     $onMount: LifecycleFunc;
     $onDestroy: LifecycleFunc;
     $children: NodeList;
+    $ctx: Context<Ctx>;
 };
