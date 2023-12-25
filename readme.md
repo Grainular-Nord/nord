@@ -1,46 +1,44 @@
 <!-- @format -->
 
-# TypeScript NPM-Package Template
+# Nørd
 
-This template can be used as a opinionated starting point for a typescript based npm package. It uses several tools to enhance the dx aspect of creating a npm package. Read more about how the different aspects of the template in the [`Contributing Guidelines`](./contributing.md).
+[![Npm package version](https://badgen.net/npm/v/@nord/core)](https://www.npmjs.com/package/@nord/core)
+[![Npm package total downloads](https://badgen.net/npm/dt/@nord/core)](https://npmjs.com/package/@nord/core)
+[![Npm package license](https://badgen.net/npm/license/@nord/core)](https://npmjs.com/package/@Nørd/core)
 
-## Tools used in the template
+Nørd is a cutting-edge frontend JavaScript framework designed for building reactive web applications with ease and efficiency. Emphasizing reactivity and simplicity, Nørd integrates seamlessly into your web development workflow, providing a robust solution for state management and component-based architecture. Lightweight, dependency-free and powerful, Nørd is ideal for both small and large-scale applications.
 
--   [yarn](https://yarnpkg.com/getting-started)
--   [TypeScript](https://www.typescriptlang.org)
--   [Rollup](https://rollupjs.org/guide/en/) as bundler, using esbuild to transpile TypeScript to JavaScript
--   [ava](https://github.com/avajs/ava) as test-runner
--   [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to ensure commit standards
--   [Semantic Release](https://semantic-release.gitbook.io/semantic-release/) to create releases automatically
--   [Prettier](https://prettier.io) & [Pretty-quick](https://www.npmjs.com/package/pretty-quick) to format the code
--   [alex](https://alexjs.com) for linting the documentation
+## Installing
 
-## Getting started
-
-To get started, clone the repository and recreate the git repository to start with a clean template.
+To use Nørd in your project, install it via yarn or npm:
 
 ```bash
-git clone https://github.com/IamSebastianDev/template-pkg.git <your-package-name>
-
-cd <your-package-name>
-
-# Reset the git repository
-yarn reset
-
-# This will leave you with three branches, main, development and release.
+yarn add @nord/core
+# or use npm
+npm install @nord/core
 ```
 
-After creating a new repository, fill out the remaining information in the `package.json` and install the dev-dependencies. You should use the defaults already set in the `package.json` and only change the not already set meta information.
+## Getting Started
 
-```bash
-# fill out the package.json
-yarn init
-# do a clean install of the dependencies
-yarn ci
-# install githooks
-yarn setup
+Import the basic functions to create a small "Hello World" component.
+
+```js
+import { createComponent, grain, render } from '@nord/core';
+
+const App = createComponent({
+    template: (html, { name }) => html`<h1>Hello, ${name}</h1>`,
+});
+
+render(App, {
+    target: document.querySelector('body'),
+    hydrate: { name: grain('World') },
+});
 ```
 
-## Development
+## Contributing
 
-Checkout the [`Contributing Guidelines`](./contributing.md) to find out how to develop within your newly created repository.
+Contributions to Nørd are always welcome! Whether it's bug reports, feature requests, or code contributions, please read our [contribution guidelines](./contributing.md) for more information on getting involved.
+
+## License
+
+Nørd is open-sourced software licensed under the MIT License.
