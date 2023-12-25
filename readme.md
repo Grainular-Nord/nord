@@ -2,9 +2,9 @@
 
 # Nørd
 
-[![Npm package version](https://badgen.net/npm/v/@nord/core)](https://www.npmjs.com/package/@nord/core)
-[![Npm package total downloads](https://badgen.net/npm/dt/@nord/core)](https://npmjs.com/package/@nord/core)
-[![Npm package license](https://badgen.net/npm/license/@nord/core)](https://npmjs.com/package/@Nørd/core)
+[![Npm package version](https://badgen.net/npm/v/@grainular/nord)](https://www.npmjs.com/package/@grainular/nord)
+[![Npm package total downloads](https://badgen.net/npm/dt/@grainular/nord)](https://npmjs.com/package/@grainular/nord)
+[![Npm package license](https://badgen.net/npm/license/@grainular/nord)](https://npmjs.com/package/@grainular/nord)
 
 Nørd is a cutting-edge frontend JavaScript framework designed for building reactive web applications with ease and efficiency. Emphasizing reactivity and simplicity, Nørd integrates seamlessly into your web development workflow, providing a robust solution for state management and component-based architecture. Lightweight, dependency-free and powerful, Nørd is ideal for both small and large-scale applications.
 
@@ -13,9 +13,9 @@ Nørd is a cutting-edge frontend JavaScript framework designed for building reac
 To use Nørd in your project, install it via yarn or npm:
 
 ```bash
-yarn add @nord/core
+yarn add @grainular/nord
 # or use npm
-npm install @nord/core
+npm install @grainular/nord
 ```
 
 ## Getting Started
@@ -23,7 +23,7 @@ npm install @nord/core
 Import the basic functions to create a small "Hello World" component.
 
 ```js
-import { createComponent, grain, render } from '@nord/core';
+import { createComponent, grain, render } from '@grainular/nord';
 
 const App = createComponent({
     template: (html, { name }) => html`<h1>Hello, ${name}</h1>`,

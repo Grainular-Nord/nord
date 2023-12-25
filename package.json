@@ -1,5 +1,5 @@
 {
-  "name": "@nord/core",
+  "name": "@grainular/nord",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
