@@ -3,6 +3,7 @@
 import { Component } from '../types/component';
 import { Error } from '../types/enums/error.enum';
 import { NordInit } from '../types/nord-init';
+import { context } from './components/component-ctx';
 import { createNamespace } from './create-namespace';
 import { directives } from './directives/directives';
 import { registerDirective } from './directives/register-directive';
@@ -56,7 +57,7 @@ export const render = (component: Component, options: NordInit) => {
     }
 
     // Create the global namespace (If not already created)
-    createNamespace();
+    createNamespace(context<any>());
 
     // Add custom directives to the global namespace
     const { directives: customDirectives = [] } = options;

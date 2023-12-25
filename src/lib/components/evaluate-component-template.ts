@@ -13,35 +13,37 @@ import { øHydrate } from './hydrate';
 // Create a new DomParser instance
 const parser = new DOMParser();
 
-export const øEvaluateComponentTemplate = (
-    templateFragments: TemplateStringsArray,
-    ...injects: (ReadonlyGrain<any> | NørdDirective | ToStringTypes | NodeList | ComponentProps)[]
-): NodeList => {
-    const props: ProcessorProp[] = [];
-    const evaluationResults = templateFragments.flatMap((fragment, index) => {
-        let token: string | null = null;
-        const prop = injects.at(index);
+export const øEvaluateComponentTemplate =
+    (componentId: string) =>
+    (
+        templateFragments: TemplateStringsArray,
+        ...injects: (ReadonlyGrain<any> | NørdDirective | ToStringTypes | NodeList | ComponentProps)[]
+    ): NodeList => {
+        const props: ProcessorProp[] = [];
+        const evaluationResults = templateFragments.flatMap((fragment, index) => {
+            let token: string | null = null;
+            const prop = injects.at(index);
 
-        if (prop !== undefined) {
-            token = crypto.randomUUID();
-            props.push({
-                token,
-                raw: prop,
-                process: (token: string, el: Element | Text) => {
-                    const propType = øGetPropTypeFromProp(prop);
-                    const processor = øGetProcessorByPropType(propType);
-                    processor(el, token, prop);
-                },
-            });
-        }
+            if (prop !== undefined) {
+                token = crypto.randomUUID();
+                props.push({
+                    token,
+                    raw: prop,
+                    process: (token: string, el: Element | Text) => {
+                        const propType = øGetPropTypeFromProp(prop);
+                        const processor = øGetProcessorByPropType(propType);
+                        processor(el, token, prop);
+                    },
+                });
+            }
 
-        return [fragment, token];
-    });
+            return [fragment, token];
+        });
 
-    // parse the evaluation result and hydrate the DOM tree
-    const parsed = parser.parseFromString(evaluationResults.join(''), 'text/html');
-    øHydrate(parsed, ...props);
+        // parse the evaluation result and hydrate the DOM tree
+        const parsed = parser.parseFromString(evaluationResults.join(''), 'text/html');
+        øHydrate(componentId, parsed, ...props);
 
-    // return the parsed child nodes or fall back to an empty node list
-    return parsed.querySelector('body')?.childNodes ?? emptyNodeList();
-};
+        // return the parsed child nodes or fall back to an empty node list
+        return parsed.querySelector('body')?.childNodes ?? emptyNodeList();
+    };
