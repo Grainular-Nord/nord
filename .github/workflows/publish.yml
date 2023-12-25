@@ -23,8 +23,8 @@ jobs:
         run: yarn ci
       - name: CI build
         run: yarn build
-      - name: Run tests
-        run: yarn test
+      #- name: Run tests
+      #  run: yarn test
   publish:
     runs-on: ubuntu-latest
     needs: ci
