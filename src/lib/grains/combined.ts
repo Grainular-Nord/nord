@@ -53,8 +53,6 @@ export const combined = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGr
             destroyed = true;
             return;
         }
-
-        throw new TypeError(Error.DERIVED_ALREADY_DESTROYED);
     };
 
     deps.forEach((grain) => {

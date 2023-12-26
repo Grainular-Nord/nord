@@ -2,7 +2,6 @@
 
 import { ReadonlyGrain } from '../../types';
 import { Directive } from '../../types/directive';
-import { Error } from '../../types/enums/error.enum';
 import { PropType } from '../../types/enums/prop-type.enum';
 import { PropProcessor } from '../../types/prop-processor';
 import { ToStringTypes } from '../../types/to-string-types';
@@ -97,7 +96,7 @@ const __øProcessors = new Map<PropType, PropProcessor>([
 
             // NodeLits should only be added to elements as Text.
             if (isElement(node)) {
-                throw new TypeError(Error.NODE_LIST_IN_TAG, { cause: value });
+                throw new Error('[Nørd:Component]: Node List used inside a html tag.');
             }
         },
     ],

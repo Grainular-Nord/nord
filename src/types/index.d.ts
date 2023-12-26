@@ -1,6 +1,7 @@
 /** @format */
 
-export { Context } from './context';
+import { Context } from './context';
+export { Context };
 export { Subscriber } from './subscriber';
 export { Updater } from './updater';
 export { Grain } from './grain';
