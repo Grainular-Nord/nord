@@ -87,7 +87,6 @@ export const ForEach = <T>(
         if (isGrain(value)) {
             // Get the common ancestor for all nodes. If there is more then one ancestor, something went very wrong
             const [root, ...rest] = [...new Set(list.map((node) => node.parentElement))];
-            console.log({ list, root, rest });
             if (rest.length !== 0 || !root) throw new Error('[Nørd:Directive]: Directive has multiple roots.');
 
             // Subscribe to the grain and equalize the nodeLists whenever the value changes
