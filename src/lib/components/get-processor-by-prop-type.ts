@@ -79,6 +79,12 @@ const __øProcessors = new Map<PropType, PropProcessor>([
         (node, token, value: Directive<Text | Element>) => {
             // Directives are given full control over the node.
             value(node);
+
+            if (node.isConnected && node instanceof Element) {
+                if (node.hasAttribute(token)) {
+                    node.removeAttribute(token);
+                }
+            }
         },
     ],
     // NodeList parser
