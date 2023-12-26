@@ -8,6 +8,7 @@ import { emptyNodeList } from '../../utils/empty-node-list';
 import { isFunction } from '../../utils/is-function';
 import { øCreateIdentifier } from './create-identifier';
 import { øEvaluateComponentTemplate } from './evaluate-component-template';
+import { Component } from '../../types';
 
 /**
  * Creates a new component with specified lifecycle methods and a template.
@@ -26,11 +27,13 @@ import { øEvaluateComponentTemplate } from './evaluate-component-template';
  *
  * @example
  * // Example of creating and rendering a simple counter component
+ * import {createComponent, grain, on} from "@grainular/nord"
+ *
  * const app = createComponent((html) => {
  *     const count = grain(0);
  *     return html`
- *         <button ${{ '@click': () => count.update((c) => c + 1) }}>
- *             Count is: ${count}, Doubled is: ${doubled}
+ *         <button ${on('click', () => count.update((c) => c + 1)}>
+ *             Count is: ${count}
  *         </button>
  *     `;
  * });
@@ -38,7 +41,7 @@ import { øEvaluateComponentTemplate } from './evaluate-component-template';
 
 export const createComponent = <Props extends ComponentProps = {}, Ctx extends Record<PropertyKey, unknown> = {}>(
     template: ComponentTemplate<Props, Ctx>
-) => {
+): Component<Props> => {
     // Set up lifecycle methods
     let onMount: null | (() => void) = null;
     let onDestroy: null | (() => void) = null;
@@ -74,5 +77,5 @@ export const createComponent = <Props extends ComponentProps = {}, Ctx extends R
         enumerable: false,
     });
 
-    return component;
+    return component as Component<Props>;
 };

@@ -5,10 +5,6 @@ export enum Error {
     NO_COMPONENT_PROVIDED = '[Nørd:Render]: Component is "undefined" or "null". Pass a Nord Component to render it to the DOM".',
     DERIVED_ALREADY_DESTROYED = '[Nørd:Derived]: Derived grain has already been destroyed.',
     NOT_A_GRAIN = '[Nørd:Readonly]: Value is not a Grain',
-    DIRECTIVE_NOT_FOUND = '[Nørd:Directive]: No directive with the given name found.',
-    DIRECTIVE_EXISTS = '[Nørd:Directive]: A directive with the given name already exists.',
-    ELEMENT_DIRECTIVE_ON_TEXT = '[Nørd:Directive]: Element directives can only be used inside html tags.',
-    TEMPLATE_DIRECTIVE_ON_TAG = '[Nørd:Directive]: Template directives can only be used outside html tags.',
     NODE_LIST_IN_TAG = '[Nørd:Component]: Node List used inside a html tag.',
     MULTIPLE_ROOTS = '[Nørd:Component]: Directive has multiple roots.',
 }

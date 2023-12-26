@@ -2,14 +2,12 @@
 
 import { ProcessorProp } from '../../types/processor-prop';
 import { getElementAttributeEntries } from '../../utils/get-element-attribute-entries';
-import { isObject } from '../../utils/is-object';
-import { toPascalCase } from '../../utils/to-pascal-case';
 import { isolateTextNodes } from './isolate-text-nodes';
 
 export const øHydrate = (componentId: string, nodes: Document, ...props: ProcessorProp[]) => {
     const tokens = new Set(props.map(({ token }) => token));
-    const iteratorInstructions: ((...args: any[]) => void)[] = [];
-    const processInstructions: (ProcessorProp & { node: Element | Text })[] = [];
+    const isolateNodesInstructions: ((...args: any[]) => void)[] = [];
+    const propNodesInstructions: (ProcessorProp & { node: Element | Text })[] = [];
 
     // Create the NodeWalker and set up to show Elements and TextNodes.
     // As TreeWalkers are not able to access attribute nodes, attributes can be safely omitted.
@@ -32,7 +30,7 @@ export const øHydrate = (componentId: string, nodes: Document, ...props: Proces
                 props
                     .filter((prop) => attributes.includes(prop.token))
                     // Iterate over the matches and execute the prop processor, passing the node as argument
-                    .forEach((prop) => processInstructions.push({ node, ...prop }));
+                    .forEach((prop) => propNodesInstructions.push({ node, ...prop }));
             }
 
             node.setAttribute(componentId, '');
@@ -50,11 +48,11 @@ export const øHydrate = (componentId: string, nodes: Document, ...props: Proces
             );
 
             // Add a instruction to replace the nodes
-            iteratorInstructions.push(() => node.replaceWith(...nodes));
+            isolateNodesInstructions.push(() => node.replaceWith(...nodes));
 
             // Iterate over the matches and execute the prop processor, passing the node as argument
             processProps.forEach((prop) =>
-                processInstructions.push({
+                propNodesInstructions.push({
                     node: nodes.find((node) => node.data.includes(prop.token))!,
                     ...prop,
                 })
@@ -62,17 +60,17 @@ export const øHydrate = (componentId: string, nodes: Document, ...props: Proces
         }
     }
 
-    // check all remaining children for having been processed, if not process them here
-    while (iteratorInstructions.length) {
-        const instruction = iteratorInstructions.shift();
+    // Replace text nodes with isolated ones if necessary
+    while (isolateNodesInstructions.length) {
+        const instruction = isolateNodesInstructions.shift();
         if (instruction) {
             instruction();
         }
     }
 
     // After the tree walker completes, process the found tokens
-    while (processInstructions.length) {
-        const instruction = processInstructions.shift();
+    while (propNodesInstructions.length) {
+        const instruction = propNodesInstructions.shift();
         if (instruction) {
             const { process, token, node } = instruction;
             process(token, node);

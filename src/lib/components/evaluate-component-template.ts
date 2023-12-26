@@ -1,9 +1,7 @@
 /** @format */
 
-import { ComponentProps, ReadonlyGrain } from '../../types';
-import { NørdDirective } from '../../types/nord-directive';
+import { Directive, ReadonlyGrain } from '../../types';
 import { ProcessorProp } from '../../types/processor-prop';
-import { TemplateDirective } from '../../types/template-directive';
 import { ToStringTypes } from '../../types/to-string-types';
 import { emptyNodeList } from '../../utils/empty-node-list';
 import { øGetProcessorByPropType } from './get-processor-by-prop-type';
@@ -17,7 +15,7 @@ export const øEvaluateComponentTemplate =
     (componentId: string) =>
     (
         templateFragments: TemplateStringsArray,
-        ...injects: (ReadonlyGrain<any> | NørdDirective | ToStringTypes | NodeList | ComponentProps)[]
+        ...injects: (ReadonlyGrain<any> | Directive<Text | Element> | ToStringTypes | NodeList)[]
     ): NodeList => {
         const props: ProcessorProp[] = [];
         const evaluationResults = templateFragments.flatMap((fragment, index) => {
