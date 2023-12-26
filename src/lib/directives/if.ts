@@ -32,16 +32,18 @@ export const If = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList):
     // Return the created template directive
     return createDirective((node: Text) => {
         const initialValue: T = isGrain(value) ? value() : value;
-        const [template] = [...run(initialValue)];
-        node.replaceWith(...[template]);
+        const template = [...run(initialValue)];
+        node.replaceWith(...template);
 
         if (isGrain(value)) {
-            let currentElement: Node | undefined = template;
+            let currentElements: Node[] | undefined = template;
+            const [root] = [...new Set(currentElements.map((el) => el.parentElement))];
             // Subscribe to the grain and equalize the nodeLists whenever the value changes
             value.subscribe((value: T) => {
-                const [replace] = [...run(value)];
-                currentElement?.parentElement?.replaceChild(replace, currentElement);
-                currentElement = replace;
+                const replace = [...run(value)];
+                currentElements?.forEach((element) => element.parentElement?.removeChild(element));
+                root?.append(...replace);
+                currentElements = replace;
             });
         }
     });
