@@ -5,6 +5,7 @@ import { Component } from '../types/component';
 import { NordInit } from '../types/nord-init';
 import { context } from './components/component-ctx';
 import { createNamespace } from './create-namespace';
+import { lifecycleManager } from './lifecycle-manager';
 
 /**
  * Renders a component to the specified target element in the DOM.
@@ -58,6 +59,9 @@ export const render = <Props extends ComponentProps = {}>(component: Component<P
 
     // Create the global namespace (If not already created)
     createNamespace(context<any>());
+
+    // Setup the lifecycle management
+    lifecycleManager.observe(target);
 
     target.append(...component(options.hydrate ?? {}));
 };
