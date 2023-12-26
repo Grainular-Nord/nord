@@ -1,10 +1,47 @@
 /** @format */
 
 import { Directive, ReadonlyGrain } from '../../types';
-import { Error } from '../../types/enums/error.enum';
+import { isElement } from '../../utils/is-element';
 import { isGrain } from '../../utils/is-grain';
-import { øEqualizeNodeLists } from '../components/equalize-node-list';
 import { createDirective } from './create-directive';
+
+const øEqualizeNodeLists = (root: Element, list: Node[]) => {
+    // Normalize the root node
+    root.normalize();
+
+    // for each node, check if there is a corresponding entry in the new list
+    [...root.children].forEach((node, index) => {
+        let equalNode;
+        // Check if comparison should be done by key
+        // If the current element has a key, we try to find the list element with the same key
+        const nodeKey = node.getAttribute('key');
+        if (nodeKey) {
+            equalNode = list.find((node) => node instanceof Element && node.getAttribute('key') === nodeKey);
+        } else {
+            // If no keys are provided, elements are checked and replaced by index;
+            equalNode = list[index];
+        }
+
+        // If the list is to short, remove the keys at index
+        if (!equalNode) {
+            root.removeChild(node);
+            return;
+        }
+
+        if (isElement(equalNode)) {
+            // If the keys are not equal, replace them
+            if (equalNode.innerHTML !== node.innerHTML) {
+                root.replaceChild(equalNode, node);
+                return;
+            }
+        }
+    });
+
+    // If the new list is longer then the current child list, add elements that are after the index
+    if (list.length > root.childElementCount) {
+        root.append(...list.slice(root.childElementCount));
+    }
+};
 
 /**
  * Creates a template directive for rendering each item in an array or a reactive grain.
@@ -50,8 +87,7 @@ export const ForEach = <T>(
         if (isGrain(value)) {
             // Get the common ancestor for all nodes. If there is more then one ancestor, something went very wrong
             const [root, ...rest] = [...new Set(list.map((node) => node.parentElement))];
-            console.log({ list, root, rest });
-            if (rest.length !== 0 || !root) throw new TypeError(Error.MULTIPLE_ROOTS, { cause: 'NodeListComparison' });
+            if (rest.length !== 0 || !root) throw new Error('[Nørd:Directive]: Directive has multiple roots.');
 
             // Subscribe to the grain and equalize the nodeLists whenever the value changes
             value.subscribe((value: T[]) => {

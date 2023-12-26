@@ -29,6 +29,28 @@ import { Subscriber } from './subscriber';
  */
 
 export type ReadonlyGrain<V> = {
+    /**
+     * The current value of the Grain.
+     *
+     * @template V - The type of the value held by the Grain.
+     * @type {V}
+     */
     (): V;
+    /**
+     * Function to get the current value of the Grain in a subscription. Every time the value
+     * is updated, the subscriber will be notified.
+     *
+     * @function
+     * @returns {V} The current value of the Grain.
+     */
     subscribe: (subscriber: Subscriber<V>, seed?: boolean) => () => void;
+    /**
+     * Flag indicating that the function is a `grain`.
+     *
+     * @type {true}
+     * @readonly
+     * @memberof ReadonlyGrain
+     * @instance
+     */
+    readonly isGrain: true;
 };

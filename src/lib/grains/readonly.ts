@@ -1,7 +1,6 @@
 /** @format */
 
 import { Grain, ReadonlyGrain, Subscriber } from '../../types';
-import { Error } from '../../types/enums/error.enum';
 import { isGrain } from '../../utils/is-grain';
 import { øInjectGrainMetaData } from './inject-grain-metadata';
 
@@ -29,7 +28,7 @@ import { øInjectGrainMetaData } from './inject-grain-metadata';
 
 export const readonly = <V>(grain: Grain<V>): ReadonlyGrain<V> => {
     if (!isGrain(grain)) {
-        throw new TypeError(Error.NOT_A_GRAIN);
+        throw new Error('[Nørd:Grain]: Value is not a Grain');
     }
 
     const _grain = () => grain();
@@ -40,5 +39,5 @@ export const readonly = <V>(grain: Grain<V>): ReadonlyGrain<V> => {
     // Inject Metadata
     øInjectGrainMetaData(_grain);
 
-    return _grain;
+    return _grain as ReadonlyGrain<V>;
 };

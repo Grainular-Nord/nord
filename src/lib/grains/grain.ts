@@ -85,5 +85,5 @@ export const grain = <V = unknown>(value: V, comparisonFunc?: ComparisonFunc<V>)
     _grain.subscribe = subscribe;
     _grain.update = update;
 
-    return _grain;
+    return _grain as Grain<V>;
 };

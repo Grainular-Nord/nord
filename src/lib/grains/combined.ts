@@ -1,7 +1,6 @@
 /** @format */
 
 import { ReadonlyGrain } from '../../types';
-import { Error } from '../../types/enums/error.enum';
 import { GrainValue } from '../../types/grain-value';
 import { grain } from './grain';
 import { readonly } from './readonly';
@@ -22,8 +21,6 @@ import { readonly } from './readonly';
  *
  * @returns {[ReadonlyGrain<R>, () => void]} A tuple containing the derived ReadonlyGrain and a
  * function to unsubscribe the derived grain from all dependent grains' changes.
- *
- * @throws {TypeError} Throws an error if an attempt is made to destroy an already destroyed derived grain.
  *
  * @example
  * // Example of creating a combined ReadonlyGrain
@@ -53,8 +50,6 @@ export const combined = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGr
             destroyed = true;
             return;
         }
-
-        throw new TypeError(Error.DERIVED_ALREADY_DESTROYED);
     };
 
     deps.forEach((grain) => {

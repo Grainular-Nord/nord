@@ -2,7 +2,6 @@
 
 import { ReadonlyGrain } from '../../types';
 import { Directive } from '../../types/directive';
-import { Error } from '../../types/enums/error.enum';
 import { PropType } from '../../types/enums/prop-type.enum';
 import { PropProcessor } from '../../types/prop-processor';
 import { ToStringTypes } from '../../types/to-string-types';
@@ -11,7 +10,7 @@ import { getStringValue } from '../../utils/get-string-value';
 import { isElement } from '../../utils/is-element';
 import { isText } from '../../utils/is-text';
 
-const __øProcessors = new Map<PropType, PropProcessor>([
+const øProcessors = new Map<PropType, PropProcessor>([
     // Primitive parser
     [
         PropType.PRIMITIVE,
@@ -44,29 +43,32 @@ const __øProcessors = new Map<PropType, PropProcessor>([
     [
         PropType.GRAIN,
         (node, token, value: ReadonlyGrain<any>) => {
-            /**
-             * @todo -> Set up unsubscriber and set up a way to unsubscribe if the template is destroyed
-             */
-
             // If the node is a text node, the text content is simply replaced without further processing,
             // after stringifying it
             if (isText(node)) {
                 // set up the subscription of the grain
-                value.subscribe((val) => {
+                const unsubscribe = value.subscribe((val) => {
+                    if (!node.isConnected) {
+                        unsubscribe();
+                    }
+
                     node.textContent = val;
                 }, true);
             }
 
-            // If the node is a Element, the value exists in an attribute as value.
-            /** @todo -> In theory, we could check if a string value pair or object is passed in the grain
-             * and create attributes accordingly. Not in the scope here
+            /**
+             * If the node is a Element, the value exists in an attribute as value.
              */
             if (isElement(node)) {
                 const attrName = getAttributeNameForValue(node, token);
                 if (attrName) {
                     // If a attribute was found, that contains the grain value as token,
                     // set up the subscription
-                    value.subscribe((val) => {
+                    const unsubscribe = value.subscribe((val) => {
+                        if (!node.isConnected) {
+                            unsubscribe();
+                        }
+
                         node.setAttribute(attrName, val);
                     }, true);
                 }
@@ -79,6 +81,12 @@ const __øProcessors = new Map<PropType, PropProcessor>([
         (node, token, value: Directive<Text | Element>) => {
             // Directives are given full control over the node.
             value(node);
+
+            if (node.isConnected && node instanceof Element) {
+                if (node.hasAttribute(token)) {
+                    node.removeAttribute(token);
+                }
+            }
         },
     ],
     // NodeList parser
@@ -91,16 +99,16 @@ const __øProcessors = new Map<PropType, PropProcessor>([
 
             // NodeLits should only be added to elements as Text.
             if (isElement(node)) {
-                throw new TypeError(Error.NODE_LIST_IN_TAG, { cause: value });
+                throw new Error('[Nørd:Component]: Node List used inside a html tag.');
             }
         },
     ],
 ]);
 
 export const øGetProcessorByPropType = (type: PropType) => {
-    let processor = __øProcessors.get(PropType.PRIMITIVE);
-    if (__øProcessors.has(type)) {
-        processor = __øProcessors.get(type);
+    let processor = øProcessors.get(PropType.PRIMITIVE);
+    if (øProcessors.has(type)) {
+        processor = øProcessors.get(type);
     }
 
     if (processor) {

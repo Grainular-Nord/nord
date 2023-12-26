@@ -2,10 +2,10 @@
 
 import { ComponentProps } from '../types';
 import { Component } from '../types/component';
-import { Error } from '../types/enums/error.enum';
 import { NordInit } from '../types/nord-init';
 import { context } from './components/component-ctx';
 import { createNamespace } from './create-namespace';
+import { lifecycleManager } from './lifecycle-manager';
 
 /**
  * Renders a component to the specified target element in the DOM.
@@ -47,16 +47,21 @@ import { createNamespace } from './create-namespace';
 
 export const render = <Props extends ComponentProps = {}>(component: Component<Props>, options: NordInit<Props>) => {
     if (!component) {
-        throw new TypeError(Error.NO_COMPONENT_PROVIDED);
+        throw new Error('[Nørd:Render]: "options.target" is "undefined" or "null". Expected an instance of "Element".');
     }
 
     const { target } = options;
     if (!target) {
-        throw new TypeError(Error.TARGET_NOT_FOUND);
+        throw new Error(
+            '[Nørd:Render]: Component is "undefined" or "null". Pass a Nord Component to render it to the DOM".'
+        );
     }
 
     // Create the global namespace (If not already created)
     createNamespace(context<any>());
+
+    // Setup the lifecycle management
+    lifecycleManager.observe(target);
 
     target.append(...component(options.hydrate ?? {}));
 };
