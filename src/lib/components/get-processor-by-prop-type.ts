@@ -1,7 +1,7 @@
 /** @format */
 
 import { ReadonlyGrain } from '../../types';
-import { DirectiveHandler } from '../../types/directive-handler';
+import { Directive } from '../../types/directive';
 import { Error } from '../../types/enums/error.enum';
 import { PropType } from '../../types/enums/prop-type.enum';
 import { PropProcessor } from '../../types/prop-processor';
@@ -73,46 +73,12 @@ const __øProcessors = new Map<PropType, PropProcessor>([
             }
         },
     ],
-    // Element directive Parser
+    // Directive parser
     [
-        PropType.ELEMENT_DIRECTIVE,
-        (node, token, value: Record<string, any>) => {
-            // Directives should only be added to elements as attributes.
-            if (isText(node)) {
-                throw new TypeError(Error.ELEMENT_DIRECTIVE_ON_TEXT, { cause: value });
-            }
-
-            if (isElement(node) && Object.keys(value).length === 1) {
-                // the way directives work, we can select the attribute directly and remove it
-                node.removeAttribute(token);
-                // For each directive passed (should be 1), execute the directive from the global directive dict
-                Object.entries(value).forEach(([name, handler]) => {
-                    const directive = window.$$nord.directives.get(name) as DirectiveHandler<Element> | undefined;
-                    if (!directive) throw new TypeError(Error.DIRECTIVE_NOT_FOUND, { cause: name });
-                    directive(node, handler);
-                });
-            }
-        },
-    ],
-    // Template directive parser
-    [
-        PropType.TEMPLATE_DIRECTIVE,
-        (node, token, value: Record<string, any>) => {
-            // Directives should only be added to elements as attributes.
-            if (isText(node) && Object.keys(value).length === 1) {
-                // Isolate the node
-
-                Object.entries(value).forEach(([name, handler]) => {
-                    const directive = window.$$nord.directives.get(name) as DirectiveHandler<Text> | undefined;
-                    if (!directive) throw new TypeError(Error.DIRECTIVE_NOT_FOUND, { cause: name });
-                    directive(node, handler);
-                });
-            }
-
-            // Template directives should ne be added to element attributes
-            if (isElement(node)) {
-                throw new TypeError(Error.TEMPLATE_DIRECTIVE_ON_TAG, { cause: value });
-            }
+        PropType.DIRECTIVE,
+        (node, token, value: Directive<Text | Element>) => {
+            // Directives are given full control over the node.
+            value(node);
         },
     ],
     // NodeList parser
@@ -120,8 +86,6 @@ const __øProcessors = new Map<PropType, PropProcessor>([
         PropType.NODE_LIST,
         (node, token, value: NodeList) => {
             if (isText(node)) {
-                // Isolate the token in a single text node
-                // This should enable putting NodeLists into the middle of text
                 node.replaceWith(...value);
             }
 

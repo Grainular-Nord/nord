@@ -1,6 +1,7 @@
 /** @format */
 
-import { NørdDirective } from '../../types/nord-directive';
+import { Directive } from '../../types';
+import { createDirective } from './create-directive';
 
 /**
  * Creates a directive that applies custom logic to a DOM element in a component template.
@@ -10,7 +11,7 @@ import { NørdDirective } from '../../types/nord-directive';
  *   This function is called with the element as its argument, allowing direct manipulation or enhancement
  *   of the element.
  *
- * @returns {NørdDirective} An object representing the created element directive, which can be used
+ * @returns {Directive} An object representing the created element directive, which can be used
  *   within component templates to apply the specified handler to an element.
  *
  * @example
@@ -24,6 +25,6 @@ import { NørdDirective } from '../../types/nord-directive';
  * // e.g., <div ${applyCustomBehavior}></div>
  */
 
-export const Use = (handler: (element: Element) => void): NørdDirective => {
-    return { '@use': handler };
+export const use = (handler: (element: Element) => void): Directive<Element> => {
+    return createDirective(handler);
 };

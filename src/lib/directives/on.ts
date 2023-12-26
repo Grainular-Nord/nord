@@ -1,6 +1,7 @@
 /** @format */
 
-import { NørdDirective } from '../../types/nord-directive';
+import { Directive } from '../../types';
+import { createDirective } from './create-directive';
 
 /**
  * Creates a template directive to add an event listener to an element.
@@ -13,7 +14,7 @@ import { NørdDirective } from '../../types/nord-directive';
  * @param {AddEventListenerOptions} [options] - Optional parameters to customize the behavior
  *   of the event listener, such as `capture`, `once`, and `passive`.
  *
- * @returns {NørdDirective} An object representing the created element directive, which can be used
+ * @returns {Directive} An object representing the created element directive, which can be used
  *   to attach the specified event listener to an element in a template.
  *
  * @example *
@@ -21,15 +22,13 @@ import { NørdDirective } from '../../types/nord-directive';
  * // e.g., <button ${On('click', (ev) => console.log({ev}))}>Click me</button>
  */
 
-export const On = (
+export const on = (
     event: keyof HTMLElementEventMap,
     listener: (event: Event) => void,
     options?: AddEventListenerOptions
-): NørdDirective => {
+): Directive<Element> => {
     // Return the created template directive
-    const eventFunc = (element: Element) => {
+    return createDirective((element: Element) => {
         element.addEventListener(event, (ev) => listener(ev), options);
-    };
-
-    return { '@event': eventFunc };
+    });
 };

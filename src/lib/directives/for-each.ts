@@ -1,10 +1,10 @@
 /** @format */
 
-import { ReadonlyGrain } from '../../types';
+import { Directive, ReadonlyGrain } from '../../types';
 import { Error } from '../../types/enums/error.enum';
-import { NørdDirective } from '../../types/nord-directive';
 import { isGrain } from '../../utils/is-grain';
 import { øEqualizeNodeLists } from '../components/equalize-node-list';
+import { createDirective } from './create-directive';
 
 /**
  * Creates a template directive for rendering each item in an array or a reactive grain.
@@ -18,7 +18,7 @@ import { øEqualizeNodeLists } from '../components/equalize-node-list';
  * @param {(elem: T, index: number) => NodeList} run - A function that returns a NodeList for each item in the array.
  *   This function is called for each item in the array, receiving the item and its index as arguments.
  *
- * @returns {NørdDirective} An object representing the created template directive. This directive can be used within
+ * @returns {Directive} An object representing the created template directive. This directive can be used within
  *   component templates to render a list of items based on the provided array or grain.
  *
  * @example
@@ -34,8 +34,8 @@ import { øEqualizeNodeLists } from '../components/equalize-node-list';
 export const ForEach = <T>(
     value: T[] | ReadonlyGrain<T[]>,
     run: (elem: T, index: number) => NodeList
-): NørdDirective => {
-    const forEach = (node: Text) => {
+): Directive<Text> => {
+    return createDirective((node: Text) => {
         // Render the initial list
         const initialValue: T[] = isGrain(value) ? value() : value;
         let list = initialValue.flatMap((value, index) => [...run(value, index)]);
@@ -60,8 +60,5 @@ export const ForEach = <T>(
             });
             return;
         }
-    };
-
-    // Return the created template directive
-    return { '&forEach': forEach };
+    });
 };
