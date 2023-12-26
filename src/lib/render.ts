@@ -1,12 +1,11 @@
 /** @format */
 
+import { ComponentProps } from '../types';
 import { Component } from '../types/component';
 import { Error } from '../types/enums/error.enum';
 import { NordInit } from '../types/nord-init';
 import { context } from './components/component-ctx';
 import { createNamespace } from './create-namespace';
-import { directives } from './directives/directives';
-import { registerDirective } from './directives/register-directive';
 
 /**
  * Renders a component to the specified target element in the DOM.
@@ -17,7 +16,7 @@ import { registerDirective } from './directives/register-directive';
  * @param {NordInit} options - An object containing options for rendering the component.
  *   - `target`: The DOM element where the component should be rendered. This is mandatory.
  *   - `hydrate`: Optional property to provide initial state or properties for hydration.
- *   - `directives`: An optional array of custom directives to be added to the global namespace.
+ *  They are based on the props that the initial component requires
  *
  * @throws {TypeError} Throws an error if no component is provided or if the target is not found.
  *
@@ -46,7 +45,7 @@ import { registerDirective } from './directives/register-directive';
  *  });
  */
 
-export const render = (component: Component, options: NordInit) => {
+export const render = <Props extends ComponentProps = {}>(component: Component<Props>, options: NordInit<Props>) => {
     if (!component) {
         throw new TypeError(Error.NO_COMPONENT_PROVIDED);
     }
@@ -58,10 +57,6 @@ export const render = (component: Component, options: NordInit) => {
 
     // Create the global namespace (If not already created)
     createNamespace(context<any>());
-
-    // Add custom directives to the global namespace
-    const { directives: customDirectives = [] } = options;
-    [...directives, ...customDirectives].forEach((directive) => registerDirective(directive));
 
     target.append(...component(options.hydrate ?? {}));
 };

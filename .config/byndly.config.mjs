@@ -4,23 +4,21 @@
  * @format
  */
 
-const bootstrap = ({ createComponent, render, grain, derived }) => {
-    const app = createComponent({
-        template: (html, { count }) => {
-            const [doubled] = derived([count], ([count]) => count * 2);
+const bootstrap = ({ createComponent, render, grain, derived, on }) => {
+    const app = createComponent((html, { count }) => {
+        const [doubled] = derived(count, (count) => count * 2);
 
-            return html`
-                <main>
-                    <button ${{ '@click': () => count.update((c) => c + 1) }}>
-                        Count is: ${count}, Doubled is: ${doubled}
-                    </button>
-                </main>
-            `;
-        },
+        return html`
+            <main>
+                <button ${on('click', () => count.update((c) => c + 1))}>
+                    Count is: ${count}, Doubled is: ${doubled}
+                </button>
+            </main>
+        `;
     });
 
     const count = grain(0);
-    render(app, { target: document.querySelector('body'), props: { count } });
+    render(app, { target: document.querySelector('body'), hydrate: { count } });
 };
 
 /**

@@ -1,8 +1,8 @@
 /** @format */
 
-import { ReadonlyGrain } from '../../types';
-import { NørdDirective } from '../../types/nord-directive';
+import { Directive, ReadonlyGrain } from '../../types';
 import { isGrain } from '../../utils/is-grain';
+import { createDirective } from './create-directive';
 
 /**
  * Creates a template directive that conditionally renders content based on the provided value or grain.
@@ -16,7 +16,7 @@ import { isGrain } from '../../utils/is-grain';
  *   This function defines the content to render when the condition (based on the value or grain) is met.
  *   The NodeList must always contain at least one **Element**.
  *
- * @returns {NørdDirective} An object representing the created template directive. This directive can be used within
+ * @returns {Directive} An object representing the created template directive. This directive can be used within
  *   component templates to conditionally render content based on the provided value or grain.
  *
  * @example
@@ -28,9 +28,9 @@ import { isGrain } from '../../utils/is-grain';
  * );}></div>
  */
 
-export const If = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList): NørdDirective => {
+export const If = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList): Directive<Text> => {
     // Return the created template directive
-    const ifFunc = (node: Text) => {
+    return createDirective((node: Text) => {
         const initialValue: T = isGrain(value) ? value() : value;
         const [template] = [...run(initialValue)];
         node.replaceWith(...[template]);
@@ -44,7 +44,5 @@ export const If = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList):
                 currentElement = replace;
             });
         }
-    };
-
-    return { '&if': ifFunc };
+    });
 };

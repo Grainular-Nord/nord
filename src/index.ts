@@ -1,27 +1,16 @@
 /** @format */
-export {
-    grain,
-    readonly,
-    combined,
-    createComponent,
-    render,
-    createElementDirective,
-    createTemplateDirective,
-    ForEach,
-    If,
-    derived,
-    On,
-    Use,
-} from './lib';
+export { grain, derived, combined, readonly } from './lib/grains';
+export { createDirective, on, use, ForEach, If } from './lib/directives';
+export { createComponent, render } from './lib';
+
 export type {
-    Subscriber,
+    ReadonlyGrain,
     Grain,
+    Subscriber,
     Updater,
     ComparisonFunc,
-    ReadonlyGrain,
     Component,
-    ElementDirective,
-    TemplateDirective,
-    ComponentTemplate,
+    Directive,
     NordInit,
+    ComponentTemplate,
 } from './types';

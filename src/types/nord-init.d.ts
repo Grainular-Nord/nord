@@ -1,36 +1,39 @@
 /** @format */
 
 import { ComponentProps } from './component-props';
-import { ElementDirective } from './element-directive';
-import { TemplateDirective } from './template-directive';
 
 /**
- * This type specifies the configuration options necessary for rendering a component to the DOM.
+ * Represents the initialization options for rendering a component to the DOM.
  *
- * @property {Element | null} target - The DOM element where the component should be rendered.
- *   This is a mandatory field. If null, an error will be thrown.
- * @property {ComponentProps} [hydrate] - Optional initial state or properties for hydrating the component.
- *   This is useful for server-side rendering scenarios or for initializing the component with a specific state.
- * @property {(ElementDirective | TemplateDirective)[]} [directives] - An optional array of custom directives
- *   that can be applied to elements or templates within the component. Directives provide a way to extend
- *   the behavior of elements or templates with custom logic.
+ * @param {ComponentProps} HydrationProps - The type of properties used for initial hydration of the component.
+ *
+ * @property {Element | null} target - The DOM element where the component should be rendered. This is mandatory.
+ * @property {HydrationProps} [hydrate] - Optional properties used for initial hydration of the component. These properties
+ *     are passed to the component when it is first rendered.
+ *
+ * @template HydrationProps - The type of properties used for initial hydration of the component.
  *
  * @example
- * // Example of using NordInit for rendering a component
- * render(app, // component
- *  {
- *   target: document.querySelector('#app'),
- *   hydrate: { someProp: 'someValue' },
- *   directives: [myCustomDirective]
- *  }
- * );
+ * // Example of rendering a component to the DOM with initial hydration
+ * import { createComponent, render } from "@nord/core";
  *
- * // This configuration will render the component inside the '#app' element, hydrate it with
- * // initial properties, and apply any custom directives specified.
+ * // Create a component
+ * const app = createComponent({
+ *     template: (html, { count }) => html`
+ *         <main>
+ *             <button ${on('click', () => count.update((c) => c + 1))}>
+ *                 Count is: ${count}
+ *             </button>
+ *         </main>
+ *     `,
+ * });
+ *
+ *
+ * // Render the component to the DOM with initial hydration
+ * render(app, { target: document.querySelector('#app'), hydrate: {count: grain(0)} });
  */
 
-export type NordInit = {
+export type NordInit<HydrationProps extends ComponentProps = {}> = {
     target: Element | null;
-    hydrate?: ComponentProps;
-    directives?: (ElementDirective | TemplateDirective)[];
+    hydrate?: HydrationProps;
 };

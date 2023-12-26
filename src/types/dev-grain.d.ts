@@ -2,4 +2,4 @@
 
 import { Grain } from './grain';
 
-export type DevGrain = Grain<any> & { isGrain: true };
+export type DevGrain = Grain<any> & { readonly isGrain: true };
