@@ -5,3 +5,4 @@ export { on } from './on';
 export { use } from './use';
 export { If } from './if';
 export { ForEach } from './for-each';
+export { ref } from './ref';
