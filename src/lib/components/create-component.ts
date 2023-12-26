@@ -9,6 +9,7 @@ import { isFunction } from '../../utils/is-function';
 import { øCreateIdentifier } from './create-identifier';
 import { øEvaluateComponentTemplate } from './evaluate-component-template';
 import { Component } from '../../types';
+import { lifecycleManager } from '../lifecycle-manager';
 
 /**
  * Creates a new component with specified lifecycle methods and a template.
@@ -62,10 +63,14 @@ export const createComponent = <Props extends ComponentProps = {}, Ctx extends R
         const evaluatedTemplate = template(øEvaluateComponentTemplate(componentId), _props);
 
         // If after the template evaluation a onMount function is set and no longer null, execute the onMount function.
-        // This happens basically after the first render, before the component is added to the component tree.
-        if (onMount && isFunction(onMount)) onMount();
+        if (onMount && isFunction(onMount)) {
+            lifecycleManager.trackOnCreate({ nodesToObserve: [...evaluatedTemplate], handler: onMount });
+        }
 
-        /** @todo -> onDestroy should be created using a mutation observer */
+        // If onDestroy was set, the function is added to the manager together with the nodes
+        if (onDestroy && isFunction(onDestroy)) {
+            lifecycleManager.trackOnDestroy({ nodesToObserve: [...evaluatedTemplate], handler: onDestroy });
+        }
 
         return evaluatedTemplate;
     };
