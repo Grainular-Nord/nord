@@ -29,6 +29,20 @@ import { Updater } from './updater';
  */
 
 export type Grain<V> = ReadonlyGrain<V> & {
+    /**
+     * Function to set the value of the Grain to a new value.
+     *
+     * @function
+     * @param {V} value - The new value to set.
+     * @returns {void}
+     */
     set: (value: V) => void;
+    /**
+     * Function to update the value of the Grain using an updater function.
+     *
+     * @function
+     * @param {Updater<V>} updater - The updater function that computes the new value.
+     * @returns {void}
+     */
     update: (updater: Updater<V>) => void;
 };

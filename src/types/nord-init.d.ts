@@ -34,6 +34,17 @@ import { ComponentProps } from './component-props';
  */
 
 export type NordInit<HydrationProps extends ComponentProps = {}> = {
+    /**
+     * The target DOM element where the component should be rendered.
+     *
+     * @type {Element | null}
+     */
     target: Element | null;
+    /**
+     * Optional properties for hydrating the component.
+     *
+     * @template HydrationProps - The type of properties used for component hydration.
+     * @type { HydrationProps }
+     */
     hydrate?: HydrationProps;
 };
