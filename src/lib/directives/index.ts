@@ -7,3 +7,4 @@ export { If } from './if';
 export { ForEach } from './for-each';
 export { ref } from './ref';
 export { reactive as $ } from './reactive';
+export { unsafeHtml } from './unsafe-html';
