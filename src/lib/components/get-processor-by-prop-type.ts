@@ -17,8 +17,8 @@ const øProcessors = new Map<PropType, PropProcessor>([
         (node, token, value: ToStringTypes) => {
             // If the element is a text node, the text content is simply replaced without further processing,
             // after stringifying it
-            if (isText(node)) {
-                node.textContent = (node.textContent ?? token).replace(token, getStringValue(value));
+            if (isText(node) && node.textContent) {
+                node.textContent = node.textContent.replace(token, getStringValue(value));
             }
 
             /**
