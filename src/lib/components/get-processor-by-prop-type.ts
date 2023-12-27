@@ -9,6 +9,7 @@ import { getAttributeNameForValue } from '../../utils/get-attribute-name-for-val
 import { getStringValue } from '../../utils/get-string-value';
 import { isElement } from '../../utils/is-element';
 import { isText } from '../../utils/is-text';
+import { reactive } from '../directives/reactive';
 
 const øProcessors = new Map<PropType, PropProcessor>([
     // Primitive parser
@@ -47,36 +48,8 @@ const øProcessors = new Map<PropType, PropProcessor>([
     [
         PropType.GRAIN,
         (node, token, value: ReadonlyGrain<any>) => {
-            // If the node is a text node, the text content is simply replaced without further processing,
-            // after stringifying it
-            if (isText(node)) {
-                // set up the subscription of the grain
-                const unsubscribe = value.subscribe((val) => {
-                    if (!node.isConnected) {
-                        unsubscribe();
-                    }
-
-                    node.textContent = val;
-                }, true);
-            }
-
-            /**
-             * If the node is a Element, the value exists in an attribute as value.
-             */
-            if (isElement(node)) {
-                const attrName = getAttributeNameForValue(node, token);
-                if (attrName) {
-                    // If a attribute was found, that contains the grain value as token,
-                    // set up the subscription
-                    const unsubscribe = value.subscribe((val) => {
-                        if (!node.isConnected) {
-                            unsubscribe();
-                        }
-
-                        node.setAttribute(attrName, val);
-                    }, true);
-                }
-            }
+            // Grains are preferentially treated but in the end are just added as a reactive directive
+            reactive(value)(node, token);
         },
     ],
     // Directive parser
@@ -84,7 +57,7 @@ const øProcessors = new Map<PropType, PropProcessor>([
         PropType.DIRECTIVE,
         (node, token, value: Directive<Text | Element>) => {
             // Directives are given full control over the node.
-            value(node);
+            value(node, token);
 
             if (node.isConnected && node instanceof Element) {
                 if (node.hasAttribute(token)) {
