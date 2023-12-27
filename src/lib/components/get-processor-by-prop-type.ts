@@ -36,6 +36,10 @@ const øProcessors = new Map<PropType, PropProcessor>([
                 if (attrName) {
                     node.setAttribute(attrName, getStringValue(value));
                 }
+
+                if (node.hasAttribute(token)) {
+                    node.removeAttribute(token);
+                }
             }
         },
     ],
