@@ -2,7 +2,6 @@
 
 import { Grain, ReadonlyGrain, Subscriber } from '../../types';
 import { isGrain } from '../../utils/is-grain';
-import { øInjectGrainMetaData } from './inject-grain-metadata';
 
 /**
  * Converts a regular Grain into a ReadonlyGrain.
@@ -35,9 +34,6 @@ export const readonly = <V>(grain: Grain<V>): ReadonlyGrain<V> => {
     _grain.subscribe = (subscriber: Subscriber<V>, seed = true) => {
         return grain.subscribe(subscriber, seed);
     };
-
-    // Inject Metadata
-    øInjectGrainMetaData(_grain);
 
     return _grain as ReadonlyGrain<V>;
 };

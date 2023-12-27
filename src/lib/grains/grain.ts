@@ -1,7 +1,6 @@
 /** @format */
 
 import { ComparisonFunc, Grain, Subscriber, Updater } from '../../types';
-import { øInjectGrainMetaData } from './inject-grain-metadata';
 
 /**
  * Creates a reactive grain, the primary building block in the framework.
@@ -46,9 +45,6 @@ export const grain = <V = unknown>(value: V, comparisonFunc?: ComparisonFunc<V>)
     let _val: V = value;
     const compareForEquality = comparisonFunc ?? ((prev: V, curr: V) => prev !== curr);
     const _grain = () => _val;
-
-    // inject meta data
-    øInjectGrainMetaData(_grain);
 
     const subscribers: Subscriber<V>[] = [];
     const notifySubscribers = () => {
