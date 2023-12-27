@@ -32,7 +32,7 @@ export const readonly = <V>(grain: Grain<V>): ReadonlyGrain<V> => {
     }
 
     const _grain = () => grain();
-    _grain.subscribe = (subscriber: Subscriber<V>, seed = false) => {
+    _grain.subscribe = (subscriber: Subscriber<V>, seed = true) => {
         return grain.subscribe(subscriber, seed);
     };
 

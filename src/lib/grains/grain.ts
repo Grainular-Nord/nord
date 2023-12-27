@@ -66,7 +66,7 @@ export const grain = <V = unknown>(value: V, comparisonFunc?: ComparisonFunc<V>)
         set(updater(_val));
     };
 
-    const subscribe = (subscriber: Subscriber<V>, seed: boolean = false) => {
+    const subscribe = (subscriber: Subscriber<V>, seed: boolean = true) => {
         subscribers.push(subscriber);
 
         if (seed) {
