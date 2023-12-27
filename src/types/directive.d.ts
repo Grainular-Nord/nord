@@ -16,9 +16,10 @@ export type Directive<NodeType extends Text | Element> = {
      *
      * @callback Directive
      * @param {NodeType} node - The DOM node to which the directive is applied.
+     * @param {NodeType} node - The token used to mark the element.
      * @returns {void} This function does not return a value.
      */
-    (node: NodeType): void;
+    (node: NodeType, token: string): void;
 
     /**
      * A flag indicating that a function is a directive.

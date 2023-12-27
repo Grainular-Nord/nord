@@ -3,10 +3,10 @@
 import { Directive } from '../../types/directive';
 
 export const createDirective = <NodeType extends Text | Element>(
-    handler: (node: NodeType) => void
+    handler: (node: NodeType, token: string) => void
 ): Directive<NodeType> => {
-    const directive = (node: NodeType) => {
-        handler(node);
+    const directive = (node: NodeType, token: string) => {
+        handler(node, token);
     };
 
     Object.defineProperty(directive, 'isDirective', {

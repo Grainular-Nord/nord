@@ -9,11 +9,13 @@ import { LifecycleFunc } from './lifecycle-func';
  * including lifecycle hooks and children elements.
  *
  * @template P - The base type for the component's properties, extending from ComponentProps.
+ * @template Ctx - The application ctx the application has access to.
  *
  * This type augments the base properties with the following additional properties:
  * - `$onMount`: A LifecycleFunc for registering an action to be performed when the component mounts.
  * - `$onDestroy`: A LifecycleFunc for registering an action to be performed when the component is destroyed.
  * - `$children`: A NodeList representing any children elements passed to the component.
+ * - `$ctx`: The application context object
  *
  * TypedProps are typically used within the context of a component's function to access both
  * the standard props and these additional framework-specific properties.
@@ -39,8 +41,30 @@ import { LifecycleFunc } from './lifecycle-func';
  */
 
 export type TypedProps<P extends ComponentProps, Ctx extends Record<PropertyKey, unknown> = {}> = P & {
+    /**
+     * A function to be executed when the component is mounted.
+     *
+     * @type {LifecycleFunc}
+     */
     $onMount: LifecycleFunc;
+    /**
+     * A function to be executed when the component is unmounted.
+     *
+     * @type {LifecycleFunc}
+     */
     $onDestroy: LifecycleFunc;
+    /**
+     * A NodeList representing the children of the component.
+     *
+     * @type {NodeList}
+     */
     $children: NodeList;
+
+    /**
+     * A context object for managing and sharing data within the component.
+     *
+     * @template Ctx - The context type associated with the component.
+     * @type {Context<Ctx>}
+     */
     $ctx: Context<Ctx>;
 };
