@@ -44,13 +44,4 @@ export type ReadonlyGrain<V> = {
      * @returns {V} The current value of the Grain.
      */
     subscribe: (subscriber: Subscriber<V>, seed?: boolean) => () => void;
-    /**
-     * Flag indicating that the function is a `grain`.
-     *
-     * @type {true}
-     * @readonly
-     * @memberof ReadonlyGrain
-     * @instance
-     */
-    readonly isGrain: true;
 };

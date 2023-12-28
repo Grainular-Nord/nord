@@ -25,10 +25,11 @@ export const øHydrate = (componentId: string, nodes: Document, ...props: Proces
         if (node instanceof Element) {
             // check if the element has an attribute that is contained in the tokens set
             const attributes = getElementAttributeEntries(node);
-            if ([...tokens].some((token) => attributes.includes(token))) {
+
+            if ([...tokens].some((token) => attributes.some((attr) => attr.includes(token)))) {
                 // get all props that are included as attribute on the node
                 props
-                    .filter((prop) => attributes.includes(prop.token))
+                    .filter((prop) => attributes.some((attrString) => attrString.includes(prop.token)))
                     // Iterate over the matches and execute the prop processor, passing the node as argument
                     .forEach((prop) => propNodesInstructions.push({ node, ...prop }));
             }
