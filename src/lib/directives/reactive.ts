@@ -55,6 +55,7 @@ export const reactive = (value: Observable) => {
          */
         if (isElement(node)) {
             const attrName = getAttributeNameForValue(node, token);
+            let curAttrValue = token;
             if (attrName) {
                 // If a attribute was found, that contains the grain value as token,
                 // set up the subscription
@@ -63,7 +64,11 @@ export const reactive = (value: Observable) => {
                         unsubscribe();
                     }
 
-                    node.setAttribute(attrName, getStringValue(val));
+                    // Enable partial replacing inside of attribute nodes
+                    const updatedValue = node.getAttribute(attrName)!.replace(curAttrValue, getStringValue(val));
+                    curAttrValue = val;
+
+                    node.setAttribute(attrName, updatedValue);
                 });
             }
 

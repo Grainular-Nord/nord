@@ -10,6 +10,8 @@ import { øCreateIdentifier } from './create-identifier';
 import { øEvaluateComponentTemplate } from './evaluate-component-template';
 import { Component } from '../../types';
 import { lifecycleManager } from '../lifecycle-manager';
+import { CssParserFunc } from '../../types/css-parser-func';
+import { øEvaluateComponentStyle } from './evaluate-component-style';
 
 /**
  * Creates a new component with specified lifecycle methods and a template.
@@ -73,6 +75,10 @@ export const createComponent = <Props extends ComponentProps = {}, Ctx extends R
         }
 
         return evaluatedTemplate;
+    };
+
+    component.setStyle = (action: (parser: CssParserFunc) => void) => {
+        action(øEvaluateComponentStyle(componentId));
     };
 
     // Add id to the prototype of the component
