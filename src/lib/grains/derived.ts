@@ -1,7 +1,6 @@
 /** @format */
 
-import { Subscriber } from '../../../dist/types';
-import { ReadonlyGrain } from '../../types';
+import { ReadonlyGrain, Subscriber } from '../../types';
 import { grain } from './grain';
 import { readonly } from './readonly';
 /**

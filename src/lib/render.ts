@@ -63,5 +63,5 @@ export const render = <Props extends ComponentProps = {}>(component: Component<P
     // Setup the lifecycle management
     lifecycleManager.observe(target);
 
-    target.append(...component(options.hydrate ?? {}));
+    target.append(...component(options.hydrate ?? ({} as Props)));
 };
