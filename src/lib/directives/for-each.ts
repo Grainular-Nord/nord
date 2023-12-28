@@ -62,13 +62,13 @@ const øEqualizeNodeLists = (root: Element, list: Node[]) => {
  * // Example of creating a list rendering directive using ForEach
  *
  * // The returned directive can be used in component templates to render a list of items.
- * // e.g., <ul>${ForEach(todos, (todo, index) =>
+ * <ul>${forEach(todos, (todo, index) =>
  *   html`<li key="${index}">${todo}</li>`
  * );}</ul>
  *
  */
 
-export const ForEach = <T>(
+export const forEach = <T>(
     value: T[] | ReadonlyGrain<T[]>,
     run: (elem: T, index: number) => NodeList
 ): Directive<Text> => {
