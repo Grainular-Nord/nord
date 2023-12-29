@@ -10,6 +10,7 @@ import { getStringValue } from '../../utils/get-string-value';
 import { isElement } from '../../utils/is-element';
 import { isText } from '../../utils/is-text';
 import { reactive } from '../directives/reactive';
+import { isolateAttributeNodes } from './isolate-attribute-nodes';
 
 const øProcessors = new Map<PropType, PropProcessor>([
     // Primitive parser
@@ -34,8 +35,17 @@ const øProcessors = new Map<PropType, PropProcessor>([
                 }
 
                 const attrName = getAttributeNameForValue(node, token);
+                isolateAttributeNodes(node, attrName, token);
                 if (attrName) {
-                    node.setAttribute(attrName, getStringValue(value));
+                    let nodeIndex = -1;
+                    if (node.attributeMap && node.attributeMap.get(attrName)) {
+                        nodeIndex = node.attributeMap.get(attrName)?.indexOf(token) ?? -1;
+                    }
+
+                    const nodeValues = node.attributeMap!.get(attrName)!;
+                    nodeValues[nodeIndex] = getStringValue(value);
+
+                    node.setAttribute(attrName, nodeValues.join(''));
                 }
 
                 if (node.hasAttribute(token)) {
