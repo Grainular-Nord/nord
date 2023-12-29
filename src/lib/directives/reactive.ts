@@ -5,6 +5,7 @@ import { getAttributeNameForValue } from '../../utils/get-attribute-name-for-val
 import { getStringValue } from '../../utils/get-string-value';
 import { isElement } from '../../utils/is-element';
 import { isText } from '../../utils/is-text';
+import { isolateAttributeNodes } from '../components/isolate-attribute-nodes';
 import { createDirective } from './create-directive';
 
 /**
@@ -55,20 +56,27 @@ export const reactive = (value: Observable) => {
          */
         if (isElement(node)) {
             const attrName = getAttributeNameForValue(node, token);
-            let curAttrValue = token;
+            isolateAttributeNodes(node, attrName, token);
+
+            let nodeIndex = -1;
+            if (node.attributeMap && node.attributeMap.get(attrName)) {
+                nodeIndex = node.attributeMap.get(attrName)?.indexOf(token) ?? -1;
+            }
+
             if (attrName) {
                 // If a attribute was found, that contains the grain value as token,
                 // set up the subscription
                 const unsubscribe = value.subscribe((val) => {
                     if (!node.isConnected) {
                         unsubscribe();
+                        return;
                     }
 
-                    // Enable partial replacing inside of attribute nodes
-                    const updatedValue = node.getAttribute(attrName)!.replace(curAttrValue, getStringValue(val));
-                    curAttrValue = val;
+                    // replace the found index with the new value;
+                    const nodeValues = node.attributeMap!.get(attrName)!;
+                    nodeValues[nodeIndex] = val;
 
-                    node.setAttribute(attrName, updatedValue);
+                    node.setAttribute(attrName, nodeValues.join(''));
                 });
             }
 
@@ -77,6 +85,7 @@ export const reactive = (value: Observable) => {
                 const unsubscribe = value.subscribe((val) => {
                     if (!node.isConnected) {
                         unsubscribe();
+                        return;
                     }
 
                     const attrNameValue = getStringValue(val);
