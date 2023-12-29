@@ -23,12 +23,12 @@ import { createDirective } from './create-directive';
  * // Example of creating a conditional rendering directive using If
  *
  * // The returned directive can be used in component templates to render content conditionally.
- * // e.g., <div ${If(isLoggedIn, (loggedIn) =>
- *   loggedIn ? html`<span>Logged in!</span>` : html`<span>Logged in!</span>`
+ * // e.g., <div ${when(isLoggedIn, (loggedIn) =>
+ *   loggedIn ? html`<span>Logged in!</span>` : html`<span>Not Logged in!</span>`
  * );}></div>
  */
 
-export const If = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList): Directive<Text> => {
+export const when = <T>(value: T | ReadonlyGrain<T>, run: (value: T) => NodeList): Directive<Text> => {
     // Return the created template directive
     return createDirective((node: Text) => {
         const initialValue: T = isGrain(value) ? value() : value;
