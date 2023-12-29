@@ -44,7 +44,7 @@ export const øHydrate = (componentId: string, nodes: Document, ...props: Proces
 
             // create a new node consisting of all nodes and the isolated nodes
             const nodes = isolateTextNodes(
-                node,
+                node.textContent ?? '',
                 processProps.map(({ token }) => token)
             );
 

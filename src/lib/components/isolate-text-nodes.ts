@@ -1,7 +1,6 @@
 /** @format */
 
-export const isolateTextNodes = (node: Text, tokens: string[]): Text[] => {
-    const textContent = node.textContent;
+export const isolateTextNodes = (textContent: string, tokens: string[]): Text[] => {
     const nodes: Text[] = [];
     let remainingText = textContent ?? '';
 
