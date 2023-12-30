@@ -12,6 +12,7 @@ import { Component } from '../../types';
 import { lifecycleManager } from '../lifecycle-manager';
 import { CssParserFunc } from '../../types/css-parser-func';
 import { øEvaluateComponentStyle } from './evaluate-component-style';
+import { HtmlParserFunc } from '../../types/html-parser-func';
 
 /**
  * Creates a new component with specified lifecycle methods and a template.
@@ -58,8 +59,8 @@ export const createComponent = <Props extends ComponentProps = {}>(
     const componentId = øCreateIdentifier();
 
     // Create the component function
-    const component = (props: Props, children?: NodeList) => {
-        const $children = children ?? emptyNodeList();
+    const component = (props: Props, children?: (parser: HtmlParserFunc) => NodeList) => {
+        const $children = children?.(øEvaluateComponentTemplate(componentId)) ?? emptyNodeList();
         const _props: TypedProps<Props> = { ...props, $onMount, $onDestroy, $children };
         const evaluatedTemplate = template(øEvaluateComponentTemplate(componentId), _props);
 
