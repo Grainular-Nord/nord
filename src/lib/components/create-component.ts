@@ -12,6 +12,7 @@ import { Component } from '../../types';
 import { lifecycleManager } from '../lifecycle-manager';
 import { CssParserFunc } from '../../types/css-parser-func';
 import { øEvaluateComponentStyle } from './evaluate-component-style';
+import { HtmlParserFunc } from '../../types/html-parser-func';
 
 /**
  * Creates a new component with specified lifecycle methods and a template.
@@ -42,8 +43,8 @@ import { øEvaluateComponentStyle } from './evaluate-component-style';
  * });
  */
 
-export const createComponent = <Props extends ComponentProps = {}, Ctx extends Record<PropertyKey, unknown> = {}>(
-    template: ComponentTemplate<Props, Ctx>
+export const createComponent = <Props extends ComponentProps = {}>(
+    template: ComponentTemplate<Props>
 ): Component<Props> => {
     // Set up lifecycle methods
     let onMount: null | (() => void) = null;
@@ -58,10 +59,9 @@ export const createComponent = <Props extends ComponentProps = {}, Ctx extends R
     const componentId = øCreateIdentifier();
 
     // Create the component function
-    const component = (props: Props, children?: NodeList) => {
-        const $children = children ?? emptyNodeList();
-        const $ctx = window.$$nord.context;
-        const _props: TypedProps<Props, Ctx> = { ...props, $onMount, $onDestroy, $children, $ctx };
+    const component = (props: Props, children?: (parser: HtmlParserFunc) => NodeList) => {
+        const $children = children?.(øEvaluateComponentTemplate(componentId)) ?? emptyNodeList();
+        const _props: TypedProps<Props> = { ...props, $onMount, $onDestroy, $children };
         const evaluatedTemplate = template(øEvaluateComponentTemplate(componentId), _props);
 
         // If after the template evaluation a onMount function is set and no longer null, execute the onMount function.

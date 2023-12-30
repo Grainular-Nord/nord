@@ -2,6 +2,7 @@
 
 import { ComponentProps } from './component-props';
 import { CssParserFunc } from './css-parser-func';
+import { HtmlParserFunc } from './html-parser-func';
 /**
  * This type represents the structure of functions that define components.
  * Components should always be created by the `createComponent` function.
@@ -40,10 +41,10 @@ export type Component<Props extends ComponentProps> = {
      * Function that defines the behavior and rendering of the component.
      *
      * @param {Props} props - Object containing the properties for the component.
-     * @param {NodeList} [children] - NodeList of child elements/components.
+     * @param { (parser: HtmlParserFunc) =>  NodeList} [children] - Template function to get NodeList of child elements/components.
      * @returns {NodeList} - NodeList representing the rendered component.
      */
-    (props: Props, children?: NodeList): NodeList;
+    (props: Props, children?: (parser: HtmlParserFunc) => NodeList): NodeList;
 
     /**
      * A boolean flag to identify if the object is a component.
