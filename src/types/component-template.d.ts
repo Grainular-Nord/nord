@@ -28,7 +28,7 @@ import { TypedProps } from './typed-props';
  * };
  */
 
-export type ComponentTemplate<Props extends ComponentProps = {}, Ctx extends Record<PropertyKey, unknown> = {}> = (
+export type ComponentTemplate<Props extends ComponentProps = {}> = (
     parser: HtmlParserFunc,
-    props: TypedProps<Props, Ctx>
+    props: TypedProps<Props>
 ) => ReturnType<HtmlParserFunc>;

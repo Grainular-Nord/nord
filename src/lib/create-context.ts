@@ -1,9 +1,9 @@
 /** @format */
 
-import { Context } from '../../types/context';
+import { Context } from '../types';
 
-export const context = <Ctx extends Record<PropertyKey, unknown> = {}>(): Context<Ctx> => {
-    const _ctx = new Map<PropertyKey, any>();
+export const createContext = <Ctx extends Record<PropertyKey, unknown>>(initial: Ctx): Context<Ctx> => {
+    const _ctx = new Map<PropertyKey, any>([...Object.entries(initial)]);
 
     const set = <Key extends keyof Ctx>(key: Key, value: Ctx[Key]) => {
         _ctx.set(key, value);

@@ -3,8 +3,6 @@
 import { ComponentProps } from '../types';
 import { Component } from '../types/component';
 import { NordInit } from '../types/nord-init';
-import { context } from './components/component-ctx';
-import { createNamespace } from './create-namespace';
 import { lifecycleManager } from './lifecycle-manager';
 
 /**
@@ -56,9 +54,6 @@ export const render = <Props extends ComponentProps = {}>(component: Component<P
             '[Nørd:Render]: Component is "undefined" or "null". Pass a Nord Component to render it to the DOM".'
         );
     }
-
-    // Create the global namespace (If not already created)
-    createNamespace(context<any>());
 
     // Setup the lifecycle management
     lifecycleManager.observe(target);
