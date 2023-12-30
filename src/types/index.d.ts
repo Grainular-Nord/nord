@@ -15,12 +15,6 @@ export { Directive } from './directive';
 
 // The global interfaces that are amended
 declare global {
-    interface Window {
-        $$nord: {
-            context: Context<any>;
-        };
-    }
-
     interface Element {
         attributeMap: Map<string, string[]> | undefined;
     }
