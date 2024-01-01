@@ -28,7 +28,10 @@ export const on = <EventType extends Event = Event>(
     options?: AddEventListenerOptions
 ): Directive<Element> => {
     // Return the created template directive
-    return createDirective((element: Element) => {
-        element.addEventListener(event, (ev) => listener(ev as EventType), options);
-    });
+    return createDirective(
+        (element: Element) => {
+            element.addEventListener(event, (ev) => listener(ev as EventType), options);
+        },
+        { nodeType: 'Element' }
+    );
 };

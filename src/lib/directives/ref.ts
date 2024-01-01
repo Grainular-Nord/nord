@@ -38,9 +38,12 @@ import { createDirective } from './create-directive';
 export const ref = <NativeElement extends Element = Element>() => {
     let _ref: NativeElement | null = null;
 
-    const directive = createDirective((element: Element) => {
-        _ref = element as NativeElement;
-    });
+    const directive = createDirective(
+        (element: Element) => {
+            _ref = element as NativeElement;
+        },
+        { nodeType: 'Element' }
+    );
 
     Object.defineProperties(directive, {
         nativeElement: {
