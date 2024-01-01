@@ -1,6 +1,7 @@
 /** @format */
 
 import { Directive } from '../../types/directive';
+import { DirectiveOptions } from '../../types/directive-options';
 
 /**
  * Creates a custom directive for use in web components or similar frameworks.
@@ -15,15 +16,25 @@ import { Directive } from '../../types/directive';
  *
  * @param {(node: NodeType, token: string) => void} handler - A function that executes
  * the directive's behavior, receiving a DOM node and the internal token string as parameters.
+ * @param {DirectiveOptions} [options] - A optional object used to set a filter, if desired. If omitted,
+ * no filtering takes place.
  *
  * @returns {Directive<NodeType>} A custom directive function, which can be attached to DOM nodes
  * in component templates to apply the defined behavior or action.
  */
 
 export const createDirective = <NodeType extends Text | Element>(
-    handler: (node: NodeType, token: string) => void
+    handler: (node: NodeType, token: string) => void,
+    options?: DirectiveOptions
 ): Directive<NodeType> => {
     const directive = (node: NodeType, token: string) => {
+        if (options) {
+            const { nodeType } = options;
+            if ((nodeType === 'Text' && node instanceof Element) || (nodeType === 'Element' && node instanceof Text)) {
+                throw new TypeError(`[Nørd:Directive]: Node is of incorrect type. Expected type '${nodeType}'.`);
+            }
+        }
+
         handler(node, token);
     };
 
@@ -35,3 +46,5 @@ export const createDirective = <NodeType extends Text | Element>(
 
     return directive as Directive<NodeType>;
 };
+
+const dir = createDirective((handler) => {}, { nodeType: 'Text' });

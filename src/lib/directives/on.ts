@@ -22,13 +22,16 @@ import { createDirective } from './create-directive';
  * // e.g., <button ${On('click', (ev) => console.log({ev}))}>Click me</button>
  */
 
-export const on = (
+export const on = <EventType extends Event = Event>(
     event: keyof HTMLElementEventMap,
-    listener: (event: Event) => void,
+    listener: (event: EventType) => void,
     options?: AddEventListenerOptions
 ): Directive<Element> => {
     // Return the created template directive
-    return createDirective((element: Element) => {
-        element.addEventListener(event, (ev) => listener(ev), options);
-    });
+    return createDirective(
+        (element: Element) => {
+            element.addEventListener(event, (ev) => listener(ev as EventType), options);
+        },
+        { nodeType: 'Element' }
+    );
 };
