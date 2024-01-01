@@ -26,5 +26,5 @@ import { createDirective } from './create-directive';
  */
 
 export const use = (handler: (element: Element) => void): Directive<Element> => {
-    return createDirective(handler);
+    return createDirective(handler, { nodeType: 'Element' });
 };

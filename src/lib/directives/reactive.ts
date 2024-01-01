@@ -37,72 +37,75 @@ import { createDirective } from './create-directive';
  */
 
 export const reactive = (value: Observable) => {
-    return createDirective((node: Text | Element, token: string) => {
-        // If the node is a text node, the text content is simply replaced without further processing,
-        // after stringifying it
-        if (isText(node)) {
-            // set up the subscription of the grain
-            const unsubscribe = value.subscribe((val) => {
-                if (!node.isConnected) {
-                    unsubscribe();
+    return createDirective(
+        (node: Text | Element, token: string) => {
+            // If the node is a text node, the text content is simply replaced without further processing,
+            // after stringifying it
+            if (isText(node)) {
+                // set up the subscription of the grain
+                const unsubscribe = value.subscribe((val) => {
+                    if (!node.isConnected) {
+                        unsubscribe();
+                    }
+
+                    node.textContent = getStringValue(val);
+                });
+            }
+
+            /**
+             * If the node is a Element, the value exists in an attribute as value.
+             */
+            if (isElement(node)) {
+                const attrName = getAttributeNameForValue(node, token);
+                isolateAttributeNodes(node, attrName, token);
+
+                let nodeIndex = -1;
+                if (node.attributeMap && node.attributeMap.get(attrName)) {
+                    nodeIndex = node.attributeMap.get(attrName)?.indexOf(token) ?? -1;
                 }
 
-                node.textContent = getStringValue(val);
-            });
-        }
+                if (attrName) {
+                    // If a attribute was found, that contains the grain value as token,
+                    // set up the subscription
+                    const unsubscribe = value.subscribe((val) => {
+                        if (!node.isConnected) {
+                            unsubscribe();
+                            return;
+                        }
 
-        /**
-         * If the node is a Element, the value exists in an attribute as value.
-         */
-        if (isElement(node)) {
-            const attrName = getAttributeNameForValue(node, token);
-            isolateAttributeNodes(node, attrName, token);
+                        // replace the found index with the new value;
+                        const nodeValues = node.attributeMap!.get(attrName)!;
+                        nodeValues[nodeIndex] = val;
 
-            let nodeIndex = -1;
-            if (node.attributeMap && node.attributeMap.get(attrName)) {
-                nodeIndex = node.attributeMap.get(attrName)?.indexOf(token) ?? -1;
-            }
+                        node.setAttribute(attrName, nodeValues.join(''));
+                    });
+                }
 
-            if (attrName) {
-                // If a attribute was found, that contains the grain value as token,
-                // set up the subscription
-                const unsubscribe = value.subscribe((val) => {
-                    if (!node.isConnected) {
-                        unsubscribe();
-                        return;
-                    }
-
-                    // replace the found index with the new value;
-                    const nodeValues = node.attributeMap!.get(attrName)!;
-                    nodeValues[nodeIndex] = val;
-
-                    node.setAttribute(attrName, nodeValues.join(''));
-                });
-            }
-
-            // Attribute name
-            if (node.hasAttribute(token)) {
-                const unsubscribe = value.subscribe((val) => {
-                    if (!node.isConnected) {
-                        unsubscribe();
-                        return;
-                    }
-
-                    const attrNameValue = getStringValue(val);
-                    if (attrNameValue.match(/^([0-9]| )?$/gim)) {
-                        console.warn(
-                            `[Nørd:Directive]: You are trying to set an invalid string as attribute name. --> ${attrNameValue}`
-                        );
-                        return;
-                    }
-
-                    node.setAttribute(attrNameValue, '');
-                });
-
+                // Attribute name
                 if (node.hasAttribute(token)) {
-                    node.removeAttribute(token);
+                    const unsubscribe = value.subscribe((val) => {
+                        if (!node.isConnected) {
+                            unsubscribe();
+                            return;
+                        }
+
+                        const attrNameValue = getStringValue(val);
+                        if (attrNameValue.match(/^([0-9]| )?$/gim)) {
+                            console.warn(
+                                `[Nørd:Directive]: You are trying to set an invalid string as attribute name. --> ${attrNameValue}`
+                            );
+                            return;
+                        }
+
+                        node.setAttribute(attrNameValue, '');
+                    });
+
+                    if (node.hasAttribute(token)) {
+                        node.removeAttribute(token);
+                    }
                 }
             }
-        }
-    });
+        },
+        { nodeType: 'Text' }
+    );
 };

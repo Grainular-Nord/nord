@@ -1,5 +1,6 @@
 /** @format */
 
+import { Directive } from '../../types';
 import { createDirective } from './create-directive';
 
 /**
@@ -21,10 +22,13 @@ import { createDirective } from './create-directive';
  *
  * // Caution: Only use unsafeHtml with trusted content, as it can pose a security risk if used with untrusted content.
  */
-export const unsafeHtml = (html: string) => {
-    return createDirective((node: Text) => {
-        const anchor = document.createElement('div');
-        node.replaceWith(anchor);
-        anchor.innerHTML = html;
-    });
+export const unsafeHtml = (html: string): Directive<Text> => {
+    return createDirective(
+        (node: Text) => {
+            const anchor = document.createElement('div');
+            node.replaceWith(anchor);
+            anchor.innerHTML = html;
+        },
+        { nodeType: 'Text' }
+    );
 };
