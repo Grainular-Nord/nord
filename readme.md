@@ -1,10 +1,10 @@
 <!-- @format -->
 
-# Nørd
-
 <p align="center">
-  <img src="https://nordjs.dev/nord-logo.png" alt="Nørd Logo">
+  <img src="https://nordjs.dev/nord-logo.png" alt="Nørd Logo" width="300" height="300">
 </p>
+
+# Nørd
 
 [![Npm package version](https://badgen.net/npm/v/@grainular/nord)](https://www.npmjs.com/package/@grainular/nord)
 [![Npm package total downloads](https://badgen.net/npm/dt/@grainular/nord)](https://npmjs.com/package/@grainular/nord)
