@@ -17,7 +17,7 @@ After installing the necessary tools, you can run the commands below to start de
 
 ## Development - Setting Up The Repository
 
--   clone the repository by running `git clone {{ repository.url }}` in your terminal or shell to clone the repo into the current directory.
+-   clone the repository by running `git clone https://github.com/IamSebastianDev/nord.git` in your terminal or shell to clone the repo into the current directory.
 -   run `yarn` or `yarn install` to install the dependencies.
 -   run `yarn setup`. This will install the necessary husky scripts.
 
