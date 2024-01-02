@@ -6,5 +6,5 @@ export { use } from './use';
 export { when } from './when';
 export { forEach } from './for-each';
 export { ref } from './ref';
-export { reactive as $ } from './reactive';
+export { reactive } from './reactive';
 export { unsafeHtml } from './unsafe-html';
