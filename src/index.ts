@@ -1,6 +1,6 @@
 /** @format */
 export { grain, derived, combined, readonly, get } from './lib/grains';
-export { createDirective, on, use, forEach, when, ref, $, unsafeHtml } from './lib/directives';
+export { createDirective, on, use, forEach, when, ref, reactive, unsafeHtml } from './lib/directives';
 export { createComponent, render } from './lib';
 
 export type {
