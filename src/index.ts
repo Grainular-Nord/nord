@@ -13,4 +13,5 @@ export type {
     Directive,
     NordInit,
     ComponentTemplate,
+    Observable,
 } from './types';

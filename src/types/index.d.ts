@@ -12,6 +12,7 @@ export { NordInit } from './nord-init';
 export { Component } from './component';
 export { ComponentTemplate } from './component-template';
 export { Directive } from './directive';
+export { Observable } from './observable';
 
 // The global interfaces that are amended
 declare global {
