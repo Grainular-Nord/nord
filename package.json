@@ -1,6 +1,6 @@
 {
   "name": "@grainular/nord",
-  "version": "1.1.0",
+  "version": "1.7.4",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -61,6 +61,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/IamSebastianDev/nord.git",
+  "repository": "https://github.com/Grainular-Nord/nord.git",
   "author": "Sebastian <sebastian@iamsebastian.dev>"
 }
