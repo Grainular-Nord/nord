@@ -6,6 +6,7 @@ import { isGrain } from '../../utils/is-grain';
 import { createDirective } from './create-directive';
 
 const øEqualizeNodeLists = (root: Element, list: Node[]) => {
+    console.log({ root, list });
     // Normalize the root node
     root.normalize();
 
@@ -30,7 +31,7 @@ const øEqualizeNodeLists = (root: Element, list: Node[]) => {
 
         if (isElement(equalNode)) {
             // If the keys are not equal, replace them
-            if (equalNode.innerHTML !== node.innerHTML) {
+            if (equalNode.outerHTML !== node.outerHTML) {
                 root.replaceChild(equalNode, node);
                 return;
             }
