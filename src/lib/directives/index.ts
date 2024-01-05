@@ -8,3 +8,4 @@ export { forEach } from './for-each';
 export { ref } from './ref';
 export { reactive } from './reactive';
 export { unsafeHtml } from './unsafe-html';
+export { json } from './json';
