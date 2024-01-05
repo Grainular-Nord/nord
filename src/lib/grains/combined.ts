@@ -5,6 +5,24 @@ import { GrainValue } from '../../types/grain-value';
 import { grain } from './grain';
 import { readonly } from './readonly';
 
+export type CombinedFn = {
+    <Deps extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
+        deps: Deps,
+        fn: (values: GrainValue<Deps>) => R,
+        initial?: R
+    ): ReadonlyGrain<R>;
+    <Deps extends ReadonlyGrain<any>[], R>(
+        deps: Deps,
+        fn: (values: GrainValue<Deps>) => R,
+        initial?: R
+    ): ReadonlyGrain<R>;
+    <Deps extends readonly ReadonlyGrain<any>[], R>(
+        deps: Deps,
+        fn: (values: GrainValue<Deps>) => R,
+        initial?: R
+    ): ReadonlyGrain<R>;
+};
+
 /**
  * Creates a new ReadonlyGrain by combining multiple grains.
  * This function allows you to derive a new grain's value based on the values of several other grains.
@@ -42,7 +60,7 @@ import { readonly } from './readonly';
  * // When the last subscriber to sum$ is removed, sum$ unsubscribes from num1$ and num2$
  */
 
-export const combined = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
+export const combined: CombinedFn = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]], R>(
     deps: Dependencies,
     fn: (values: GrainValue<Dependencies>) => R,
     initial?: R
