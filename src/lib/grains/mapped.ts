@@ -1,6 +1,5 @@
 /** @format */
 
-import { Grain } from '../../../dist/types';
 import { ReadonlyGrain } from '../../types';
 import { GrainValue } from '../../types/grain-value';
 import { grain } from './grain';
