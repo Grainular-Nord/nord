@@ -22,7 +22,7 @@ import { readonly } from './readonly';
  * const result = mapped([grain(1), grain('2')]);
  * // Returns ReadonlyGrain<[1, '2']>
  */
-export const mapped = <Dependencies extends [ReadonlyGrain<any>, ...ReadonlyGrain<any>[]]>(
+export const mapped = <Dependencies extends ReadonlyGrain<any>[]>(
     grains: Dependencies
 ): ReadonlyGrain<GrainValue<Dependencies>> => {
     const _grain = grain(grains.map((grain) => grain()));
