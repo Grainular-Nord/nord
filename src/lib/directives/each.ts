@@ -12,7 +12,6 @@ export type EachDirective<T> = {
 };
 
 const øEqualizeNodeLists = (root: Element, list: Node[]) => {
-    console.log({ root, list });
     // Normalize the root node
     root.normalize();
 
