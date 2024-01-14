@@ -82,10 +82,17 @@ export const createComponent = <Props extends ComponentProps = {}>(
     };
 
     // Add id to the prototype of the component
-    Object.defineProperty(component, 'id', {
-        value: componentId,
-        writable: false,
-        enumerable: false,
+    Object.defineProperties(component, {
+        id: {
+            writable: false,
+            enumerable: false,
+            value: componentId,
+        },
+        isComponent: {
+            writable: false,
+            enumerable: false,
+            value: true,
+        },
     });
 
     return component as Component<Props>;
