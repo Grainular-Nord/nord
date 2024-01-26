@@ -62,5 +62,9 @@
     "access": "public"
   },
   "repository": "https://github.com/Grainular-Nord/nord.git",
-  "author": "Sebastian <sebastian@iamsebastian.dev>"
+  "author": "Sebastian <sebastian@iamsebastian.dev>",
+  "resolutions": {
+    "wrap-ansi": "7.0.0",
+    "string-width": "4.1.0"
+  }
 }
