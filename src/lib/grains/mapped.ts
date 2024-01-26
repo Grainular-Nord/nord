@@ -2,8 +2,7 @@
 
 import { ReadonlyGrain } from '../../types';
 import { GrainValue } from '../../types/grain-value';
-import { grain } from './grain';
-import { readonly } from './readonly';
+import { combined } from './combined';
 
 /**
  * Maps an array of ReadonlyGrain instances and creates a new ReadonlyGrain containing an array of values extracted
@@ -49,17 +48,5 @@ export type MappedFn = {
 export const mapped: MappedFn = <Dependencies extends ReadonlyGrain<any>[]>(
     grains: Dependencies
 ): ReadonlyGrain<GrainValue<Dependencies>> => {
-    const _grain = grain(grains.map((grain) => grain()));
-    grains.forEach((grain, index) =>
-        grain.subscribe((value) => {
-            _grain.update((curr) => {
-                // process and update a new array to be returned as value
-                const updatedArr = [...curr];
-                updatedArr.splice(index, 1, value);
-                return updatedArr;
-            });
-        })
-    );
-
-    return readonly(_grain) as ReadonlyGrain<GrainValue<Dependencies>>;
+    return combined(grains, (values) => values);
 };
