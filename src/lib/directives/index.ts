@@ -9,3 +9,4 @@ export { reactive } from './reactive';
 export { unsafeHtml } from './unsafe-html';
 export { json } from './json';
 export { each } from './each';
+export { suspend } from './suspend';
