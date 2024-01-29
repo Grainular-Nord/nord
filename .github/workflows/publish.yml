@@ -17,7 +17,7 @@ jobs:
       - name: CI checkout
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: "npm"
       - name: CI setup
         run: yarn ci
@@ -33,7 +33,7 @@ jobs:
       - name: Publish checkout
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 20.x
           cache: "npm"
       - name: Publish setup
         run: yarn ci
