@@ -46,20 +46,23 @@ export const when = <T>(condition: ReadonlyGrain<T> | T, evaluate?: (value: T) =
 
     const setContentDirective = createDirective<Text>(
         (node) => {
-            // Evaluate the passed condition for the first time. The evaluate method is used when passed,
-            // else the value / grain value is used to determine the true of false condition.
+            const marker = document.createComment(`[When]`);
+            node.replaceWith(marker);
+            const root = () => marker.parentElement;
 
-            const _initialConditionValue = isGrain(condition) ? condition() : condition;
-            const _initialResult = evaluateCondition(_initialConditionValue);
+            let currentNodes: Node[] = [];
 
-            const nodesToReplace = nodes.get(_initialResult)!;
-            node.replaceWith(...nodesToReplace);
+            const replaceNodes = (root: HTMLElement | null, nodes: Node[]) => {
+                currentNodes.forEach((node) => root?.removeChild(node));
+                nodes.forEach((node) => root?.insertBefore(node, marker.nextElementSibling));
+                currentNodes = [...nodes];
+            };
 
-            // Setup the primary subscription tracking the value, if the passed condition is a grain
+            // If the passed condition argument is a grain, evaluate the template reactively and append the nodes accordingly
+
             if (isGrain(condition)) {
-                let current = nodesToReplace;
                 let lastEvaluatedResult: boolean | null = null;
-                const [root] = [...new Set(current.map((el) => el.parentElement))];
+
                 condition.subscribe((value) => {
                     const evaluated = evaluateCondition(value);
                     // Check if the result match, if yes, abort
@@ -69,14 +72,17 @@ export const when = <T>(condition: ReadonlyGrain<T> | T, evaluate?: (value: T) =
                     }
 
                     // Replace the current nodes with the new nodes and vice versa.
-                    const nodesToReplace = nodes.get(evaluated)!;
-                    current.forEach((node) => node.parentElement?.removeChild(node));
-                    root?.append(...nodesToReplace);
+                    replaceNodes(root(), nodes.get(evaluated)!);
 
                     // Set the current values as new old values
-                    current = nodesToReplace;
                     lastEvaluatedResult = evaluated;
                 });
+            }
+
+            // If the condition is not a grain, the template is evaluated once
+            if (!isGrain(condition)) {
+                const result = evaluateCondition(condition);
+                replaceNodes(root(), nodes.get(result)!);
             }
         },
         { nodeType: 'Text' }
