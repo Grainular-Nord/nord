@@ -90,30 +90,24 @@ export const each = <T>(value: ReadonlyGrain<T[]> | T[]): EachDirective<T> => {
                 return;
             }
 
-            // process the initial replacement
-            const initialValue: T[] = isGrain(value) ? value() : value;
-            let list = getNodesFromValue(initialValue);
+            let currentNodes: Node[] = [node];
+            const root = () => [...new Set(currentNodes.map((element) => element.parentElement))][0];
+            const setNodes = (list: Node[]) => {
+                if (!list.length) {
+                    list = [...elseNodes];
+                }
+                øEqualizeNodeLists(root()!, list);
+                currentNodes = [...list];
+            };
 
-            // If the list is empty, show the fallback nodes instead.
-            if (list.length === 0) {
-                list = elseNodes;
+            if (isGrain(value)) {
+                value.subscribe((value) => {
+                    setNodes([...getNodesFromValue(value)]);
+                });
             }
 
-            // Append the nodes
-            node.replaceWith(...list);
-
-            // If the value is reactive, connect the nodes and the list to ensure
-            // Parity every time the value updates.
-            if (isGrain(value)) {
-                let current = list;
-                let [root, ...rest] = [...new Set(current.map((el) => el.parentElement))];
-                if (rest.length !== 0 || !root) throw new Error('[Nørd:Directive]: Directive has multiple roots.');
-
-                // Subscribe to the grain
-                value.subscribe((value) => {
-                    const list = getNodesFromValue(value);
-                    øEqualizeNodeLists(root!, list);
-                });
+            if (!isGrain(value)) {
+                setNodes([...getNodesFromValue(value)]);
             }
         },
         { nodeType: 'Text' }
