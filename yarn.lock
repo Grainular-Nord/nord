@@ -1541,10 +1541,10 @@ builtins@^5.0.0:
   dependencies:
     semver "^7.0.0"
 
-byndly@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/byndly/-/byndly-1.2.0.tgz#9965f8c7c1592b0b1550f3a16fe4bc1dd3a3da91"
-  integrity sha512-jPEMIzTcneRxjbgyCGXLqv6FPQnZXhXLQn1Y1lfGUB4pDYNHn2nT5LTdvyNGAUfIrkfMD4r97yRuHhOKMJHrJw==
+byndly@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/byndly/-/byndly-2.0.1.tgz#2f44778d03fda6c22a316f326f2492ab3dde7d98"
+  integrity sha512-w5tL6xyA3kRQdCfbiQQeLtCGgM58CuDsrFWh1rfY9fl5U8R12QFnsAYAYGjZHujlfZ9LqtVcpKTwv8DtyEZbHw==
 
 c8@^9.1.0:
   version "9.1.0"
