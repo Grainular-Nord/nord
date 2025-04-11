@@ -1,0 +1,32 @@
+{
+    "name": "@grainular/core",
+    "version": "1.0.0",
+    "type": "module",
+    "packageManager": "bun@1.1.18",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        }
+    },
+    "unpkg": "./dist/browser/browser.js",
+    "devDependencies": {
+        "@repository/config": "workspace:*",
+        "@repository/builder": "workspace:*",
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0",
+        "@grainular/grains": "workspace:*"
+    },
+    "scripts": {
+        "dev": "bun run .build.ts --watch",
+        "build": "bun run .build.ts",
+        "test": "bun test --coverage"
+    },
+    "sideEffects": false
+}
