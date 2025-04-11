@@ -1,0 +1,19 @@
+# @format
+
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+#
+pre-commit:
+    parallel: false
+    commands:
+        format:
+            run: bun run format {staged_files}
+        lint:
+            glob: "*.md"
+            run: bun run lint {staged_files}
+commit-msg:
+    commands:
+        lint:
+            run: bunx commitlint --edit

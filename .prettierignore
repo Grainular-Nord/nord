@@ -1,9 +1,0 @@
-.*
-.prettierignore
-.prettierrc
-license.md
-node_modules
-!.config
-!.vitepress
-!.idea
-!.build.ts
