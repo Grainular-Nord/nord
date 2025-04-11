@@ -1,3 +1,7 @@
 /** @format */
-export { combined, grain, readonly } from './grains';
-export type { Grain, Subscriber, Unsubscribe, WritableGrain } from './grains';
+
+export { combined } from './combined';
+export { derived } from './derived';
+export { grain } from './grain';
+export type { Grain, Subscriber, Unsubscribe, WritableGrain } from './grain';
+export { readonly } from './readonly';

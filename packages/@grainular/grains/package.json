@@ -3,31 +3,28 @@
     "version": "1.0.0",
     "type": "module",
     "packageManager": "bun@1.1.18",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "require": "./dist/index.cjs"
-        },
-        "./operators": {
-            "types": "./dist/operators.d.ts",
-            "import": "./dist/operators.js",
-            "require": "./dist/operators.cjs"
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
         }
     },
-    "unpkg": "./dist/browser/browser.global.js",
+    "unpkg": "./dist/browser/index.js",
     "devDependencies": {
         "@repository/config": "workspace:*",
-        "@types/bun": "latest",
-        "importx": "^0.5.0",
-        "tsup": "^8.3.0"
+        "@repository/builder": "workspace:*",
+        "@types/bun": "latest"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
     },
     "scripts": {
-        "dev": "tsup --watch",
-        "build": "tsup",
+        "dev": "bun run .build.ts --watch",
+        "build": "bun run .build.ts",
         "test": "bun test --coverage"
     },
     "sideEffects": false

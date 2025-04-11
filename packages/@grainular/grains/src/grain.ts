@@ -8,12 +8,17 @@ const defaultCompareFn = <V = unknown>(current: V, next: V) => current === next;
  * to changes in the source `grain`s value.
  */
 export type Subscriber<V = unknown> = (value: V) => void;
+
 /**
  * Function returned by the `subscribe` method of a `grain`, allowing to
  * unsubscribe from listening to changes in the `grain`s value
  */
 export type Unsubscribe = () => void;
 
+/**
+ * The readonly version of a `grain` allows to read the value synchronous as well
+ * as subscribe to changes in the `grains` value.
+ */
 export type Grain<V = unknown> = {
     (): V;
     subscribe: (subscriber: Subscriber<V>) => Unsubscribe;
