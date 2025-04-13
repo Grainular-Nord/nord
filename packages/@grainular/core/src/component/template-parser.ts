@@ -2,12 +2,12 @@
 // allows us to skip @grainular/grains as dependency (even peer) and let's
 
 import { createDirectiveFragment } from '../directives/create-directive-fragment';
-import { isDirective, type Directive } from '../directives/directive';
+import { type Directive, isDirective } from '../directives/directive';
 import { createReactiveFragment } from '../internals/create-reactive-fragment';
-import { isSubscribable } from '../internals/is-subscribeable';
+import { isSubscribable } from '../internals/is-subscribable';
 import { createStructFragment } from '../structs/create-struct-fragment';
-import { isStruct, type Struct } from '../structs/struct';
-import { createComponentFragment, isComponent, type ComponentFragment } from './component-fragment';
+import { type Struct, isStruct } from '../structs/struct';
+import { type ComponentFragment, createComponentFragment, isComponent } from './component-fragment';
 import type { Fragment } from './fragment';
 
 /**
