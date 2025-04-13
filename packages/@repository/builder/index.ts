@@ -1,10 +1,10 @@
 /** @format */
 
-import { type BuildConfig, type BunPlugin, type Target } from 'bun';
+import type { BuildConfig, BunPlugin, Target } from 'bun';
 import { exists, rm, watch } from 'node:fs/promises';
 import { dirname, join, sep } from 'node:path';
 import { styleText } from 'node:util';
-import { createProgram, DiagnosticCategory, getPreEmitDiagnostics } from 'typescript';
+import { DiagnosticCategory, createProgram, getPreEmitDiagnostics } from 'typescript';
 
 const strip = (path: string) => path.replace(process.cwd(), '');
 
@@ -196,6 +196,7 @@ export class Builder {
             sourcemap: 'external',
             plugins: this.plugins ?? [],
             throw: false,
+            minify: this.target === 'browser',
         });
 
         if (result.success) {

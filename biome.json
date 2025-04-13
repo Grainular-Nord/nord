@@ -21,6 +21,9 @@
             "recommended": true,
             "suspicious": {
                 "noConfusingVoidType": "off"
+            },
+            "style": {
+                "noInferrableTypes": "off"
             }
         }
     },
@@ -28,7 +31,7 @@
         "formatter": {
             "quoteProperties": "asNeeded",
             "trailingCommas": "all",
-            "semicolons": "asNeeded",
+            "semicolons": "always",
             "arrowParentheses": "always",
             "bracketSameLine": false,
             "quoteStyle": "single",
