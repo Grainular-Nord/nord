@@ -1,26 +1,26 @@
 // We use this type to interface with grains. Not specifying grains here
 // allows us to skip @grainular/grains as dependency (even peer) and let's
 
-import { createDirectiveFragment } from '../directives/create-directive-fragment'
-import { isDirective, type Directive } from '../directives/directive'
-import { createReactiveFragment } from '../internals/create-reactive-fragment'
-import { isSubscribable } from '../internals/is-subscribeable'
-import { createStructFragment } from '../structs/create-struct-fragment'
-import { isStruct, type Struct } from '../structs/struct'
-import { createComponentFragment, isComponent, type ComponentFragment } from './component-fragment'
-import type { Fragment } from './fragment'
+import { createDirectiveFragment } from '../directives/create-directive-fragment';
+import { isDirective, type Directive } from '../directives/directive';
+import { createReactiveFragment } from '../internals/create-reactive-fragment';
+import { isSubscribable } from '../internals/is-subscribeable';
+import { createStructFragment } from '../structs/create-struct-fragment';
+import { isStruct, type Struct } from '../structs/struct';
+import { createComponentFragment, isComponent, type ComponentFragment } from './component-fragment';
+import type { Fragment } from './fragment';
 
 /**
  * INTERNAL: DO NOT USE OR ACCESS.
  */
-export const fragmentMap = new Map<string, Fragment>()
+export const fragmentMap = new Map<string, Fragment>();
 
 // Providing a more open type here allows the user or dev
 // to implement it's own readonly reactive state mechanism.
 export type Subscribable<V = unknown> = {
-    (): V
-    subscribe: (subscriber: (value: V) => void) => void | (() => void)
-}
+    (): V;
+    subscribe: (subscriber: (value: V) => void) => void | (() => void);
+};
 
 /**
  * We use this internal function to create a fragment (Or at least part of it)
@@ -35,7 +35,7 @@ const createFragment = (
     // we return null and indicate that this is a value that should be
     // removed from the template all together.
     if (!data) {
-        return null
+        return null;
     }
 
     // Otherwise, we try to find and assert the correct fragment
@@ -43,19 +43,19 @@ const createFragment = (
     // fragment is found.
     switch (true) {
         case isComponent(data):
-            return data
+            return data;
         case isDirective(data):
-            return createDirectiveFragment(data)
+            return createDirectiveFragment(data);
         case isStruct(data):
-            return createStructFragment(data)
+            return createStructFragment(data);
         case isSubscribable(data):
-            return createReactiveFragment(data)
+            return createReactiveFragment(data);
         default:
             // All other values are returned as resolvable
             // that coerces the data into a string type.
-            return { resolve: () => data.toString() }
+            return { resolve: () => data.toString() };
     }
-}
+};
 
 export const templateParser = (
     strings: TemplateStringsArray,
@@ -74,17 +74,17 @@ export const templateParser = (
             // empty and filter after. If it is a hydratable
             // fragment, we also add it to the fragment map
             (() => {
-                const data = fragments.at(idx)
-                const fragment = createFragment(data)
+                const data = fragments.at(idx);
+                const fragment = createFragment(data);
 
                 if (fragment && 'id' in fragment) {
-                    fragmentMap.set(fragment.id, fragment)
+                    fragmentMap.set(fragment.id, fragment);
                 }
 
-                return fragment
+                return fragment;
             })(),
-        ]
-    })
+        ];
+    });
 
-    return createComponentFragment(template.filter((v) => !!v))
-}
+    return createComponentFragment(template.filter((v) => !!v));
+};

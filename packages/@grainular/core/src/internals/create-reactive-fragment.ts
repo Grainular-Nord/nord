@@ -1,26 +1,26 @@
-import type { Fragment } from '../component/fragment'
-import type { Subscribable } from '../component/template-parser'
-import { deletionObserver } from './deletion-observer'
-import { identifier } from './identifier'
-import type { AttributeControlledNode } from './track-attribute-node'
+import type { Fragment } from '../component/fragment';
+import type { Subscribable } from '../component/template-parser';
+import { deletionObserver } from './deletion-observer';
+import { identifier } from './identifier';
+import type { AttributeControlledNode } from './track-attribute-node';
 
 export const createReactiveFragment = (subscribable: Subscribable): Fragment => {
-    const id = identifier()
+    const id = identifier();
     return {
         id,
         resolve: () => `<!--:${id}:-->`,
         hydrateClient: (node) => {
-            let unsubscribe: void | (() => void)
+            let unsubscribe: void | (() => void);
 
             // If we have a comment, hydration is
             // straightforward. We create a text node, replace the comment
             // with it, and set up subscription and un subscription
             if (node instanceof Comment) {
-                const text = document.createTextNode(`${subscribable()}`)
-                node.replaceWith(text)
+                const text = document.createTextNode(`${subscribable()}`);
+                node.replaceWith(text);
                 unsubscribe = subscribable.subscribe((value) => {
-                    text.textContent = `${value}`
-                })
+                    text.textContent = `${value}`;
+                });
             }
 
             // We also need to do a similar thing for elements, where we need to
@@ -30,14 +30,14 @@ export const createReactiveFragment = (subscribable: Subscribable): Fragment => 
                 ((node: Node): node is AttributeControlledNode =>
                     node instanceof HTMLElement && 'updateAttribute' in node)(node)
             ) {
-                node.updateAttribute(id, subscribable())
+                node.updateAttribute(id, subscribable());
                 unsubscribe = subscribable.subscribe((value) => {
-                    node.updateAttribute(id, value)
-                })
+                    node.updateAttribute(id, value);
+                });
             }
 
-            deletionObserver.track(node, () => unsubscribe?.())
+            deletionObserver.track(node, () => unsubscribe?.());
         },
         hydrateServer(html) {},
-    }
-}
+    };
+};
