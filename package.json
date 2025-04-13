@@ -24,8 +24,9 @@
         "preci": "rm -rf node_modules",
         "ci": "bun install --frozen-lockfile",
         "setup": "husky",
-        "lint": "biome lint . && alex .",
-        "format": "biome format .",
+        "lint:ts": "biome lint",
+        "lint:md": "alex",
+        "format": "biome format --write",
         "dev": "turbo dev",
         "build": "turbo build",
         "test": "turbo test"

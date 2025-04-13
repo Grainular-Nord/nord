@@ -10,9 +10,11 @@ pre-commit:
     commands:
         format:
             run: bun run format {staged_files}
-        lint:
+        lint:ts:
+            run: bun run lint:ts {staged_files}
+        lint:md:
             glob: "*.md"
-            run: bun run lint {staged_files}
+            run: bun run lint:md {staged_files}
 commit-msg:
     commands:
         lint:

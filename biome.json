@@ -12,13 +12,20 @@
         "lineWidth": 120,
         "attributePosition": "auto",
         "bracketSpacing": true,
-        "ignore": ["**/.*", "**/license.md", "*.json", "**/node_modules"]
+        "ignore": ["**/.*", "**/license.md", "*.json", "**/node_modules", ".idea/*"]
     },
     "organizeImports": { "enabled": true },
-    "linter": { "enabled": true, "rules": { "recommended": true } },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "suspicious": {
+                "noConfusingVoidType": "off"
+            }
+        }
+    },
     "javascript": {
         "formatter": {
-            "jsxQuoteStyle": "double",
             "quoteProperties": "asNeeded",
             "trailingCommas": "all",
             "semicolons": "asNeeded",
