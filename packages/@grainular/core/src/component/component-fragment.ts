@@ -4,13 +4,13 @@ import { Symbols } from '../internals/symbols';
  * The component fragment is the central piece of nord's architecture.
  */
 export type ComponentFragment = {
-    [Symbols.COMPONENT]: true;
+    [Symbols.COMPONENT]: typeof Symbols.COMPONENT;
     resolve: () => string;
 };
 
 export const createComponentFragment = (fragments: { resolve: () => string }[]): ComponentFragment => {
     return {
-        [Symbols.COMPONENT]: true,
+        [Symbols.COMPONENT]: Symbols.COMPONENT,
         resolve: () => fragments.map((fragment) => fragment.resolve()).join(''),
     };
 };

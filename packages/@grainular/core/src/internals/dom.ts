@@ -1,6 +1,6 @@
 import { hydrateClient } from '../application/hydrate-client';
-import { type ComponentFragment, isComponent } from '../component/component-fragment';
-import { fragmentMap } from '../component/template-parser';
+import { isComponent } from '../component/component-fragment';
+import { type TemplateResult, fragmentMap } from '../component/template-parser';
 
 export const DOM = {
     removeNodes: (nodes: Element[] = []) => {
@@ -19,7 +19,7 @@ export const DOM = {
         hydrateClient(cloned, fragmentMap);
         return cloned;
     },
-    getHydratedFragment: (fragment: ComponentFragment | string | null) => {
+    getHydratedFragment: (fragment: TemplateResult) => {
         const content = isComponent(fragment) ? fragment.resolve() : fragment;
         if (!content) return null;
         const template = document.createElement('template');

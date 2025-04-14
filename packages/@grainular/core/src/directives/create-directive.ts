@@ -16,6 +16,6 @@ export const createDirective = (handler: (node: HTMLElement) => void | (() => vo
                 deletionObserver.track(node, cleanup);
             }
         },
-        { [Symbols.DIRECTIVE]: true } as const,
+        { [Symbols.DIRECTIVE]: Symbols.DIRECTIVE },
     ) satisfies Directive;
 };

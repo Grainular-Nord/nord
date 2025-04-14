@@ -1,7 +1,7 @@
 import { Symbols } from '../internals/symbols';
 
 export type Struct = {
-    [Symbols.STRUCT]: true;
+    [Symbols.STRUCT]: typeof Symbols.STRUCT;
     (node: Comment): void | (() => void);
 };
 

@@ -38,6 +38,6 @@ export const createReactiveFragment = (subscribable: Subscribable): Fragment => 
 
             deletionObserver.track(node, () => unsubscribe?.());
         },
-        hydrateServer(html) {},
+        hydrateServer: (html) => {},
     };
 };

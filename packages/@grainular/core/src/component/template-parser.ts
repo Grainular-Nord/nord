@@ -3,6 +3,7 @@
 
 import { createDirectiveFragment } from '../directives/create-directive-fragment';
 import { type Directive, isDirective } from '../directives/directive';
+import { createPrimitiveFragment } from '../internals/create-primitive-fragment';
 import { createReactiveFragment } from '../internals/create-reactive-fragment';
 import { isSubscribable } from '../internals/is-subscribable';
 import { createStructFragment } from '../structs/create-struct-fragment';
@@ -14,6 +15,8 @@ import type { Fragment } from './fragment';
  * INTERNAL: DO NOT USE OR ACCESS.
  */
 export const fragmentMap = new Map<string, Fragment>();
+
+export type TemplateResult = ComponentFragment | string | null;
 
 // Providing a more open type here allows the user or dev
 // to implement it's own readonly reactive state mechanism.
@@ -51,9 +54,9 @@ const createFragment = (
         case isSubscribable(data):
             return createReactiveFragment(data);
         default:
-            // All other values are returned as resolvable
+            // All other values are returned as primitive Fragment
             // that coerces the data into a string type.
-            return { resolve: () => data.toString() };
+            return createPrimitiveFragment(data);
     }
 };
 
