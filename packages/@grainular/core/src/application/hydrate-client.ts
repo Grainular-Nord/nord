@@ -61,5 +61,9 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
         }
     }
 
+    // For each node that we're tracking in the hydration
+    // cycle, we run the created function to hydrate the node.
+    // We cannot do this while walking the tree, as any mutation
+    // of the tree itself will stop the walker.
     for (const node of hydrationNodes) node();
 };
