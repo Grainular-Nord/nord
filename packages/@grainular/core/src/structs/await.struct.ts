@@ -1,48 +1,46 @@
 import type { TemplateResult } from '../component/template-parser';
-import { DOM } from '../internals/dom';
-import { Symbols } from '../internals/symbols';
+import { disconnectNodes } from '../internals/disconnect-nodes';
+import { memoizeNodes } from '../internals/memoize-nodes';
+import { createStruct } from './create-struct';
 
 export const $await = <T>(source: Promise<T>) => {
     return {
-        $then: (resolver: (value: T) => TemplateResult) => {
-            let elseNodeResolver: (() => TemplateResult) | null = null;
-            let errorNodeResolver: (error: Error) => TemplateResult = (error) => error.message;
+        $then: (template: (value: T) => TemplateResult) => {
+            let initialNodes: Element[] = [];
+            let resolveErrorNodes: ((error: Error) => Element[]) | null = null;
 
-            const struct = (root: Comment) => {
-                root.textContent += '$await:';
-                let initialNodes: Element[];
-                if (elseNodeResolver) {
-                    initialNodes = DOM.insertFragment(root, DOM.getHydratedFragment(elseNodeResolver()));
-                }
-
+            const struct = createStruct((root: Comment) => {
+                root.before(...initialNodes);
                 source
-                    .then((data) => {
-                        DOM.removeNodes(initialNodes);
-                        DOM.insertFragment(root, DOM.getHydratedFragment(resolver(data)));
+                    .then((result) => {
+                        const nodes = memoizeNodes(template(result));
+                        disconnectNodes(initialNodes);
+                        root.before(...nodes);
                     })
                     .catch((error) => {
-                        DOM.removeNodes(initialNodes);
-                        DOM.insertFragment(root, DOM.getHydratedFragment(errorNodeResolver(error)));
+                        if (resolveErrorNodes) {
+                            const nodes = resolveErrorNodes(error);
+                            disconnectNodes(initialNodes);
+                            root.before(...nodes);
+                        }
                     });
-            };
+            });
 
-            const startNodes = (run: () => TemplateResult) => {
-                elseNodeResolver = run;
+            const startNodes = (template: () => TemplateResult) => {
+                initialNodes = memoizeNodes(template());
                 return Object.assign(struct, {
-                    [Symbols.STRUCT]: Symbols.STRUCT,
                     $catch: errorNodes,
                 });
             };
-            const errorNodes = (run: (error: Error) => TemplateResult) => {
-                errorNodeResolver = run;
+
+            const errorNodes = (template: (error: Error) => TemplateResult) => {
+                resolveErrorNodes = (error: Error) => memoizeNodes(template(error));
                 return Object.assign(struct, {
-                    [Symbols.STRUCT]: Symbols.STRUCT,
                     $else: startNodes,
                 });
             };
 
             return Object.assign(struct, {
-                [Symbols.STRUCT]: Symbols.STRUCT,
                 $else: startNodes,
                 $catch: errorNodes,
             });

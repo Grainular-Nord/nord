@@ -1,4 +1,5 @@
 import type { Subscribable, TemplateResult } from '../component/template-parser';
+import { disconnectNodes } from '../internals/disconnect-nodes';
 import { isSubscribable } from '../internals/is-subscribable';
 import { memoizeNodes } from '../internals/memoize-nodes';
 import { createStruct } from './create-struct';
@@ -16,8 +17,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
 
         if (isSubscribable(conditional)) {
             const unsubscribe = conditional.subscribe((value) => {
-                // biome-ignore lint/complexity/noForEach:
-                currentNodes?.forEach((node) => node?.remove());
+                disconnectNodes(currentNodes);
                 currentNodes = nodes.get(value);
                 root.before(...(currentNodes ?? []));
             });
