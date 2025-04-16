@@ -1,13 +1,9 @@
-import { Symbols } from '../internals/symbols';
+import { createStruct } from './create-struct';
 
 export const $render = (trustedHtml: string) => {
-    return Object.assign(
-        (root: Comment) => {
-            root.textContent += '$render:';
-            const template = document.createElement('template');
-            template.innerHTML = trustedHtml;
-            root.after(template.content);
-        },
-        { [Symbols.STRUCT]: Symbols.STRUCT },
-    );
+    return createStruct((root) => {
+        const template = document.createElement('template');
+        template.innerHTML = trustedHtml;
+        root.before(template.content);
+    });
 };
