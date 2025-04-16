@@ -7,7 +7,7 @@ export const memoizeNodes = (template: TemplateResult) => {
 
     const fragment = document.createElement('template');
     fragment.innerHTML = isComponent(template) ? template.resolve() : template;
-    hydrateClient(fragment, fragmentMap);
+    hydrateClient(fragment.content, fragmentMap);
 
     return Array.from(fragment.content.childNodes) as Element[];
 };
