@@ -2,6 +2,7 @@ export { hydrateClient } from './application/hydrate-client';
 export { mount } from './application/mount';
 export type { ComponentProps, PropsWithChildren } from './component/component-props';
 export type { PureComponent } from './component/pure-component';
+export { syncReactive } from './component/sync-reactive';
 export { templateParser as html } from './component/template-parser';
 export type { VoidComponent } from './component/void-component';
 export { createDirective } from './directives/create-directive';

@@ -1,4 +1,4 @@
-import type { Fragment } from '../component/fragment';
+import type { Fragment } from '../internals/fragment';
 import { trackAttributeNode } from '../internals/track-attribute-node';
 
 export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>) => {

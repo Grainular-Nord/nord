@@ -5,11 +5,11 @@ import { createDirectiveFragment } from '../directives/create-directive-fragment
 import { type Directive, isDirective } from '../directives/directive';
 import { createPrimitiveFragment } from '../internals/create-primitive-fragment';
 import { createReactiveFragment } from '../internals/create-reactive-fragment';
+import type { Fragment } from '../internals/fragment';
 import { isSubscribable } from '../internals/is-subscribable';
 import { createStructFragment } from '../structs/create-struct-fragment';
 import { type Struct, isStruct } from '../structs/struct';
 import { type ComponentFragment, createComponentFragment, isComponent } from './component-fragment';
-import type { Fragment } from './fragment';
 
 /**
  * INTERNAL: DO NOT USE OR ACCESS.

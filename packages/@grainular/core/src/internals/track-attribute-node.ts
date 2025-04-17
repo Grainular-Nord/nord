@@ -1,4 +1,4 @@
-import type { Fragment } from '../component/fragment';
+import type { Fragment } from './fragment';
 
 const BOOLEAN_ATTRIBUTES = new Set([
     'disabled',

@@ -1,4 +1,4 @@
-import type { Fragment } from '../component/fragment';
+import type { Fragment } from '../internals/fragment';
 import { identifier } from '../internals/identifier';
 import type { Directive } from './directive';
 

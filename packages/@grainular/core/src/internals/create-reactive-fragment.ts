@@ -1,6 +1,6 @@
-import type { Fragment } from '../component/fragment';
 import type { Subscribable } from '../component/template-parser';
 import { deletionObserver } from './deletion-observer';
+import type { Fragment } from './fragment';
 import { identifier } from './identifier';
 import type { AttributeControlledNode } from './track-attribute-node';
 

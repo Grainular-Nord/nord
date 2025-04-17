@@ -1,4 +1,4 @@
-import type { Fragment } from '../component/fragment';
+import type { Fragment } from './fragment';
 import { identifier } from './identifier';
 import type { AttributeControlledNode } from './track-attribute-node';
 
