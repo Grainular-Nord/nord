@@ -33,7 +33,9 @@ export const grain = <V = unknown>(start: V, isEqual = defaultCompareFn): Writab
     let _value = start;
     const consumers = new Set<Subscriber<V>>();
 
-    const notifyConsumers = () => consumers.forEach((consumer) => consumer(_value));
+    const notifyConsumers = () => {
+        for (const consumer of consumers) consumer(_value);
+    };
 
     const set = (newValue: V) => {
         if (!isEqual(_value, newValue)) {
@@ -49,10 +51,5 @@ export const grain = <V = unknown>(start: V, isEqual = defaultCompareFn): Writab
         return () => consumers.delete(subscriber);
     };
 
-    const grain = () => _value;
-    grain['set'] = set;
-    grain['update'] = update;
-    grain['subscribe'] = subscribe;
-
-    return grain;
+    return Object.assign(() => _value, { set, update, subscribe });
 };
