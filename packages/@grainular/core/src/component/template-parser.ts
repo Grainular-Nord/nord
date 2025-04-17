@@ -37,7 +37,7 @@ const createFragment = (
     // If there is no data, or the data is null or (possibly) undefined,
     // we return null and indicate that this is a value that should be
     // removed from the template all together.
-    if (!data) {
+    if (data == null) {
         return null;
     }
 
