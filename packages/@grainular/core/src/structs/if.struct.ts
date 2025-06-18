@@ -1,7 +1,7 @@
 import type { Subscribable, TemplateResult } from '../component/template-parser';
 import { disconnectNodes } from '../internals/disconnect-nodes';
+import { hydrateTemplate } from '../internals/hydrate-template.ts';
 import { isSubscribable } from '../internals/is-subscribable';
-import { memoizeNodes } from '../internals/memoize-nodes';
 import { createStruct } from './create-struct';
 
 export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfilled: () => TemplateResult) => {
@@ -9,7 +9,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
     // if applicable, we can render the value statically based on the
     // here provided value.
     const initial = conditional();
-    const nodes = new Map<boolean, Element[]>([[true, memoizeNodes(fulfilled())]]);
+    const nodes = new Map<boolean, Element[]>([[true, hydrateTemplate(fulfilled())]]);
 
     const struct = (root: Comment) => {
         let currentNodes = nodes.get(initial);
@@ -28,7 +28,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
 
     return Object.assign(createStruct(struct), {
         $else: (show: () => TemplateResult) => {
-            nodes.set(false, memoizeNodes(show()));
+            nodes.set(false, hydrateTemplate(show()));
             return createStruct(struct);
         },
     });

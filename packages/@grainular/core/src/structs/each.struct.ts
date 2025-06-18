@@ -1,6 +1,6 @@
 import type { Subscribable, TemplateResult } from '../component/template-parser';
+import { hydrateTemplate } from '../internals/hydrate-template.ts';
 import { isSubscribable } from '../internals/is-subscribable';
-import { memoizeNodes } from '../internals/memoize-nodes';
 import { createStruct } from './create-struct';
 
 type NodeEntry<T> = {
@@ -28,7 +28,7 @@ export const $each = <T>(
                             return new Map<string | number, NodeEntry<T>>(
                                 itt.map((value, idx, arr) => {
                                     const key = keyFn(value);
-                                    const [node] = memoizeNodes(run(value, idx, arr));
+                                    const [node] = hydrateTemplate(run(value, idx, arr));
                                     return [key, { key, snapshot: [value, idx, arr], node: node, index: idx }];
                                 }),
                             );

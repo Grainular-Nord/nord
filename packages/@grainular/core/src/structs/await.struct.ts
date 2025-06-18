@@ -1,6 +1,6 @@
 import type { TemplateResult } from '../component/template-parser';
 import { disconnectNodes } from '../internals/disconnect-nodes';
-import { memoizeNodes } from '../internals/memoize-nodes';
+import { hydrateTemplate } from '../internals/hydrate-template.ts';
 import { createStruct } from './create-struct';
 
 export const $await = <T>(source: Promise<T>) => {
@@ -13,7 +13,7 @@ export const $await = <T>(source: Promise<T>) => {
                 root.before(...initialNodes);
                 source
                     .then((result) => {
-                        const nodes = memoizeNodes(template(result));
+                        const nodes = hydrateTemplate(template(result));
                         disconnectNodes(initialNodes);
                         root.before(...nodes);
                     })
@@ -27,14 +27,14 @@ export const $await = <T>(source: Promise<T>) => {
             });
 
             const startNodes = (template: () => TemplateResult) => {
-                initialNodes = memoizeNodes(template());
+                initialNodes = hydrateTemplate(template());
                 return Object.assign(struct, {
                     $catch: errorNodes,
                 });
             };
 
             const errorNodes = (template: (error: Error) => TemplateResult) => {
-                resolveErrorNodes = (error: Error) => memoizeNodes(template(error));
+                resolveErrorNodes = (error: Error) => hydrateTemplate(template(error));
                 return Object.assign(struct, {
                     $else: startNodes,
                 });
