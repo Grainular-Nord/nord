@@ -1,23 +1,37 @@
 import type { PureComponent } from '../component/pure-component';
-import { fragmentMap } from '../component/template-parser';
 import { deletionObserver } from '../internals/deletion-observer';
-import { hydrateClient } from './hydrate-client';
+import { hydrateTemplate } from '../internals/hydrate-template.ts';
 
 type MountOptions = {
     to: Element | null | undefined;
 };
 
-export const mount = (component: PureComponent<undefined>, opts: MountOptions) => {
-    if (!opts.to) {
-        throw new ReferenceError('Target element is undefined.');
-    }
-    // render the template
-    const fragment = document.createElement('template');
-    fragment.innerHTML = component().resolve();
+/**
+ * Mounts a `PureComponent` into a target DOM element.
+ *
+ * It ensures the application bootstraps correctly by enforcing that the
+ * mount target is a valid `Element`.+
+ *
+ * @example
+ * ```ts
+ * import { mount } from "@grainular/core";
+ * import App from "./app.ts";
+ *
+ * mount(App, { to: document.querySelector("#app") })
+ * ```
+ *
+ * @throws {ReferenceError} If the target element is not a valid `Element`.
+ */
 
-    // Hydrate the nodes
-    hydrateClient(fragment.content, fragmentMap);
-    fragmentMap.clear();
-    opts.to.appendChild(fragment.content);
-    deletionObserver.observe(opts.to);
+export const mount = (component: PureComponent, { to: target }: MountOptions) => {
+    // We really want to make sure that the target element is defined,
+    // As otherwise the whole application start will fail.
+    if (!target || !(target instanceof Element))
+        throw new ReferenceError('Target element is undefined or not an Element');
+
+    // We then evaluate the fragments, hydrate them and append
+    // them to the supplied target element.
+    const fragments = hydrateTemplate(component().resolve());
+    target.append(...fragments);
+    deletionObserver.observe(target);
 };
