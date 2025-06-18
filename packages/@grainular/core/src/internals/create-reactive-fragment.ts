@@ -16,10 +16,10 @@ export const createReactiveFragment = (subscribable: Subscribable): Fragment => 
             // straightforward. We create a text node, replace the comment
             // with it, and set up subscription and un subscription
             if (node instanceof Comment) {
-                const text = document.createTextNode(`${subscribable()}`);
+                const text = document.createTextNode(`${subscribable() ?? ''}`);
                 node.replaceWith(text);
                 unsubscribe = subscribable.subscribe((value) => {
-                    text.textContent = `${value}`;
+                    text.textContent = `${value ?? ''}`;
                 });
             }
 
