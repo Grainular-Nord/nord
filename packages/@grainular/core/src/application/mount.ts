@@ -17,6 +17,7 @@ export const mount = (component: PureComponent<undefined>, opts: MountOptions) =
 
     // Hydrate the nodes
     hydrateClient(fragment.content, fragmentMap);
+    fragmentMap.clear();
     opts.to.appendChild(fragment.content);
     deletionObserver.observe(opts.to);
 };
