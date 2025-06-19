@@ -7,5 +7,3 @@ export const gameState = derived(combined([winner, ...squares]), ([winner, ...sq
         ended: winner || squares.every((square) => square !== null),
     };
 });
-
-gameState.subscribe((state) => console.log(state));
