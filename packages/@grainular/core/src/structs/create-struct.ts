@@ -1,4 +1,4 @@
-import { deletionObserver } from '../internals/deletion-observer';
+import { nodeLifecycleObserver } from '../internals/node-lifecycle-observer';
 import { Symbols } from '../internals/symbols';
 import type { Struct } from './struct';
 
@@ -8,7 +8,7 @@ export const createStruct = (struct: (root: Comment) => void | (() => void)) => 
             const cleanup = struct(root);
 
             if (cleanup) {
-                deletionObserver.track(root, cleanup);
+                nodeLifecycleObserver.trackUnmount(root, cleanup);
             }
         },
         {

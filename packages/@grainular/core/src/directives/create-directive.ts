@@ -1,4 +1,4 @@
-import { deletionObserver } from '../internals/deletion-observer';
+import { nodeLifecycleObserver } from '../internals/node-lifecycle-observer';
 import { Symbols } from '../internals/symbols';
 import type { Directive } from './directive';
 
@@ -13,7 +13,7 @@ export const createDirective = (handler: (node: HTMLElement) => void | (() => vo
             // nodes and run the cleanup when the node
             // is disconnected.
             if (cleanup) {
-                deletionObserver.track(node, cleanup);
+                nodeLifecycleObserver.trackUnmount(node, cleanup);
             }
         },
         { [Symbols.DIRECTIVE]: Symbols.DIRECTIVE },

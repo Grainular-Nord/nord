@@ -6,6 +6,7 @@ export { syncReactive } from './component/sync-reactive';
 export { templateParser as html } from './component/template-parser';
 export type { VoidComponent } from './component/void-component';
 export { createDirective } from './directives/create-directive';
+export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';
 export { ref } from './directives/ref.directive';
 export { $await } from './structs/await.struct';

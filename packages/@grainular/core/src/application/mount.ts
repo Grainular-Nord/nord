@@ -1,6 +1,6 @@
 import type { PureComponent } from '../component/pure-component';
-import { deletionObserver } from '../internals/deletion-observer';
 import { hydrateTemplate } from '../internals/hydrate-template.ts';
+import { nodeLifecycleObserver } from '../internals/node-lifecycle-observer.ts';
 
 type MountOptions = {
     to: Element | null | undefined;
@@ -29,9 +29,12 @@ export const mount = (component: PureComponent, { to: target }: MountOptions) =>
     if (!target || !(target instanceof Element))
         throw new ReferenceError('Target element is undefined or not an Element');
 
+    // Register the root node for the lifecycle
+    // observer, to ensure that mount and unmounts run smoothly.
+    nodeLifecycleObserver.observe(target);
+
     // We then evaluate the fragments, hydrate them and append
     // them to the supplied target element.
     const fragments = hydrateTemplate(component().resolve());
     target.append(...fragments);
-    deletionObserver.observe(target);
 };

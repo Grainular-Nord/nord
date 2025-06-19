@@ -1,7 +1,7 @@
 import type { Subscribable } from '../component/template-parser';
-import { deletionObserver } from './deletion-observer';
 import type { Fragment } from './fragment';
 import { identifier } from './identifier';
+import { nodeLifecycleObserver } from './node-lifecycle-observer';
 import type { AttributeControlledNode } from './track-attribute-node';
 
 export const createReactiveFragment = (subscribable: Subscribable): Fragment => {
@@ -36,7 +36,7 @@ export const createReactiveFragment = (subscribable: Subscribable): Fragment => 
                 });
             }
 
-            deletionObserver.track(node, () => unsubscribe?.());
+            nodeLifecycleObserver.trackUnmount(node, () => unsubscribe?.());
         },
         hydrateServer: (html) => {},
     };
