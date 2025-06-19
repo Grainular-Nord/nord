@@ -27,7 +27,10 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
         if (node instanceof Comment && node.textContent) {
             const [_, key] = node.textContent.split(':');
             if (fragments.has(key)) {
-                hydrationNodes.add(() => fragments.get(key)?.hydrateClient(node));
+                hydrationNodes.add(() => {
+                    fragments.get(key)?.hydrateClient(node);
+                    fragments.delete(key);
+                });
             }
         }
 
@@ -42,7 +45,10 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
             const intersected = keys.intersection(new Set(fragments.keys()));
             if (intersected.size) {
                 for (const key of intersected) {
-                    hydrationNodes.add(() => fragments.get(key)?.hydrateClient(node));
+                    hydrationNodes.add(() => {
+                        fragments.get(key)?.hydrateClient(node);
+                        fragments.delete(key);
+                    });
                 }
             }
 
@@ -66,5 +72,4 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
     // We cannot do this while walking the tree, as any mutation
     // of the tree itself will stop the walker.
     for (const node of hydrationNodes) node();
-    fragments.clear();
 };

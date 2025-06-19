@@ -9,17 +9,18 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
     // if applicable, we can render the value statically based on the
     // here provided value.
     const initial = conditional();
-    const nodes = new Map<boolean, Element[]>([[true, hydrateTemplate(fulfilled())]]);
+    const nodes = new Map<boolean, () => Element[]>([[true, () => hydrateTemplate(fulfilled())]]);
 
     const struct = (root: Comment) => {
-        let currentNodes = nodes.get(initial);
-        root.before(...(currentNodes ?? []));
+        const currentNodes = nodes.get(initial);
+        let evaluated = currentNodes?.() ?? [];
+        root.before(...evaluated);
 
         if (isSubscribable(conditional)) {
             const unsubscribe = conditional.subscribe((value) => {
-                disconnectNodes(currentNodes);
-                currentNodes = nodes.get(value);
-                root.before(...(currentNodes ?? []));
+                disconnectNodes(evaluated);
+                evaluated = nodes.get(value)?.() ?? [];
+                root.before(...evaluated);
             });
 
             return () => unsubscribe?.();
@@ -28,7 +29,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
 
     return Object.assign(createStruct(struct), {
         $else: (show: () => TemplateResult) => {
-            nodes.set(false, hydrateTemplate(show()));
+            nodes.set(false, () => hydrateTemplate(show()));
             return createStruct(struct);
         },
     });
