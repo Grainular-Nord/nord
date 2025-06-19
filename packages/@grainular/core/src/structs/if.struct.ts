@@ -17,13 +17,11 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
         root.before(...evaluated);
 
         if (isSubscribable(conditional)) {
-            const unsubscribe = conditional.subscribe((value) => {
+            return conditional.subscribe((value) => {
                 disconnectNodes(evaluated);
                 evaluated = nodes.get(value)?.() ?? [];
                 root.before(...evaluated);
             });
-
-            return () => unsubscribe?.();
         }
     };
 
