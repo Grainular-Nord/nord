@@ -1,0 +1,13 @@
+button.square {
+    padding: 0;
+    aspect-ratio: 1 / 1;
+    width: 4.5rem;
+
+    &[type="X"] {
+        background: var(--ui-color-accent);
+    }
+
+    &[type="O"] {
+        background: var(--ui-color-contrast);
+    }
+}
