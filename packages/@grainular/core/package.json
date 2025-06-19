@@ -13,14 +13,14 @@
             "require": "./dist/cjs/index.js"
         }
     },
-    "unpkg": "./dist/browser/browser.js",
+    "unpkg": "./dist/browser/index.js",
     "devDependencies": {
         "@repository/config": "workspace:*",
         "@repository/builder": "workspace:*",
-        "@types/bun": "latest"
+        "@types/bun": "latest",
+        "typescript": "^5.0.0"
     },
     "peerDependencies": {
-        "typescript": "^5.0.0",
         "@grainular/grains": "workspace:*"
     },
     "scripts": {
