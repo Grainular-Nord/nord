@@ -17,9 +17,7 @@
     "devDependencies": {
         "@repository/config": "workspace:*",
         "@repository/builder": "workspace:*",
-        "@types/bun": "latest"
-    },
-    "peerDependencies": {
+        "@types/bun": "latest",
         "typescript": "^5.0.0"
     },
     "scripts": {
