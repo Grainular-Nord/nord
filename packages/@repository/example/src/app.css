@@ -51,9 +51,3 @@ button {
 
     padding: 0.5rem 1.5rem;
 }
-
-.board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border: 1px solid var(--theme-color-text);
-}

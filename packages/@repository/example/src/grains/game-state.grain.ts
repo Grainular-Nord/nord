@@ -1,9 +1,12 @@
 import { combined, derived } from '@grainular/grains';
+import { checkWinner } from '../utils/check-winner';
+import { getCurrentPlayerSymbol } from '../utils/get-current-player-symbol';
 import { squares } from './squares.grain';
-import { winner } from './winner.grain';
 
-export const gameState = derived(combined([winner, ...squares]), ([winner, ...squares]) => {
-    return {
-        ended: winner || squares.every((square) => square !== null),
-    };
+export const gameState = derived(combined(squares), (squares) => {
+    const winner = !!checkWinner(squares);
+    const ended = winner || squares.every((square) => square !== null);
+    const symbol = getCurrentPlayerSymbol(ended, squares);
+
+    return { winner, ended, symbol };
 });

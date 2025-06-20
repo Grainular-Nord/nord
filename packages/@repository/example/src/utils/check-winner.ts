@@ -1,12 +1,14 @@
 /** @format */
 
-export const checkWinner = (board: ('X' | 'O' | null)[]) => {
+import type { PlayerSymbol } from '../grains/squares.grain';
+
+export const checkWinner = (board: (PlayerSymbol | null)[]) => {
     // Map each cell to its corresponding magic square number
     const magicSquare = [2, 7, 6, 9, 5, 1, 4, 3, 8];
 
     // Sum for 'X' and 'O'
 
-    const checkWin = (player: 'X' | 'O' | null): boolean => {
+    const checkWin = (player: PlayerSymbol | null): boolean => {
         const playerPositions = magicSquare.filter((_, i) => board[i] === player);
         for (let i = 0; i < playerPositions.length - 2; i++) {
             for (let j = i + 1; j < playerPositions.length - 1; j++) {
