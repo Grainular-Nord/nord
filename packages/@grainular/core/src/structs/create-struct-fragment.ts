@@ -14,6 +14,5 @@ export const createStructFragment = (struct: Struct): Fragment => {
 
             throw new TypeError('Structs cannot be applied to non comment nodes.');
         },
-        hydrateServer: () => {},
     };
 };

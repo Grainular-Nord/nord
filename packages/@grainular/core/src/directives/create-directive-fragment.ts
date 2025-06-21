@@ -14,6 +14,5 @@ export const createDirectiveFragment = (directive: Directive): Fragment => {
 
             throw new TypeError('Directives cannot be applied to non element nodes.');
         },
-        hydrateServer: () => {},
     };
 };

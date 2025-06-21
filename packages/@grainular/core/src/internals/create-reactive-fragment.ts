@@ -38,6 +38,5 @@ export const createReactiveFragment = (subscribable: Subscribable): Fragment => 
 
             nodeLifecycleObserver.trackUnmount(node, () => unsubscribe?.());
         },
-        hydrateServer: (html) => {},
     };
 };

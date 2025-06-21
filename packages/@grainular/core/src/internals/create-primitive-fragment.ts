@@ -18,6 +18,5 @@ export const createPrimitiveFragment = (data: string | number | boolean): Fragme
                 node.updateAttribute(id, data);
             }
         },
-        hydrateServer: () => {},
     };
 };
