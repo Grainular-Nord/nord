@@ -34,7 +34,7 @@ export const grain = <V = unknown>(start: V, isEqual = defaultCompareFn): Writab
     const consumers = new Set<Subscriber<V>>();
 
     const notifyConsumers = () => {
-        for (const consumer of consumers) consumer(_value);
+        for (const consumer of Array.from(consumers)) consumer(_value);
     };
 
     const set = (newValue: V) => {
