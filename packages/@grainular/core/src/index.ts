@@ -12,3 +12,4 @@ export { ref } from './directives/ref.directive';
 export { $await } from './structs/await.struct';
 export { $each } from './structs/each.struct';
 export { $if } from './structs/if.struct';
+export { $render } from './structs/render.struct';
