@@ -9,7 +9,7 @@
         "@changesets/cli": "^2.27.9",
         "@commitlint/cli": "^19.3.0",
         "@commitlint/config-conventional": "^19.2.2",
-        "@types/bun": "latest",
+        "@types/bun": "^1.2.16",
         "alex": "^11.0.1",
         "husky": "^9.0.11",
         "prettier": "^3.3.2",
