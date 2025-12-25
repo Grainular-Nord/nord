@@ -35,6 +35,6 @@ export const mount = (component: PureComponent, { to: target }: MountOptions) =>
 
     // We then evaluate the fragments, hydrate them and append
     // them to the supplied target element.
-    const fragments = hydrateTemplate(component().resolve());
+    const fragments = hydrateTemplate(component());
     target.append(...fragments);
 };

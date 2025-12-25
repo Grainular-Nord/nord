@@ -1,13 +1,14 @@
-import type { Subscribable } from '../component/template-parser';
+import type { FragmentMap, Subscribable } from '../component/template-parser';
 import type { Fragment } from './fragment';
 import { identifier } from './identifier';
 import { nodeLifecycleObserver } from './node-lifecycle-observer';
 import type { AttributeControlledNode } from './track-attribute-node';
 
-export const createReactiveFragment = (subscribable: Subscribable): Fragment => {
+export const createReactiveFragment = (subscribable: Subscribable, fragments: FragmentMap): Fragment => {
     const id = identifier();
     return {
         id,
+        fragments,
         resolve: () => `<!--:${id}:-->`,
         hydrateClient: (node) => {
             let unsubscribe: void | (() => void);

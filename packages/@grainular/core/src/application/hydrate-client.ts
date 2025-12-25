@@ -1,7 +1,7 @@
-import type { Fragment } from '../internals/fragment';
+import type { FragmentMap } from '../component/template-parser';
 import { trackAttributeNode } from '../internals/track-attribute-node';
 
-export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>) => {
+export const hydrateClient = (root: ParentNode, fragments: FragmentMap) => {
     const fragmentKeys = [...fragments.keys()];
 
     // We create our filter and tree walker, that we can then
@@ -11,7 +11,7 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
     // dom that could break our tree walker.
     const filter = NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT;
     const tw = document.createTreeWalker(root, filter, { acceptNode: () => NodeFilter.FILTER_ACCEPT });
-    const hydrationNodes = new Set<() => void>();
+    const hydrationNodes = new Set<[string, () => void]>();
 
     // We can then iterate the tree walker nodes
     // and operate on them
@@ -27,10 +27,13 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
         if (node instanceof Comment && node.textContent) {
             const [_, key] = node.textContent.split(':');
             if (fragments.has(key)) {
-                hydrationNodes.add(() => {
-                    fragments.get(key)?.hydrateClient(node);
-                    fragments.delete(key);
-                });
+                hydrationNodes.add([
+                    key,
+                    () => {
+                        fragments.get(key)?.hydrateClient(node);
+                        fragments.delete(key);
+                    },
+                ]);
             }
         }
 
@@ -45,10 +48,13 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
             const intersected = keys.intersection(new Set(fragments.keys()));
             if (intersected.size) {
                 for (const key of intersected) {
-                    hydrationNodes.add(() => {
-                        fragments.get(key)?.hydrateClient(node);
-                        fragments.delete(key);
-                    });
+                    hydrationNodes.add([
+                        key,
+                        () => {
+                            fragments.get(key)?.hydrateClient(node);
+                            fragments.delete(key);
+                        },
+                    ]);
                 }
             }
 
@@ -71,5 +77,7 @@ export const hydrateClient = (root: ParentNode, fragments: Map<string, Fragment>
     // cycle, we run the created function to hydrate the node.
     // We cannot do this while walking the tree, as any mutation
     // of the tree itself will stop the walker.
-    for (const node of hydrationNodes) node();
+    for (const [key, node] of hydrationNodes) {
+        node();
+    }
 };

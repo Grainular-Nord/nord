@@ -13,6 +13,9 @@ export const $await = <T>(source: Promise<T>) => {
                 root.before(...initialNodes);
                 source
                     .then((result) => {
+                        // Make sure the node is still connected
+                        if (!root.isConnected) return;
+
                         const nodes = hydrateTemplate(template(result));
                         disconnectNodes(initialNodes);
                         root.before(...nodes);

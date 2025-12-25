@@ -14,9 +14,12 @@ import { type ComponentFragment, createComponentFragment, isComponent } from './
 /**
  * INTERNAL: DO NOT USE OR ACCESS.
  */
-export const fragmentMap = new Map<string, Fragment>();
+export type FragmentMap = Map<string, Fragment>;
 
-export type TemplateResult = ComponentFragment | string | null;
+export type TemplateResult = {
+    resolve: () => string;
+    readonly fragments: FragmentMap;
+};
 
 // Providing a more open type here allows the user or dev
 // to implement it's own readonly reactive state mechanism.
@@ -33,6 +36,7 @@ export type Subscribable<V = unknown> = {
  */
 const createFragment = (
     data: string | number | boolean | null | Subscribable | Directive | Struct | ComponentFragment | undefined,
+    fragments: FragmentMap,
 ) => {
     // If there is no data, or the data is null or (possibly) undefined,
     // we return null and indicate that this is a value that should be
@@ -48,11 +52,11 @@ const createFragment = (
         case isComponent(data):
             return data;
         case isDirective(data):
-            return createDirectiveFragment(data);
+            return createDirectiveFragment(data, fragments);
         case isStruct(data):
-            return createStructFragment(data);
+            return createStructFragment(data, fragments);
         case isSubscribable(data):
-            return createReactiveFragment(data);
+            return createReactiveFragment(data, fragments);
         default:
             // All other values are returned as primitive Fragment
             // that coerces the data into a string type.
@@ -64,6 +68,7 @@ export const templateParser = (
     strings: TemplateStringsArray,
     ...fragments: (string | number | boolean | null | Subscribable | Directive | Struct | ComponentFragment)[]
 ) => {
+    const fragmentMap = new Map<string, Fragment>();
     const template = strings.flatMap((str, idx) => {
         return [
             // We can directly assume and create a resolver
@@ -78,7 +83,7 @@ export const templateParser = (
             // fragment, we also add it to the fragment map
             (() => {
                 const data = fragments.at(idx);
-                const fragment = createFragment(data);
+                const fragment = createFragment(data, fragmentMap);
 
                 if (fragment && 'id' in fragment) {
                     fragmentMap.set(fragment.id, fragment);
@@ -89,5 +94,8 @@ export const templateParser = (
         ];
     });
 
-    return createComponentFragment(template.filter((v) => !!v));
+    return createComponentFragment(
+        template.filter((v) => !!v),
+        fragmentMap,
+    );
 };

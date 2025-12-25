@@ -22,10 +22,10 @@ export type AttributeControlledNode = HTMLElement & {
 // them to set a new value using just their id and value, abstracting
 // away the need to track the name, position or other values of the
 // attribute.
-export const trackAttributeNode = (node: HTMLElement, attribute: string, fragments: Fragment[]) => {
+export const trackAttributeNode = (node: Element, attribute: string, fragments: Fragment[]) => {
     // There is some additional logic involved in setting attributes,
     // as we need to check and infer for boolean attributes.
-    const setAttributeValueOnNode = (node: HTMLElement, value: Map<string, string>) => {
+    const setAttributeValueOnNode = (node: Element, value: Map<string, string>) => {
         // We infer the attribute value and check if we can
         // set the attribute with the value, in case we're not
         // in a boolean attribute.
