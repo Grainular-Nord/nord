@@ -12,5 +12,5 @@ export const Square = ({ field }: SquareProps) => {
         field.set(gameState().symbol);
     };
 
-    return html`<button class="square" type="${field}" ${on('click', handleClick)}>${field}</button>`;
+    return html`<button class="square" data-player="${field}" ${on('click', handleClick)}>${field}</button>`;
 };

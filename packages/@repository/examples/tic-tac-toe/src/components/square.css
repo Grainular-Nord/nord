@@ -3,11 +3,11 @@ button.square {
     aspect-ratio: 1 / 1;
     width: 4.5rem;
 
-    &[type="X"] {
+    &[data-player="X"] {
         background: var(--ui-color-accent);
     }
 
-    &[type="O"] {
+    &[data-player="O"] {
         background: var(--ui-color-contrast);
     }
 }

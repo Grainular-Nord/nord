@@ -14,9 +14,7 @@ export const Board = () => {
     return html`
         <h1>${message}: ${player}</h1>
         <div class="board">
-            ${$each(() => squares)
-                .$withKey(() => crypto.randomUUID())
-                .$as((field) => Square({ field }))}
+            ${$each(() => squares).$as((field) => Square({ field }))}
         </div>
         ${$if(
             derived(gameState, (state) => state.ended),
