@@ -13,21 +13,21 @@ export const createReactiveFragment = (fragmentValue: Subscribable, id = identif
         render: () => String(fragmentValue()),
         hydrate: (node: Node) => {
             if (node instanceof Comment) {
-                const text = new Text(String(fragmentValue()));
+                const text = new Text(String(fragmentValue() ?? ''));
                 node.replaceWith(text);
 
                 const onDestroy = fragmentValue.subscribe((value) => {
-                    text.textContent = String(value);
+                    text.textContent = String(value ?? '');
                 });
 
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
             }
 
             if (node instanceof Element) {
-                updateAttributeValue(id, fragmentValue());
+                updateAttributeValue(id, fragmentValue() ?? '');
 
                 const onDestroy = fragmentValue.subscribe((value) => {
-                    updateAttributeValue(id, value);
+                    updateAttributeValue(id, value ?? '');
                 });
 
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
