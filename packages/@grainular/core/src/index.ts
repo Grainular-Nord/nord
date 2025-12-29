@@ -1,4 +1,5 @@
 export { mount } from './application/mount';
+export { renderToString } from './application/render-to-string';
 export { templateParser as html } from './application/template-parser';
 export * from './component/component-types';
 export { createDirective } from './directives/create-directive';

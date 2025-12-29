@@ -12,12 +12,12 @@ export const createPrimitiveFragment = (fragmentValue: boolean | string | number
         hydrate: (node: Node) => {
             // Hydrate the node depending of it's type
             if (node instanceof Comment) {
-                return node.replaceWith(new Text(String(fragmentValue ?? '')));
+                return node.replaceWith(new Text(String(fragmentValue)));
             }
 
             // Do the same for attributes
             if (node instanceof Element) {
-                updateAttributeValue(id, fragmentValue ?? '');
+                updateAttributeValue(id, fragmentValue);
             }
         },
     };

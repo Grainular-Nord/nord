@@ -32,10 +32,14 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean), fulfil
         }
     };
 
-    return Object.assign(createStruct(struct), {
+    const snapshot = () => {
+        return conditional() ? fulfilled().render() : '';
+    };
+
+    return Object.assign(createStruct(struct, snapshot), {
         $else: (show: () => ComponentFragment) => {
             nodes.set(false, () => hydrateFragment(show()));
-            return createStruct(struct);
+            return createStruct(struct, () => (!conditional() ? show().render() : ''));
         },
     });
 };

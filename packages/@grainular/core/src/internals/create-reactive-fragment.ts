@@ -10,7 +10,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable, id = identif
     return {
         id,
         resolve: () => `<!--:${id}:-->`,
-        render: () => String(fragmentValue()),
+        render: () => String(fragmentValue() ?? ''),
         hydrate: (node: Node) => {
             if (node instanceof Comment) {
                 const text = new Text(String(fragmentValue() ?? ''));

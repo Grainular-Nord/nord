@@ -11,47 +11,53 @@ import { createStruct } from './create-struct';
 export const $await = <T>(source: Promise<T>) => {
     return {
         $then: (template: (value: T) => ComponentFragment) => {
-            let initialNodes: Element[] = [];
-            let resolveErrorNodes: ((error: Error) => Element[]) | null = null;
+            let pendingFragment: () => ComponentFragment;
+            let errorFragment: (error: Error) => ComponentFragment;
 
-            const struct = createStruct((root: Comment) => {
-                root.before(...initialNodes);
-                source
-                    .then((result) => {
-                        // Make sure the node is still connected
-                        if (!root.isConnected) return;
+            const struct = createStruct(
+                (root: Comment) => {
+                    const initialNodes = pendingFragment ? hydrateFragment(pendingFragment()) : [];
+                    root.before(...initialNodes);
+                    source
+                        .then((result) => {
+                            // Make sure the node is still connected
+                            if (!root.isConnected) return;
 
-                        const nodes = hydrateFragment(template(result));
-                        disconnectNodes(initialNodes);
-                        root.before(...nodes);
-                    })
-                    .catch((error) => {
-                        if (!root.isConnected) return;
-                        // Disconnect the current nodes
-                        // regardless if new nodes exist
-                        disconnectNodes(initialNodes);
-
-                        // Create the new error state nodes,
-                        // or clear the nodes entirely
-                        if (resolveErrorNodes) {
-                            const nodes = resolveErrorNodes(error);
+                            const nodes = hydrateFragment(template(result));
+                            disconnectNodes(initialNodes);
                             root.before(...nodes);
-                            return;
-                        }
+                        })
+                        .catch((error) => {
+                            if (!root.isConnected) return;
+                            // Disconnect the current nodes
+                            // regardless if new nodes exist
+                            disconnectNodes(initialNodes);
 
-                        initialNodes = [];
-                    });
-            });
+                            // Create the new error state nodes,
+                            // or clear the nodes entirely
+                            if (errorFragment) {
+                                const nodes = hydrateFragment(errorFragment(error));
+                                root.before(...nodes);
+                                return;
+                            }
+                        });
+                },
+                // For our SSR snapshot, we only render the Pending nodes if they
+                // exist. Everything else is ignored.
+                () => {
+                    return pendingFragment()?.render() ?? '';
+                },
+            );
 
             const startNodes = (template: () => ComponentFragment) => {
-                initialNodes = hydrateFragment(template());
+                pendingFragment = template;
                 return Object.assign(struct, {
                     $catch: errorNodes,
                 });
             };
 
             const errorNodes = (template: (error: Error) => ComponentFragment) => {
-                resolveErrorNodes = (error: Error) => hydrateFragment(template(error));
+                errorFragment = (error: Error) => template(error);
                 return Object.assign(struct, {
                     $pending: startNodes,
                 });
