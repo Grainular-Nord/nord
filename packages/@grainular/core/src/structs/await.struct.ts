@@ -1,11 +1,16 @@
-import type { TemplateResult } from '../component/template-parser';
-import { disconnectNodes } from '../internals/disconnect-nodes';
-import { hydrateTemplate } from '../internals/hydrate-template.ts';
+import { disconnectNodes } from '../application/lifecycle-observer';
+import type { ComponentFragment } from '../component/component-fragment';
+import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
+/**
+ * Struct to render async data and elements
+ *
+ * @param source
+ */
 export const $await = <T>(source: Promise<T>) => {
     return {
-        $then: (template: (value: T) => TemplateResult) => {
+        $then: (template: (value: T) => ComponentFragment) => {
             let initialNodes: Element[] = [];
             let resolveErrorNodes: ((error: Error) => Element[]) | null = null;
 
@@ -16,35 +21,44 @@ export const $await = <T>(source: Promise<T>) => {
                         // Make sure the node is still connected
                         if (!root.isConnected) return;
 
-                        const nodes = hydrateTemplate(template(result));
+                        const nodes = hydrateFragment(template(result));
                         disconnectNodes(initialNodes);
                         root.before(...nodes);
                     })
                     .catch((error) => {
+                        if (!root.isConnected) return;
+                        // Disconnect the current nodes
+                        // regardless if new nodes exist
+                        disconnectNodes(initialNodes);
+
+                        // Create the new error state nodes,
+                        // or clear the nodes entirely
                         if (resolveErrorNodes) {
                             const nodes = resolveErrorNodes(error);
-                            disconnectNodes(initialNodes);
                             root.before(...nodes);
+                            return;
                         }
+
+                        initialNodes = [];
                     });
             });
 
-            const startNodes = (template: () => TemplateResult) => {
-                initialNodes = hydrateTemplate(template());
+            const startNodes = (template: () => ComponentFragment) => {
+                initialNodes = hydrateFragment(template());
                 return Object.assign(struct, {
                     $catch: errorNodes,
                 });
             };
 
-            const errorNodes = (template: (error: Error) => TemplateResult) => {
-                resolveErrorNodes = (error: Error) => hydrateTemplate(template(error));
+            const errorNodes = (template: (error: Error) => ComponentFragment) => {
+                resolveErrorNodes = (error: Error) => hydrateFragment(template(error));
                 return Object.assign(struct, {
-                    $else: startNodes,
+                    $pending: startNodes,
                 });
             };
 
             return Object.assign(struct, {
-                $else: startNodes,
+                $pending: startNodes,
                 $catch: errorNodes,
             });
         },

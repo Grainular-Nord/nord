@@ -1,43 +1,37 @@
-import type { FragmentMap, Subscribable } from '../component/template-parser';
+import { lifecycleObserver } from '../application/lifecycle-observer';
+import { updateAttributeValue } from './attribute-bindings';
 import type { Fragment } from './fragment';
 import { identifier } from './identifier';
-import { nodeLifecycleObserver } from './node-lifecycle-observer';
-import type { AttributeControlledNode } from './track-attribute-node';
+import type { Subscribable } from './subscribable';
 
-export const createReactiveFragment = (subscribable: Subscribable, fragments: FragmentMap): Fragment => {
-    const id = identifier();
+// Creates a reactive fragment, that also updates the hydrated
+// node on update of the subscribable
+export const createReactiveFragment = (fragmentValue: Subscribable, id = identifier()): Fragment => {
     return {
         id,
-        fragments,
         resolve: () => `<!--:${id}:-->`,
-        hydrateClient: (node) => {
-            let unsubscribe: void | (() => void);
-
-            // If we have a comment, hydration is
-            // straightforward. We create a text node, replace the comment
-            // with it, and set up subscription and un subscription
+        render: () => String(fragmentValue()),
+        hydrate: (node: Node) => {
             if (node instanceof Comment) {
-                const text = document.createTextNode(`${subscribable() ?? ''}`);
+                const text = new Text(String(fragmentValue()));
                 node.replaceWith(text);
-                unsubscribe = subscribable.subscribe((value) => {
-                    text.textContent = `${value ?? ''}`;
+
+                const onDestroy = fragmentValue.subscribe((value) => {
+                    text.textContent = String(value);
                 });
+
+                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
             }
 
-            // We also need to do a similar thing for elements, where we need to
-            // check for attribute values containing the id, and then setup correct
-            // string replacement operations
-            if (
-                ((node: Node): node is AttributeControlledNode =>
-                    node instanceof HTMLElement && 'updateAttribute' in node)(node)
-            ) {
-                node.updateAttribute(id, subscribable());
-                unsubscribe = subscribable.subscribe((value) => {
-                    node.updateAttribute(id, value);
-                });
-            }
+            if (node instanceof Element) {
+                updateAttributeValue(id, fragmentValue());
 
-            nodeLifecycleObserver.trackUnmount(node, () => unsubscribe?.());
+                const onDestroy = fragmentValue.subscribe((value) => {
+                    updateAttributeValue(id, value);
+                });
+
+                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+            }
         },
     };
 };

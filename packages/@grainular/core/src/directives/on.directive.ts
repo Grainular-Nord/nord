@@ -1,4 +1,5 @@
 import { createDirective } from './create-directive';
+import type { DirectiveFragment } from './directive-fragment';
 
 /**
  * Attaches an event listener to a DOM element as a directive.
@@ -27,7 +28,7 @@ export const on = <Key extends keyof HTMLElementEventMap>(
     event: Key,
     listener: (event: HTMLElementEventMap[Key]) => void,
     options?: AddEventListenerOptions,
-) => {
+): DirectiveFragment => {
     const handler = (ev: Event) => listener(ev as HTMLElementEventMap[Key]);
     return createDirective((node: Element) => {
         node.addEventListener(event, handler, options);

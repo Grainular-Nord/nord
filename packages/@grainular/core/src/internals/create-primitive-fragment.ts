@@ -1,21 +1,23 @@
+import { updateAttributeValue } from './attribute-bindings';
 import type { Fragment } from './fragment';
 import { identifier } from './identifier';
-import type { AttributeControlledNode } from './track-attribute-node';
 
-export const createPrimitiveFragment = (data: string | number | boolean): Fragment => {
-    const id = identifier();
+// Creates a primitive fragment, containing a scalar value
+// that get's resolved and rendered only once.
+export const createPrimitiveFragment = (fragmentValue: boolean | string | number, id = identifier()): Fragment => {
     return {
         id,
         resolve: () => `<!--:${id}:-->`,
-        hydrateClient: (node: Node) => {
+        render: () => String(fragmentValue),
+        hydrate: (node: Node) => {
+            // Hydrate the node depending of it's type
             if (node instanceof Comment) {
-                node.replaceWith(new Text(`${data}`));
+                return node.replaceWith(new Text(String(fragmentValue)));
             }
-            if (
-                ((node: Node): node is AttributeControlledNode =>
-                    node instanceof HTMLElement && 'updateAttribute' in node)(node)
-            ) {
-                node.updateAttribute(id, data);
+
+            // Do the same for attributes
+            if (node instanceof Element) {
+                updateAttributeValue(id, fragmentValue);
             }
         },
     };

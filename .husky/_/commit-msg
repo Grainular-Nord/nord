@@ -51,6 +51,15 @@ call_lefthook()
     elif command -v mint >/dev/null 2>&1
     then
       mint run csjones/lefthook-plugin "$@"
+    elif uv run lefthook -h >/dev/null 2>&1
+    then
+      uv run lefthook "$@"
+    elif mise exec -- lefthook -h >/dev/null 2>&1
+    then
+      mise exec -- lefthook "$@"
+    elif devbox run lefthook -h >/dev/null 2>&1
+    then
+      devbox run lefthook "$@"
     else
       echo "Can't find lefthook in PATH"
     fi

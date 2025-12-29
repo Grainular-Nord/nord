@@ -1,125 +1,135 @@
-import type { Subscribable, TemplateResult } from '../component/template-parser';
-import { hydrateTemplate } from '../internals/hydrate-template.ts';
-import { isSubscribable } from '../internals/is-subscribable';
+import { disconnectNodes } from '../application/lifecycle-observer';
+import type { ComponentFragment } from '../component/component-fragment';
+import { hydrateFragment } from '../internals/hydrate-fragment';
+import { isSubscribableValue } from '../internals/is-subscribable-value';
+import type { Subscribable } from '../internals/subscribable';
 import { createStruct } from './create-struct';
 
-type NodeEntry<T> = {
-    data: T;
-    node: Element;
-};
+type CachedEntry<T> = { data: T; nodes: Element[] };
+type KeyFn<T> = (entry: T) => unknown;
+type RenderFn<T> = (entry: T, idx: number, arr: T[]) => ComponentFragment;
 
-export const $each = <T>(
-    dataSource: (() => Array<T>) & Partial<Subscribable<Array<T>>>,
-    compare?: (prev: T, current: T) => boolean,
-) => {
-    // Internal struct builder to avoid code duplication between .$as() and .$withKey().$as()
-    const createEachStruct = (
-        keyFn: (entry: T) => unknown,
-        render: (entry: T, index: number, arr: Array<T>) => TemplateResult,
-    ) => {
-        return createStruct((anchor: Comment) => {
-            // The cache persists node references between renders
-            const cache = new Map<unknown, NodeEntry<T>>();
+export const $each = <T>(source: (() => T[]) | Subscribable<T[]>, compareFn?: (prev: T, current: T) => boolean) => {
+    const createEachStruct = (keyFn: KeyFn<T>, render: RenderFn<T>) => {
+        return createStruct((anchor) => {
+            // We create a cache map to hold nodes by their
+            // node keys, this allows efficient diffing later
+            const cache = new Map<unknown, CachedEntry<T>>();
 
-            // Helper: Hydrates the template and extracts the root element safely
-            const createNode = (item: T, index: number, arr: T[]): Element => {
-                const nodes = hydrateTemplate(render(item, index, arr));
-                // Prefer the first generic Element, fallback to the first node (for text-only templates)
-                return (nodes.find((n) => n.nodeType === 1) || nodes[0]) as Element;
+            const createNodes = (item: T, idx: number, arr: T[]) => {
+                return hydrateFragment(render(item, idx, arr));
             };
 
-            const reconcile = (items: T[]) => {
-                // 1. FAST PATH: Clear All
-                if (items.length === 0) {
-                    if (cache.size > 0) {
-                        for (const entry of cache.values()) entry.node.remove();
-                        cache.clear();
-                    }
+            const reconcileNodes = (items: T[]) => {
+                const root = anchor.parentNode;
+
+                // Bail if the anchor is detached
+                if (!root) return;
+
+                // If all items have been deleted, we can
+                // simple detach all of them
+                if (items.length === 0 && cache.size > 0) {
+                    for (const entry of cache.values()) disconnectNodes(entry.nodes);
+                    cache.clear();
                     return;
                 }
 
-                // 2. FAST PATH: Initial Render (Forward Append)
-                // Much faster for first paint as it avoids layout thrashing by using a Fragment
+                // If the cache is empty, we can render all nodes directly,
+                // this is likely the initial render. This also means we
+                // have a fast iteration here for static lists.
                 if (cache.size === 0) {
                     const fragment = document.createDocumentFragment();
-                    for (let i = 0; i < items.length; i++) {
-                        const item = items[i];
-                        const key = keyFn(item);
 
-                        const node = createNode(item, i, items);
-                        cache.set(key, { node, data: item });
-                        fragment.appendChild(node);
-                    }
-                    anchor.parentElement?.insertBefore(fragment, anchor);
-                    return;
+                    // Iterate to create the nodes, append them to the
+                    // fragment.
+                    items.forEach((item, idx, arr) => {
+                        const key = keyFn(item);
+                        const nodes = createNodes(item, idx, arr);
+                        cache.set(key, { nodes, data: item });
+                        fragment.append(...nodes);
+                    });
+
+                    root.insertBefore(fragment, anchor);
+                    return; // Return early, nothing lef to do
                 }
 
-                // 3. RECONCILIATION PATH (Backwards Iteration)
-                // Iterating backwards provides a stable 'cursor' reference (starting with anchor),
-                // making moves and inserts strictly O(N) without complex index math.
-                const keysInUse = new Set<unknown>();
+                // Reconciliation process, which will be used when
+                // we have nodes and a already existing cache, indicating
+                // a updated list to render
+                const currentUsedKeys = new Set<unknown>();
                 let cursor: Node | null = anchor;
 
-                for (let i = items.length - 1; i >= 0; i--) {
-                    const item = items[i];
+                // We iterate backwards to ensure stable iteration
+                for (let idx = items.length - 1; idx >= 0; idx--) {
+                    const item = items[idx];
                     const key = keyFn(item);
-                    keysInUse.add(key);
+                    currentUsedKeys.add(key);
 
                     let entry = cache.get(key);
 
-                    // Case A: Create New
+                    // If there is no entry from the cache,
+                    // we have a new node and need to render
+                    // this one accordingly
                     if (!entry) {
-                        const node = createNode(item, i, items);
-                        entry = { node, data: item };
+                        const nodes = createNodes(item, idx, items);
+                        entry = { nodes, data: item };
                         cache.set(key, entry);
                     }
-                    // Case B: Update Existing
-                    else {
-                        const hasChanged = compare ? !compare(entry.data, item) : entry.data !== item;
 
-                        if (hasChanged) {
-                            const newNode = createNode(item, i, items);
-                            entry.node.replaceWith(newNode);
-                            entry.node = newNode;
+                    // If a entry exists, we can check
+                    // if it has changed, and if we should update
+                    // or move it.
+                    else {
+                        const changed = compareFn?.(entry.data, item) ?? entry.data !== item;
+
+                        // If the nodes have changed, create the new ones
+                        // and disconnect the old ones
+                        if (changed) {
+                            const nodes = createNodes(item, idx, items);
+                            disconnectNodes(entry.nodes);
+                            entry.nodes = nodes;
                             entry.data = item;
                         }
                     }
 
-                    // Placement Check: Ensure node is strictly before the cursor
-                    if (entry.node.nextSibling !== cursor) {
-                        anchor.parentElement?.insertBefore(entry.node, cursor);
+                    const lastNode = entry.nodes[entry.nodes.length - 1];
+                    if (lastNode.nextSibling !== cursor) {
+                        for (const node of entry.nodes) root.insertBefore(node, cursor);
                     }
 
-                    // Move cursor backwards
-                    cursor = entry.node;
+                    // Move the respective cursor to the new processed
+                    // node, to allow further iteration.
+                    cursor = entry.nodes[0];
                 }
 
-                // 4. Cleanup Stale Nodes
-                if (cache.size !== keysInUse.size) {
+                // We also need to cleanup all nodes that have not
+                // been used and are still in our cache.
+                if (cache.size !== currentUsedKeys.size) {
                     for (const [key, entry] of cache) {
-                        if (!keysInUse.has(key)) {
-                            entry.node.remove();
+                        if (!currentUsedKeys.has(key)) {
+                            disconnectNodes(entry.nodes);
                             cache.delete(key);
                         }
                     }
                 }
             };
 
-            // Initialize & Subscribe
-            reconcile(dataSource());
-            if (isSubscribable(dataSource)) {
-                return dataSource.subscribe(reconcile);
+            // Render the first set of nodes directly from
+            // the passed data.
+            reconcileNodes(source());
+
+            // Subscribe to the source if it is a subscribable,
+            // and keep reconciling once the data updates.
+            if (isSubscribableValue(source)) {
+                return source.subscribe(reconcileNodes);
             }
         });
     };
 
-    // Fluent API Surface
     return {
-        $withKey: (keyFn: (entry: T) => unknown) => ({
-            $as: (render: (entry: T, index: number, arr: Array<T>) => TemplateResult) =>
-                createEachStruct(keyFn, render),
+        $as: (renderFn: RenderFn<T>) => createEachStruct((entry) => entry, renderFn),
+        $withKey: (keyFn: KeyFn<T>) => ({
+            $as: (renderFn: RenderFn<T>) => createEachStruct(keyFn, renderFn),
         }),
-        $as: (render: (entry: T, index: number, arr: Array<T>) => TemplateResult) =>
-            createEachStruct((entry) => entry, render),
     };
 };

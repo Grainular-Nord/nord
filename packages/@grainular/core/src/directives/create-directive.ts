@@ -1,21 +1,22 @@
-import { nodeLifecycleObserver } from '../internals/node-lifecycle-observer';
-import { Symbols } from '../internals/symbols';
-import type { Directive } from './directive';
+import { lifecycleObserver } from '../application/lifecycle-observer';
+import { identifier } from '../internals/identifier';
+import { SYMBOLS } from '../internals/symbols';
+import type { DirectiveFragment } from './directive-fragment';
 
-export const createDirective = (handler: (node: HTMLElement) => void | (() => void)): Directive => {
-    return Object.assign(
-        (node: HTMLElement) => {
-            // we run the provided handler and check
-            // if it returned a clean up function.
-            const cleanup = handler(node);
-
-            // If it has one, we add it to the observed
-            // nodes and run the cleanup when the node
-            // is disconnected.
-            if (cleanup) {
-                nodeLifecycleObserver.trackUnmount(node, cleanup);
+export const createDirective = (
+    handler: (node: Element) => void | (() => void),
+    id = identifier(),
+): DirectiveFragment => {
+    return {
+        id,
+        [SYMBOLS.isDirective]: SYMBOLS.isDirective,
+        resolve: () => `${id}`,
+        render: () => '',
+        hydrate: (node: Node) => {
+            if (node instanceof Element) {
+                const onDestroy = handler(node);
+                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
             }
         },
-        { [Symbols.DIRECTIVE]: Symbols.DIRECTIVE },
-    ) satisfies Directive;
+    };
 };
