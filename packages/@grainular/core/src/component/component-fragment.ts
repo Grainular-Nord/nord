@@ -1,6 +1,6 @@
 import type { Fragment } from '../internals/fragment';
-import type { SYMBOLS } from '../internals/symbols';
 
+export const IS_COMPONENT: unique symbol = Symbol.for('nord.component');
 export type ComponentFragment = Fragment & {
-    [SYMBOLS.isComponent]: typeof SYMBOLS.isComponent;
+    [IS_COMPONENT]: true;
 };

@@ -1,15 +1,10 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
+import type { Fragment } from '../internals/fragment';
 import { identifier } from '../internals/identifier';
-import { SYMBOLS } from '../internals/symbols';
-import type { DirectiveFragment } from './directive-fragment';
 
-export const createDirective = (
-    handler: (node: Element) => void | (() => void),
-    id = identifier(),
-): DirectiveFragment => {
+export const createDirective = (handler: (node: Element) => void | (() => void), id = identifier()): Fragment => {
     return {
         id,
-        [SYMBOLS.isDirective]: SYMBOLS.isDirective,
         resolve: () => `${id}`,
         render: () => '',
         hydrate: (node: Node) => {

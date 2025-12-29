@@ -1,7 +1,6 @@
 import type { Fragment } from '../internals/fragment';
 import { identifier } from '../internals/identifier';
-import { SYMBOLS } from '../internals/symbols';
-import type { ComponentFragment } from './component-fragment';
+import { type ComponentFragment, IS_COMPONENT } from './component-fragment';
 import { hydrateComponentTemplate } from './hydrate-component-template';
 
 export const createComponentFragment = (
@@ -11,7 +10,7 @@ export const createComponentFragment = (
 ): ComponentFragment => {
     return {
         id: id,
-        [SYMBOLS.isComponent]: SYMBOLS.isComponent,
+        [IS_COMPONENT]: true as const,
         resolve: () => `<!--:${id}:-->`,
         render: () => template.map(({ render }) => render()).join(''),
         hydrate: (node: Node) => {

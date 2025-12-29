@@ -1,16 +1,15 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
+import type { Fragment } from '../internals/fragment';
 import { identifier } from '../internals/identifier';
-import { SYMBOLS } from '../internals/symbols';
-import type { StructFragment } from './struct-fragment';
 
 export const createStruct = (
     struct: (node: Comment) => void | (() => void),
     snapshot: () => string = () => '',
     id = identifier(),
-): StructFragment => {
+): Fragment => {
     return {
         id,
-        [SYMBOLS.isStruct]: SYMBOLS.isStruct,
+
         resolve: () => `<!--:${id}:-->`,
         render: () => snapshot(),
         hydrate: (node: Node) => {
