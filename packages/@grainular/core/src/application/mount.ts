@@ -2,7 +2,7 @@ import type { PureComponent } from '../component/component-types';
 import { lifecycleObserver } from './lifecycle-observer';
 
 type MountOptions = {
-    to: Element | null | undefined;
+    to: DocumentFragment | Element | null | undefined;
 };
 
 /**
@@ -25,7 +25,7 @@ type MountOptions = {
 export const mount = (component: PureComponent, { to: target }: MountOptions) => {
     // We really want to make sure that the target element is defined,
     // As otherwise the whole application start will fail.
-    if (!target || !(target instanceof Element))
+    if (!target || !(target instanceof DocumentFragment || target instanceof Element))
         throw new ReferenceError('Target element is undefined or not an Element');
 
     // Create a new fragment and build the application
