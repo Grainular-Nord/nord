@@ -1,0 +1,46 @@
+{
+    "name": "@grainular/custom-elements",
+    "version": "2.0.0",
+    "type": "module",
+    "packageManager": "bun@1.2.7",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        }
+    },
+    "unpkg": "./dist/browser/index.js",
+    "devDependencies": {
+        "@repository/config": "workspace:*",
+        "@repository/builder": "workspace:*",
+        "@types/bun": "latest",
+        "typescript": "^5.0.0"
+    },
+    "scripts": {
+        "dev": "bun run .build.ts --watch",
+        "build": "bun run .build.ts",
+        "test": "bun test --coverage",
+        "prepublishOnly": "bun run build"
+    },
+    "sideEffects": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/grainular/core.git"
+    },
+    "peerDependencies": {
+        "@grainular/core": "workspace:*"
+    }
+}
