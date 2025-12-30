@@ -1,5 +1,6 @@
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
+export { syncReactive } from './application/sync-reactive';
 export { templateParser as html } from './application/template-parser';
 export type { ComponentFragment } from './component/component-fragment';
 export * from './component/component-types';
