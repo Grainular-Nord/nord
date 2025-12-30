@@ -1,6 +1,7 @@
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
 export { templateParser as html } from './application/template-parser';
+export type { ComponentFragment } from './component/component-fragment';
 export * from './component/component-types';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
