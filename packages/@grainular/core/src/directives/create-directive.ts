@@ -11,6 +11,7 @@ export const createDirective = (handler: (node: Element) => void | (() => void),
             if (node instanceof Element) {
                 const onDestroy = handler(node);
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+                node.removeAttribute(id);
             }
         },
     };

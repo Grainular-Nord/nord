@@ -1,9 +1,11 @@
+export { cssParser as css } from './application/css-parser';
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
 export { syncReactive } from './application/sync-reactive';
 export { templateParser as html } from './application/template-parser';
 export type { ComponentFragment } from './component/component-fragment';
 export * from './component/component-types';
+export { withScopedStyles } from './component/with-scoped-styles';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';

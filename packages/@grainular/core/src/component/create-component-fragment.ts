@@ -13,7 +13,7 @@ export const createComponentFragment = (
         [IS_COMPONENT]: true as const,
         resolve: () => `<!--:${id}:-->`,
         render: () => template.map(({ render }) => render()).join(''),
-        hydrate: (node: Node) => {
+        hydrate: (node: Node, scope?: string) => {
             // Bail early if we have a hydration mismatch here
             if (!(node instanceof Comment)) return;
 
@@ -24,6 +24,12 @@ export const createComponentFragment = (
             fragment.innerHTML = html.trim();
 
             for (const hydrator of hydrateComponentTemplate(fragment.content, fragments)) hydrator();
+
+            if (scope) {
+                for (const node of fragment.content.childNodes) {
+                    if (node instanceof Element) node.setAttribute(scope, '');
+                }
+            }
 
             node.replaceWith(fragment.content);
         },

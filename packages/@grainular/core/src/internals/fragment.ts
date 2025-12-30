@@ -29,5 +29,5 @@ export type Fragment = {
      *
      * @param target
      */
-    hydrate: (target: Node) => void;
+    hydrate: (target: Node, scope?: string) => void;
 };
