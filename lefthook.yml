@@ -11,10 +11,7 @@ pre-commit:
         format:
             run: bun run format {staged_files} --no-errors-on-unmatched
         lint:ts:
-            run: bun run lint:ts {staged_files} --no-errors-on-unmatched
-        lint:md:
-            glob: "*.md"
-            run: bun run lint:md {staged_files}
+            run: bun run lint {staged_files} --no-errors-on-unmatched
 commit-msg:
     commands:
         lint:
