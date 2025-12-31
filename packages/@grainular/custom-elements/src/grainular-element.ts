@@ -1,4 +1,4 @@
-import { type ComponentFragment, mount } from '@grainular/core';
+import { type ComponentFragment, mount } from '@grainular/nord';
 import { ContextState } from './context-state';
 import type { CustomElementDefinition } from './custom-element-definition';
 import type { CustomElementStyles } from './custom-element-styles';

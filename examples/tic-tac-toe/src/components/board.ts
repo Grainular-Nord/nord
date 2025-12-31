@@ -1,5 +1,5 @@
-import { $each, $if, html, on } from '@grainular/core';
 import { derived } from '@grainular/grains';
+import { $each, $if, html, on } from '@grainular/nord';
 import { gameState } from '../grains/game-state.grain';
 import { resetSquares, squares } from '../grains/squares.grain';
 import './board.css';

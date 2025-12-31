@@ -1,5 +1,5 @@
-import { html, on } from '@grainular/core';
 import type { WritableGrain } from '@grainular/grains';
+import { html, on } from '@grainular/nord';
 import { gameState } from '../grains/game-state.grain';
 import type { PlayerSymbol } from '../grains/squares.grain';
 import './square.css';

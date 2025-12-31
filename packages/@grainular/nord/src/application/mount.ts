@@ -13,7 +13,7 @@ type MountOptions = {
  *
  * @example
  * ```ts
- * import { mount } from "@grainular/core";
+ * import { mount } from "@grainular/nord";
  * import App from "./app.ts";
  *
  * mount(App, { to: document.querySelector("#app") })

@@ -1,4 +1,4 @@
-import type { ComponentFragment } from '@grainular/core';
+import type { ComponentFragment } from '@grainular/nord';
 import type { CustomElementDefinition } from './custom-element-definition';
 import { CustomElementStyles } from './custom-element-styles';
 import { GrainularElement } from './grainular-element';

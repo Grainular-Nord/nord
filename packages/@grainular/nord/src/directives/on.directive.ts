@@ -9,7 +9,7 @@ import { createDirective } from './create-directive';
  *
  * @example
  * ```ts
- * import { on, html } from "@grainular/core";
+ * import { on, html } from "@grainular/nord";
  *
  * const clickHandler = (event: MouseEvent) => {
  *     console.log("Clicked!", event);

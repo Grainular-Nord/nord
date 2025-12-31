@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# @grainular/core
+# @grainular/nord
 
 To install dependencies:
 

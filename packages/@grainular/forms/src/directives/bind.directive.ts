@@ -1,5 +1,5 @@
-import { createDirective } from '@grainular/core';
 import type { WritableGrain } from '@grainular/grains';
+import { createDirective } from '@grainular/nord';
 
 export const bind = (source: WritableGrain<string>) => {
     return createDirective((node) => {

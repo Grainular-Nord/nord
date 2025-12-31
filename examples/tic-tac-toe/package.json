@@ -1,10 +1,10 @@
 {
-  "name": "@repository/example",
+  "name": "examples-nord-tic-tac-toe",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
