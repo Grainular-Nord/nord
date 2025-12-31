@@ -9,6 +9,7 @@ export { withScopedStyles } from './component/with-scoped-styles';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';
+export { createPortal, portal } from './directives/portal.directive';
 export { ref } from './directives/ref.directive';
 export type { Subscribable } from './internals/subscribable';
 export { $await } from './structs/await.struct';
