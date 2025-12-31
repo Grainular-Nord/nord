@@ -16,6 +16,8 @@ export { $await } from './structs/await.struct';
 export { createStruct } from './structs/create-struct';
 export { $each } from './structs/each.struct';
 export { $if } from './structs/if.struct';
+export { $render } from './structs/render.struct';
 export { $suspend } from './structs/suspend.struct';
 export { $switch } from './structs/switch.struct';
+export { $try } from './structs/try.struct';
 export { $unsafeHtml } from './structs/unsafe-html.struct';
