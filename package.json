@@ -30,6 +30,7 @@
         "test": "turbo test"
     },
     "workspaces": [
+        "examples/*",
         "packages/@grainular/*",
         "packages/@repository/*"
     ],
