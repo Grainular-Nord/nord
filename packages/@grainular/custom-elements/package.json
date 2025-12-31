@@ -41,6 +41,6 @@
         "url": "git+https://github.com/grainular/core.git"
     },
     "peerDependencies": {
-        "@grainular/core": "workspace:*"
+        "@grainular/nord": "workspace:*"
     }
 }
