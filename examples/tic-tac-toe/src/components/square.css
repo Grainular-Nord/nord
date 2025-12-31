@@ -1,0 +1,13 @@
+button.square {
+    padding: 0;
+    aspect-ratio: 1 / 1;
+    width: 4.5rem;
+
+    &[data-player="X"] {
+        background: var(--ui-color-accent);
+    }
+
+    &[data-player="O"] {
+        background: var(--ui-color-contrast);
+    }
+}
