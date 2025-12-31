@@ -1,0 +1,44 @@
+{
+  "name": "grainular-nord-vscode",
+  "version": "0.0.1",
+  "main": "./dist/extension.js",
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  },
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript"
+  ],
+  "contributes": {
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./snippets/nord.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./snippets/nord.json"
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "inline.html.injection",
+        "path": "./syntaxes/html-injection.json",
+        "injectTo": ["source.ts", "source.js", "source.tsx", "source.jsx"]
+      }
+    ]
+  },
+  "displayName": "Nord for VS Code",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "scripts": {
+    "build": "bun run .build.ts",
+    "dev": "bun run .build.ts --watch",
+    "package": "bun run build && vsce package --no-dependencies"
+  }, 
+  "repository": {
+    "url": "https://github.com/grainular-nord/nord"
+  }
+}

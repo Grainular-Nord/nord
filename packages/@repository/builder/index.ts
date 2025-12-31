@@ -1,7 +1,8 @@
 /** @format */
 
 import type { BuildConfig, BunPlugin, Target } from 'bun';
-import { exists, rm, watch } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { rm, watch } from 'node:fs/promises';
 import { dirname, join, sep } from 'node:path';
 import { styleText } from 'node:util';
 import { DiagnosticCategory, createProgram, getPreEmitDiagnostics } from 'typescript';
@@ -69,12 +70,12 @@ type Package = {
      * As the bundle will only ever generate a index.js (by design), this should
      * place the file in a distinct directory (./dist/esm/index.js)
      */
-    module: string;
+    module?: string;
 
     /**
      * The field declaring the output location for the compiled .d.ts files
      */
-    types: string;
+    types?: string;
 };
 type Manifest = Package & {
     /**
@@ -229,7 +230,7 @@ export class Builder {
 
     private async watchFiles(manifest: Manifest) {
         const base = dirname(manifest.entry);
-        const output = basepath([manifest.main, manifest.module, manifest.types]);
+        const output = basepath([manifest.main, manifest.module ?? manifest.main, manifest.types ?? manifest.main]);
 
         try {
             const watcher = watch(base, { recursive: true, signal: this.abortController.signal });
@@ -263,15 +264,15 @@ export class Builder {
 
         // The output locations for the three generated bundles
         const cjs = dirname(join(root, manifest.main));
-        const esm = dirname(join(root, manifest.module));
-        const types = dirname(join(root, manifest.types));
-        const base = basepath([cjs, esm, types]);
+        const esm = manifest.module ? dirname(join(root, manifest.module)) : null;
+        const types = manifest.types ? dirname(join(root, manifest.types)) : null;
+        const base = basepath([cjs, esm ?? cjs, types ?? cjs]);
 
         // We want to clean the output directory
         // before starting the next build. This can
         // be disabled by the options passed to the
         // `Builder`
-        if (this.clean && (await exists(base))) {
+        if (this.clean && existsSync(base)) {
             await rm(base, { recursive: true, force: true });
         }
 
@@ -280,7 +281,10 @@ export class Builder {
         // - Dts will also always be build
         // - Browser (CDN) will be skipped if the target is not browser
 
-        await this.buildCommonBundle('esm', entry, esm);
+        if (esm) {
+            await this.buildCommonBundle('esm', entry, esm);
+        }
+
         await this.buildCommonBundle('cjs', entry, cjs);
 
         // Build cdn if required
@@ -289,7 +293,9 @@ export class Builder {
         }
 
         // Build types
-        await this.buildDts(entry, types);
+        if (types) {
+            await this.buildDts(entry, types);
+        }
     }
 }
 

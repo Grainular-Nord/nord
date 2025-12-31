@@ -32,7 +32,8 @@
     "workspaces": [
         "examples/*",
         "packages/@grainular/*",
-        "packages/@repository/*"
+        "packages/@repository/*",
+        "language-tools/*"
     ],
     "dependencies": {
         "@grainular/repository": "."

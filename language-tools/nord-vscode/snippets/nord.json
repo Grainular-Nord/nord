@@ -1,0 +1,13 @@
+{
+  "Create Nord Component": {
+    "prefix": "nord-component",
+    "body": [
+      "import { html } from '@grainular/nord';",
+      "",
+      "export const ${1:ComponentName} = () => {`",
+      "  return html`<div>Hello World</div>`",
+      "}`;"
+    ],
+    "description": "Create a new Nord component"
+  }
+}

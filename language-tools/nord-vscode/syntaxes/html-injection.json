@@ -1,0 +1,46 @@
+{
+  "scopeName": "inline.html.injection",
+  "injectionSelector": "L:source.ts -comment -string, L:source.js -comment -string",  
+  "patterns": [
+    {
+      "include": "#html-tagged-template"
+    },
+    {
+      "include": "#css-tagged-template"
+    }
+  ],
+  "repository": {
+    "html-tagged-template": {
+      "begin": "(html)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    },
+    "css-tagged-template": {
+      "begin": "(css)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "source.css"
+        }
+      ]
+    }
+  }
+}
