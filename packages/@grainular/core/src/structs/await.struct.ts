@@ -8,7 +8,7 @@ import { createStruct } from './create-struct';
  *
  * @param source
  */
-export const $await = <T>(source: Promise<T>) => {
+export const $await = <T>(source: Promise<T> | T) => {
     return {
         $then: (template: (value: T) => ComponentFragment) => {
             let pendingFragment: () => ComponentFragment;
@@ -18,7 +18,7 @@ export const $await = <T>(source: Promise<T>) => {
                 (root: Comment) => {
                     const initialNodes = pendingFragment ? hydrateFragment(pendingFragment()) : [];
                     root.before(...initialNodes);
-                    source
+                    (source instanceof Promise ? source : Promise.resolve(source))
                         .then((result) => {
                             // Make sure the node is still connected
                             if (!root.isConnected) return;
