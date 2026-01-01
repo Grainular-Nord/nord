@@ -5,10 +5,10 @@
     { "repo": "grainular-nord/nord" }
   ],
   "commit": false,
-  "fixed": [["@grainular/grains"]],
+  "fixed": [["@grainular/grains", "@grainular/nord", "@grainular/custom-elements"]],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": ["@repository/*", "examples-nord-drum-sequencer", "examples-nord-tic-tac-toe"]
 }
