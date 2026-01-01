@@ -15,100 +15,128 @@ export const directives = [
     createCompletionItem({
         label: '$if',
         kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$if(${1:condition}).\\$else(2:else)}'),
-        documentation: new vscode.MarkdownString('**Control Flow**\n\nUsed to conditionally render templates'),
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$if($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Conditionally render a template.**\n\n')
+            .appendCodeblock('$if(condition, () => html`...`)', 'typescript')
+            .appendMarkdown('\nPass a reactive or static boolean. Can be chained with `.$else()`.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock(
+                '${$if(isActive,\n  () => html`<span>Active</span>`)\n  .$else(() => html`<span>Inactive</span>`)\n}',
+                'typescript',
+            ),
     }),
 
     // $each struct
     createCompletionItem({
         label: '$each',
         kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$each(${1:iter}).\\$as()}'),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to iterate a static or reactive value',
-        ),
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$each($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Iterate over a list.**\n\n')
+            .appendCodeblock('$each(list).$as((item, i) => html`...`)', 'typescript')
+            .appendMarkdown(
+                '\nAccepts a static array or a `Subscribable` array. Requires `.$as()` to define the render template.\n\n',
+            )
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock('${$each(items).$as((item) => html`\n  <li>${item}</li>\n`)}', 'typescript'),
     }),
 
-    // $unsafeHtml
+    // $switch struct
     createCompletionItem({
-        label: '$unsafeHtml',
+        label: '$switch',
         kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$unsafeHtml(${1:string})}'),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to inject trusted HTML in an unsafe way if required. **DO NOT USE FOR USER GENERATED CODE!**',
-        ),
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$switch($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Switch-case logic for templates.**\n\n')
+            .appendCodeblock('$switch(value).$case(...).$default(...)', 'typescript')
+            .appendMarkdown('\nRenders different templates based on a source value. Must end with `.$default()`.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock(
+                "${$switch(status)\n  .$case('loading', () => html`Loading...`)\n  .$case('error', () => html`Error!`)\n  .$default(() => html`Done`)\n}",
+                'typescript',
+            ),
+    }),
+
+    // $await struct
+    createCompletionItem({
+        label: '$await',
+        kind: vscode.CompletionItemKind.Function,
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$await($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Render Promise states.**\n\n')
+            .appendCodeblock('$await(promise).$then(...).$catch(...)', 'typescript')
+            .appendMarkdown('\nWaits for a promise to resolve and renders the corresponding template.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock(
+                '${$await(fetchData)\n  .$then(data => html`<Data val=${data} />`)\n  .$pending(() => html`Loading...`)\n  .$catch(err => html`Error: ${err}`)\n}',
+                'typescript',
+            ),
+    }),
+
+    // $try struct
+    createCompletionItem({
+        label: '$try',
+        kind: vscode.CompletionItemKind.Function,
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$try($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Error Boundary.**\n\n')
+            .appendCodeblock('$try(() => html`...`).$catch(...)', 'typescript')
+            .appendMarkdown('\nSafely renders a fragment and catches any errors thrown during rendering.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock(
+                '${$try(() => html`<UnsafeComponent />`)\n  .$catch(err => html`<div>Failed: ${err}</div>`)\n}',
+                'typescript',
+            ),
+    }),
+
+    // $suspend struct
+    createCompletionItem({
+        label: '$suspend', // Fixed typo: label was previously '$await'
+        kind: vscode.CompletionItemKind.Function,
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$suspend($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Async Component Wrapper.**\n\n')
+            .appendCodeblock('$suspend(() => Promise<Fragment>, options)', 'typescript')
+            .appendMarkdown('\nHelper to await a component fragment with built-in pending and error states.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock(
+                "${$suspend(\n  () => import('./my-cmp').then(m => m.MyCmp()),\n  { pending: () => html`Loading...`,\n    error: (e) => html`Error` }\n)}",
+                'typescript',
+            ),
     }),
 
     // $render
     createCompletionItem({
         label: '$render',
         kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$render(${1:source})}'),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to render a reactive template fragment.',
-        ),
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$render($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Render a reactive fragment.**\n\n')
+            .appendCodeblock('$render(Subscribable<Fragment>)', 'typescript')
+            .appendMarkdown('\nDynamically renders a fragment from a reactive source.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock('${$render(currentView$)}', 'typescript'),
     }),
 
-    // $switch
+    // $unsafeHtml
     createCompletionItem({
-        label: '$switch',
+        label: '$unsafeHtml',
         kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString(
-            '\\${\\$switch(${1:condition}).\\$case(() => ${2:template}).\\$default(() => ${3:template})}',
-        ),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to render different templates based on a source value.',
-        ),
-    }),
-
-    // $await
-    createCompletionItem({
-        label: '$await',
-        kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString(
-            '\\${\\$await(${1:promise}).\\$then((result) => ${2:template}).\\$pending(() => ${3:template})}',
-        ),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to await a promise, while rendering a pending template.',
-        ),
-    }),
-
-    // $suspend
-    createCompletionItem({
-        label: '$await',
-        kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$suspend(() => ${1:promise})}'),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used to await a promise containing a component fragment.',
-        ),
-    }),
-
-    // $try
-    createCompletionItem({
-        label: '$try',
-        kind: vscode.CompletionItemKind.Function,
-        detail: 'Control Flow Expression',
-        insert: new vscode.SnippetString('\\${\\$try(() => ${1:fragment}).\\$catch((error) => ${2:fragment})}'),
-        documentation: new vscode.MarkdownString(
-            '**Control Flow**\n\nCan be used as error boundary, will invoke the component render fn in a try catch block and relay any error.',
-        ),
-    }),
-
-    // on
-    createCompletionItem({
-        label: 'on',
-        kind: vscode.CompletionItemKind.Function,
-        detail: 'Element Directive',
-        insert: new vscode.SnippetString('\\${on(${1:event, () => {}})}'),
-        documentation: new vscode.MarkdownString(
-            '**Element Directive**\n\nAdds a event listener for a given event to the element.',
-        ),
+        detail: 'Control Flow',
+        insert: new vscode.SnippetString('\\${\\$unsafeHtml($0)}'),
+        documentation: new vscode.MarkdownString()
+            .appendMarkdown('**Inject raw HTML strings.**\n\n')
+            .appendCodeblock('$unsafeHtml(string)', 'typescript')
+            .appendMarkdown('\n⚠️ **DANGER:** Only use with trusted content. Never use with user-generated input.\n\n')
+            .appendMarkdown('**Usage:**\n')
+            .appendCodeblock('${$unsafeHtml(blogPostContent)}', 'typescript'),
     }),
 ];

@@ -23,16 +23,14 @@ export const provideCompletions = (document: vscode.TextDocument, position: vsco
         // If the user types a $, he probably want's to
         // start a interpolation, either with a structural
         // directive or direct template expression
-        case '$': {
+        case '$':
             communications.write('Providing directive completion');
             return provideDirectiveSuggestions();
-        }
 
         // If typing a <, we suggest a list of fitting html
         // tags for completion.
-        case '<': {
+        case '<':
             communications.write('Providing tag completion');
             return provideHtmlTagSuggestions(beforeWord === '<');
-        }
     }
 };
