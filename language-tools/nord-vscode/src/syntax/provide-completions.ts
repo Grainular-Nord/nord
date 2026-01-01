@@ -1,8 +1,9 @@
 import type * as vscode from 'vscode';
+import { communications } from '../extension';
 import { getStartCharacter } from './get-start-character';
 import { getTemplateType, templateType } from './get-template-type';
 import { provideHtmlTagSuggestions } from './prodive-html-tag-suggestions';
-import { provideStructuralDirectives } from './provide-structural-directives';
+import { provideDirectiveSuggestions } from './provide-directives-suggestions';
 
 export const provideCompletions = (document: vscode.TextDocument, position: vscode.Position) => {
     // 1. Use the Robust Parser
@@ -13,6 +14,8 @@ export const provideCompletions = (document: vscode.TextDocument, position: vsco
         return undefined;
     }
 
+    communications.write(`Inside html template string @ [${position}]`);
+
     // We extract the start character from
     // the document and cursor position
     const [beforeCursor, beforeWord] = getStartCharacter(document, position);
@@ -21,12 +24,14 @@ export const provideCompletions = (document: vscode.TextDocument, position: vsco
         // start a interpolation, either with a structural
         // directive or direct template expression
         case '$': {
-            return provideStructuralDirectives();
+            communications.write('Providing directive completion');
+            return provideDirectiveSuggestions();
         }
 
         // If typing a <, we suggest a list of fitting html
         // tags for completion.
         case '<': {
+            communications.write('Providing tag completion');
             return provideHtmlTagSuggestions(beforeWord === '<');
         }
     }

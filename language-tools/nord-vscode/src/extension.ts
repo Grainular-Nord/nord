@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import { provideCompletions } from './syntax/provide-completions';
+import { output } from './system/output';
+
+export const communications = output();
 
 export function activate(context: vscode.ExtensionContext) {
-    const output = vscode.window.createOutputChannel('Nord Framework');
-    output.appendLine('Nord Extension Activated 🚀');
+    communications.write('Extension Activated 🚀');
 
     const provider = vscode.languages.registerCompletionItemProvider(
         ['typescript', 'javascript'],

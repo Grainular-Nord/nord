@@ -2,6 +2,8 @@
   "name": "grainular-nord-vscode",
   "version": "0.0.1",
   "main": "./dist/extension.js",
+  "publisher": "iamsebastiandev",  
+  "icon": "logo.png",
   "devDependencies": {
     "@types/vscode": "^1.80.0",
     "typescript": "^5.0.0"
