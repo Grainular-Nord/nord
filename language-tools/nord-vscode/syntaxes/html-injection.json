@@ -1,6 +1,6 @@
 {
   "scopeName": "inline.html.injection",
-  "injectionSelector": "L:source.ts -comment -string, L:source.js -comment -string",  
+  "injectionSelector": "L:source.ts -comment -string, L:source.js -comment -string, L:source.tsx -comment -string, L:source.jsx -comment -string",
   "patterns": [
     {
       "include": "#html-tagged-template"
@@ -22,6 +22,9 @@
       },
       "patterns": [
         {
+          "include": "#interpolation"
+        },
+        {
           "include": "text.html.basic"
         }
       ]
@@ -38,8 +41,28 @@
       },
       "patterns": [
         {
+          "include": "#interpolation"
+        },
+        {
           "include": "source.css"
         }
+      ]
+    },
+    "interpolation": {
+      "name": "meta.embedded.expression.nord",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.ts" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.embedded.end.ts" }
+      },
+      "patterns": [
+        { "include": "source.ts" },
+        { "include": "source.tsx" },
+        { "include": "source.js" },
+        { "include": "source.jsx" }
       ]
     }
   }
