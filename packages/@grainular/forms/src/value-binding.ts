@@ -15,15 +15,28 @@ interface WritableGrain<V> {
 
 // --- The Dictionary ---
 const bindings = new Map<Predicate, Factory>([
-    // 1. Checkbox & Radio
+    // 1. Checkbox
     [
-        (node) => node instanceof HTMLInputElement && (node.type === 'checkbox' || node.type === 'radio'),
+        (node) => node instanceof HTMLInputElement && node.type === 'checkbox',
         (node) => {
             const input = node as HTMLInputElement;
             return {
                 get: () => input.checked,
                 set: (val) => {
                     input.checked = Boolean(val);
+                },
+            };
+        },
+    ],
+    // 1.5 -> Radio
+    [
+        (node) => node instanceof HTMLInputElement && node.type === 'radio',
+        (node) => {
+            const input = node as HTMLInputElement;
+            return {
+                get: () => input.value,
+                set: (val) => {
+                    input.checked = val === input.value;
                 },
             };
         },
@@ -49,10 +62,29 @@ const bindings = new Map<Predicate, Factory>([
             return {
                 get: () => Array.from(select.selectedOptions, (opt) => opt.value),
                 set: (val) => {
-                    const values = Array.isArray(val) ? val : [val];
-                    for (const option of select.options) {
-                        option.selected = values.includes(option.value);
-                    }
+                    queueMicrotask(() => {
+                        const values = Array.isArray(val) ? val : [val];
+                        for (const option of select.options) {
+                            option.selected = values.includes(option.value);
+                        }
+                    });
+                },
+            };
+        },
+    ],
+    // 3.5 -> Single Select
+    [
+        (node) => node instanceof HTMLSelectElement,
+        (node) => {
+            const select = node as HTMLSelectElement;
+            return {
+                get: () => select.selectedOptions,
+                set: (val) => {
+                    queueMicrotask(() => {
+                        for (const option of select.options) {
+                            option.selected = val === option.value;
+                        }
+                    });
                 },
             };
         },
@@ -72,10 +104,7 @@ const bindings = new Map<Predicate, Factory>([
     ],
     // 5. Default Fallback (Text, Textarea, Single Select, etc.)
     [
-        (node) =>
-            node instanceof HTMLInputElement ||
-            node instanceof HTMLTextAreaElement ||
-            node instanceof HTMLSelectElement,
+        (node) => node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement,
         (node) => {
             // Safe to cast to generic input interface usually, or just use 'value' property
             const input = node as HTMLInputElement;
