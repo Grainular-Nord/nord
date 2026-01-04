@@ -1,6 +1,7 @@
 /** @format */
 
 // INTERNAL USE ONLY
+type CompareFn<V = unknown> = (current: V, next: V) => boolean;
 const defaultCompareFn = <V = unknown>(current: V, next: V) => current === next;
 
 /**
@@ -29,7 +30,7 @@ export type WritableGrain<V> = Grain<V> & {
     update: (run: (current: V) => V) => void;
 };
 
-export const grain = <V = unknown>(start: V, isEqual = defaultCompareFn): WritableGrain<V> => {
+export const grain = <V = unknown>(start: V, isEqual: CompareFn<V> = defaultCompareFn): WritableGrain<V> => {
     let _value = start;
     const consumers = new Set<Subscriber<V>>();
 
