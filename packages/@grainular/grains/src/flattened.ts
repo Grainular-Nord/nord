@@ -6,7 +6,9 @@ export const flattened = <T>(nested: Grain<Grain<T>>): Grain<T> => {
     // Initialize the result grain
     const result = grain(nested()());
 
-    let innerUnsubscribe: (() => void) | null = null;
+    // Setup the initial, immediate subscription
+    // making the grain not stale until subscription.
+    let innerUnsubscribe = nested().subscribe((value) => result.set(value));
 
     // We subscribe to the primary grain (outer basically)
     // and can then update the result accordingly
