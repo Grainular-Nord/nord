@@ -1,4 +1,4 @@
-import type { Control } from '../control';
+import type { Control } from '../lib/control';
 import { clearControlError, setControlError } from './core';
 
 type ValidatorData<T> = T & { message: string };

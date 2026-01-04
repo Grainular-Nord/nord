@@ -1,22 +1,22 @@
 import type { WritableGrain } from '@grainular/grains';
 import { createDirective } from '@grainular/nord';
+import { getBinding } from '../lib/value-binding';
 
-export const bind = (source: WritableGrain<string>) => {
+export const bind = <V>(value: WritableGrain<V>, event: 'change' | 'input' | 'blur' = 'input') => {
     return createDirective((node) => {
-        (node as HTMLInputElement).value = source();
-        const handler = (event: Event) => {
-            const target = event.target as HTMLInputElement;
-            source.set(target.value);
-        };
+        const { get, set } = getBinding(node);
 
-        const unsubscribe = source.subscribe((value) => {
-            (node as HTMLInputElement).value = value;
-        });
+        // Setter logic
+        set(value());
+        const cleanup = value.subscribe((value) => set(value));
 
-        node.addEventListener('input', handler);
+        // Handler logic
+        const handler = () => value.set(get() as V);
+        node.addEventListener(event, handler);
+
         return () => {
-            node.removeEventListener('input', handler);
-            unsubscribe();
+            node.removeEventListener(event, handler);
+            cleanup();
         };
     });
 };

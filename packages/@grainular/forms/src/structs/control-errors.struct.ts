@@ -1,6 +1,6 @@
 import { type Grain, combined, derived } from '@grainular/grains';
 import { $if, type ComponentFragment } from '@grainular/nord';
-import type { Control } from '../control';
+import type { Control } from '../lib/control';
 
 type ErrorRenderer = (errors: Grain<string>) => ComponentFragment;
 type ControlErrorOptions = {
