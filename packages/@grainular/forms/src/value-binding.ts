@@ -78,7 +78,7 @@ const bindings = new Map<Predicate, Factory>([
         (node) => {
             const select = node as HTMLSelectElement;
             return {
-                get: () => select.selectedOptions,
+                get: () => Array.from(select.selectedOptions, (opt) => opt.value).at(0),
                 set: (val) => {
                     queueMicrotask(() => {
                         for (const option of select.options) {
