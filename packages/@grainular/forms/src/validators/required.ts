@@ -1,5 +1,11 @@
 import { createValidator } from './create-validator';
 
 export const required = createValidator((control, setError, clearError) => {
-    control.value() ? clearError() : setError();
+    const value = control.value();
+
+    if (typeof value !== 'string') {
+        return value ? clearError() : setError();
+    }
+
+    value.trim() !== '' ? clearError() : setError();
 });

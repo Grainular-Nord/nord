@@ -21,7 +21,6 @@ export const deriveSchemaValue = <T>(schema: FormSchema<T>): Grain<T> => {
     });
 
     // Extract just the grains for 'combined'
-
     return derived(combined(keyedValues.map((entry) => entry.grain)), (values) => {
         // Reconstruct the object using the original keys and the new values
         return values.reduce((acc, val, index) => {

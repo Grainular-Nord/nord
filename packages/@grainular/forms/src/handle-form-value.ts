@@ -21,21 +21,3 @@ export const setFormValue = <T>(schema: FormSchema<T>, model: T) => {
         }
     }
 };
-
-export const resetFormValue = <T>(schema: FormSchema<T>) => {
-    // Resetting leafs
-    if ('isControl' in schema) {
-        schema.reset();
-    }
-
-    // Resetting lists via their own resetter
-    if ('isControlList' in schema) {
-        schema.reset();
-    }
-
-    // Everything else should be reset
-    // recursively, assuming a control tree
-    for (const value of Object.values(schema)) {
-        resetFormValue(value);
-    }
-};
