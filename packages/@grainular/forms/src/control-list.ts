@@ -5,7 +5,7 @@ export type ControlList<T> = {
     isControlList: true;
     controls: WritableGrain<FormSchema<T>[]>;
     add: (value: T) => void;
-    remove: (filterFn: (control: FormSchema<T>) => boolean) => void;
+    remove: (control: FormSchema<T>) => void;
     at: (idx: number) => FormSchema<T> | undefined;
 
     reset: () => void;
@@ -27,9 +27,9 @@ export const controlList = <T>(initialValues: T[]): ControlList<T> => {
         },
 
         // Remove: Filter the array by comparator
-        remove: (filterFn: (controls: FormSchema<T>) => boolean) => {
+        remove: (control: FormSchema<T>) => {
             controls.update((current) => {
-                return [...current.filter((control) => filterFn(control))];
+                return [...current.filter((c) => c !== control)];
             });
         },
 
