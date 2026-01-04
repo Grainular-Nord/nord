@@ -56,7 +56,11 @@ export const lifecycleObserver = new (
               }
 
               #runUnmount(node: Node) {
-                  for (const fn of this.#unmounts.get(node) ?? []) fn();
+                  for (const fn of this.#unmounts.get(node) ?? []) {
+                      queueMicrotask(() => {
+                          !node.isConnected && fn();
+                      });
+                  }
                   this.#unmounts.delete(node);
               }
 
