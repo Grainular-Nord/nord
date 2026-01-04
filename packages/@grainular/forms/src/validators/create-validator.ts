@@ -25,8 +25,7 @@ export const createValidator = <Opts extends Record<PropertyKey, unknown>, T>(
 
         const setError = () => setControlError(castControl, message);
         const clearError = () => clearControlError(castControl, message);
-
-        if (control.isTouched()) {
+        if (control.touched()) {
             validatorFn(castControl, setError, clearError, opts);
         }
     };

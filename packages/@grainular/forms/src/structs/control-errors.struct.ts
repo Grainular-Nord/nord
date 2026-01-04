@@ -14,7 +14,7 @@ export const $controlErrors = <V>(
 ) => {
     // We create a derived state that only emits errors when the conditions are met.
     // Otherwise, it emits null, which causes $if to unmount the view.
-    const visibleErrors = derived(combined([control.errors, control.isTouched]), ([errors, touched]) => {
+    const visibleErrors = derived(combined([control.errors, control.touched]), ([errors, touched]) => {
         // 1. If there are no errors, render nothing
         if (!errors || errors.length === 0) {
             return null;

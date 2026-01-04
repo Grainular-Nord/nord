@@ -1,4 +1,4 @@
-import { type Grain, type WritableGrain, derived, grain, readonly } from '@grainular/grains';
+import { type Grain, type WritableGrain, derived, grain } from '@grainular/grains';
 import { type Fragment, createDirective } from '@grainular/nord';
 import { getBinding } from './value-binding';
 
@@ -15,10 +15,10 @@ export type Control<V = unknown> = {
     errors: WritableGrain<string[]>;
     disabled: WritableGrain<boolean>;
 
-    // Readonly state
+    // Derived / event state
     isValid: Grain<boolean>;
-    isFocused: Grain<boolean>;
-    isTouched: Grain<boolean>;
+    focused: WritableGrain<boolean>;
+    touched: WritableGrain<boolean>;
 
     // Resets the value
     reset: () => void;
@@ -117,9 +117,14 @@ export const control = <V>(initialValue: V): Control<V> => {
     const focused = grain(false);
 
     const reset = () => {
+        errors.set([]);
         touched.set(false);
         focused.set(false);
         value.set(initialValue);
+    };
+
+    const touch = () => {
+        touched.set(true);
     };
 
     const binding = (options: Required<ControlBindingOptions>) => {
@@ -140,8 +145,8 @@ export const control = <V>(initialValue: V): Control<V> => {
         errors,
         disabled,
         isValid,
-        isTouched: readonly(touched),
-        isFocused: readonly(focused),
+        touched,
+        focused,
         reset,
         bind: (options: ControlBindingOptions = {}) => {
             return binding({ event: 'input', ...options });
