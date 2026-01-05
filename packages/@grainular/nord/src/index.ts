@@ -1,4 +1,5 @@
 export { cssParser as css } from './application/css-parser';
+export { disconnectNodes } from './application/lifecycle-observer';
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
 export { syncReactive } from './application/sync-reactive';
@@ -12,6 +13,7 @@ export { on } from './directives/on.directive';
 export { createPortal, portal } from './directives/portal.directive';
 export { createRef, ref } from './directives/ref.directive';
 export type { Fragment } from './internals/fragment';
+export { hydrateFragment } from './internals/hydrate-fragment';
 export type { Subscribable } from './internals/subscribable';
 export { $await } from './structs/await.struct';
 export { createStruct } from './structs/create-struct';
