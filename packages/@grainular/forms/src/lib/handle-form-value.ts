@@ -16,7 +16,7 @@ export const setFormValue = <T>(schema: FormSchema<T>, model: T) => {
         for (const [key, value] of Object.entries(model)) {
             if (key in schema) {
                 //@ts-expect-error Typescript unable to correctly nest the type here
-                setFormValue(schema, value);
+                setFormValue(schema[key], value);
             }
         }
     }

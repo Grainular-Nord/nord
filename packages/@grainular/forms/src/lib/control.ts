@@ -3,7 +3,7 @@ import { type Fragment, createDirective } from '@grainular/nord';
 import { getBinding } from './value-binding';
 
 type ControlBindingOptions = {
-    event?: 'change' | 'input' | 'blur';
+    updateOn?: 'change' | 'input' | 'blur';
 };
 
 export type Control<V = unknown> = {
@@ -19,6 +19,7 @@ export type Control<V = unknown> = {
     isValid: Grain<boolean>;
     focused: WritableGrain<boolean>;
     touched: WritableGrain<boolean>;
+    dirty: WritableGrain<boolean>;
 
     // Resets the value
     reset: () => void;
@@ -40,11 +41,11 @@ const handleNodeDisabledState = (node: Element, disabled: Grain<boolean>) => {
 const handleNodeFocusState = (node: Element, setTouched: () => void, setFocused: () => void, blur: () => void) => {
     const handler = (event: Event) => {
         if (event.type === 'focus') {
-            setTouched();
             setFocused();
         }
 
         if (event.type === 'blur') {
+            setTouched();
             blur();
         }
     };
@@ -58,7 +59,7 @@ const handleNodeFocusState = (node: Element, setTouched: () => void, setFocused:
     };
 };
 
-const handleNodeValueBinding = <V>(node: Element, value: WritableGrain<V>, event: string) => {
+const handleNodeValueBinding = <V>(node: Element, value: WritableGrain<V>, event: string, setDirty: () => void) => {
     const { get, set } = getBinding(node);
     set(value());
 
@@ -66,6 +67,7 @@ const handleNodeValueBinding = <V>(node: Element, value: WritableGrain<V>, event
     node.addEventListener(event, handler);
 
     const cleanup = value.subscribe((value) => {
+        setDirty();
         set(value);
     });
 
@@ -78,9 +80,10 @@ const handleNodeValueBinding = <V>(node: Element, value: WritableGrain<V>, event
 // Function to set up the control binding
 // to the control node. This is will be a
 const createControlBinding = <V>(
-    { event }: Required<ControlBindingOptions>,
+    { updateOn: event }: Required<ControlBindingOptions>,
     setTouched: () => void,
     setFocused: () => void,
+    setDirty: () => void,
     blur: () => void,
     disabled: Grain<boolean>,
     value: WritableGrain<V>,
@@ -91,7 +94,7 @@ const createControlBinding = <V>(
         // attributes.
         const resolveDisabledState = handleNodeDisabledState(node, disabled);
         const resolveFocusState = handleNodeFocusState(node, setTouched, setFocused, blur);
-        const resolveValueBinding = handleNodeValueBinding(node, value, event);
+        const resolveValueBinding = handleNodeValueBinding(node, value, event, setDirty);
 
         return () => {
             resolveDisabledState();
@@ -115,16 +118,14 @@ export const control = <V>(initialValue: V): Control<V> => {
     const isValid = derived(errors, (errors) => errors.length === 0);
     const touched = grain(false);
     const focused = grain(false);
+    const dirty = grain(false);
 
     const reset = () => {
         errors.set([]);
         touched.set(false);
         focused.set(false);
+        dirty.set(false);
         value.set(initialValue);
-    };
-
-    const touch = () => {
-        touched.set(true);
     };
 
     const binding = (options: Required<ControlBindingOptions>) => {
@@ -132,6 +133,7 @@ export const control = <V>(initialValue: V): Control<V> => {
             options,
             () => touched.set(true),
             () => focused.set(true),
+            () => dirty.set(true),
             () => focused.set(false),
             disabled,
             value,
@@ -147,9 +149,10 @@ export const control = <V>(initialValue: V): Control<V> => {
         isValid,
         touched,
         focused,
+        dirty,
         reset,
         bind: (options: ControlBindingOptions = {}) => {
-            return binding({ event: 'input', ...options });
+            return binding({ updateOn: 'input', ...options });
         },
     };
 };

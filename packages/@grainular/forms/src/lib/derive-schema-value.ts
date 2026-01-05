@@ -26,7 +26,7 @@ export const deriveSchemaValue = <T>(schema: FormSchema<T>): Grain<T> => {
         return values.reduce((acc, val, index) => {
             const key = keyedValues[index].key;
             // @ts-expect-error
-            acc[key as keyof T] = val;
+            acc[key] = val;
             return acc;
         }, {} as T);
     }) as Grain<T>;
