@@ -13,7 +13,7 @@ type ContactFormProps = {
 };
 
 export const ContactForm = ({ render, submit }: ContactFormProps) => {
-    const { validate, ...formProps } = form(initialContactModel, (schema) => {
+    const { validate, value, ...props } = form(initialContactModel, (schema) => {
         // Validate the names
         required(schema.name.first, { message: 'Please provide a first name' });
         required(schema.name.last, { message: 'Please provide a last name' });
@@ -32,7 +32,13 @@ export const ContactForm = ({ render, submit }: ContactFormProps) => {
 
     const onSubmit = (event: SubmitEvent) => {
         event.preventDefault();
-        if (validate()) return submit(formProps.value());
+        // If the form is invalid, we return early
+        // The validate method touches all controls
+        // and triggers a validation run.
+        if (!validate()) return;
+
+        // Submit the form using the form's value
+        submit(value());
     };
 
     return html`
@@ -42,7 +48,7 @@ export const ContactForm = ({ render, submit }: ContactFormProps) => {
             <p class="text-slate-400 text-sm mt-1">We'd love to hear from you.</p>
         </div>
         
-        ${render({ form: { ...formProps, validate } })}
+        ${render({ form: { ...props, value, validate } })}
 
         <button class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900">
             Submit Request
@@ -58,14 +64,14 @@ export const ContactFormBody = ({ form }: { form: Form<ContactModel> }) => {
                 ${Input({
                     control: form.controls.name.first,
                     label: 'First Name',
-                    name: 'name',
+                    name: 'name.first',
                     type: 'text',
                     placeholder: 'Jane',
                 })}
                  ${Input({
                      control: form.controls.name.last,
                      label: 'Last Name',
-                     name: 'last-name',
+                     name: 'name.last',
                      type: 'text',
                      placeholder: 'Doe',
                  })}

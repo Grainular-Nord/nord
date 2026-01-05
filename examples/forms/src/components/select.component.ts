@@ -2,7 +2,7 @@ import { $controlErrors, type Control } from '@grainular/forms';
 import { $each, html } from '@grainular/nord';
 
 type SelectProps = {
-    control: Control<string | null>;
+    control: Control<string>;
     label: string;
     name: string;
     options: string[];

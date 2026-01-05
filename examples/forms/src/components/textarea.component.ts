@@ -1,7 +1,6 @@
 import { $controlErrors, type Control } from '@grainular/forms';
-import { derived, grain } from '@grainular/grains';
+import { derived } from '@grainular/grains';
 import { html } from '@grainular/nord';
-import { trackTextLength } from '../directives/track-text-length.directive';
 
 type TextareaProps<T> = {
     control: Control<T>;
@@ -11,10 +10,16 @@ type TextareaProps<T> = {
     maxLength?: number;
 };
 
-export const Textarea = <T>({ control, label, name, placeholder, maxLength = 500 }: TextareaProps<T>) => {
+export const Textarea = <T extends string>({
+    control,
+    label,
+    name,
+    placeholder,
+    maxLength = 500,
+}: TextareaProps<T>) => {
     // We track the text length of the text area as well
     // as if the length exceeds the specified max length
-    const textLength = grain<number>(0);
+    const textLength = derived(control.value, (text) => text.length);
     const textToLong = derived(textLength, (length) => length > maxLength);
 
     return html`
@@ -29,7 +34,6 @@ export const Textarea = <T>({ control, label, name, placeholder, maxLength = 500
         </span>
         
         <textarea 
-            ${trackTextLength(textLength)}
             id="${name}" 
             name="${name}" 
             placeholder="${placeholder}" 
