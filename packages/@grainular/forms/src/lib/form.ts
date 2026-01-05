@@ -5,6 +5,7 @@ import { deriveSchemaValue } from './derive-schema-value';
 import { type FormSchema, createFormSchema } from './form-schema';
 import { setFormValue } from './handle-form-value';
 import { iterateSchema } from './iterate-schema';
+import { touchAll } from './touch-all';
 
 export type Form<T> = {
     value: Grain<T>;
@@ -39,7 +40,7 @@ export const form = <T extends Record<PropertyKey, unknown>>(
     const set = (value: T) => setFormValue(controls, value);
     const reset = () => iterateSchema(controls, (control) => control.reset());
     const validate = () => {
-        iterateSchema(controls, (control) => control.touched.set(true));
+        touchAll(controls);
         schema(controls);
         return errors().length === 0;
     };

@@ -1,6 +1,7 @@
 export { bind } from './directives/bind.directive';
 export { control, type Control } from './lib/control';
 export { form, type Form } from './lib/form';
+export { touchAll } from './lib/touch-all';
 export { $controlErrors } from './structs/control-errors.struct';
 export { createValidator, type Validator } from './validators/create-validator';
 export { email } from './validators/email';
