@@ -2,7 +2,7 @@ import { type Form, form, min, required } from '@grainular/forms';
 import { type ComponentFragment, html, on } from '@grainular/nord';
 import { categories } from '../models/category.model';
 import { type ContactModel, initialContactModel } from '../models/contact.model';
-import { textLength } from '../validators/text-length.validator';
+import { maxTextLength, minTextLength } from '../validators/text-length.validator';
 import { Input } from './input.component';
 import { Select } from './select.component';
 import { Textarea } from './textarea.component';
@@ -22,9 +22,10 @@ export const ContactForm = ({ render, submit }: ContactFormProps) => {
         required(schema.age, { message: 'Required' });
         min(schema.age, { message: 'Needs to be at least 18', min: 18 });
 
-        // Validate the message it self
+        // Validate the message itself
         required(schema.message, { message: 'Required' });
-        textLength(schema.message, { length: 500, message: 'Message cant exceed 500 characters.' });
+        minTextLength(schema.message, { length: 50, message: 'Message needs to be longer.' });
+        maxTextLength(schema.message, { length: 500, message: 'Message cant exceed 500 characters.' });
 
         // And finally check if consent was given
         required(schema.consent, { message: 'Consent is required' });
