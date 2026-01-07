@@ -50,6 +50,18 @@
         "vite": "npm:rolldown-vite@7.2.5",
       },
     },
+    "examples/routing": {
+      "name": "nord-example-routing",
+      "version": "0.0.0",
+      "dependencies": {
+        "@grainular/nord": "workspace:*",
+        "@grainular/router": "workspace:*",
+      },
+      "devDependencies": {
+        "typescript": "~5.9.3",
+        "vite": "npm:rolldown-vite@7.2.5",
+      },
+    },
     "examples/tic-tac-toe": {
       "name": "examples-nord-tic-tac-toe",
       "version": "0.0.0",
@@ -114,6 +126,19 @@
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "typescript": "^5.0.0",
+      },
+    },
+    "packages/@grainular/router": {
+      "name": "@grainular/router",
+      "version": "2.0.0",
+      "devDependencies": {
+        "@repository/builder": "workspace:*",
+        "@repository/config": "workspace:*",
+        "@types/bun": "latest",
+        "typescript": "^5.0.0",
+      },
+      "peerDependencies": {
+        "@grainular/nord": "workspace:*",
       },
     },
     "packages/@repository/builder": {
@@ -290,6 +315,8 @@
     "@grainular/nord": ["@grainular/nord@workspace:packages/@grainular/nord"],
 
     "@grainular/repository": ["@grainular/repository@file:", { "dependencies": { "@grainular/repository": "." }, "devDependencies": { "@biomejs/biome": "1.9.4", "@changesets/changelog-github": "^0.5.0", "@changesets/cli": "^2.27.9", "@commitlint/cli": "^19.3.0", "@commitlint/config-conventional": "^19.2.2", "@types/bun": "^1.2.16", "husky": "^9.0.11", "lefthook": "^1.11.9", "prettier": "^3.3.2", "turbo": "^2.0.6", "typescript": "^5.5.3" }, "peerDependencies": { "typescript": "^5.0.0" } }],
+
+    "@grainular/router": ["@grainular/router@workspace:packages/@grainular/router"],
 
     "@inquirer/external-editor": ["@inquirer/external-editor@1.0.3", "", { "dependencies": { "chardet": "^2.1.1", "iconv-lite": "^0.7.0" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-RWbSrDiYmO4LbejWY7ttpxczuwQyZLBUyygsA9Nsv95hpzUWwnNTVQmAq3xuh7vNwCp07UTmE5i11XAEExx4RA=="],
 
@@ -690,6 +717,8 @@
     "nanoid": ["nanoid@3.3.11", "", { "bin": { "nanoid": "bin/nanoid.cjs" } }, "sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w=="],
 
     "node-fetch": ["node-fetch@2.7.0", "", { "dependencies": { "whatwg-url": "^5.0.0" }, "peerDependencies": { "encoding": "^0.1.0" }, "optionalPeers": ["encoding"] }, "sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A=="],
+
+    "nord-example-routing": ["nord-example-routing@workspace:examples/routing"],
 
     "outdent": ["outdent@0.5.0", "", {}, "sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q=="],
 
