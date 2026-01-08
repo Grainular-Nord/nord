@@ -29,9 +29,9 @@ export const Hero = withScopedStyles(
         .hero {
             display: flex; 
             flex-wrap: wrap;
-            gap: 2.5rem;
             flex-grow: 1;
             min-height: 50vh;
+            gap: 1.5rem;
 
             & .hero-text {
                 display: flex; 
@@ -67,6 +67,7 @@ export const Hero = withScopedStyles(
                 flex: 1;
                 min-width: min(100%, 400px);
                 align-self: center; 
+                position: relative; 
             }
         }
 

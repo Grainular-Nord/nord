@@ -4,35 +4,59 @@
     --nord-aurora-2: oklch(65% 0.25 290);
 
     /* Darks */
-    --nord-dark-1: oklch(25% 0.02 260);
+    --nord-dark-1: oklch(35% 0.03 265);
     --nord-dark-2: oklch(20% 0.03 265);
 
     /* Lights  */
     --nord-light-1: oklch(98% 0.01 240);
     --nord-light-2: oklch(85% 0.02 240);
 
-    /* Syntax Highlighting (High Contrast) */
-    --syn-kwd: oklch(45% 0.15 260); /* Deep Blue */
-    --syn-fn: oklch(50% 0.18 200); /* Teal */
-    --syn-val: oklch(60% 0.18 310); /* Purple */
-    --syn-str: oklch(55% 0.14 140); /* Green */
+    /* Glass */
+    --glass-light: oklch(98% 0.01 240 / 0.25);
+    --glass-dark: oklch(5% 0.01 240 / 0.1);
+
+    /* Pink for keywords */
+    --h-kwd: 20;
+    /*  Purple for Fns */
+    --h-fn: 300;
+    /* Orange for numbers */
+    --h-val: 65;
+    /* Light blue for strings */
+    --h-str: 200;
 
     /* Globals */
     --navigation-height: 4rem;
+    --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
 }
 
 [data-theme="light"] {
     --bg-app: var(--nord-light-1);
-    --text-main: var(--nord-dark-2);
-    --text-sub: var(--nord-dark-1);
-    --editor-bg: var(--nord-light-2);
+    --text-main: var(--nord-dark-1);
+    --text-sub: var(--nord-dark-2);
+    --editor-bg: var(--glass-light);
+    --button-hover-bg: var(--glass-dark);
+
+    /* Deep, rich tones for white backgrounds */
+    --syn-kwd: oklch(45% 0.16 var(--h-kwd));
+    --syn-fn: oklch(40% 0.14 var(--h-fn));
+    --syn-val: oklch(50% 0.15 var(--h-val));
+    --syn-str: oklch(45% 0.13 var(--h-str));
+    --syn-punc: oklch(40% 0.06 260); /* Deep Slate */
 }
 
 [data-theme="dark"] {
     --bg-app: var(--nord-dark-2);
     --text-main: var(--nord-light-1);
     --text-sub: var(--nord-light-2);
-    --editor-bg: var(--nord-dark-2);
+    --editor-bg: var(--glass-dark);
+    --button-hover-bg: var(--glass-light);
+
+    /* Bright, pastel-neon tones for dark backgrounds */
+    --syn-kwd: oklch(80% 0.14 var(--h-kwd));
+    --syn-fn: oklch(78% 0.12 var(--h-fn));
+    --syn-val: oklch(85% 0.14 var(--h-val));
+    --syn-str: oklch(82% 0.13 var(--h-str));
+    --syn-punc: oklch(75% 0.05 240); /* Soft Gray */
 }
 
 * {
@@ -81,9 +105,10 @@ main {
     border: none;
     cursor: pointer;
     color: var(--text-main);
-    border-radius: 50%;
-    width: 1.5rem;
-    height: 1.5rem;
+    border-radius: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,9 +117,113 @@ main {
 
     &:hover {
         color: var(--text-main);
+        background-color: var(--button-hover-bg);
     }
 
     & svg {
         flex: 1 1 0;
     }
+}
+
+/* Editor Styling */
+
+.editor,
+.live-input {
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    font-variant-ligatures: none;
+}
+
+.editor {
+    background-color: var(--editor-bg);
+    backdrop-filter: blur(20px);
+    margin-right: 2rem;
+    border: 1px solid color-mix(in srgb, var(--text-main), transparent 92%);
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem 1.5rem;
+
+    font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+    line-height: 1.5;
+
+    transform: perspective(1000px) rotateY(-2deg);
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.15);
+}
+
+.editor pre {
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.editor pre::-webkit-scrollbar {
+    display: none;
+}
+
+.live-input {
+    /* Remove default input styling */
+    appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    field-sizing: content;
+
+    /* Typography matches code */
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--syn-val);
+    font-weight: bold;
+
+    min-width: 2ch;
+    text-align: center;
+    padding: 0;
+    margin: 0 2px;
+
+    border-bottom: 1px dashed color-mix(in srgb, var(--syn-val), transparent 50%);
+    cursor: text;
+    transition: border-color 0.2s;
+}
+
+.live-input:focus {
+    border-bottom-style: solid;
+    border-bottom-color: var(--syn-val);
+}
+
+/* Remove spin buttons from number input */
+.live-input::-webkit-outer-spin-button,
+.live-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.copy {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    scale: 0.9;
+}
+
+/* Syntax Highlighting classes */
+.keyword {
+    color: var(--syn-kwd);
+    font-weight: 600;
+}
+.function {
+    color: var(--syn-fn);
+}
+.string {
+    color: var(--syn-str);
+}
+.number {
+    color: var(--syn-val);
+}
+.operator {
+    color: var(--syn-kwd);
+}
+.punctuation {
+    color: var(--text-sub);
+    opacity: 0.6;
+}
+.comment {
+    color: var(--text-sub);
+    font-style: italic;
+    opacity: 0.8;
 }
