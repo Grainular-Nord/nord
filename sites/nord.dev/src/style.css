@@ -37,10 +37,10 @@
     --button-hover-bg: var(--glass-dark);
 
     /* Deep, rich tones for white backgrounds */
-    --syn-kwd: oklch(45% 0.17 275);
-    --syn-fn: oklch(40% 0.13 235);
-    --syn-val: oklch(42% 0.16 325);
-    --syn-str: oklch(45% 0.11 35);
+    --syn-kwd: oklch(46% 0.15 255);
+    --syn-fn: oklch(50% 0.1 210);
+    --syn-val: oklch(48% 0.14 300);
+    --syn-str: oklch(52% 0.09 35);
     --syn-punc: oklch(40% 0.06 260); /* Deep Slate */
 }
 
@@ -52,10 +52,10 @@
     --button-hover-bg: var(--glass-light);
 
     /* Bright, pastel-neon tones for dark backgrounds */
-    --syn-kwd: oklch(65% 0.18 275);
-    --syn-fn: oklch(70% 0.14 235);
-    --syn-val: oklch(68% 0.17 325);
-    --syn-str: oklch(75% 0.12 35);
+    --syn-kwd: oklch(68% 0.14 255);
+    --syn-fn: oklch(72% 0.1 210);
+    --syn-val: oklch(66% 0.16 300);
+    --syn-str: oklch(74% 0.1 40);
     --syn-punc: oklch(75% 0.05 240); /* Soft Gray */
 }
 
