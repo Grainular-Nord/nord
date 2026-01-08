@@ -60,7 +60,7 @@ export const hydrateComponentTemplate = (node: Node, fragments: Map<string, Frag
 
             // If there is a scope id, we set it now after finishing
             // up all other operations
-            if (scope) node.setAttribute(scope, '');
+            if (scope) hydrationNodes.push(() => node.setAttribute(scope, ''));
         }
     }
 

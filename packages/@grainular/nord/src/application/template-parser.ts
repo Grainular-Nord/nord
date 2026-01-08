@@ -5,6 +5,7 @@ import type { Fragment } from '../internals/fragment';
 import { isPrimitiveValue } from '../internals/is-primitive-value';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import type { Subscribable } from '../internals/subscribable';
+import { trimWhitespace } from '../internals/trim-whitespace';
 
 const parseTemplateFragment = (fragment: string | number | boolean | null | Subscribable | Fragment) => {
     switch (true) {
@@ -36,7 +37,7 @@ export const templateParser = (
         return [
             {
                 id: '',
-                resolve: () => strFragment,
+                resolve: () => trimWhitespace(strFragment),
                 render: () => strFragment,
                 hydrate: (_: Node) => {},
             },
