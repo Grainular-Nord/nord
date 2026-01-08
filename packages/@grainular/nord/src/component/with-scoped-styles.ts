@@ -8,9 +8,6 @@ export const withScopedStyles = <T extends PureComponent>(component: T, styles: 
         // doesn't want them. If no arguments are passed, undefined will be correct
         const fragment = component(args);
 
-        // Attach the styles
-        const { attach, id: styleId } = styles;
-
         return {
             id: fragment.id,
             [IS_COMPONENT]: true as const,
@@ -18,8 +15,8 @@ export const withScopedStyles = <T extends PureComponent>(component: T, styles: 
             resolve: fragment.resolve,
             hydrate: (node: Node) => {
                 // Hydrate the fragment with a scope marker
-                fragment.hydrate(node, styleId);
-                attach();
+                fragment.hydrate(node, styles.id);
+                styles.hydrate();
             },
         };
     };
