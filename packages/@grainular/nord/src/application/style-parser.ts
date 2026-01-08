@@ -2,36 +2,35 @@ import { identifier } from '../internals/identifier';
 
 export type StyleFragment = {
     id: string;
-    attach: () => void;
+    hydrate: () => void;
 };
 
 const styleCache = new Map<string, CSSStyleSheet>();
 
+const scopeRule = (rules: CSSRuleList | null, id: string) => {
+    for (const rule of rules ?? []) {
+        if (rule instanceof CSSStyleRule) {
+            rule.selectorText = `${rule.selectorText}[${id}]`;
+        }
+
+        if ('cssRules' in rule && rule.cssRules instanceof CSSRuleList) {
+            scopeRule(rule.cssRules, id);
+        }
+    }
+};
+
 export const styleParser = (str: TemplateStringsArray, ...fragments: (string | number)[]): StyleFragment => {
-    const id = identifier();
+    const scope = identifier();
     const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
 
-    const scopeRule = (rules: CSSRuleList | null) => {
-        for (const rule of rules ?? []) {
-            if (rule instanceof CSSStyleRule) {
-                rule.selectorText = `${rule.selectorText}[${id}]`;
-                scopeRule(rule.cssRules);
-            }
-
-            if (rule instanceof CSSMediaRule) {
-                scopeRule(rule.cssRules);
-            }
-        }
-    };
-
     return {
-        id,
-        attach: () => {
-            if (!styleCache.has(id)) {
+        id: scope,
+        hydrate: () => {
+            if (!styleCache.has(scope)) {
                 const sheet = new CSSStyleSheet();
-                styleCache.set(id, sheet);
+                styleCache.set(scope, sheet);
                 sheet.replaceSync(style);
-                scopeRule(sheet.cssRules);
+                scopeRule(sheet.cssRules, scope);
                 document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
             }
         },
