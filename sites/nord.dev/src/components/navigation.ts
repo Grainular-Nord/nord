@@ -38,10 +38,10 @@ export const Navigation = withScopedStyles(
                 as well as a theme toggle
             -->
             <ul class="nav-links">
-                <li>
+                <li class="link">
                     <a href="https://docs.nordjs.dev" rel="noopener noreferrer">Docs.</a>
                 </li>
-                <li>
+                <li class="link">
                     <a href="https://playground.nordjs.dev" rel="noopener noreferrer">Playground.</a>
                 </li>
                 <li>${ThemeToggle()}</li>
@@ -90,8 +90,12 @@ export const Navigation = withScopedStyles(
         & .nav-links {
             display: flex; 
             align-items: center; 
-            gap: 1.5rem;
+            gap: 0.25rem;
             list-style-type: none; 
+
+            & .link {
+                padding-inline: 0.5rem;
+            }
 
             & a {
                 text-decoration: none; 

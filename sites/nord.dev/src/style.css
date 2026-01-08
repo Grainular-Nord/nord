@@ -37,10 +37,10 @@
     --button-hover-bg: var(--glass-dark);
 
     /* Deep, rich tones for white backgrounds */
-    --syn-kwd: oklch(45% 0.16 var(--h-kwd));
-    --syn-fn: oklch(40% 0.14 var(--h-fn));
-    --syn-val: oklch(50% 0.15 var(--h-val));
-    --syn-str: oklch(45% 0.13 var(--h-str));
+    --syn-kwd: oklch(45% 0.17 275);
+    --syn-fn: oklch(40% 0.13 235);
+    --syn-val: oklch(42% 0.16 325);
+    --syn-str: oklch(45% 0.11 35);
     --syn-punc: oklch(40% 0.06 260); /* Deep Slate */
 }
 
@@ -52,10 +52,10 @@
     --button-hover-bg: var(--glass-light);
 
     /* Bright, pastel-neon tones for dark backgrounds */
-    --syn-kwd: oklch(80% 0.14 var(--h-kwd));
-    --syn-fn: oklch(78% 0.12 var(--h-fn));
-    --syn-val: oklch(85% 0.14 var(--h-val));
-    --syn-str: oklch(82% 0.13 var(--h-str));
+    --syn-kwd: oklch(65% 0.18 275);
+    --syn-fn: oklch(70% 0.14 235);
+    --syn-val: oklch(68% 0.17 325);
+    --syn-str: oklch(75% 0.12 35);
     --syn-punc: oklch(75% 0.05 240); /* Soft Gray */
 }
 
@@ -106,9 +106,7 @@ main {
     cursor: pointer;
     color: var(--text-main);
     border-radius: 0.5rem;
-    width: 2rem;
-    height: 2rem;
-    padding: 0.25rem;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,6 +120,12 @@ main {
 
     & svg {
         flex: 1 1 0;
+    }
+
+    &[disabled] {
+        cursor: pointer;
+        opacity: 0.8;
+        pointer-events: none;
     }
 }
 

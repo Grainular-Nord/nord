@@ -1,6 +1,6 @@
 import { bind } from '@grainular/forms';
-import type { WritableGrain } from '@grainular/grains';
-import { $each, type ComponentFragment, html, on } from '@grainular/nord';
+import { type WritableGrain, grain } from '@grainular/grains';
+import { $each, $if, type ComponentFragment, html, on } from '@grainular/nord';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
 
@@ -85,14 +85,18 @@ export const Editor = ({ count }: { count: WritableGrain<number> }) => {
     // and pass it as prop to the Highlight component
     const boundInput = html`<input type="number" class="live-input" ${bind(count, 'input')}/>`;
 
+    const copied = grain(false);
     const copy = () => {
+        copied.set(true);
         navigator.clipboard.writeText(snippet.replace('COUNT', '0'));
+        window.setTimeout(() => copied.set(false), 2500);
     };
 
     return html`
         <div class="editor">
-            <button class="icon-btn copy" ${on('click', copy)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <button class="icon-btn copy" ${on('click', copy)} disabled="${copied}">
+                ${$if(copied, () => html`copied!`).$else(() => html`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`)}
+                
             </button>
             ${Highlight({
                 code: snippet.trim(),
