@@ -1,0 +1,78 @@
+import { grain } from '@grainular/grains';
+import { css, html, withScopedStyles } from '@grainular/nord';
+import { Counter } from './counter';
+import { Editor } from './editor';
+
+export const Hero = withScopedStyles(
+    () => {
+        const count = grain(0);
+
+        return html`
+            <section class="hero">
+                <div class="hero-text">
+                    <h1>Nørd</h1>
+                    <div>Build apps, not bundles.</div>
+                    <div class="sub-text">9kb Runtime. 0 Dependencies. 0 Tooling required.</div>
+                </div>
+                <div class="hero-code">
+                    ${Editor({ count })}
+                    ${Counter({ count })}
+                </div>
+            </section>`;
+    },
+
+    /**
+     * Hero styles are scoped directly to the hero Element
+     * and do not bleed into the nested elements
+     */
+    css`
+        .hero {
+            display: flex; 
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 50vh;
+
+            & .hero-text {
+                display: flex; 
+                flex-direction: column; 
+                gap: 0.25rem;
+                flex: 1; 
+                min-width: min(100%, 300px);
+                font-size: 2rem;
+                color: var(--text-main);
+
+                & h1 {
+                    font-size: 5.5rem;
+                    letter-spacing: -0.03em;
+                    background: linear-gradient(to right, var(--nord-aurora-1), var(--nord-aurora-2));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    color: transparent;
+                    text-shadow: 0 0 1.5rem rgba(155, 155, 155, 0.5);
+                }
+
+                & div {
+                    font-weight: 600;
+                }
+
+                & div:last-of-type {
+                    font-size: 1rem;
+                    font-weight: 400;
+                    color: var(--text-sub);
+                }
+            }
+
+            & .hero-code {
+                flex: 1;
+                min-width: min(100%, 400px);
+                align-self: center; 
+            }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0 }
+            to { opacity: 1 } 
+        }
+`,
+);

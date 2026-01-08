@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css"/>
+    <title>Nørdjs.dev | Grainular Ui made easy</title>
+  </head>
+  <body>
+    <script>
+      // Retrieve the stored user preferred theme from 
+      // the local storage. We manually set the first 
+      // attribute to avoid FOUC
+      const stored = window.localStorage.getItem('nord.dev-theme') ?? null;
+
+      // As fallback, we also retrieve the system preferred
+      // theme string and match it to dark / light
+      const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      // And then simply set the theme on the element. From
+      // there on out, the theme store itself takes over
+      document.documentElement.setAttribute('data-theme', stored ?? system);
+    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
