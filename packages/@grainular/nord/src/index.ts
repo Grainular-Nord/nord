@@ -1,7 +1,7 @@
-export { cssParser as css } from './application/css-parser';
 export { disconnectNodes } from './application/lifecycle-observer';
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
+export { styleParser as css } from './application/style-parser';
 export { syncReactive } from './application/sync-reactive';
 export { templateParser as html } from './application/template-parser';
 export type { ComponentFragment } from './component/component-fragment';

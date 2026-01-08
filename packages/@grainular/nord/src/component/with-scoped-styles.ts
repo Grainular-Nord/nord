@@ -1,9 +1,11 @@
-import type { StyleFragment } from '../application/css-parser';
+import type { StyleFragment } from '../application/style-parser';
 import { type ComponentFragment, IS_COMPONENT } from './component-fragment';
-import type { ComponentProps, PureComponent } from './component-types';
+import type { PureComponent } from './component-types';
 
-export const withScopedStyles = <T extends ComponentProps>(component: PureComponent<T>, styles: StyleFragment) => {
-    return (args: T): ComponentFragment => {
+export const withScopedStyles = <T extends PureComponent>(component: T, styles: StyleFragment) => {
+    return (...args: Parameters<T>): ComponentFragment => {
+        // @ts-expect-error: We can safely pass arguments even to a component that
+        // doesn't want them. If no arguments are passed, undefined will be correct
         const fragment = component(args);
 
         // Attach the styles

@@ -23,13 +23,9 @@ export const createComponentFragment = (
             const fragment = document.createElement('template');
             fragment.innerHTML = html.trim();
 
-            for (const hydrator of hydrateComponentTemplate(fragment.content, fragments)) hydrator();
-
-            if (scope) {
-                for (const node of fragment.content.childNodes) {
-                    if (node instanceof Element) node.setAttribute(scope, '');
-                }
-            }
+            // Hydrate the component template using the fragment,
+            // the available fragments and scope the nodes if required
+            for (const hydrator of hydrateComponentTemplate(fragment.content, fragments, scope)) hydrator();
 
             node.replaceWith(fragment.content);
         },

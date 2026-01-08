@@ -2,7 +2,7 @@ import { createAttributeBinding } from '../internals/attribute-bindings';
 import type { Fragment } from '../internals/fragment';
 import { identifierRegex } from '../internals/identifier';
 
-export const hydrateComponentTemplate = (node: Node, fragments: Map<string, Fragment>) => {
+export const hydrateComponentTemplate = (node: Node, fragments: Map<string, Fragment>, scope?: string) => {
     const tw = document.createTreeWalker(node, NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_ELEMENT);
     const hydrationNodes = [];
 
@@ -57,6 +57,10 @@ export const hydrateComponentTemplate = (node: Node, fragments: Map<string, Frag
                     });
                 }
             }
+
+            // If there is a scope id, we set it now after finishing
+            // up all other operations
+            if (scope) node.setAttribute(scope, '');
         }
     }
 

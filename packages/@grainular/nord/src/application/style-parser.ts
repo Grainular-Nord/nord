@@ -7,9 +7,22 @@ export type StyleFragment = {
 
 const styleCache = new Map<string, CSSStyleSheet>();
 
-export const cssParser = (str: TemplateStringsArray, ...fragments: (string | number)[]): StyleFragment => {
+export const styleParser = (str: TemplateStringsArray, ...fragments: (string | number)[]): StyleFragment => {
     const id = identifier();
     const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
+
+    const scopeRule = (rules: CSSRuleList | null) => {
+        for (const rule of rules ?? []) {
+            if (rule instanceof CSSStyleRule) {
+                rule.selectorText = `${rule.selectorText}[${id}]`;
+                scopeRule(rule.cssRules);
+            }
+
+            if (rule instanceof CSSMediaRule) {
+                scopeRule(rule.cssRules);
+            }
+        }
+    };
 
     return {
         id,
@@ -17,7 +30,8 @@ export const cssParser = (str: TemplateStringsArray, ...fragments: (string | num
             if (!styleCache.has(id)) {
                 const sheet = new CSSStyleSheet();
                 styleCache.set(id, sheet);
-                sheet.replaceSync(`[${id}] { ${style} }`);
+                sheet.replaceSync(style);
+                scopeRule(sheet.cssRules);
                 document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
             }
         },
