@@ -30,7 +30,6 @@ export const Hero = withScopedStyles(
             display: flex; 
             flex-wrap: wrap;
             flex-grow: 1;
-            min-height: 60vh;
             gap: 1.5rem;
 
             & .hero-text {
@@ -38,9 +37,12 @@ export const Hero = withScopedStyles(
                 flex-direction: column; 
                 gap: 0.25rem;
                 flex: 1; 
+
                 min-width: min(100%, 300px);
+                
                 font-size: 2rem;
                 color: var(--text-main);
+                padding-block: 2rem;
 
                 & h1 {
                     font-size: 5.5rem;
