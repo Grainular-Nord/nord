@@ -1,0 +1,31 @@
+{
+  "name": "vite-plugin-nord-ssr",
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "bun@1.1.18",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+      ".": {
+          "types": "./dist/types/index.d.ts",
+          "import": "./dist/esm/index.js",
+          "require": "./dist/cjs/index.js"
+      }
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.0.3",
+    "vite": "^7.3.1",
+    "@repository/builder": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+ "scripts": {
+    "dev": "bun run .build.ts --watch",
+    "build": "bun run .build.ts",
+    "test": "bun test --coverage"
+  }
+}
