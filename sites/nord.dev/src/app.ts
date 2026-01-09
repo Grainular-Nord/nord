@@ -1,5 +1,6 @@
 import { html } from '@grainular/nord';
 import { Aurora } from './components/aurora';
+import { Footer } from './components/footer';
 import { Hero } from './components/hero';
 import { Navigation } from './components/navigation';
 
@@ -10,5 +11,6 @@ export const App = () => {
         <main>
             ${Hero()}
         </main>
+        ${Footer()}
    `;
 };

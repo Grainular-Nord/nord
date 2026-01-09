@@ -4,12 +4,14 @@
     --nord-aurora-2: oklch(65% 0.25 290);
 
     /* Darks */
-    --nord-dark-1: oklch(35% 0.03 265);
-    --nord-dark-2: oklch(20% 0.03 265);
+    --nord-dark-1: oklch(20% 0.03 265);
+    --nord-dark-2: oklch(35% 0.03 265);
+    --nord-dark-3: oklch(45% 0.03 265);
 
     /* Lights  */
     --nord-light-1: oklch(98% 0.01 240);
     --nord-light-2: oklch(85% 0.02 240);
+    --nord-light-3: oklch(70% 0.02 240);
 
     /* Glass */
     --glass-light: oklch(98% 0.01 240 / 0.25);
@@ -31,10 +33,11 @@
 
 [data-theme="light"] {
     --bg-app: var(--nord-light-1);
-    --text-main: var(--nord-dark-1);
-    --text-sub: var(--nord-dark-2);
+    --text-main: var(--nord-dark-2);
+    --text-sub: var(--nord-dark-1);
     --editor-bg: var(--glass-light);
     --button-hover-bg: var(--glass-dark);
+    --text-footer: var(--nord-dark-3);
 
     /* Deep, rich tones for white backgrounds */
     --syn-kwd: oklch(46% 0.15 255);
@@ -45,11 +48,12 @@
 }
 
 [data-theme="dark"] {
-    --bg-app: var(--nord-dark-2);
+    --bg-app: var(--nord-dark-1);
     --text-main: var(--nord-light-1);
     --text-sub: var(--nord-light-2);
     --editor-bg: var(--glass-dark);
     --button-hover-bg: var(--glass-light);
+    --text-footer: var(--nord-light-3);
 
     /* Bright, pastel-neon tones for dark backgrounds */
     --syn-kwd: oklch(68% 0.14 255);
@@ -230,4 +234,24 @@ main {
     color: var(--text-sub);
     font-style: italic;
     opacity: 0.8;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    inset-inline: 0px;
+    padding: 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-size: 0.8rem;
+    color: var(--text-footer);
+
+    & a {
+        font-size: 0.8rem;
+        color: var(--text-footer);
+        text-decoration: none;
+    }
 }
