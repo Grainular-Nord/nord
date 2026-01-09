@@ -28,10 +28,12 @@ export const Counter = withScopedStyles(
             position: absolute;
             right: 0.5rem;
             bottom: -1.5rem;
+            user-select: none;
+            touch-action: manipulation;
             
             /* Sizing: Big and tactile */
             aspect-ratio: 1 / 1;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 700;
             width: 6.5rem;
             display: flex; 
@@ -64,6 +66,12 @@ export const Counter = withScopedStyles(
 
         .counter:active {
             transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .counter {
+                right: -1rem;
+            }
         }
 
         @keyframes ping-ripple {

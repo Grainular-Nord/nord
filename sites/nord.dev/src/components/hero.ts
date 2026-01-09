@@ -68,12 +68,21 @@ export const Hero = withScopedStyles(
                 min-width: min(100%, 400px);
                 align-self: center; 
                 position: relative; 
+                padding-inline: 2rem;
             }
         }
 
         @keyframes fade-in {
             from { opacity: 0 }
             to { opacity: 1 } 
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                & .hero-code {
+                    padding: 0; 
+                }
+            }
         }
 `,
 );
