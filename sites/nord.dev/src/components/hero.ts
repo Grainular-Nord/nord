@@ -30,7 +30,7 @@ export const Hero = withScopedStyles(
             display: flex; 
             flex-wrap: wrap;
             flex-grow: 1;
-            min-height: 50vh;
+            min-height: 60vh;
             gap: 1.5rem;
 
             & .hero-text {

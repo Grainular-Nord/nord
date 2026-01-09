@@ -64,11 +64,12 @@ export const Counter = () => {
   const count = grain(COUNT); 
 
   const increment = () => {
-     count.set(count() + 1);
+      count.set(count() + 1);
   }
 
   return html\`
     <button \${on('click', increment)}>
+      <span>Click to +</span>
       \${count}
     </button>\`
 }
