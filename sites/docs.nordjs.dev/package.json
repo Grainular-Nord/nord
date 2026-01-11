@@ -1,0 +1,23 @@
+{
+  "name": "docs.nordjs.dev",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxc-minify": "^0.107.0",
+    "vitepress": "^2.0.0-alpha.15",
+    "vitepress-plugin-llms": "^1.10.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.26"
+  }
+}
