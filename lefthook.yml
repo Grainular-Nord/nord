@@ -10,8 +10,10 @@ pre-commit:
     commands:
         format:
             run: bun run format {staged_files} --no-errors-on-unmatched
+            stage_fixed: true
         lint:ts:
             run: bun run lint {staged_files} --no-errors-on-unmatched
+            stage_fixed: true
 commit-msg:
     commands:
         lint:
