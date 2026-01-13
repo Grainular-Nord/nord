@@ -6,6 +6,10 @@ Welcome to Nørd — a modern JavaScript framework for building web UIs. You can
 ::: tip
 Use the toggle in the navigation to switch between importing from npm or from a CDN. Examples using the CDN import can be copied directly into the browser and will run as expected. Since the examples are written in TypeScript, you may need to remove the types.
 :::
+
+::: info
+The examples below will give you a quick overview of **Nørd**s capabilities, but it isn't the whole documentation. There is much more to learn in the [playground](/playground/) and [tutorial](/playground/tutorial/01-hello-world) as well as in the rest of the documentation.
+:::
 </llm-exclude>
 
 ## Hello World
