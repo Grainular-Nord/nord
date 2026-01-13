@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import llmstxt from 'vitepress-plugin-llms';
+import { autoImportPlugin } from './plugins/auto-import-plugin';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -79,5 +80,10 @@ export default defineConfig({
     srcExclude: ['readme.md', 'license.md', 'contributing.md'],
     sitemap: {
         hostname: 'https://nordjs.dev',
+    },
+    markdown: {
+        config: (md) => {
+            md.use(autoImportPlugin);
+        },
     },
 });
