@@ -59,11 +59,6 @@ onMounted(() => {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.toggle-track.is-cdn {
-  background-color: var(--vp-c-brand);
-  border-color: var(--vp-c-brand);
-}
-
 .toggle-thumb {
   width: 16px;
   height: 16px;
