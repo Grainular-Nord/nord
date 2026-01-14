@@ -8,7 +8,84 @@ import { createStruct } from './create-struct';
 type CachedEntry<T> = { data: T; nodes: Element[] };
 type KeyFn<T> = (entry: T) => unknown;
 type RenderFn<T> = (entry: T, idx: number, arr: T[]) => ComponentFragment;
-
+/**
+ * Creates a declarative list renderer that efficiently reconciles DOM nodes
+ * based on item identity and optional keys.
+ *
+ * ## Core behavior
+ *
+ * `$each` renders a list of items into the DOM and keeps it in sync when the
+ * source list changes. It uses a cache of previously rendered entries to
+ * minimize DOM operations where possible.
+ *
+ * ### Identity & updates
+ *
+ * By default, list items are compared by **reference identity**:
+ *
+ * - If the same item reference appears again, its existing DOM nodes are reused.
+ * - If a new item reference replaces a previous one, the old nodes are
+ *   disconnected and new nodes are rendered.
+ * - In-place mutation of an existing item **does not trigger a rerender**.
+ *
+ * This means `$each` follows **identity-based rendering**, not value-based
+ * diffing.
+ *
+ * An optional `compareFn` can be provided to override this behavior and control
+ * when an item should be considered changed.
+ *
+ * ### Keys
+ *
+ * `$each` supports keyed lists via `$withKey`. Keys are used to associate items
+ * with cached DOM nodes across renders.
+ *
+ * - If an item with the same key appears again and is considered unchanged,
+ *   its DOM nodes are reused and moved if necessary.
+ * - If an item with the same key is considered changed (by identity or
+ *   `compareFn`), its nodes are replaced.
+ * - If a key disappears from the list, its associated nodes are disconnected.
+ *
+ * Keys are **not** used to determine equality by themselves; they only define
+ * cache slots.
+ *
+ * ### Reordering
+ *
+ * Reordering items with stable identity and keys will move existing DOM nodes
+ * without recreating them.
+ *
+ * Reordering items with new identities (even if keys match) will recreate the
+ * affected nodes.
+ *
+ * ### Empty lists
+ *
+ * When the list becomes empty, all previously rendered nodes are disconnected
+ * and the internal cache is cleared.
+ *
+ * ### Static vs dynamic sources
+ *
+ * - If the source is a plain function returning an array, the list is rendered
+ *   once and treated as static.
+ * - If the source is a subscribable value, `$each` subscribes to it and
+ *   reconciles the list whenever it updates.
+ *
+ * ## Example
+ *
+ * ```ts
+ * const items = grain([{ id: 1, name: 'A' }]);
+ *
+ * html`
+ *   <ul>
+ *     ${$each(items)
+ *       .$withKey(item => item.id)
+ *       .$as(item => html`<li>${item.name}</li>`)}
+ *   </ul>
+ * `;
+ * ```
+ *
+ * @typeParam T - The item type of the list.
+ * @param source - A function returning an array or a subscribable array.
+ * @param compareFn - Optional comparison function to determine whether an
+ *                    existing item should be rerendered.
+ */
 export const $each = <T>(source: (() => T[]) | Subscribable<T[]>, compareFn?: (prev: T, current: T) => boolean) => {
     const createEachStruct = (keyFn: KeyFn<T>, render: RenderFn<T>) => {
         return createStruct(
