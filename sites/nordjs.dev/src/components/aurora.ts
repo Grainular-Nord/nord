@@ -25,13 +25,13 @@ export const Aurora = withScopedStyles(
         &::before {
             top: -30%;
             left: -30%;
-            background: radial-gradient(circle, var(--nord-aurora-2), transparent 50%);
+            background: radial-gradient(circle, var(--nord-aurora-1), transparent 50%);
         }
 
         &::after {
             bottom: -30%;
             right: -30%;
-            background: radial-gradient(circle, var(--nord-aurora-1), transparent 50%);
+            background: radial-gradient(circle, var(--nord-aurora-2), transparent 50%);
             animation-delay: -40s;
         }
         }
