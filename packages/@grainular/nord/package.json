@@ -15,15 +15,19 @@
     },
     "unpkg": "./dist/browser/index.js",
     "devDependencies": {
-        "@repository/config": "workspace:*",
         "@repository/builder": "workspace:*",
+        "@repository/config": "workspace:*",
+        "@grainular/grains": "workspace:*",
         "@types/bun": "latest",
+        "@types/jsdom": "^27.0.0",
+        "jsdom": "^27.4.0",
         "typescript": "^5.0.0"
     },
     "scripts": {
         "dev": "bun run .build.ts --watch",
         "build": "bun run .build.ts",
-        "test": "bun test --coverage",
+        "test": "bun test",
+        "test:cov": "bun test --coverage",
         "prepublishOnly": "bun run build"
     },
     "sideEffects": false,
