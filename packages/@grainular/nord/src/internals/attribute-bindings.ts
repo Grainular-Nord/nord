@@ -63,7 +63,9 @@ export const createAttributeBinding = (
         }
 
         // Handle boolean attribute commit to dom
-        attributeValue === 'false' ? node.removeAttribute(attributeName) : node.setAttribute(attributeName, '');
+        attributeValue === 'false' || false
+            ? node.removeAttribute(attributeName)
+            : node.setAttribute(attributeName, '');
     });
 
     // Track the node, and if it unmounts, delete
