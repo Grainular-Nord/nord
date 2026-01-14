@@ -12,7 +12,6 @@ export const syncReactive = <T>({
     // subscribe fn;
     let unsubscribe: (() => void) | null = null;
 
-    // 4. The Bridge: What happens when the external source pings us?
     const onUpdate = () => {
         for (const subscriber of subscribers) subscriber(value());
     };
@@ -21,8 +20,6 @@ export const syncReactive = <T>({
         subscribe: (subscriber: (value: T) => void) => {
             subscribers.add(subscriber);
 
-            // Store the unsubscribe from the first subscription
-            // of the system
             if (subscribers.size === 1) {
                 unsubscribe = subscribe(onUpdate);
             }

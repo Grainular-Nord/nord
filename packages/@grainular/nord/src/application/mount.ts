@@ -9,7 +9,7 @@ type MountOptions = {
  * Mounts a `PureComponent` into a target DOM element.
  *
  * It ensures the application bootstraps correctly by enforcing that the
- * mount target is a valid `Element`.+
+ * mount target is a valid `Element` or `DocumentFragment`.
  *
  * @example
  * ```ts
@@ -24,7 +24,8 @@ type MountOptions = {
 
 export const mount = (component: PureComponent, { to: target }: MountOptions) => {
     // We really want to make sure that the target element is defined,
-    // As otherwise the whole application start will fail.
+    // As otherwise the whole application start will fail. We also accept
+    // a document fragment here, as integration compromise for custom elements
     if (!target || !(target instanceof DocumentFragment || target instanceof Element))
         throw new ReferenceError('Target element is undefined or not an Element');
 

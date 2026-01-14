@@ -5,7 +5,7 @@ export { styleParser as css } from './application/style-parser';
 export { syncReactive } from './application/sync-reactive';
 export { templateParser as html } from './application/template-parser';
 export type { ComponentFragment } from './component/component-fragment';
-export * from './component/component-types';
+export type { ComponentProps, PropsWithChildren, PureComponent } from './component/component-types';
 export { withScopedStyles } from './component/with-scoped-styles';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
