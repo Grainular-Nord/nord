@@ -7,7 +7,7 @@ import { isSubscribableValue } from '../internals/is-subscribable-value';
 import type { Subscribable } from '../internals/subscribable';
 import { trimWhitespace } from '../internals/trim-whitespace';
 
-const parseTemplateFragment = (fragment: string | number | boolean | null | Subscribable | Fragment) => {
+const parseTemplateFragment = (fragment: string | number | boolean | null | undefined | Subscribable | Fragment) => {
     switch (true) {
         case fragment == null:
             return null;
@@ -29,7 +29,7 @@ const parseTemplateFragment = (fragment: string | number | boolean | null | Subs
  */
 export const templateParser = (
     stringFragments: TemplateStringsArray,
-    ...valueFragments: (string | number | boolean | null | Subscribable | Fragment)[]
+    ...valueFragments: (string | number | boolean | null | undefined | Subscribable | Fragment)[]
 ) => {
     const fragments = new Map<string, Fragment>();
 
