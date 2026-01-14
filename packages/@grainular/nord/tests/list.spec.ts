@@ -152,4 +152,103 @@ describe('[Nørd Runtime] Lists', () => {
         expect(listElement?.children.item(0)?.tagName).toBe('LI');
         expect(listElement?.children.item(0)?.textContent).toBe('Test 1');
     });
+
+    test('should reorder items without recreating nodes', () => {
+        const a = { id: 1, name: 'A' };
+        const b = { id: 2, name: 'B' };
+        const c = { id: 3, name: 'C' };
+
+        const items = grain([a, b, c]);
+
+        const List = () => html`
+        <ul>
+            ${$each(items)
+                .$withKey((item) => item.id)
+                .$as((item) => html`<li>${item.name}</li>`)}
+        </ul>
+    `;
+
+        mount(List, { to: document.querySelector('#app') });
+
+        const list = document.querySelector('ul');
+        const [aEl, bEl, cEl] = Array.from(list?.children ?? []);
+
+        items.set([c, a, b]);
+
+        const [cEl2, aEl2, bEl2] = Array.from(list?.children ?? []);
+
+        expect(aEl2).toBe(aEl);
+        expect(bEl2).toBe(bEl);
+        expect(cEl2).toBe(cEl);
+    });
+
+    test('should remove nodes when items are deleted', () => {
+        const items = grain([
+            { id: 1, name: 'A' },
+            { id: 2, name: 'B' },
+            { id: 3, name: 'C' },
+        ]);
+
+        const List = () => html`
+        <ul>
+            ${$each(items)
+                .$withKey((i) => i.id)
+                .$as((i) => html`<li>${i.name}</li>`)}
+        </ul>
+    `;
+
+        mount(List, { to: document.querySelector('#app') });
+
+        const list = document.querySelector('ul');
+        const [, b] = Array.from(list?.children ?? []);
+
+        items.set([
+            { id: 1, name: 'A' },
+            { id: 3, name: 'C' },
+        ]);
+
+        expect(list?.childElementCount).toBe(2);
+        expect(Array.from(list?.children ?? [])).not.toContain(b);
+    });
+
+    test('should remove all nodes when list becomes empty', () => {
+        const items = grain([{ name: 'A' }]);
+
+        const List = () => html`
+        <ul>
+            ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
+        </ul>
+    `;
+
+        mount(List, { to: document.querySelector('#app') });
+
+        const list = document.querySelector('ul');
+        expect(list?.childElementCount).toBe(1);
+
+        items.set([]);
+
+        expect(list?.childElementCount).toBe(0);
+    });
+
+    test('should replace node when identity changes', () => {
+        const items = grain([{ name: 'A' }]);
+
+        const List = () => html`
+        <ul>
+            ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
+        </ul>
+    `;
+
+        mount(List, { to: document.querySelector('#app') });
+
+        const list = document.querySelector('ul');
+        const first = list?.children[0];
+
+        items.set([{ name: 'B' }]);
+
+        const next = list?.children[0];
+
+        expect(next).not.toBe(first);
+        expect(next?.textContent).toBe('B');
+    });
 });
