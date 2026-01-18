@@ -1,22 +1,91 @@
 import { type Grain, combined, derived, grain, readonly } from '@grainular/grains';
 
+/**
+ * Represents the lifecycle state of a resource.
+ *
+ * - `idle`    — no request in flight, data (if any) is considered valid
+ * - `pending` — a request is currently running
+ * - `error`   — the last request failed
+ */
 type ResourceState = 'idle' | 'pending' | 'error';
+
+/**
+ * A reactive, abortable async resource.
+ *
+ * A resource exposes its state exclusively through {@link Grain}s and provides
+ * a small set of imperative methods to control its lifecycle.
+ *
+ * The `data` grain is guaranteed to be valid when `state === 'idle'`.
+ */
 type Resource<T> = {
-    // State
+    /** The current lifecycle state of the resource. */
     state: Grain<ResourceState>;
+
+    /** Derived grain that is `true` when the resource is idle. */
     idle: Grain<boolean>;
+
+    /** Derived grain that is `true` while a request is in flight. */
     pending: Grain<boolean>;
+
+    /** Holds the last error produced by the resource, if any. */
     error: Grain<Error | null>;
+
+    /**
+     * Holds the current resource data.
+     *
+     * The value is only meaningful when `state === 'idle'`.
+     */
     data: Grain<T>;
 
-    // Methods
+    /**
+     * Triggers a refresh of the resource.
+     *
+     * Any currently running request will be aborted before
+     * starting a new one.
+     */
     refresh: () => void;
+
+    /**
+     * Aborts the currently running request, if any.
+     *
+     * Does not change the current data value.
+     */
     abort: () => void;
+
+    /**
+     * Imperatively updates the resource data.
+     *
+     * This does not affect the resource state and does not
+     * trigger a fetch.
+     */
     mutate: (next: T) => void;
+
+    /**
+     * Destroys the resource.
+     *
+     * Unsubscribes from all dependencies and aborts any
+     * in-flight request.
+     */
     destroy: () => void;
 };
+
+/**
+ * Async initializer function used by a resource.
+ *
+ * Receives an {@link AbortSignal} that should be passed to any
+ * abortable async operation (e.g. `fetch`).
+ */
 type StateInitializer<T> = (state: { abortSignal: AbortSignal }) => Promise<T>;
 
+/**
+ * Creates a reactive async resource.
+ *
+ * The resource automatically refreshes when any of the provided
+ * dependency grains change.
+ *
+ * @param fetcher Async initializer responsible for producing the resource data.
+ * @param deps Optional dependency grains that trigger a refresh when changed.
+ */
 export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unknown>> = []): Resource<T> => {
     const data = grain<T>(undefined as T);
     const error = grain<Error | null>(null);
@@ -86,13 +155,3 @@ export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unkn
         data: readonly(data),
     };
 };
-
-const userId = grain('abcd');
-type User = { id: string; name: string };
-const user = resource<User>(
-    async ({ abortSignal }) => {
-        const response = await fetch(`/api/user/${userId()}`, { signal: abortSignal });
-        return response.json();
-    },
-    [userId],
-);
