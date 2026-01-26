@@ -1,17 +1,20 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import { updateAttributeValue } from './attribute-bindings';
 import type { Fragment } from './fragment';
-import { identifier } from './identifier';
+import { createIdentifier } from './identifier';
 import type { Subscribable } from './subscribable';
 
 // Creates a reactive fragment, that also updates the hydrated
 // node on update of the subscribable
-export const createReactiveFragment = (fragmentValue: Subscribable, id = identifier()): Fragment => {
+export const createReactiveFragment = (fragmentValue: Subscribable): Fragment => {
+    let id = '';
     return {
-        id,
+        id: () => id,
+        assignIdentifier: (idx: number) => {
+            id = createIdentifier(idx);
+        },
         resolve: () => `<!--:${id}:-->`,
         render: () => String(fragmentValue() ?? ''),
-        hydrate: (node: Node) => {
+        hydrate: (node: Node, { binding } = {}) => {
             if (node instanceof Comment) {
                 const text = new Text(String(fragmentValue() ?? ''));
                 node.replaceWith(text);
@@ -24,10 +27,10 @@ export const createReactiveFragment = (fragmentValue: Subscribable, id = identif
             }
 
             if (node instanceof Element) {
-                updateAttributeValue(id, fragmentValue() ?? '');
+                binding?.(fragmentValue() ?? '');
 
                 const onDestroy = fragmentValue.subscribe((value) => {
-                    updateAttributeValue(id, value ?? '');
+                    binding?.(value ?? '');
                 });
 
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);

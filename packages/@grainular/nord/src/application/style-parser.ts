@@ -1,5 +1,6 @@
-import { identifier } from '../internals/identifier';
+import { createIdentifier } from '../internals/identifier';
 
+let counter = 0;
 export type StyleFragment = {
     id: string;
     hydrate: () => void;
@@ -50,7 +51,7 @@ const scopeRule = (rules: CSSRuleList | null, id: string) => {
  * @returns A `StyleFragment` with a unique `id` and a `hydrate()` function.
  */
 export const styleParser = (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]): StyleFragment => {
-    const scope = identifier();
+    const scope = createIdentifier(counter++);
     const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
 
     return {

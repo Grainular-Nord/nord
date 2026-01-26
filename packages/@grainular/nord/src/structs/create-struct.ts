@@ -1,15 +1,17 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
-import { identifier } from '../internals/identifier';
+import { createIdentifier } from '../internals/identifier';
 
 export const createStruct = (
     struct: (node: Comment) => void | (() => void),
     snapshot: () => string = () => '',
-    id = identifier(),
 ): Fragment => {
+    let id = '';
     return {
-        id,
-
+        id: () => id,
+        assignIdentifier: (idx: number) => {
+            id = createIdentifier(idx);
+        },
         resolve: () => `<!--:${id}:-->`,
         render: () => snapshot(),
         hydrate: (node: Node) => {

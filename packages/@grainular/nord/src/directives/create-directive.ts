@@ -1,6 +1,6 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
-import { identifier } from '../internals/identifier';
+import { createIdentifier } from '../internals/identifier';
 
 /**
  * Creates a custom directive that can be attached to an element.
@@ -31,10 +31,14 @@ import { identifier } from '../internals/identifier';
  * @param id - Optional unique identifier for the directive. Auto-generated if not provided.
  * @returns A `Fragment` representing the directive, which can be attached to elements.
  */
-export const createDirective = (handler: (node: Element) => void | (() => void), id = identifier()): Fragment => {
+export const createDirective = (handler: (node: Element) => void | (() => void)): Fragment => {
+    let id = '';
     return {
-        id,
-        resolve: () => `${id}`,
+        id: () => id,
+        assignIdentifier: (idx: number) => {
+            id = createIdentifier(idx);
+        },
+        resolve: () => id,
         render: () => '',
         hydrate: (node: Node) => {
             if (node instanceof Element) {

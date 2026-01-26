@@ -13,12 +13,13 @@ export const withScopedStyles = <P extends ComponentProps | undefined = undefine
 
         return {
             id: fragment.id,
+            assignIdentifier: fragment.assignIdentifier,
             [IS_COMPONENT]: true as const,
             render: fragment.render,
             resolve: fragment.resolve,
             hydrate: (node: Node) => {
                 // Hydrate the fragment with a scope marker
-                fragment.hydrate(node, styles.id);
+                fragment.hydrate(node, { scope: styles.id });
                 styles.hydrate();
             },
         };

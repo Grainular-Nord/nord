@@ -9,12 +9,10 @@ import { trimWhitespace } from '../internals/trim-whitespace';
 
 const parseTemplateFragment = (fragment: string | number | boolean | null | undefined | Subscribable | Fragment) => {
     switch (true) {
-        case fragment == null:
-            return null;
         case isSubscribableValue(fragment):
             return createReactiveFragment(fragment);
-        case isPrimitiveValue(fragment):
-            return createPrimitiveFragment(fragment);
+        case isPrimitiveValue(fragment) || fragment == null:
+            return createPrimitiveFragment(fragment ?? '');
         default:
             return fragment;
     }
@@ -31,29 +29,19 @@ export const templateParser = (
     stringFragments: TemplateStringsArray,
     ...valueFragments: (string | number | boolean | null | undefined | Subscribable | Fragment)[]
 ) => {
-    const fragments = new Map<string, Fragment>();
+    const fragments: Fragment[] = [];
 
     const template = stringFragments.flatMap((strFragment, idx) => {
         return [
-            {
-                id: '',
-                resolve: () => trimWhitespace(strFragment),
-                render: () => strFragment,
-                hydrate: (_: Node) => {},
-            },
-            ((): Fragment | null => {
+            trimWhitespace(strFragment),
+            ((): string => {
                 const fragment = parseTemplateFragment(valueFragments[idx]);
-                if (fragment && 'id' in fragment) {
-                    fragments.set(fragment.id, fragment);
-                }
-
-                return fragment;
+                fragment.assignIdentifier(idx);
+                fragments.push(fragment);
+                return fragment.resolve();
             })(),
         ];
     });
 
-    return createComponentFragment(
-        template.filter((fragment) => !!fragment),
-        fragments,
-    );
+    return createComponentFragment(template.flat(), fragments);
 };

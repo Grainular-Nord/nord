@@ -10,7 +10,8 @@ export type Fragment = {
     /**
      * A component fragment id to identify the fragment by
      */
-    id: string;
+    id: () => string;
+    assignIdentifier: (idx: number) => void;
 
     /**
      * Method that returns a hydration marker to insert
@@ -29,5 +30,5 @@ export type Fragment = {
      *
      * @param target
      */
-    hydrate: (target: Node, scope?: string) => void;
+    hydrate: (target: Node, def?: { scope?: string; binding?: (value: unknown) => void }) => void;
 };

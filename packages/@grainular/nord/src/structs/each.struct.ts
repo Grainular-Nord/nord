@@ -1,214 +1,190 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
 import type { ComponentFragment } from '../component/component-fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import type { Subscribable } from '../internals/subscribable';
 import { createStruct } from './create-struct';
 
-type CachedEntry<T> = { data: T; nodes: Element[] };
 type KeyFn<T> = (entry: T) => unknown;
 type RenderFn<T> = (entry: T, idx: number, arr: T[]) => ComponentFragment;
-/**
- * Creates a declarative list renderer that efficiently reconciles DOM nodes
- * based on item identity and optional keys.
- *
- * ## Core behavior
- *
- * `$each` renders a list of items into the DOM and keeps it in sync when the
- * source list changes. It uses a cache of previously rendered entries to
- * minimize DOM operations where possible.
- *
- * ### Identity & updates
- *
- * By default, list items are compared by **reference identity**:
- *
- * - If the same item reference appears again, its existing DOM nodes are reused.
- * - If a new item reference replaces a previous one, the old nodes are
- *   disconnected and new nodes are rendered.
- * - In-place mutation of an existing item **does not trigger a rerender**.
- *
- * This means `$each` follows **identity-based rendering**, not value-based
- * diffing.
- *
- * An optional `compareFn` can be provided to override this behavior and control
- * when an item should be considered changed.
- *
- * ### Keys
- *
- * `$each` supports keyed lists via `$withKey`. Keys are used to associate items
- * with cached DOM nodes across renders.
- *
- * - If an item with the same key appears again and is considered unchanged,
- *   its DOM nodes are reused and moved if necessary.
- * - If an item with the same key is considered changed (by identity or
- *   `compareFn`), its nodes are replaced.
- * - If a key disappears from the list, its associated nodes are disconnected.
- *
- * Keys are **not** used to determine equality by themselves; they only define
- * cache slots.
- *
- * ### Reordering
- *
- * Reordering items with stable identity and keys will move existing DOM nodes
- * without recreating them.
- *
- * Reordering items with new identities (even if keys match) will recreate the
- * affected nodes.
- *
- * ### Empty lists
- *
- * When the list becomes empty, all previously rendered nodes are disconnected
- * and the internal cache is cleared.
- *
- * ### Static vs dynamic sources
- *
- * - If the source is a plain function returning an array, the list is rendered
- *   once and treated as static.
- * - If the source is a subscribable value, `$each` subscribes to it and
- *   reconciles the list whenever it updates.
- *
- * ## Example
- *
- * ```ts
- * const items = grain([{ id: 1, name: 'A' }]);
- *
- * html`
- *   <ul>
- *     ${$each(items)
- *       .$withKey(item => item.id)
- *       .$as(item => html`<li>${item.name}</li>`)}
- *   </ul>
- * `;
- * ```
- *
- * @typeParam T - The item type of the list.
- * @param source - A function returning an array or a subscribable array.
- * @param compareFn - Optional comparison function to determine whether an
- *                    existing item should be rerendered.
- */
-export const $each = <T>(source: (() => T[]) | Subscribable<T[]>, compareFn?: (prev: T, current: T) => boolean) => {
+
+export const $each = <T>(source: (() => T[]) | Subscribable<T[]>) => {
     const createEachStruct = (keyFn: KeyFn<T>, render: RenderFn<T>) => {
         return createStruct(
             (anchor) => {
-                // We create a cache map to hold nodes by their
-                // node keys, this allows efficient diffing later
-                const cache = new Map<unknown, CachedEntry<T>>();
+                const cache = new Map();
+                let prevItems: T[] = [];
+                let prevKeys: unknown[] = [];
+                const root = anchor.parentNode;
 
-                const createNodes = (item: T, idx: number, arr: T[]) => {
-                    return hydrateFragment(render(item, idx, arr));
+                const create = (item: T, i: number, arr: T[]) => {
+                    const nodes = hydrateFragment(render(item, i, arr));
+                    return { nodes };
                 };
 
-                const reconcileNodes = (items: T[]) => {
-                    const root = anchor.parentNode;
+                const removeRange = (startIdx: number, endIdx: number) => {
+                    const startNode = cache.get(prevKeys[startIdx])?.nodes[0];
+                    const endNode = cache.get(prevKeys[endIdx])?.nodes.at(-1);
 
-                    // Bail if the anchor is detached
+                    if (startNode && endNode) {
+                        const range = document.createRange();
+                        range.setStartBefore(startNode);
+                        range.setEndAfter(endNode);
+                        range.deleteContents();
+                    }
+                };
+
+                const insertNodes = (nodes: Node[], ref: Node) => {
+                    const frag = document.createDocumentFragment();
+                    for (const node of nodes) frag.appendChild(node);
+                    root?.insertBefore(frag, ref);
+                };
+
+                const reconcile = (items: T[]) => {
                     if (!root) return;
+                    const len = items.length;
 
-                    // If all items have been deleted, we can
-                    // simple detach all of them
-                    if (items.length === 0 && cache.size > 0) {
-                        for (const entry of cache.values()) disconnectNodes(entry.nodes);
-                        cache.clear();
+                    if (!len) {
+                        if (cache.size) {
+                            removeRange(0, prevKeys.length - 1);
+                            cache.clear();
+                            prevItems = [];
+                            prevKeys = [];
+                        }
                         return;
                     }
 
-                    // If the cache is empty, we can render all nodes directly,
-                    // this is likely the initial render. This also means we
-                    // have a fast iteration here for static lists.
-                    if (cache.size === 0) {
-                        const fragment = document.createDocumentFragment();
+                    if (!prevItems.length) {
+                        const frag = document.createDocumentFragment();
+                        const newKeys: unknown[] = [];
 
-                        // Iterate to create the nodes, append them to the
-                        // fragment.
-                        items.forEach((item, idx, arr) => {
+                        items.forEach((item, i) => {
                             const key = keyFn(item);
-                            const nodes = createNodes(item, idx, arr);
-                            cache.set(key, { nodes, data: item });
-                            fragment.append(...nodes);
+                            newKeys.push(key);
+                            const entry = create(item, i, items);
+                            cache.set(key, entry);
+                            for (const node of entry.nodes) frag.appendChild(node);
                         });
 
-                        root.insertBefore(fragment, anchor);
-                        return; // Return early, nothing lef to do
+                        root.insertBefore(frag, anchor);
+                        prevItems = items;
+                        prevKeys = newKeys;
+                        return;
                     }
 
-                    // Reconciliation process, which will be used when
-                    // we have nodes and a already existing cache, indicating
-                    // a updated list to render
-                    const currentUsedKeys = new Set<unknown>();
-                    let cursor: Node | null = anchor;
+                    // Cache all keys upfront
+                    const newKeys = items.map(keyFn);
 
-                    // We iterate backwards to ensure stable iteration
-                    for (let idx = items.length - 1; idx >= 0; idx--) {
-                        const item = items[idx];
-                        const key = keyFn(item);
-                        currentUsedKeys.add(key);
+                    let oldStart = 0;
+                    let oldEnd = prevKeys.length - 1;
+                    let newStart = 0;
+                    let newEnd = len - 1;
 
-                        let entry = cache.get(key);
+                    while (oldStart <= oldEnd && newStart <= newEnd) {
+                        if (prevKeys[oldStart] !== newKeys[newStart]) break;
+                        oldStart++;
+                        newStart++;
+                    }
 
-                        // If there is no entry from the cache,
-                        // we have a new node and need to render
-                        // this one accordingly
-                        if (!entry) {
-                            const nodes = createNodes(item, idx, items);
-                            entry = { nodes, data: item };
+                    let lastCursor = anchor;
+                    while (oldStart <= oldEnd && newStart <= newEnd) {
+                        const newKey = newKeys[newEnd];
+                        if (prevKeys[oldEnd] !== newKey) break;
+
+                        const entry = cache.get(newKey);
+                        if (entry) lastCursor = entry.nodes[0];
+                        oldEnd--;
+                        newEnd--;
+                    }
+
+                    if (oldStart > oldEnd) {
+                        for (let i = newStart; i <= newEnd; i++) {
+                            const item = items[i];
+                            const key = newKeys[i];
+                            const entry = create(item, i, items);
                             cache.set(key, entry);
+                            insertNodes(entry.nodes, lastCursor);
+                        }
+                    } else if (newStart > newEnd) {
+                        removeRange(oldStart, oldEnd);
+                        for (let i = oldStart; i <= oldEnd; i++) {
+                            cache.delete(prevKeys[i]);
+                        }
+                    } else {
+                        const keyToOldIndex = new Map();
+                        for (let i = oldStart; i <= oldEnd; i++) {
+                            keyToOldIndex.set(prevKeys[i], i);
                         }
 
-                        // If a entry exists, we can check
-                        // if it has changed, and if we should update
-                        // or move it.
-                        else {
-                            const changed = compareFn?.(entry.data, item) ?? entry.data !== item;
+                        const count = newEnd - newStart + 1;
+                        const sources = new Int32Array(count).fill(-1);
+                        let patched = 0;
 
-                            // If the nodes have changed, create the new ones
-                            // and disconnect the old ones
-                            if (changed) {
-                                const nodes = createNodes(item, idx, items);
-                                disconnectNodes(entry.nodes);
-                                entry.nodes = nodes;
-                                entry.data = item;
+                        for (let i = newStart; i <= newEnd; i++) {
+                            const idx = keyToOldIndex.get(newKeys[i]);
+                            if (idx !== undefined) {
+                                sources[i - newStart] = idx;
+                                patched++;
                             }
                         }
 
-                        const lastNode = entry.nodes[entry.nodes.length - 1];
-                        if (lastNode.nextSibling !== cursor) {
-                            for (const node of entry.nodes) root.insertBefore(node, cursor);
-                        }
-
-                        // Move the respective cursor to the new processed
-                        // node, to allow further iteration.
-                        cursor = entry.nodes[0];
-                    }
-
-                    // We also need to cleanup all nodes that have not
-                    // been used and are still in our cache.
-                    if (cache.size !== currentUsedKeys.size) {
-                        for (const [key, entry] of cache) {
-                            if (!currentUsedKeys.has(key)) {
-                                disconnectNodes(entry.nodes);
-                                cache.delete(key);
+                        if (patched === 0) {
+                            removeRange(oldStart, oldEnd);
+                            for (let i = oldStart; i <= oldEnd; i++) {
+                                cache.delete(prevKeys[i]);
+                            }
+                        } else {
+                            const newKeysSet = new Set(newKeys.slice(newStart, newEnd + 1));
+                            for (let i = oldStart; i <= oldEnd; i++) {
+                                const key = prevKeys[i];
+                                if (!newKeysSet.has(key)) {
+                                    const entry = cache.get(key);
+                                    if (entry) {
+                                        for (const node of entry.nodes) node.remove();
+                                        cache.delete(key);
+                                    }
+                                }
                             }
                         }
+
+                        const seq = getLIS(sources);
+                        let j = seq.length - 1;
+
+                        for (let i = count - 1; i >= 0; i--) {
+                            const idx = newStart + i;
+                            const item = items[idx];
+                            const key = newKeys[idx];
+
+                            if (sources[i] === -1) {
+                                const entry = create(item, idx, items);
+                                cache.set(key, entry);
+                                insertNodes(entry.nodes, lastCursor);
+                            } else {
+                                if (j >= 0 && sources[i] === seq[j]) {
+                                    j--;
+                                } else {
+                                    const entry = cache.get(key);
+                                    if (entry) {
+                                        insertNodes(entry.nodes, lastCursor);
+                                    }
+                                }
+                            }
+
+                            const entry = cache.get(key);
+                            if (entry) lastCursor = entry.nodes[0];
+                        }
                     }
+
+                    prevItems = items;
+                    prevKeys = newKeys;
                 };
 
-                // Render the first set of nodes directly from
-                // the passed data.
-                reconcileNodes(source());
-
-                // Subscribe to the source if it is a subscribable,
-                // and keep reconciling once the data updates.
-                if (isSubscribableValue(source)) {
-                    return source.subscribe(reconcileNodes);
-                }
+                reconcile(source());
+                if (isSubscribableValue(source)) return source.subscribe(reconcile);
             },
-            () => {
-                return source()
-                    .map((item, idx, arr) => {
-                        return render(item, idx, arr).render();
-                    })
-                    .join('');
-            },
+            () =>
+                source()
+                    .map((item, idx, arr) => render(item, idx, arr).render())
+                    .join(''),
         );
     };
 
@@ -219,3 +195,67 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>, compareFn?: (p
         }),
     };
 };
+
+// LIS is a modern approach to determine the minimal
+// amount of moves necessary to reconcile a list of
+// elements. This is a moderately complex calculation,
+// however DOM overhead will make this a non issue
+function getLIS(input: Int32Array): number[] {
+    // 'predecessors' lets us reconstruct the path by tracking the previous index
+    // for every element that becomes part of the subsequence.
+    const predecessors = new Int32Array(input.length);
+
+    // 'indices' stores the indices of the smallest tail of all increasing subsequences.
+    // indices[k] = index of the value ending a subsequence of length k+1
+    const indices = [0];
+
+    const len = input.length;
+    for (let i = 0; i < len; i++) {
+        const value = input[i];
+
+        // Ignore placeholder values (-1 indicates a new item in diffing)
+        if (value === -1) continue;
+
+        // Check if the current value is larger than the tail of our longest sequence
+        const lastIndex = indices[indices.length - 1];
+        if (input[lastIndex] < value) {
+            predecessors[i] = lastIndex;
+            indices.push(i);
+            continue;
+        }
+
+        // Binary Search: Find the smallest tail that is >= current value
+        // We replace it to maintain the "potential" for longer sequences later.
+        let low = 0;
+        let high = indices.length - 1;
+
+        while (low < high) {
+            // Unsigned bit shift for efficient floor division
+            const mid = (low + high) >>> 1;
+            if (input[indices[mid]] < value) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+
+        // If we found a valid replacement spot
+        if (value < input[indices[low]]) {
+            if (low > 0) {
+                predecessors[i] = indices[low - 1];
+            }
+            indices[low] = i;
+        }
+    }
+
+    // Backtrack to reconstruct the actual sequence of values
+    let i = indices.length;
+    let current = indices[i - 1];
+
+    while (i-- > 0) {
+        indices[i] = input[current];
+        current = predecessors[current];
+    }
+
+    return indices;
+}
