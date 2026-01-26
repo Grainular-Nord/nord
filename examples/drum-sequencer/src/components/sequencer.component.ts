@@ -37,6 +37,6 @@ export const Sequencer = withScopedStyles(
             `;
     },
     css`
-       &.grid { display: flex; flex-direction: column; gap: 4px; }
-       & .track { display: flex; gap: 4px; align-items: center; }`,
+        .grid { display: flex; flex-direction: column; gap: 4px; }
+        .track { display: flex; gap: 4px; align-items: center; }`,
 );

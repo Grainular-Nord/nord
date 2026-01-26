@@ -18,8 +18,8 @@ export const Step = withScopedStyles(
             </button>`;
     },
     css`
-        & { width: 30px; height: 30px; background: #333; border: 2px solid white; }
-        &.selected { background: #f09; } /* Pink for selected */
-        &.active { border: 2px solid red; } /* Highlight playhead */
+        .step{ width: 30px; height: 30px; background: #333; border: 2px solid white; }
+        .selected { background: #f09; } /* Pink for selected */
+        .active { border: 2px solid red; } /* Highlight playhead */
     `,
 );
