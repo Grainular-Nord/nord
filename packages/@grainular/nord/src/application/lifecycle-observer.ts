@@ -34,13 +34,41 @@ export const lifecycleObserver = new (
               }
 
               #checkMutationRecordsForUnmounts(nodes: NodeList) {
+                  // We need to collect pending unmount tasks as:
+                  // Not micro tasking them will kill performance
+                  // micro tasking them individually will kill performance,
+                  // just not as much. This way, we can batch the execution
+                  // in a single microtask, after all nodes
+                  // have been removed, and call the respective
+                  // cleanup functions
+                  const pendingUnmounts = new Map<Node, Set<() => void>>();
                   for (const node of nodes) {
-                      this.#runUnmount(node);
+                      this.#collectUnmount(node, pendingUnmounts);
 
                       const tw = this.#getWalker(node);
                       while (tw.nextNode()) {
-                          this.#runUnmount(tw.currentNode);
+                          this.#collectUnmount(tw.currentNode, pendingUnmounts);
                       }
+                  }
+
+                  if (pendingUnmounts.size > 0) {
+                      queueMicrotask(() => {
+                          for (const [node, callbacks] of pendingUnmounts) {
+                              if (!node.isConnected) {
+                                  for (const fn of callbacks) {
+                                      fn();
+                                  }
+                              }
+                          }
+                      });
+                  }
+              }
+
+              #collectUnmount(node: Node, pendingUnmounts: Map<Node, Set<() => void>>) {
+                  const callbacks = this.#unmounts.get(node);
+                  if (callbacks) {
+                      pendingUnmounts.set(node, callbacks);
+                      this.#unmounts.delete(node);
                   }
               }
 
@@ -55,81 +83,55 @@ export const lifecycleObserver = new (
                   }
               }
 
-              #runUnmount(node: Node) {
-                  for (const fn of this.#unmounts.get(node) ?? []) {
-                      queueMicrotask(() => {
-                          !node.isConnected && fn();
-                      });
-                  }
-                  this.#unmounts.delete(node);
-              }
-
               #runMount(node: Node) {
-                  const cleanups = [...(this.#mounts.get(node) ?? [])].map((cb) => cb());
+                  const callbacks = this.#mounts.get(node);
+                  if (!callbacks) return;
+
+                  const cleanups = [...callbacks].map((cb) => cb());
                   this.#unmounts.set(
                       node,
                       new Set([...(this.#unmounts.get(node) ?? []), ...cleanups.filter((cb) => !!cb)]),
                   );
               }
 
-              /**
-               * Publicly exposed method to start observing a target node
-               * using the predefined options.
-               *
-               * @param node
-               */
               start(node: Node) {
                   this.observe(node, this.#options);
               }
 
-              /**
-               * Public method to register a unmount callback, that
-               * gets executed when the specified node gets removed
-               * from the DOM
-               *
-               * @param node
-               * @param callback
-               */
               trackUnmount(node: Node, callback: () => void) {
                   this.#unmounts.set(node, new Set([...(this.#unmounts.get(node) ?? []), callback]));
               }
 
-              /**
-               * Public method to register a mount callback, that
-               * gets executed when the specified node is added to
-               * the DOM
-               *
-               * @param node
-               * @param callback
-               */
               trackMount(node: Node, callback: () => void | (() => void)) {
                   this.#mounts.set(node, new Set([...(this.#mounts.get(node) ?? []), callback]));
               }
 
-              /**
-               * Public method to run unmount callbacks of
-               * nodes. This does NOT remove the nodes from
-               * the DOM. Use the available `disconnectNodes`
-               * fn, to also remove the nodes from the DOM
-               *
-               * @param nodes
-               */
               unmountNodes(nodes: Node[]) {
+                  const pendingUnmounts = new Map<Node, Set<() => void>>();
+
                   for (const node of nodes) {
-                      this.#runUnmount(node);
+                      this.#collectUnmount(node, pendingUnmounts);
 
                       const tw = this.#getWalker(node);
                       while (tw.nextNode()) {
-                          this.#runUnmount(tw.currentNode);
+                          this.#collectUnmount(tw.currentNode, pendingUnmounts);
                       }
+                  }
+
+                  if (pendingUnmounts.size > 0) {
+                      queueMicrotask(() => {
+                          for (const [node, callbacks] of pendingUnmounts) {
+                              if (!node.isConnected) {
+                                  for (const fn of callbacks) {
+                                      fn();
+                                  }
+                              }
+                          }
+                      });
                   }
               }
           }
-        : // We provide a noop shim for environments where
-          // the mutation observer does not exist. this allows
-          // to import the code on a node environment or somewhere
-          // else, while keeping the api aligned.
-          class {
+        : class {
               start(_node: Node) {}
               trackUnmount(_node: Node, _callback: () => void) {}
               trackMount(_node: Node, _callback: () => void | (() => void)) {}
@@ -138,13 +140,6 @@ export const lifecycleObserver = new (
           }
 )();
 
-/**
- * Method to remove a list of nodes from the DOM. The
- * method does also check for and executes and unmounting
- * callbacks stored for the specified node and all children
- *
- * @param nodes
- */
 export const disconnectNodes = (nodes: Element[]) => {
     lifecycleObserver.unmountNodes(nodes);
     for (const node of nodes) node.remove();
