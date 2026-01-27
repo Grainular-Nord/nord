@@ -12,7 +12,7 @@ export const Hero = withScopedStyles(
                 <div class="hero-text">
                     <h1>Nørd</h1>
                     <div>Build apps, not bundles.</div>
-                    <div class="sub-text">9kb Runtime. 0 Dependencies. 0 Tooling required.</div>
+                    <div class="sub-text">10kb Runtime. 0 Dependencies. 0 Tooling required.</div>
                 </div>
                 <div class="hero-code">
                     ${Editor({ count })}
