@@ -4,13 +4,15 @@ import { createIdentifier } from './identifier';
 // Creates a primitive fragment, containing a scalar value
 // that get's resolved and rendered only once.
 export const createPrimitiveFragment = (fragmentValue: boolean | string | number): Fragment => {
-    let id = '';
+    let _id = '';
     return {
-        id: () => id,
-        assignIdentifier: (idx: number) => {
-            id = createIdentifier(idx);
+        get id() {
+            return _id;
         },
-        resolve: () => `<!--:${id}:-->`,
+        set id(idx: string) {
+            _id = createIdentifier(idx);
+        },
+        resolve: () => `<!--${_id}-->`,
         render: () => String(fragmentValue),
         hydrate: (node: Node, { binding } = {}) => {
             // Hydrate the node depending of it's type

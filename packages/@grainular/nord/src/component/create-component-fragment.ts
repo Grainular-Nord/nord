@@ -18,14 +18,16 @@ const getTemplate = (html: string) => {
 
 export const createComponentFragment = (template: string[], fragments: Fragment[]): ComponentFragment => {
     const html = template.join('');
-    let id = '';
+    let _id = '';
     return {
-        id: () => id,
-        assignIdentifier: (idx: number) => {
-            id = createIdentifier(idx);
+        get id() {
+            return _id;
+        },
+        set id(idx: string) {
+            _id = createIdentifier(idx);
         },
         [IS_COMPONENT]: true as const,
-        resolve: () => `<!--:${id}:-->`,
+        resolve: () => `<!--${_id}-->`,
         render: () =>
             template
                 .filter((_, i) => i % 2 === 0) // Keep even indices (Strings only)
@@ -41,7 +43,9 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
 
             // Hydrate the component template using the fragment,
             // the available fragments and scope the nodes if required
-            for (const hydrator of hydrateComponentTemplate(template, fragments, scope)) hydrator();
+            for (const { fragment, args } of hydrateComponentTemplate(template, fragments, scope)) {
+                fragment.hydrate(...args);
+            }
 
             node.replaceWith(template);
         },

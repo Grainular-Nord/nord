@@ -17,6 +17,7 @@ export const setup = () => {
     globalThis.Comment = dom.window.Comment;
     globalThis.Text = dom.window.Text;
     globalThis.NodeFilter = dom.window.NodeFilter;
+    globalThis.MutationObserver = dom.window.MutationObserver;
 
     return dom;
 };

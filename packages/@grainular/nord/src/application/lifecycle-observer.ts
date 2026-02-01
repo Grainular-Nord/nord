@@ -1,146 +1,83 @@
-/**
- * A lifecycle observer instance that extends the standard
- * DOM mutation observer. The lifecycle observer is used
- * to register, track and execute lifecycle events on
- * DOM nodes.
- *
- * This allows for efficient cleanup of retaining elements,
- * as well as integration of external libraries or listeners
- */
 export const lifecycleObserver = new (
     typeof MutationObserver !== 'undefined'
         ? class LifecycleObserver extends MutationObserver {
-              #mounts = new WeakMap<Node, Set<() => void | (() => void)>>();
-              #unmounts = new WeakMap<Node, Set<() => void>>();
+              // We add all callbacks to the mounting queue, and
+              // on trigger check if any of the nodes are connected.
+              // if yes, the callbacks get executed and the return
+              // added to the unmounts
+              #pendingMounts = new Set<{ node: Node; callback: () => void | (() => void) }>();
 
-              #options: MutationObserverInit = {
-                  childList: true,
-                  attributes: false,
-                  subtree: true,
-              };
+              // On trigger, we check all nodes in the map if they are
+              // still mounted, and if not, run the unmount callback
+              #activeUnmounts = new Map<Node, Set<() => void>>();
 
               constructor() {
-                  super((mutations) => {
-                      for (const { addedNodes, removedNodes } of mutations) {
-                          this.#checkMutationRecordsForUnmounts(removedNodes);
-                          this.#checkMutationRecordForMounts(addedNodes);
-                      }
+                  // We abuse the mutation observer as basically
+                  // a signal, triggering our lifecycle logic iteration
+                  super(() => {
+                      this.#processLifecycle();
                   });
               }
 
-              #getWalker(node: Node) {
-                  const filter = NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT + NodeFilter.SHOW_COMMENT;
-                  return document.createTreeWalker(node, filter, null);
-              }
+              #processLifecycle() {
+                  for (const entry of this.#pendingMounts) {
+                      const { node, callback } = entry;
 
-              #checkMutationRecordsForUnmounts(nodes: NodeList) {
-                  // We need to collect pending unmount tasks as:
-                  // Not micro tasking them will kill performance
-                  // micro tasking them individually will kill performance,
-                  // just not as much. This way, we can batch the execution
-                  // in a single microtask, after all nodes
-                  // have been removed, and call the respective
-                  // cleanup functions
-                  const pendingUnmounts = new Map<Node, Set<() => void>>();
-                  for (const node of nodes) {
-                      this.#collectUnmount(node, pendingUnmounts);
+                      // When connected, we run the callback, remove the
+                      // entry, and add any eventual cleanup to the
+                      // unmounts map
+                      if (node.isConnected) {
+                          const cleanup = callback();
 
-                      const tw = this.#getWalker(node);
-                      while (tw.nextNode()) {
-                          this.#collectUnmount(tw.currentNode, pendingUnmounts);
-                      }
-                  }
-
-                  if (pendingUnmounts.size > 0) {
-                      queueMicrotask(() => {
-                          for (const [node, callbacks] of pendingUnmounts) {
-                              if (!node.isConnected) {
-                                  for (const fn of callbacks) {
-                                      fn();
-                                  }
+                          // If it returned a cleanup, register it
+                          if (typeof cleanup === 'function') {
+                              let unmounts = this.#activeUnmounts.get(node);
+                              if (!unmounts) {
+                                  unmounts = new Set();
+                                  this.#activeUnmounts.set(node, unmounts);
                               }
+                              unmounts.add(cleanup);
                           }
-                      });
-                  }
-              }
 
-              #collectUnmount(node: Node, pendingUnmounts: Map<Node, Set<() => void>>) {
-                  const callbacks = this.#unmounts.get(node);
-                  if (callbacks) {
-                      pendingUnmounts.set(node, callbacks);
-                      this.#unmounts.delete(node);
-                  }
-              }
-
-              #checkMutationRecordForMounts(nodes: NodeList) {
-                  for (const node of nodes) {
-                      this.#runMount(node);
-
-                      const tw = this.#getWalker(node);
-                      while (tw.nextNode()) {
-                          this.#runMount(tw.currentNode);
+                          // Remove from pending list (Job Done)
+                          this.#pendingMounts.delete(entry);
                       }
                   }
-              }
 
-              #runMount(node: Node) {
-                  const callbacks = this.#mounts.get(node);
-                  if (!callbacks) return;
-
-                  const cleanups = [...callbacks].map((cb) => cb());
-                  this.#unmounts.set(
-                      node,
-                      new Set([...(this.#unmounts.get(node) ?? []), ...cleanups.filter((cb) => !!cb)]),
-                  );
+                  // Same for the unmounting entries, we iterate them
+                  // and execute every unmounting cb where the node is disconnected
+                  for (const [node, callbacks] of this.#activeUnmounts) {
+                      if (!node.isConnected) {
+                          for (const fn of callbacks) fn();
+                          this.#activeUnmounts.delete(node);
+                      }
+                  }
               }
 
               start(node: Node) {
-                  this.observe(node, this.#options);
-              }
-
-              trackUnmount(node: Node, callback: () => void) {
-                  this.#unmounts.set(node, new Set([...(this.#unmounts.get(node) ?? []), callback]));
+                  this.observe(node, { childList: true, subtree: true });
               }
 
               trackMount(node: Node, callback: () => void | (() => void)) {
-                  this.#mounts.set(node, new Set([...(this.#mounts.get(node) ?? []), callback]));
+                  this.#pendingMounts.add({ node, callback });
               }
 
-              unmountNodes(nodes: Node[]) {
-                  const pendingUnmounts = new Map<Node, Set<() => void>>();
-
-                  for (const node of nodes) {
-                      this.#collectUnmount(node, pendingUnmounts);
-
-                      const tw = this.#getWalker(node);
-                      while (tw.nextNode()) {
-                          this.#collectUnmount(tw.currentNode, pendingUnmounts);
-                      }
+              trackUnmount(node: Node, callback: () => void) {
+                  let unmounts = this.#activeUnmounts.get(node);
+                  if (!unmounts) {
+                      unmounts = new Set();
+                      this.#activeUnmounts.set(node, unmounts);
                   }
-
-                  if (pendingUnmounts.size > 0) {
-                      queueMicrotask(() => {
-                          for (const [node, callbacks] of pendingUnmounts) {
-                              if (!node.isConnected) {
-                                  for (const fn of callbacks) {
-                                      fn();
-                                  }
-                              }
-                          }
-                      });
-                  }
+                  unmounts.add(callback);
               }
           }
         : class {
-              start(_node: Node) {}
-              trackUnmount(_node: Node, _callback: () => void) {}
-              trackMount(_node: Node, _callback: () => void | (() => void)) {}
-              unmountNodes(_nodes: Node[]) {}
-              disconnect() {}
+              start() {}
+              trackUnmount() {}
+              trackMount() {}
           }
 )();
 
 export const disconnectNodes = (nodes: Element[]) => {
-    lifecycleObserver.unmountNodes(nodes);
     for (const node of nodes) node.remove();
 };

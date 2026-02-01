@@ -36,7 +36,7 @@ export const templateParser = (
             trimWhitespace(strFragment),
             ((): string => {
                 const fragment = parseTemplateFragment(valueFragments[idx]);
-                fragment.assignIdentifier(idx);
+                fragment.id = String(idx);
                 fragments.push(fragment);
                 return fragment.resolve();
             })(),

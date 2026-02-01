@@ -32,19 +32,20 @@ import { createIdentifier } from '../internals/identifier';
  * @returns A `Fragment` representing the directive, which can be attached to elements.
  */
 export const createDirective = (handler: (node: Element) => void | (() => void)): Fragment => {
-    let id = '';
+    let _id = '';
     return {
-        id: () => id,
-        assignIdentifier: (idx: number) => {
-            id = createIdentifier(idx);
+        get id() {
+            return _id;
         },
-        resolve: () => id,
+        set id(idx: string) {
+            _id = createIdentifier(idx);
+        },
+        resolve: () => _id,
         render: () => '',
         hydrate: (node: Node) => {
             if (node instanceof Element) {
                 const onDestroy = handler(node);
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
-                node.removeAttribute(id);
             }
         },
     };

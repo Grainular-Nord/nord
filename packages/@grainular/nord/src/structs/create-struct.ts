@@ -6,13 +6,15 @@ export const createStruct = (
     struct: (node: Comment) => void | (() => void),
     snapshot: () => string = () => '',
 ): Fragment => {
-    let id = '';
+    let _id = '';
     return {
-        id: () => id,
-        assignIdentifier: (idx: number) => {
-            id = createIdentifier(idx);
+        get id() {
+            return _id;
         },
-        resolve: () => `<!--:${id}:-->`,
+        set id(idx: string) {
+            _id = createIdentifier(idx);
+        },
+        resolve: () => `<!--${_id}-->`,
         render: () => snapshot(),
         hydrate: (node: Node) => {
             if (node instanceof Comment) {

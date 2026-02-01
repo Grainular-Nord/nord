@@ -6,13 +6,15 @@ import type { Subscribable } from './subscribable';
 // Creates a reactive fragment, that also updates the hydrated
 // node on update of the subscribable
 export const createReactiveFragment = (fragmentValue: Subscribable): Fragment => {
-    let id = '';
+    let _id = '';
     return {
-        id: () => id,
-        assignIdentifier: (idx: number) => {
-            id = createIdentifier(idx);
+        get id() {
+            return _id;
         },
-        resolve: () => `<!--:${id}:-->`,
+        set id(idx: string) {
+            _id = createIdentifier(idx);
+        },
+        resolve: () => `<!--${_id}-->`,
         render: () => String(fragmentValue() ?? ''),
         hydrate: (node: Node, { binding } = {}) => {
             if (node instanceof Comment) {
@@ -23,7 +25,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
                     text.textContent = String(value ?? '');
                 });
 
-                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+                if (onDestroy) lifecycleObserver.trackUnmount(text, onDestroy);
             }
 
             if (node instanceof Element) {

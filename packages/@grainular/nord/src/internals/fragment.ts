@@ -10,8 +10,7 @@ export type Fragment = {
     /**
      * A component fragment id to identify the fragment by
      */
-    id: () => string;
-    assignIdentifier: (idx: number) => void;
+    id: string;
 
     /**
      * Method that returns a hydration marker to insert
