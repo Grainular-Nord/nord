@@ -12,8 +12,12 @@ export const withScopedStyles = <P extends ComponentProps | undefined = undefine
         const fragment = component(args);
 
         return {
-            id: fragment.id,
-            assignIdentifier: fragment.assignIdentifier,
+            get id() {
+                return fragment.id;
+            },
+            set id(idx: string) {
+                fragment.id = idx;
+            },
             [IS_COMPONENT]: true as const,
             render: fragment.render,
             resolve: fragment.resolve,
