@@ -1,10 +1,9 @@
-import type { Grain } from '../dist/types';
-import { grain } from './grain';
+import { type Grain, type WritableGrain, grain } from './grain';
 import { readonly } from './readonly';
 
 export const flattened = <T>(nested: Grain<Grain<T>>): Grain<T> => {
     // Initialize the result grain
-    const result = grain(nested()());
+    const result: WritableGrain<T> = grain(nested()());
 
     // Setup the initial, immediate subscription
     // making the grain not stale until subscription.
