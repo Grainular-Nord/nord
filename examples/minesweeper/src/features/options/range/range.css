@@ -1,0 +1,96 @@
+.range-field {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2.5);
+    width: 100%;
+    color: var(--color-stone-300);
+    font-family: ui-monospace, monospace;
+    font-size: calc(var(--spacing) * 2.5);
+}
+
+.range-label {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    font-size: var(--text-xs);
+}
+
+.range-control {
+    position: relative;
+    display: grid;
+    /* 75% Track / 25% Value split */
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    height: calc(var(--spacing) * 4);
+}
+
+.range-control::before {
+    content: "";
+    position: absolute;
+    /* Shrink height to look more filigree */
+    top: calc(var(--spacing) * 0.5);
+    bottom: calc(var(--spacing) * 0.5);
+
+    left: 5%;
+    width: calc(75% * 0.9);
+    translate: 0px 1px;
+
+    z-index: 1;
+    pointer-events: none;
+
+    /* 9 indices = 8 gaps. 100% / 8 = 12.5% */
+    background-image: linear-gradient(to right, var(--color-stone-600) 0, var(--color-stone-600) 1px, transparent 1px);
+    background-size: 7.5% 100%;
+    background-repeat: repeat-x;
+
+    /* The "Broken Center" mask - precisely centered gaps */
+    mask-image: linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 calc(50% - 3.5px),
+        transparent calc(50% - 3.5px),
+        transparent calc(50% + 3.5px),
+        #000 calc(50% + 3.5px),
+        #000 100%
+    );
+}
+
+.range-value {
+    justify-self: end;
+    color: oklch(from var(--color-amber-400) l c h);
+    text-shadow: 0 0 calc(var(--spacing) * 2) oklch(from var(--color-amber-400) l c h / 0.4);
+    font-weight: 700;
+    font-size: calc(var(--spacing) * 3);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    margin: 0;
+
+    &::-webkit-slider-runnable-track {
+        height: 1px;
+        background: linear-gradient(
+            to right,
+            oklch(from var(--color-amber-500) l c h / 0.8) var(--progress),
+            var(--color-stone-600) var(--progress)
+        );
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        margin-top: calc(0.5px - var(--spacing) * 2);
+        height: calc(var(--spacing) * 4);
+        width: calc(var(--spacing) * 4);
+        border-radius: 50%;
+        background: var(--color-stone-950);
+        border: 1px solid oklch(from var(--color-amber-500) l c h);
+        box-shadow: 0 0 calc(var(--spacing) * 2.5) oklch(from var(--color-amber-500) l c h / 0.5);
+    }
+}

@@ -1,0 +1,106 @@
+.cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: calc(var(--spacing) * 8);
+    height: calc(var(--spacing) * 8);
+    background: var(--color-stone-800);
+    border-radius: calc(var(--spacing) * 0.5);
+
+    & .cell-flagged {
+        display: none;
+        filter: drop-shadow(0 0 2px oklch(from var(--color-cyan-400) l c h / 0.2));
+    }
+
+    & .cell-discovered {
+        display: none;
+    }
+
+    & .cell-explosive {
+        display: none;
+        filter: drop-shadow(0 0 2px oklch(from var(--color-rose-500) l c h / 0.2));
+    }
+
+    &[data-neighbors="1"] {
+        --text-color: oklch(0.8 0.12 210);
+    } /* Electric Blue */
+    &[data-neighbors="2"] {
+        --text-color: oklch(0.82 0.14 170);
+    } /* Neon Cyan/Teal */
+    &[data-neighbors="3"] {
+        --text-color: oklch(0.85 0.12 120);
+    } /* Minty Lime-Gold */
+    &[data-neighbors="4"] {
+        --text-color: oklch(0.85 0.15 85);
+    } /* Bright Amber */
+    &[data-neighbors="5"] {
+        --text-color: oklch(0.78 0.18 60);
+    } /* Deep Orange */
+    &[data-neighbors="6"] {
+        --text-color: oklch(0.7 0.22 40);
+    } /* Blood Orange */
+    &[data-neighbors="7"] {
+        --text-color: oklch(0.6 0.25 25);
+    } /* Deep Red */
+    &[data-neighbors="8"] {
+        --text-color: oklch(0.5 0.28 15);
+    } /* Dark Ember */
+
+    &[data-discovered="true"] {
+        background-color: oklch(from var(--color-stone-800) l c h / 0.8);
+
+        & .cell-discovered {
+            display: block;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            text-shadow: 0 0 12px oklch(from var(--text-color) l c h / 0.3);
+            color: var(--text-color);
+        }
+    }
+
+    &[data-discovered="true"][data-explosive="true"]:not([data-flagged="true"]) {
+        & .cell-explosive {
+            display: block;
+        }
+    }
+
+    &[data-discovered="false"]:not([data-flagged="true"]) {
+        cursor: pointer;
+
+        &:hover {
+            outline: 1px solid oklch(from var(--color-amber-600) l c h / 0.2);
+
+            &:before {
+                opacity: 1;
+            }
+        }
+
+        &:before {
+            content: "";
+            background: var(--color-amber-600);
+            width: var(--spacing);
+            height: var(--spacing);
+            border-radius: var(--spacing);
+            box-shadow: 0px 0px 8px 2px oklch(from var(--color-amber-600) l c h / 0.5);
+            opacity: 0.6;
+            transition: opacity 0.1s ease-in-out;
+        }
+    }
+
+    &[data-flagged="true"] {
+        cursor: pointer;
+
+        & .cell-flagged {
+            display: block;
+        }
+
+        &:hover {
+            outline: 1px solid oklch(from var(--color-amber-600) l c h / 0.2);
+
+            &:before {
+                opacity: 1;
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.drawer {
+    position: fixed;
+    display: flex;
+    inset: 0;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: oklch(from var(--color-stone-700) l c h / 0.25);
+    padding: calc(var(--spacing) * 4);
+    transition: opacity 0.25s ease-in-out;
+
+    &[data-expanded="true"] {
+        opacity: 1;
+        backdrop-filter: blur(0.125rem);
+        pointer-events: all;
+    }
+
+    & .drawer-content {
+        height: 100%;
+        min-width: min(45vw, 20rem);
+        padding: calc(var(--spacing) * 4);
+        background: var(--color-stone-900);
+        border: var(--spacing) solid oklch(from var(--color-stone-800) l c h / 0.5);
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--spacing) * 4);
+    }
+}

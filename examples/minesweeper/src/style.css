@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html,
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overscroll-behavior: none;
+    margin: 0;
+    padding: 0;
+    background: var(--color-stone-950);
+}
