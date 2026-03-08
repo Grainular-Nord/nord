@@ -14,6 +14,7 @@ export { on } from './directives/on.directive';
 export { createRef, ref } from './directives/ref.directive';
 export type { Fragment } from './internals/fragment';
 export { hydrateFragment } from './internals/hydrate-fragment';
+export { isSubscribableValue } from './internals/is-subscribable-value';
 export type { Subscribable } from './internals/subscribable';
 export { $await } from './structs/await.struct';
 export { createStruct } from './structs/create-struct';

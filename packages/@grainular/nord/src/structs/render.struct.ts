@@ -4,7 +4,7 @@ import { hydrateFragment } from '../internals/hydrate-fragment';
 import type { Subscribable } from '../internals/subscribable';
 import { createStruct } from './create-struct';
 
-export const $render = (source: Subscribable<ComponentFragment | ComponentFragment>) => {
+export const $render = (source: Subscribable<ComponentFragment>) => {
     return createStruct(
         (node) => {
             let nodes: Element[] = [];
