@@ -1,5 +1,4 @@
-import { grain } from '@grainular/grains';
-import { $render, $unsafeHtml, type ComponentFragment, html } from '@grainular/nord';
+import { $await, $unsafeHtml, html } from '@grainular/nord';
 
 export const icons = {
     flag: () => import('./assets/flag.svg?raw'),
@@ -69,7 +68,11 @@ export type IconProps = {
 };
 
 export const Icon = ({ src, ...props }: IconProps) => {
-    const fragment = grain<ComponentFragment>(html``);
-    AssetProvider.get(src).then((svg) => fragment.set(html`${$unsafeHtml(getSvgString(svg, props))}`));
-    return html`${$render(fragment)}`;
+    // const fragment = grain<ComponentFragment>(html``);
+    // AssetProvider.get(src).then((svg) => fragment.set(html`${$unsafeHtml(getSvgString(svg, props))}`));
+    // return html`${$render(fragment)}`;
+
+    return $await(AssetProvider.get(src)).$then((string) => {
+        return html`${$unsafeHtml(getSvgString(string, props))}`;
+    });
 };
