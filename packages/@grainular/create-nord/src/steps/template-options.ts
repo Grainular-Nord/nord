@@ -24,7 +24,7 @@ const features = [
     {
         value: [{ name: '@grainular/router', version: 'latest', dev: false }],
         label: 'Nørd Router',
-        hint: 'Client side routing.',
+        hint: 'Client side routing',
     },
     {
         value: [{ name: '@grainular/forms', version: 'latest', dev: false }],
@@ -35,6 +35,21 @@ const features = [
         value: [{ name: '@grainular/silo', version: 'latest', dev: false }],
         label: 'Nørd Silo',
         hint: 'Store solution for grains',
+    },
+    {
+        value: [{ name: '@grainular/portal', version: 'latest', dev: false }],
+        label: 'Nørd Portal',
+        hint: 'Allows portaling Nørd fragments',
+    },
+    {
+        value: [{ name: '@grainular/resource', version: 'latest', dev: false }],
+        label: 'Nørd Resource',
+        hint: 'Async resource abstraction for grains & Nørd',
+    },
+    {
+        value: [{ name: '@grainular/custom-element', version: 'latest', dev: false }],
+        label: 'Nørd Custom Elements',
+        hint: 'Create Web-components from Nørd components',
     },
 ];
 
@@ -62,6 +77,21 @@ const dependencies = [
     //     label: 'ESLint',
     //     hint: 'linter ⎔ https://eslint.org',
     // },
+    {
+        value: [{ name: '@biomejs/biome', version: 'latest', dev: true }],
+        label: 'Biome',
+        hint: 'Rust based linting & formatting ⎔ https://biomejs.dev',
+    },
+    {
+        value: [{ name: 'oxlint', version: 'latest', dev: true }],
+        label: 'Oxlint',
+        hint: 'Rust based linting ⎔ https://oxc.rs',
+    },
+    {
+        value: [{ name: 'oxfmt', version: 'latest', dev: true }],
+        label: 'Oxfmt',
+        hint: 'Rust based formatting ⎔ https://oxc.rs',
+    },
 ];
 
 export const templateOptions = async () => {

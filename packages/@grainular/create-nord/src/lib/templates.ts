@@ -3,6 +3,7 @@ import { gitIgnore } from './file-factories/git-ignore';
 import { indexHtml } from './file-factories/index-html';
 import { lefthookYml } from './file-factories/lefthook';
 import { main } from './file-factories/main';
+import { oxfmtrc } from './file-factories/oxfmtrc';
 import { packageJson } from './file-factories/package-json';
 import { prettierignore, prettierrc } from './file-factories/prettier';
 import { viteConfig } from './file-factories/vite-config';
@@ -55,6 +56,7 @@ export const templates = new Map<string, Record<string, TemplateCreatorFn>>([
             '.prettierrc': prettierrc,
             '.prettierignore': prettierignore,
             'lefthook.yml': lefthookYml,
+            '.oxfmtrc.json': oxfmtrc,
         },
     ],
     [
@@ -63,14 +65,15 @@ export const templates = new Map<string, Record<string, TemplateCreatorFn>>([
             '.gitignore': gitIgnore,
             'package.json': packageJson,
             'index.html': indexHtml('./src/main.ts', './src/style.css'),
-            'vite.config.js': viteConfig(),
-            'src/main.js': main('ts'),
-            'src/app.js': app(),
+            'vite.config.ts': viteConfig(),
+            'src/main.ts': main('ts'),
+            'src/app.ts': app(),
             'src/app.css': async () => [''],
             'src/style.css': async () => [''],
             '.prettierrc': prettierrc,
             '.prettierignore': prettierignore,
             'lefthook.yml': lefthookYml,
+            '.oxfmtrc.json': oxfmtrc,
         },
     ],
 ]);
