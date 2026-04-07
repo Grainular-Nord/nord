@@ -7,8 +7,9 @@ export type NodeData = { name: string; props: string; children: string };
 type PluginOptions = {
     components: ComponentDefinition[];
     plugins?: PluggableList;
+    transform?: ((code: string, id: string) => string | Promise<string>)[];
 };
-export const nordMarkdown = ({ components, plugins = [] }: PluginOptions): Plugin => {
+export const nordMarkdown = ({ components, plugins = [], transform = [] }: PluginOptions): Plugin => {
     return {
         name: 'nord-markdown',
         enforce: 'pre',
@@ -16,7 +17,14 @@ export const nordMarkdown = ({ components, plugins = [] }: PluginOptions): Plugi
             if (!id.endsWith('.md')) return;
             const componentMap = new Map(components.map((c) => [c.identifier, c.importPath]));
             const nodes = new Map<string, NodeData>();
-            return parseMarkdown(code, componentMap, nodes, plugins);
+
+            // For of because of async transforms
+            let transformed = code;
+            for (const fn of transform) {
+                transformed = await fn(transformed, id);
+            }
+
+            return parseMarkdown(transformed, componentMap, nodes, plugins);
         },
     };
 };
