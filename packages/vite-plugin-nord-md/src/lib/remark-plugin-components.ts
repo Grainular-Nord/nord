@@ -36,9 +36,10 @@ export function remarkPluginComponents(
             if (node.type !== 'containerDirective') return;
             if (!components.get(node.name)) return;
 
+            const id = `nø-${crypto.randomUUID()}`;
+
             promises.add(
                 (async () => {
-                    const id = `nø-${crypto.randomUUID()}`;
                     nodes.set(id, {
                         name: node.name,
                         props: parseAttributes(node.attributes ?? {}),
@@ -51,13 +52,12 @@ export function remarkPluginComponents(
                             ),
                         ),
                     });
-
-                    // Reset the node and replace it with the marker
-                    const marker = { type: 'text', value: `{{${id}}}` };
-                    Object.assign(node, marker);
-                    node.children = [];
                 })(),
             );
+
+            // Reset the node and replace it with the marker
+            const marker = { type: 'text', value: `{{${id}}}`, children: [] };
+            Object.assign(node, marker);
         });
     };
 }
