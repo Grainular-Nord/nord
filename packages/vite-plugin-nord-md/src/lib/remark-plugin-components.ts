@@ -32,10 +32,18 @@ export function remarkPluginComponents(components: Map<string, string>, nodes: M
             if (!components.get(node.name)) return;
 
             const id = `nø-${crypto.randomUUID()}`;
-            const attributes = parseAttributes(node.attributes ?? {});
-            const children = processor.stringify(processor.runSync({ type: 'root', children: node.children ?? [] }));
-            const template = escapeHtmlString(children);
-            nodes.set(id, { name: node.name, props: attributes, children: template });
+            nodes.set(id, {
+                name: node.name,
+                props: parseAttributes(node.attributes ?? {}),
+                children: escapeHtmlString(
+                    processor.stringify(
+                        processor.runSync({
+                            type: 'root',
+                            children: node.children ?? [],
+                        }),
+                    ),
+                ),
+            });
 
             // Reset the node and replace it with the marker
             const marker = { type: 'text', value: `{{${id}}}` };
