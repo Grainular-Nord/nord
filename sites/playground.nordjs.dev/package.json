@@ -1,0 +1,21 @@
+{
+  "name": "playground.nordjs.dev",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite-plugin-nord-md": "workspace:*",
+    "vite": "^8.0.4"
+  },
+  "dependencies": {
+    "@grainular/grains": "workspace:*",
+    "@grainular/nord": "workspace:*",
+    "@shikijs/rehype": "^4.0.2",
+    "shiki": "^4.0.2"
+  }
+}

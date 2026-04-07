@@ -33,6 +33,7 @@
         "examples/*",
         "packages/@grainular/*",
         "packages/@repository/*",
+        "packages/*",
         "language-tools/*",
         "sites/*"
     ],
