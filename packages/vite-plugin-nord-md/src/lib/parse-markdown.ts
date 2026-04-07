@@ -18,11 +18,15 @@ export const parseMarkdown = async (
 ) => {
     const processor = unified()
         .use(remarkParse)
+        // Frontmatter
         .use(remarkFrontmatter, ['yaml'])
-        .use(remarkDirective)
-        // Map directives to unique nodes for easy replacement
-        .use(remarkPluginComponents(components, nodes))
         .use(() => (_, file) => matter(file))
+
+        // Custom directives
+        .use(remarkDirective)
+        .use(remarkPluginComponents(components, nodes, plugins))
+
+        // Other plugins
         .use(remarkRehype)
         .use(plugins)
         .use(rehypeStringify);
