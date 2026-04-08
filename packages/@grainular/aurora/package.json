@@ -1,0 +1,43 @@
+{
+  "name": "@grainular/aurora",
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "bun@1.1.18",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/types/runtime/index.d.ts",
+      "import": "./dist/esm/runtime/index.js",
+      "require": "./dist/cjs/runtime/index.js"
+    }
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.0.3",
+    "vite": "^7.3.1",
+    "@repository/builder": "workspace:*"
+  },
+  "dependencies": {
+    "@shikijs/rehype": "^4.0.2",
+    "shiki": "^4.0.2",
+    "vite-plugin-nord-md": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5",
+    "@grainular/nord": "workspace:*",
+    "@grainular/grains": "workspace:*"
+  },
+  "scripts": {
+    "dev": "bun run .build.ts --watch",
+    "build": "bun run .build.ts",
+    "test": "bun test --coverage"
+  }
+}
