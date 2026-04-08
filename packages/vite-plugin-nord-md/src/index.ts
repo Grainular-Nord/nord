@@ -7,9 +7,9 @@ export type NodeData = { name: string; props: string; children: string };
 type PluginOptions = {
     components: ComponentDefinition[];
     plugins?: PluggableList;
-    transform?: ((code: string, id: string) => string | Promise<string>)[];
+    transforms?: ((code: string, id: string) => string | Promise<string>)[];
 };
-export const nordMarkdown = ({ components, plugins = [], transform = [] }: PluginOptions): Plugin => {
+export const nordMarkdown = ({ components, plugins = [], transforms = [] }: PluginOptions): Plugin => {
     return {
         name: 'nord-markdown',
         enforce: 'pre',
@@ -20,7 +20,7 @@ export const nordMarkdown = ({ components, plugins = [], transform = [] }: Plugi
 
             // For of because of async transforms
             let transformed = code;
-            for (const fn of transform) {
+            for (const fn of transforms) {
                 transformed = await fn(transformed, id);
             }
 
