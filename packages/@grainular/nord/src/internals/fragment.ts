@@ -1,3 +1,7 @@
+import type { createIdentifier } from './identifier';
+
+export const FRAGMENT_ID: unique symbol = Symbol.for('fragment.id');
+
 /**
  * A Fragment is a single, atomic unit of work to be rendered,
  * representing anything from scalar value to component trees
@@ -10,7 +14,7 @@ export type Fragment = {
     /**
      * A component fragment id to identify the fragment by
      */
-    id: string;
+    [FRAGMENT_ID]: ReturnType<typeof createIdentifier>;
 
     /**
      * Method that returns a hydration marker to insert

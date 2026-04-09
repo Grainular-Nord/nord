@@ -1,5 +1,5 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import type { Fragment } from '../internals/fragment';
+import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 
 /**
@@ -28,19 +28,13 @@ import { createIdentifier } from '../internals/identifier';
  *
  * @param handler - Function called with the element when it is hydrated.
  *                  Can optionally return a cleanup function for unmounting.
- * @param id - Optional unique identifier for the directive. Auto-generated if not provided.
  * @returns A `Fragment` representing the directive, which can be attached to elements.
  */
 export const createDirective = (handler: (node: Element) => void | (() => void)): Fragment => {
-    let _id = '';
+    const fragmentId = createIdentifier();
     return {
-        get id() {
-            return _id;
-        },
-        set id(idx: string) {
-            _id = createIdentifier(idx);
-        },
-        resolve: () => _id,
+        [FRAGMENT_ID]: fragmentId,
+        resolve: () => fragmentId.get(),
         render: () => '',
         hydrate: (node: Node) => {
             if (node instanceof Element) {

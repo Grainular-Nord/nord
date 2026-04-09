@@ -1,11 +1,10 @@
-import type { Fragment } from '../internals/fragment';
+import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 import { IS_COMPONENT, type StylableFragment } from './component-fragment';
 import { hydrateComponentTemplate } from './hydrate-component-template';
 
 // Global style cache for tracking
 // stylesheets by parser id.
-let styleCounter = 1;
 const styleCache = new Map<string, CSSStyleSheet>();
 
 // Method to recursively scope rules by appending
@@ -37,7 +36,7 @@ const getTemplate = (html: string) => {
 
 export const createComponentFragment = (template: string[], fragments: Fragment[]): StylableFragment => {
     const html = template.join('');
-    let _id = '';
+    const fragmentId = createIdentifier();
 
     const hydrateNode = (node: Node, scope?: string) => {
         // Bail early if we have a hydration mismatch here
@@ -57,19 +56,15 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
     };
 
     const fragment = {
-        get id() {
-            return _id;
-        },
-        set id(idx: string) {
-            _id = createIdentifier(idx);
-        },
+        [FRAGMENT_ID]: fragmentId,
         [IS_COMPONENT]: true as const,
-        resolve: () => `<!--${_id}-->`,
-        render: () =>
-            template
+        resolve: () => `<!--${fragmentId.get()}-->`,
+        render: () => {
+            return template
                 .filter((_, i) => i % 2 === 0) // Keep even indices (Strings only)
                 .flatMap((str, idx) => [str, fragments[idx]?.render() ?? ''])
-                .join(''),
+                .join('');
+        },
         hydrate: (node: Node) => {
             hydrateNode(node);
         },
@@ -78,20 +73,19 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
     return {
         ...fragment,
         css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => {
-            const scope = createIdentifier(String(styleCounter++));
             const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
             return {
                 ...fragment,
                 hydrate: (node: Node) => {
-                    if (!styleCache.has(scope)) {
+                    if (!styleCache.has(fragmentId.get())) {
                         const sheet = new CSSStyleSheet();
-                        styleCache.set(scope, sheet);
+                        styleCache.set(fragmentId.get(), sheet);
                         sheet.replaceSync(style);
-                        scopeRule(sheet.cssRules, scope);
+                        scopeRule(sheet.cssRules, fragmentId.get());
                         document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
                     }
 
-                    hydrateNode(node, scope);
+                    hydrateNode(node, fragmentId.get());
                 },
             };
         },

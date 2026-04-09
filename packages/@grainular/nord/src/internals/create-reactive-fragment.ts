@@ -1,20 +1,15 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import type { Fragment } from './fragment';
+import { FRAGMENT_ID, type Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 import type { Subscribable } from './subscribable';
 
 // Creates a reactive fragment, that also updates the hydrated
 // node on update of the subscribable
 export const createReactiveFragment = (fragmentValue: Subscribable): Fragment => {
-    let _id = '';
+    const fragmentId = createIdentifier();
     return {
-        get id() {
-            return _id;
-        },
-        set id(idx: string) {
-            _id = createIdentifier(idx);
-        },
-        resolve: () => `<!--${_id}-->`,
+        [FRAGMENT_ID]: fragmentId,
+        resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue() ?? ''),
         hydrate: (node: Node, { binding } = {}) => {
             if (node instanceof Comment) {

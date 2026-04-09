@@ -1,18 +1,13 @@
-import type { Fragment } from './fragment';
+import { FRAGMENT_ID, type Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
 // Creates a primitive fragment, containing a scalar value
 // that get's resolved and rendered only once.
 export const createPrimitiveFragment = (fragmentValue: boolean | string | number): Fragment => {
-    let _id = '';
+    const fragmentId = createIdentifier();
     return {
-        get id() {
-            return _id;
-        },
-        set id(idx: string) {
-            _id = createIdentifier(idx);
-        },
-        resolve: () => `<!--${_id}-->`,
+        [FRAGMENT_ID]: fragmentId,
+        resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue),
         hydrate: (node: Node, { binding } = {}) => {
             // Hydrate the node depending of it's type

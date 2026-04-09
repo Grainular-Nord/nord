@@ -75,6 +75,7 @@ export const lifecycleObserver = new (
               start() {}
               trackUnmount() {}
               trackMount() {}
+              disconnect() {}
           }
 )();
 

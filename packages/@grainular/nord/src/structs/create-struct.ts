@@ -1,20 +1,15 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import type { Fragment } from '../internals/fragment';
+import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 
 export const createStruct = (
     struct: (node: Comment) => void | (() => void),
     snapshot: () => string = () => '',
 ): Fragment => {
-    let _id = '';
+    const fragmentId = createIdentifier();
     return {
-        get id() {
-            return _id;
-        },
-        set id(idx: string) {
-            _id = createIdentifier(idx);
-        },
-        resolve: () => `<!--${_id}-->`,
+        [FRAGMENT_ID]: fragmentId,
+        resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => snapshot(),
         hydrate: (node: Node) => {
             if (node instanceof Comment) {
