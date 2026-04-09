@@ -7,12 +7,6 @@ type Binding = {
 type Predicate = (node: Element) => boolean;
 type Factory = (node: Element) => Binding;
 
-// Mocking the Grain interface based on your request
-interface WritableGrain<V> {
-    set(value: V): void;
-    subscribe(subscriber: (value: V) => void): () => void;
-}
-
 // --- The Dictionary ---
 const bindings = new Map<Predicate, Factory>([
     // 1. Checkbox
@@ -124,12 +118,4 @@ export const getBinding = (node: Element): Binding => {
     }
     // Fallback for non-form elements (or throw error)
     return { get: () => null, set: () => {} };
-};
-
-export const getValue = (node: Element) => {
-    return getBinding(node).get();
-};
-
-export const setValue = <T>(node: Element, value: T) => {
-    getBinding(node).set(value);
 };
