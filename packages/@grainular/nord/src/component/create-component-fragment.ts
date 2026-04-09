@@ -6,7 +6,6 @@ import { hydrateComponentTemplate } from './hydrate-component-template';
 // Global style cache for tracking
 // stylesheets by parser id.
 const styleCache = new Map<string, CSSStyleSheet>();
-let styleSheetIdentifier = 0;
 
 // Method to recursively scope rules by appending
 // an id to a selector text
@@ -76,7 +75,7 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
         ...fragment,
         css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => {
             const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
-            styleId.create(String(++styleSheetIdentifier));
+            styleId.random();
             return {
                 ...fragment,
                 hydrate: (node: Node) => {

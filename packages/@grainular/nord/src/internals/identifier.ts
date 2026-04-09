@@ -8,8 +8,10 @@ export const createIdentifier = () => {
     return {
         [Symbol.for('component.id')]: true,
         create: (idx: string) => {
-            if (_id !== '') throw new ReferenceError('Attempted setting already set fragment id.');
             _id = `nø-${idx.padStart(6, '0')}`;
+        },
+        random: () => {
+            _id = `nø-${Math.random().toString(16).slice(2, 8).padStart(6, '0')}`;
         },
         get: () => _id,
     };
