@@ -1,13 +1,12 @@
 import { grain } from '@grainular/grains';
-import { css, html, withScopedStyles } from '@grainular/nord';
+import { html } from '@grainular/nord';
 import { Counter } from './counter';
 import { Editor } from './editor';
 
-export const Hero = withScopedStyles(
-    () => {
-        const count = grain(0);
+export const Hero = () => {
+    const count = grain(0);
 
-        return html`
+    return html`
             <section class="hero">
                 <div class="hero-text">
                     <h1>Nørd</h1>
@@ -18,14 +17,8 @@ export const Hero = withScopedStyles(
                     ${Editor({ count })}
                     ${Counter({ count })}
                 </div>
-            </section>`;
-    },
-
-    /**
-     * Hero styles are scoped directly to the hero Element
-     * and do not bleed into the nested elements
-     */
-    css`
+            </section>
+    `.css`
         .hero {
             display: flex; 
             flex-wrap: wrap;
@@ -86,5 +79,5 @@ export const Hero = withScopedStyles(
                 }
             }
         }
-`,
-);
+`;
+};

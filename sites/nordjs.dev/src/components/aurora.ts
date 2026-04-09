@@ -1,10 +1,7 @@
-import { css, html, withScopedStyles } from '@grainular/nord';
+import { html } from '@grainular/nord';
 
-export const Aurora = withScopedStyles(
-    () => {
-        return html`<div class="aurora"></div>`;
-    },
-    css`
+export const Aurora = () => {
+    return html`<div class="aurora"></div>`.css`
         .aurora {
             position: fixed;
             inset: 0;
@@ -43,5 +40,5 @@ export const Aurora = withScopedStyles(
                 filter: hue-rotate(30deg); 
             }
         }
-`,
-);
+`;
+};
