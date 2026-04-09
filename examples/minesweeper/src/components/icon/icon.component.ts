@@ -68,11 +68,7 @@ export type IconProps = {
 };
 
 export const Icon = ({ src, ...props }: IconProps) => {
-    // const fragment = grain<ComponentFragment>(html``);
-    // AssetProvider.get(src).then((svg) => fragment.set(html`${$unsafeHtml(getSvgString(svg, props))}`));
-    // return html`${$render(fragment)}`;
-
-    return $await(AssetProvider.get(src)).$then((string) => {
+    return html`${$await(AssetProvider.get(src)).$then((string) => {
         return html`${$unsafeHtml(getSvgString(string, props))}`;
-    });
+    })}`;
 };
