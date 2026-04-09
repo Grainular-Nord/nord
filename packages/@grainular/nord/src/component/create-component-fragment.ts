@@ -6,6 +6,7 @@ import { hydrateComponentTemplate } from './hydrate-component-template';
 // Global style cache for tracking
 // stylesheets by parser id.
 const styleCache = new Map<string, CSSStyleSheet>();
+let styleSheetIdentifier = 0;
 
 // Method to recursively scope rules by appending
 // an id to a selector text
@@ -37,6 +38,7 @@ const getTemplate = (html: string) => {
 export const createComponentFragment = (template: string[], fragments: Fragment[]): StylableFragment => {
     const html = template.join('');
     const fragmentId = createIdentifier();
+    const styleId = createIdentifier();
 
     const hydrateNode = (node: Node, scope?: string) => {
         // Bail early if we have a hydration mismatch here
@@ -74,18 +76,19 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
         ...fragment,
         css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => {
             const style = str.reduce((current, element, idx) => `${current}${element}${fragments[idx] ?? ''}`, '');
+            styleId.create(String(++styleSheetIdentifier));
             return {
                 ...fragment,
                 hydrate: (node: Node) => {
-                    if (!styleCache.has(fragmentId.get())) {
+                    if (!styleCache.has(styleId.get())) {
                         const sheet = new CSSStyleSheet();
-                        styleCache.set(fragmentId.get(), sheet);
+                        styleCache.set(styleId.get(), sheet);
                         sheet.replaceSync(style);
-                        scopeRule(sheet.cssRules, fragmentId.get());
+                        scopeRule(sheet.cssRules, styleId.get());
                         document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
                     }
 
-                    hydrateNode(node, fragmentId.get());
+                    hydrateNode(node, styleId.get());
                 },
             };
         },
