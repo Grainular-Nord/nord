@@ -1,26 +1,26 @@
-import { type Grain, type WritableGrain, grain } from './grain';
-import { readonly } from './readonly';
+import type { Grain, Subscriber } from './grain';
 
 export const flattened = <T>(nested: Grain<Grain<T>>): Grain<T> => {
-    // Initialize the result grain
-    const result: WritableGrain<T> = grain(nested()());
+    // Synchronous reads are always perfectly up-to-date
+    const read = () => nested()();
 
-    // Setup the initial, immediate subscription
-    // making the grain not stale until subscription.
-    let innerUnsubscribe = nested().subscribe((value) => result.set(value));
+    return Object.assign(read, {
+        subscribe: (subscriber: Subscriber<T>) => {
+            // Track the inner subscription
+            let innerUnsubscribe = nested().subscribe(subscriber);
 
-    // We subscribe to the primary grain (outer basically)
-    // and can then update the result accordingly
-    // we make sure to track the unsubscribe
-    nested.subscribe((innerGrain) => {
-        if (innerUnsubscribe) innerUnsubscribe();
-        result.set(innerGrain());
+            // Track the outer subscription
+            const outerUnsubscribe = nested.subscribe((newInnerGrain) => {
+                innerUnsubscribe(); // Clean up the old inner subscription
+                innerUnsubscribe = newInnerGrain.subscribe(subscriber);
+                subscriber(newInnerGrain()); // Emit the new value immediately
+            });
 
-        // update the subscription tracker
-        innerUnsubscribe = innerGrain.subscribe((value) => {
-            result.set(value);
-        });
+            // Clean up both when the DOM unmounts
+            return () => {
+                innerUnsubscribe();
+                outerUnsubscribe();
+            };
+        },
     });
-
-    return readonly(result);
 };
