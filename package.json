@@ -25,7 +25,7 @@
         "setup": "husky",
         "lint": "biome lint",
         "format": "biome format --write",
-        "dev": "turbo dev",
+        "dev": "turbo dev --concurrency 20",
         "build": "turbo build",
         "test": "turbo test"
     },
