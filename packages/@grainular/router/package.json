@@ -21,7 +21,9 @@
         "typescript": "^5.0.0"
     },
     "peerDependencies": {
-        "@grainular/nord": "workspace:*"
+        "@grainular/nord": "workspace:*",
+        "@grainular/grains": "workspace:*",
+        "@grainular/silo": "workspace:*"
     },
     "scripts": {
         "dev": "bun run .build.ts --watch",
