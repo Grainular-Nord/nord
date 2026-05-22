@@ -7,7 +7,9 @@ import { isSubscribableValue } from '../internals/is-subscribable-value';
 import type { Subscribable } from '../internals/subscribable';
 import { trimWhitespace } from '../internals/trim-whitespace';
 
-const parseTemplateFragment = (fragment: string | number | boolean | null | undefined | Subscribable | Fragment) => {
+const parseTemplateFragment = (
+    fragment: string | number | boolean | bigint | null | undefined | Subscribable | Fragment,
+) => {
     switch (true) {
         case isSubscribableValue(fragment):
             return createReactiveFragment(fragment);
@@ -27,7 +29,7 @@ const parseTemplateFragment = (fragment: string | number | boolean | null | unde
  */
 export const templateParser = (
     stringFragments: TemplateStringsArray,
-    ...valueFragments: (string | number | boolean | null | undefined | Subscribable | Fragment)[]
+    ...valueFragments: (string | number | boolean | bigint | null | undefined | Subscribable | Fragment)[]
 ) => {
     const fragments: Fragment[] = [];
 

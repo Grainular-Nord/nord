@@ -3,7 +3,7 @@ import { createIdentifier } from './identifier';
 
 // Creates a primitive fragment, containing a scalar value
 // that get's resolved and rendered only once.
-export const createPrimitiveFragment = (fragmentValue: boolean | string | number): Fragment => {
+export const createPrimitiveFragment = (fragmentValue: boolean | string | number | bigint): Fragment => {
     const fragmentId = createIdentifier();
     return {
         [FRAGMENT_ID]: fragmentId,
