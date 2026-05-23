@@ -12,7 +12,7 @@ export const Grid = () => {
         <main style="--cols: ${cols}; --rows: ${rows}" class="grid" ${mounted(() => () => actions.stopSimulation())}>
             ${$each(() => cells).$as((cellY) => {
                 return html`${$each(() => cellY).$as((cell) => {
-                    return Cell({ state: cell });
+                    return Cell({ state: cell, onToggle: () => actions.toggleCell(cell) });
                 })}`;
             })}
         </main>

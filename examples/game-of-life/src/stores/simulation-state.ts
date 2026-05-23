@@ -12,7 +12,15 @@ const cells: WritableGrain<boolean>[][] = Array.from({ length: cols }, () => {
 
 const running = grain(false);
 const generation = grain(0);
+
+// alive is maintained as a write-through cache rather than derived
+// from cells directly. Using combined(cells.flat()) tanks performance
+// at >10k cells. All mutations to cells must update alive accordingly.
 const alive = grain(0);
+
+const updateAlive = (amount: number) => {
+    alive.set(alive() + amount);
+};
 
 const getCellNeighbors = (cellId: [x: number, y: number]) => {
     const [x, y] = cellId;
@@ -87,6 +95,12 @@ const runSimulation = () => {
 };
 
 // Control Actions
+const toggleCell = (state: WritableGrain<boolean>) => {
+    const next = !state();
+    state.set(next);
+    updateAlive(next ? 1 : -1);
+};
+
 const nextSimulationStep = () => {
     running.set(false);
     simulationStep(true);
@@ -105,25 +119,37 @@ const stopSimulation = () => {
 
 const resetSimulation = () => {
     stopSimulation();
-    generation.set(0);
     for (const row of cells) {
         for (const cell of row) {
             cell.set(false);
         }
     }
+    alive.set(0);
+    generation.set(0);
 };
 
 const randomizeCells = () => {
     resetSimulation();
+    let trackAlive = 0;
     for (const row of cells) {
         for (const cell of row) {
-            cell.set(!!Math.round(Math.random() - 0.25));
+            const state = !!Math.round(Math.random() - 0.25);
+            cell.set(state);
+            state && trackAlive++;
         }
     }
+    alive.set(trackAlive);
 };
 
 export const simulationState = {
-    actions: { resetSimulation, startSimulation, nextSimulationStep, stopSimulation, randomizeCells },
+    actions: {
+        resetSimulation,
+        startSimulation,
+        nextSimulationStep,
+        stopSimulation,
+        randomizeCells,
+        toggleCell,
+    },
     parameters: { rows, cols, gensPerSecond },
     state: { cells, running, generation, alive },
 };
