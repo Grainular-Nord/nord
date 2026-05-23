@@ -43,8 +43,12 @@ describe('Readonly', () => {
         let subscriberOneValue = 0;
         let subscriberTwoValue = 0;
 
-        count.subscribe((value) => (subscriberOneValue = value));
-        count.subscribe((value) => (subscriberTwoValue = value));
+        count.subscribe((value) => {
+            subscriberOneValue = value;
+        });
+        count.subscribe((value) => {
+            subscriberTwoValue = value;
+        });
 
         source.set(20);
         expect(subscriberOneValue).toBe(20);

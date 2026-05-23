@@ -43,8 +43,12 @@ describe('Derived', () => {
         let subscriberOneValue = 0;
         let subscriberTwoValue = 0;
 
-        doubled.subscribe((value) => (subscriberOneValue = value));
-        doubled.subscribe((value) => (subscriberTwoValue = value));
+        doubled.subscribe((value) => {
+            subscriberOneValue = value;
+        });
+        doubled.subscribe((value) => {
+            subscriberTwoValue = value;
+        });
 
         source.set(20);
         expect(subscriberOneValue).toBe(40);

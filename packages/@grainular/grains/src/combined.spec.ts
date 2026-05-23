@@ -27,7 +27,6 @@ describe('Combined', () => {
     test('should notify consumers when any of the source grains change', () => {
         const count = grain(0);
         const text = grain('A');
-
         const c = combined([count, text]);
 
         let notifiedValue: [number, string] = [count(), text()];
@@ -64,5 +63,37 @@ describe('Combined', () => {
 
         arr.set([1, 'D', 'E']);
         expect(c()).toEqual([10, 'B', false, [1, 'D', 'E']]);
+    });
+
+    test('should stop notifying after unsubscribe', () => {
+        const count = grain(0);
+        const text = grain('A');
+        const c = combined([count, text]);
+
+        let updateCount = 0;
+        const unsubscribe = c.subscribe(() => {
+            updateCount++;
+        });
+
+        count.set(1);
+        expect(updateCount).toBe(1);
+
+        unsubscribe();
+
+        count.set(2);
+        text.set('B');
+        expect(updateCount).toBe(1);
+    });
+
+    test('should work with a readonly array source', () => {
+        const count = grain(0);
+        const text = grain('A');
+        const sources = [count, text] as const;
+        const c = combined(sources);
+
+        expect(c()).toEqual([0, 'A']);
+
+        count.set(10);
+        expect(c()).toEqual([10, 'A']);
     });
 });

@@ -32,7 +32,6 @@ describe('Flattened', () => {
 
         expect(flat()).toBe(1);
 
-        // Switch the outer grain to point to inner2
         outer.set(inner2);
         expect(flat()).toBe(2);
     });
@@ -47,16 +46,13 @@ describe('Flattened', () => {
             notifiedValue = val;
         });
 
-        // Test inner change notification
         inner1.set(20);
         expect(notifiedValue).toBe(20);
 
-        // Test outer switch notification
         const inner2 = grain(30);
         outer.set(inner2);
         expect(notifiedValue).toBe(30);
 
-        // Test new inner change notification
         inner2.set(40);
         expect(notifiedValue).toBe(40);
     });
@@ -67,31 +63,45 @@ describe('Flattened', () => {
         const outer = grain(inner1);
         const flat = flattened(outer);
 
-        // Subscribe to track updates
         let updateCount = 0;
         flat.subscribe(() => {
             updateCount++;
         });
 
-        // Initial check
         expect(flat()).toBe('A');
 
-        // Switch to inner2
         outer.set(inner2);
         expect(flat()).toBe('B');
 
-        // Reset counter to track only subsequent updates
         updateCount = 0;
 
-        // Modifying inner1 should NO LONGER affect flat
         inner1.set('Modified A');
-        expect(flat()).toBe('B'); // Value should remain B
-        expect(updateCount).toBe(0); // Should not have triggered a subscription update
+        expect(flat()).toBe('B');
+        expect(updateCount).toBe(0);
 
-        // Modifying inner2 SHOULD affect flat
         inner2.set('Modified B');
         expect(flat()).toBe('Modified B');
         expect(updateCount).toBe(1);
+    });
+
+    test('should stop notifying after unsubscribe', () => {
+        const inner = grain(1);
+        const outer = grain(inner);
+        const flat = flattened(outer);
+
+        let updateCount = 0;
+        const unsubscribe = flat.subscribe(() => {
+            updateCount++;
+        });
+
+        inner.set(2);
+        expect(updateCount).toBe(1);
+
+        unsubscribe();
+
+        inner.set(3);
+        outer.set(grain(99));
+        expect(updateCount).toBe(1); // No further notifications
     });
 
     test('should return a readonly grain', () => {
@@ -99,9 +109,6 @@ describe('Flattened', () => {
         const outer = grain(inner);
         const flat = flattened(outer);
 
-        // Check that 'set' is not exposed on the returned object
-        // Depending on your readonly implementation, this might be undefined
-        // or the types will simply error. At runtime:
         expect('set' in flat).toBeFalse();
     });
 });
