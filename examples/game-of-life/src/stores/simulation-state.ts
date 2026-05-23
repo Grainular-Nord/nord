@@ -1,8 +1,8 @@
-import { type WritableGrain, combined, derived, grain } from '@grainular/grains';
+import { type WritableGrain, grain } from '@grainular/grains';
 
-export const rows = 50;
-export const cols = 50;
-export const gensPerSecond = 10;
+export const rows = 200;
+export const cols = 200;
+export const gensPerSecond = 25;
 
 const cells: WritableGrain<boolean>[][] = Array.from({ length: cols }, () => {
     return Array.from({ length: rows }, () => {
@@ -12,7 +12,7 @@ const cells: WritableGrain<boolean>[][] = Array.from({ length: cols }, () => {
 
 const running = grain(false);
 const generation = grain(0);
-const alive = derived(combined(cells.flat()), (states) => states.filter(Boolean).length);
+const alive = grain(0);
 
 const getCellNeighbors = (cellId: [x: number, y: number]) => {
     const [x, y] = cellId;
@@ -56,6 +56,7 @@ const simulationStep = (manual = false) => {
     if (!running() && manual === false) return;
 
     // Find next cell state
+
     const nextBatch = cells.map((col, idx) => {
         return col.map((cell, idy) => {
             return getNextCellState(cell, [idx, idy]);
@@ -63,11 +64,14 @@ const simulationStep = (manual = false) => {
     });
 
     // Apply rules
+    let trackAlive = 0;
     cells.forEach((row, idx) => {
         row.forEach((cell, idy) => {
             cell.set(nextBatch[idx][idy]);
+            if (nextBatch[idx][idy]) trackAlive++;
         });
     });
+    alive.set(trackAlive);
 
     generation.update((current) => current + 1);
     window.setTimeout(() => window.requestAnimationFrame(() => simulationStep()), 1000 / gensPerSecond);
