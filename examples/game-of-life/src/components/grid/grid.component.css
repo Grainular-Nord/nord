@@ -1,0 +1,11 @@
+.grid {
+    background: var(--theme-color-bg);
+    width: calc(min(100vw, 100vh) - 1rem);
+    height: calc(min(100vw, 100vh) - 1rem);
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 50), 1fr);
+    grid-template-rows: repeat(var(--rows, 50), 1fr);
+    gap: 1px;
+    padding: 1px;
+    border: solid 1px rgba(255, 255, 255, 0.1);
+}

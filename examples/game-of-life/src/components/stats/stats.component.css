@@ -1,0 +1,10 @@
+.statistics {
+    position: fixed;
+    right: 0.5rem;
+    top: 0.5rem;
+    color: var(--ui-color-light);
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}

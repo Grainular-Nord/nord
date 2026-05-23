@@ -1,0 +1,32 @@
+.controls {
+    position: fixed;
+    left: 0.5rem;
+    top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    & button {
+        background: var(--ui-color-accent);
+        border: none;
+        font-size: 1.25rem;
+        border-radius: 100%;
+        width: 2.25rem;
+        height: 2.25rem;
+        filter: brightness(1);
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            background: var(--ui-color-contrast);
+        }
+
+        &:disabled {
+            filter: brightness(0.75);
+            pointer-events: none;
+        }
+
+        &[data-active="true"] {
+            background: var(--ui-color-contrast);
+        }
+    }
+}

@@ -1,22 +1,14 @@
 import { html, on } from '@grainular/nord';
-import { navigate } from '../router';
+import { type RouteContext, route } from '@grainular/router';
 
-export default () => {
+export const Home = route<'/home'>(({ navigate }: RouteContext<'/home'>) => {
     return html`
-        <div>
-            <h1>Home Page</h1>
-            <p>Welcome to the Nord Router example!</p>
-            <p>This example demonstrates:</p>
-            <ul>
-                <li>Static route configuration</li>
-                <li>Route parameters</li>
-                <li>Active link styling</li>
-                <li>Programmatic navigation</li>
-                <li>Route redirects</li>
-            </ul>
-            <button ${on('click', () => navigate('/about'))}>
-                Go to About (programmatic)
-            </button>
-        </div>
-    `;
-};
+		<div>
+			<h1>Home</h1>
+			<p>Welcome to the Nord Router v3 example!</p>
+			<button ${on('click', () => navigate('/user/123', { search: { tab: 'profile' } }))}>
+				Go to User 123
+			</button>
+		</div>
+	`;
+});

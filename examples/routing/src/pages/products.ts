@@ -1,30 +1,20 @@
-import { grain } from '@grainular/grains';
-import { $each, html, on } from '@grainular/nord';
-import { navigate } from '../router';
+import { html } from '@grainular/nord';
+import { type GuardContext, type RouteContext, route } from '@grainular/router';
 
-export default () => {
-    const products = grain([
-        { id: 1, name: 'Product A', price: 29.99 },
-        { id: 2, name: 'Product B', price: 49.99 },
-        { id: 3, name: 'Product C', price: 19.99 },
-    ]);
-
-    return html`
-        <div>
-            <h1>Products</h1>
-            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
-                ${$each(products).$as(
-                    (product) => html`
-                    <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 4px;">
-                        <h3>${product.name}</h3>
-                        <p>$${product.price}</p>
-                        <button ${on('click', () => navigate(`/user/${product.id}`))}>
-                            View Owner
-                        </button>
-                    </div>
-                `,
-                )}
-            </div>
-        </div>
-    `;
-};
+export const Products = route<'/products'>(
+    ({ link }: RouteContext<'/products'>) => {
+        return html`
+			<div>
+				<h1>Products</h1>
+				<p>This route has a guard that logs access.</p>
+				<a href="/about" ${link({ activeClass: 'active' })}>Back to About</a>
+			</div>
+		`;
+    },
+    {
+        run: 'pre',
+        use: (ctx: GuardContext) => {
+            console.log('Accessing products page from:', ctx.from?.path || 'initial');
+        },
+    },
+);

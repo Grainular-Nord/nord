@@ -1,30 +1,16 @@
-import { type Route, router } from '@grainular/router';
+import { redirect, router } from '@grainular/router';
+import { About } from './pages/about';
+import { Home } from './pages/home';
+import { NotFound } from './pages/not-found';
+import { Products } from './pages/products';
+import { User } from './pages/user';
 
-const routes: Route[] = [
-    {
-        path: '/',
-        redirect: '/home',
-    },
-    {
-        path: '/home',
-        component: () => import('./pages/home'),
-    },
-    {
-        path: '/about',
-        component: () => import('./pages/about'),
-    },
-    {
-        path: '/user/:id',
-        component: () => import('./pages/user'),
-    },
-    {
-        path: '/products',
-        component: () => import('./pages/products'),
-    },
-    {
-        path: '**',
-        component: () => import('./pages/not-found'),
-    },
-];
-
-export const { navigate, activatedRoute, link, $outlet } = router(routes);
+// Create router with base path and object config
+export const { navigate, link, $router, params, query } = router('/', {
+    '/': () => redirect('/home'),
+    '/home': () => Home,
+    '/about': () => About,
+    '/user/:id': () => User,
+    '/products': () => Products,
+    '**': () => NotFound,
+});

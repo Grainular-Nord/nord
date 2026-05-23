@@ -1,17 +1,11 @@
-import { html, on } from '@grainular/nord';
-import { activatedRoute, navigate } from '../router';
+import { html } from '@grainular/nord';
+import { route } from '@grainular/router';
 
-export default () => {
-    const { current } = activatedRoute;
-
+export const About = route<'/about'>(() => {
     return html`
-        <div>
-            <h1>About Page</h1>
-            <p>This is a simple about page.</p>
-            <p>Current route: ${current}</p>
-            <button ${on('click', () => navigate('/home'))}>
-                Back to Home
-            </button>
-        </div>
-    `;
-};
+		<div>
+			<h1>About</h1>
+			<p>This is the about page.</p>
+		</div>
+	`;
+});

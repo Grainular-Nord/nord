@@ -1,0 +1,9 @@
+.cell {
+    &[data-state="true"] {
+        background: var(--theme-color-text);
+    }
+
+    &[data-state="false"] {
+        background: var(--theme-color-bg);
+    }
+}

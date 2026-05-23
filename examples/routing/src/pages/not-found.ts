@@ -1,14 +1,11 @@
-import { html, on } from '@grainular/nord';
-import { navigate } from '../router';
+import { html } from '@grainular/nord';
+import { route } from '@grainular/router';
 
-export default () => {
+export const NotFound = route<'**'>(() => {
     return html`
-        <div>
-            <h1>404 - Page Not Found</h1>
-            <p>The page you're looking for doesn't exist.</p>
-            <button ${on('click', () => navigate('/home'))}>
-                Go Home
-            </button>
-        </div>
-    `;
-};
+		<div>
+			<h1>404 - Not Found</h1>
+			<p>The page you're looking for doesn't exist.</p>
+		</div>
+	`;
+});
