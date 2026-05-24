@@ -4,9 +4,53 @@ import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
 /**
- * Struct to render async data and elements
+ * `$await` is a struct for rendering async data in templates. It resolves a
+ * `Promise` and renders the result using a template function. Optional
+ * `$pending` and `$catch` states can be chained to handle loading and error
+ * states respectively.
  *
- * @param source
+ * ```ts
+ * const data = fetch('/api/user').then(r => r.json());
+ *
+ * html`${$await(data)
+ *     .$then(user => html`<p>${user.name}</p>`)
+ *     .$pending(() => html`<p>Loading...</p>`)
+ *     .$catch(err => html`<p>Error: ${err.message}</p>`)
+ * }`;
+ * ```
+ *
+ * If a non-Promise value is passed, it is wrapped in `Promise.resolve` and
+ * resolved immediately. The `$pending` state is only rendered during SSR
+ * snapshots — in the browser, resolution is near-instant for resolved values.
+ *
+ * Nodes are only updated if the root comment node is still connected to the
+ * DOM, preventing updates on unmounted components.
+ */
+
+/**
+ * Creates a struct that resolves a promise and renders the result into
+ * the template.
+ *
+ * @template T - The type of value the promise resolves to.
+ *
+ * @param {Promise<T> | T} source - The promise to resolve, or a plain value
+ * which is wrapped in `Promise.resolve`.
+ *
+ * @returns An object with a `$then` method to specify the resolved template.
+ * The result of `$then` can be further chained with:
+ * - `.$pending(() => ComponentFragment)` — rendered while the promise is pending.
+ * - `.$catch((error: Error) => ComponentFragment)` — rendered if the promise rejects.
+ *
+ * @example
+ * ```ts
+ * const user = fetchUser(id);
+ *
+ * html`${$await(user)
+ *     .$then(user => html`<p>${user.name}</p>`)
+ *     .$pending(() => html`<p>Loading...</p>`)
+ *     .$catch(err => html`<p>Failed: ${err.message}</p>`)
+ * }`;
+ * ```
  */
 export const $await = <T>(source: Promise<T> | T) => {
     return {

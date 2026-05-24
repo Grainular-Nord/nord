@@ -1,13 +1,95 @@
+import type { Subscribable } from '../application/subscribable';
 import type { ComponentFragment } from '../component/component-fragment';
+import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
-import type { Subscribable } from '../internals/subscribable';
 import { createStruct } from './create-struct';
+
+/**
+ * `$each` is a struct for rendering a list of items into the DOM. It accepts
+ * either a plain getter function or a `Subscribable` array and re-renders
+ * efficiently when the list changes using keyed reconciliation.
+ *
+ * ```ts
+ * const items = grain([{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]);
+ *
+ * html`${$each(items)
+ *     .$withKey(item => item.id)
+ *     .$as(item => html`<p>${item.name}</p>`)
+ * }`;
+ * ```
+ *
+ * Use `$withKey` to provide a key function for stable identity across updates.
+ * Without it, `$as` is used directly and items are keyed by value identity.
+ *
+ * If the source is a `Subscribable`, the list is kept in sync automatically.
+ * Reconciliation uses a longest-increasing-subsequence algorithm to minimise
+ * DOM moves when the list changes.
+ */
 
 type KeyFn<T> = (entry: T) => unknown;
 type RenderFn<T> = (entry: T, idx: number, arr: T[]) => ComponentFragment;
 
-export const $each = <T>(source: (() => T[]) | Subscribable<T[]>) => {
+type EachStruct<T> = {
+    /**
+     * Renders each item using the provided template function, keyed by value
+     * identity. Safe for lists of unique, stable object references. Avoid for
+     * primitives or lists that may contain duplicate values — use `$withKey`
+     * instead.
+     */
+    $as: (render: RenderFn<T>) => Fragment;
+
+    /**
+     * Provides a key function for stable item identity across reconciliation.
+     * Recommended whenever items are primitives, may appear more than once,
+     * or have unstable object references across updates.
+     *
+     * @param {KeyFn<T>} keyFn - A function that returns a unique key for each item.
+     */
+    $withKey: (keyFn: KeyFn<T>) => {
+        /**
+         * Renders each item using the provided template function, keyed by
+         * the value returned from `$withKey`. This is the safest way to render
+         * any list and should be preferred in most cases.
+         */
+        $as: (render: RenderFn<T>) => Fragment;
+    };
+};
+
+/**
+ * Creates a struct that renders and reconciles a list of items.
+ *
+ * @template T - The type of each item in the list.
+ *
+ * @param {(() => T[]) | Subscribable<T[]>} source - A getter function or
+ * subscribable that returns the current list of items.
+ *
+ * @returns {EachStruct<T>} An object with `$as` and `$withKey` methods for
+ * specifying how items are keyed and rendered. See each method for guidance
+ * on when to use which.
+ *
+ * @example
+ * ```ts
+ * // With key — recommended for most cases
+ * const users = grain([{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]);
+ *
+ * html`${$each(users)
+ *     .$withKey(user => user.id)
+ *     .$as((user) => html`<li>${user.name}</li>`)
+ * }`;
+ * ```
+ *
+ * @example
+ * ```ts
+ * // Without key — only safe for lists of unique, stable object references
+ * const items = grain([{ name: 'Alice' }, { name: 'Bob' }]);
+ *
+ * html`${$each(items)
+ *     .$as((item) => html`<li>${item.name}</li>`)
+ * }`;
+ * ```
+ */
+export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T> => {
     const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>) =>
         createStruct(
             (anchor) => {
@@ -100,10 +182,18 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>) => {
     };
 };
 
-// LIS is a modern approach to determine the minimal
-// amount of moves necessary to reconcile a list of
-// elements. This is a moderately complex calculation,
-// however DOM overhead will make this a non issue
+/**
+ * Computes the longest increasing subsequence (LIS) of the given source
+ * indices. Used during reconciliation to determine the minimal set of DOM
+ * moves required to update the list.
+ *
+ * Indices of `-1` denote new items with no previous position and are skipped.
+ *
+ * @param {Int32Array} sourceIndices - An array mapping each new item's
+ * position to its previous position, or `-1` if it is newly inserted.
+ *
+ * @returns {number[]} The values at the LIS positions in `sourceIndices`.
+ */
 function getLIS(sourceIndices: Int32Array): number[] {
     // Tracks the predecessor index for each element
     const predecessors = sourceIndices.slice();

@@ -19,7 +19,7 @@
  * is removed. This avoids unnecessary listeners on unused reactives.
  */
 
-import type { Subscribable } from '../internals/subscribable';
+import type { Subscribable } from './subscribable';
 
 type SyncableReactive<T> = {
     get: () => T;

@@ -191,7 +191,7 @@ export class Builder {
             ...this.buildConfig,
             target: this.target,
             external: this.external,
-            packages: this.external.length === 0 ? 'bundle' : 'external',
+            packages: this.buildConfig.packages ?? (this.external.length === 0 ? 'bundle' : 'external'),
             entrypoints: [entry],
             format,
             outdir: outDir,

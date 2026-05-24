@@ -1,7 +1,7 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+    "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
     "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-    "files": { "ignoreUnknown": false, "ignore": [] },
+    "files": { "ignoreUnknown": false, "includes": ["**"] },
     "formatter": {
         "enabled": true,
         "useEditorconfig": true,
@@ -12,9 +12,9 @@
         "lineWidth": 120,
         "attributePosition": "auto",
         "bracketSpacing": true,
-        "ignore": ["**/license.md", "*.json", "**/node_modules", ".idea/*"]
+        "includes": ["**", "!**/license.md", "!**/*.json", "!**/node_modules", "!**/.idea/**/*"]
     },
-    "organizeImports": { "enabled": true },
+    "assist": { "actions": { "source": { "organizeImports": "on" } } },
     "linter": {
         "enabled": true,
         "rules": {
@@ -23,8 +23,17 @@
                 "noConfusingVoidType": "off"
             },
             "style": {
-                "noInferrableTypes": "off"
-            }
+                "noInferrableTypes": "off",
+                "noRestrictedImports": {
+                    "level": "error",
+                    "options": {
+                        "paths": {
+                            "*/dist/*": "Do not import from dist/ within src/. Import from the source file directly."
+                        }
+                    }
+                }
+            },
+            "correctness": {}
         }
     },
     "javascript": {
@@ -39,5 +48,5 @@
             "bracketSpacing": true
         }
     },
-    "overrides": [{ "include": ["*.html"] }]
+    "overrides": [{ "includes": ["**/*.html"] }]
 }

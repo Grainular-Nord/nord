@@ -1,18 +1,22 @@
+// --- Public facing Application API
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
 export { syncReactive } from './application/sync-reactive';
 export { templateParser as html } from './application/template-parser';
+
+// --- User Facing types that can / could be useable
+export type { Subscribable } from './application/subscribable';
 export type { ComponentFragment, StylableFragment } from './component/component-fragment';
 export type { ComponentProps, PropsWithChildren, PureComponent } from './component/component-types';
+
+// --- Directives & Directive Factory
 export { attr } from './directives/attr.directive';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';
 export { createRef, ref } from './directives/ref.directive';
-export type { Fragment } from './internals/fragment';
-export { hydrateFragment } from './internals/hydrate-fragment';
-export { isSubscribableValue } from './internals/is-subscribable-value';
-export type { Subscribable } from './internals/subscribable';
+
+// --- Structs & Struct Factory
 export { $await } from './structs/await.struct';
 export { createStruct } from './structs/create-struct';
 export { $each } from './structs/each.struct';

@@ -4,8 +4,8 @@ import { createReactiveFragment } from '../internals/create-reactive-fragment';
 import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
 import { isPrimitiveValue } from '../internals/is-primitive-value';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
-import type { Subscribable } from '../internals/subscribable';
 import { trimWhitespace } from '../internals/trim-whitespace';
+import type { Subscribable } from './subscribable';
 
 const parseTemplateFragment = (
     fragment: string | number | boolean | bigint | null | undefined | Subscribable | Fragment,

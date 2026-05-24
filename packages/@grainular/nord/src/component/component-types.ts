@@ -1,5 +1,4 @@
-import type { StylableFragment } from '../../dist/types';
-import type { ComponentFragment } from './component-fragment';
+import type { ComponentFragment, StylableFragment } from './component-fragment';
 
 export type ComponentProps = Record<PropertyKey, unknown>;
 export type PropsWithChildren<T extends ComponentProps = Record<PropertyKey, unknown>> = {

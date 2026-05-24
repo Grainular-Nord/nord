@@ -6,5 +6,5 @@ export type ComponentFragment = Fragment & {
 };
 
 export type StylableFragment = ComponentFragment & {
-    css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => Omit<ComponentFragment, 'css'>;
+    css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => ComponentFragment;
 };

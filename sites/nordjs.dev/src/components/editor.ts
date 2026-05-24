@@ -97,7 +97,9 @@ export const Editor = ({ count }: { count: WritableGrain<number> }) => {
     return html`
         <div class="editor">
             <button class="icon-btn copy" ${on('click', copy)} disabled="${copied}" aria-label="Copy the source to clipboard">
-                ${$if(copied, () => html`copied!`).$else(() => icon)}
+                ${$if(copied)
+                    .$then(() => html`copied!`)
+                    .$else(() => icon)}
             </button>
             ${Highlight({
                 code: snippet.trim(),

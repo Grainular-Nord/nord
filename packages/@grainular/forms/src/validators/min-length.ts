@@ -1,5 +1,5 @@
-import type { Control } from '../../dist/types';
-import { type Validator, createValidator } from './create-validator';
+import type { Control } from '../lib/control';
+import { createValidator, type Validator } from './create-validator';
 
 export const minLength: Validator<{ min: number }, unknown[]> = createValidator(
     (control: Control<unknown[]>, setError, clearError, { min }) => {
