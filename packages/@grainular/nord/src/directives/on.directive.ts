@@ -1,28 +1,36 @@
 import type { Fragment } from '../internals/fragment';
 import { createDirective } from './create-directive';
+/**
+ * A directive that attaches an event listener to a DOM element. The listener
+ * is automatically removed when the element is unmounted.
+ *
+ * ```ts
+ * html`<button ${on('click', () => console.log('clicked'))}>Click me</button>`;
+ * ```
+ *
+ * Supports all events in `HTMLElementEventMap`, with full type inference on
+ * the event argument.
+ */
 
 /**
- * Attaches an event listener to a DOM element as a directive.
+ * Creates a directive that binds an event listener to the target element.
  *
- * This directive is used to declaratively bind DOM events to elements within templates.
- * The listener will automatically be removed when the element is unmounted.
+ * @template Key - A key of `HTMLElementEventMap`, inferred from `event`.
+ *
+ * @param {Key} event - The event name to listen for (e.g. `'click'`, `'input'`).
+ * @param {(event: HTMLElementEventMap[Key]) => void} listener - The callback
+ * invoked when the event fires.
+ * @param {AddEventListenerOptions} [options] - Optional options passed to
+ * `addEventListener`.
+ *
+ * @returns {Fragment} A directive fragment attachable to elements in a template.
  *
  * @example
  * ```ts
- * import { on, html } from "@grainular/nord";
+ * const handler = (event: MouseEvent) => console.log(event.clientX);
  *
- * const clickHandler = (event: MouseEvent) => {
- *     console.log("Clicked!", event);
- * };
- *
- * const Button = () => html`
- *   <button ${on("click", clickHandler)}>Click me</button>
- * `;
+ * html`<button ${on('click', handler)}>Click me</button>`;
  * ```
- *
- * @param event - The event name to listen for (e.g., "click", "input").
- * @param listener - The callback function to invoke when the event fires.
- * @param options - Optional options for `addEventListener`.
  */
 export const on = <Key extends keyof HTMLElementEventMap>(
     event: Key,

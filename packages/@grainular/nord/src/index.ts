@@ -1,4 +1,3 @@
-export { disconnectNodes } from './application/lifecycle-observer';
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
 export { syncReactive } from './application/sync-reactive';

@@ -11,15 +11,23 @@ type MountOptions = {
  * It ensures the application bootstraps correctly by enforcing that the
  * mount target is a valid `Element` or `DocumentFragment`.
  *
+ * @param {PureComponent} component - The component to mount.
+ * @param {MountOptions} options - Mount options. `to` specifies the target
+ * root element to mount the component into.
+ *
+ * @throws {ReferenceError} If the target element is null, undefined, or not
+ * a valid `Element` or `DocumentFragment`.
+ *
+ * @returns {() => void} A cleanup function that disconnects the lifecycle
+ * observer created during mount.
+ *
  * @example
  * ```ts
  * import { mount } from "@grainular/nord";
  * import App from "./app.ts";
  *
- * mount(App, { to: document.querySelector("#app") })
+ * mount(App, { to: document.querySelector("#app") });
  * ```
- *
- * @throws {ReferenceError} If the target element is not a valid `Element`.
  */
 
 export const mount = (component: PureComponent, { to: target }: MountOptions) => {
