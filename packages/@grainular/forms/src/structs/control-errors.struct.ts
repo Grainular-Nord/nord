@@ -28,8 +28,7 @@ export const $controlErrors = <V>(
     });
 
     // Delegate to the existing $if structural directive
-    return $if(
-        derived(visibleErrors, (value) => (value ?? []).length > 0),
-        () => renderer(derived(visibleErrors, (errors) => (errors ?? []).join(', '))),
+    return $if(derived(visibleErrors, (value) => (value ?? []).length > 0)).$then(() =>
+        renderer(derived(visibleErrors, (errors) => (errors ?? []).join(', '))),
     );
 };
