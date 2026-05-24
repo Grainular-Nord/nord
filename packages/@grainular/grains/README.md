@@ -37,8 +37,8 @@ Contributions to Nørd are always welcome! Whether it's bug reports, feature req
 
 ## Disclaimer on the usage of AI & LLMs
 
-Documentation in this package was evaluated and generated with the assistance of LLMs. Tests where also largely generated via LLMs. All AI-generated content has been reviewed for accuracy.
+Documentation in this package was evaluated and generated with the assistance of LLMs. Tests were also largely generated via LLMs. All AI-generated content has been reviewed for accuracy.
 
 ## License
 
-Nørd & it's packages are open-source software licensed under the MIT License.
+Nørd & its packages are open-source software licensed under the MIT License.
