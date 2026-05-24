@@ -124,15 +124,16 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                         keyIndex.set(prevKeys[i], i);
                     }
 
-                    const sources = new Int32Array(keys.length).fill(-1);
+                    const sources = new Int32Array(keys.length);
                     for (let i = 0; i < keys.length; i++) {
                         const idx = keyIndex.get(keys[i]);
-                        if (idx !== undefined) sources[i] = idx;
+                        sources[i] = idx !== undefined ? idx : -1;
                     }
 
-                    // remove stale entries
+                    // remove stale entries — O(n) lookup via Set
+                    const newKeySet = new Set(keys);
                     for (const key of prevKeys) {
-                        if (!keys.includes(key)) {
+                        if (!newKeySet.has(key)) {
                             const entry = cache.get(key);
                             if (entry) removeNodes(entry.nodes);
                             cache.delete(key);
@@ -195,10 +196,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
  * @returns {number[]} The values at the LIS positions in `sourceIndices`.
  */
 function getLIS(sourceIndices: Int32Array): number[] {
-    // Tracks the predecessor index for each element
     const predecessors = sourceIndices.slice();
-
-    // Stores indices of the smallest tail value for each LIS length
     const tails: number[] = [];
 
     for (let currentIndex = 0; currentIndex < sourceIndices.length; currentIndex++) {
@@ -208,7 +206,6 @@ function getLIS(sourceIndices: Int32Array): number[] {
         let low = 0;
         let high = tails.length;
 
-        // Binary search for the insertion point
         while (low < high) {
             const mid = (low + high) >> 1;
             if (sourceIndices[tails[mid]] < value) low = mid + 1;
@@ -222,7 +219,9 @@ function getLIS(sourceIndices: Int32Array): number[] {
         tails[low] = currentIndex;
     }
 
-    // Reconstruct LIS by backtracking through predecessors
+    // Guard against empty tails — happens when all items are new
+    if (tails.length === 0) return [];
+
     let length = tails.length;
     let current = tails[length - 1];
 
