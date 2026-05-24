@@ -1,11 +1,11 @@
 // --- Public facing Application API
 export { mount } from './application/mount';
 export { renderToString } from './application/render-to-string';
-export { syncReactive } from './application/sync-reactive';
-export { templateParser as html } from './application/template-parser';
 
 // --- User Facing types that can / could be useable
 export type { Subscribable } from './application/subscribable';
+export { syncReactive } from './application/sync-reactive';
+export { templateParser as html } from './application/template-parser';
 export type { ComponentFragment, StylableFragment } from './component/component-fragment';
 export type { ComponentProps, PropsWithChildren, PureComponent } from './component/component-types';
 
