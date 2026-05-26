@@ -21,6 +21,7 @@
     "@grainular/forms": "workspace:*",
     "@grainular/grains": "workspace:*",
     "@grainular/nord": "workspace:*",
+    "@grainular/styled": "workspace:*",
     "prismjs": "1.30.0"
   }
 }

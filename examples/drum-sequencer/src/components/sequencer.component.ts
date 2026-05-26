@@ -1,5 +1,6 @@
 import { derived } from '@grainular/grains';
 import { $each, html, on } from '@grainular/nord';
+import { css, withStyles } from '@grainular/styled';
 import { togglePlay } from '../functions/toggle-play';
 import { grid } from '../grains/grid';
 import { state } from '../grains/state';
@@ -16,7 +17,8 @@ export const Sequencer = () => {
         });
     };
 
-    return html`
+    return withStyles(
+        () => html`
         <div class="controls">
             <button ${on('click', togglePlay)}> ${playingLabel} </button>
             <input type="range" min="60" max="200" value="${bpm}" ${on('input', handleBpmUpdate)} />
@@ -32,8 +34,9 @@ export const Sequencer = () => {
                     })}
                 </div>`,
             )}
-        </div>
-            `.css`
+        </div>`,
+        () => css` 
         .grid { display: flex; flex-direction: column; gap: 4px; }
-        .track { display: flex; gap: 4px; align-items: center; }`;
+        .track { display: flex; gap: 4px; align-items: center; }`,
+    );
 };

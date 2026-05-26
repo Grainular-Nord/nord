@@ -33,5 +33,5 @@ export type Fragment = {
      *
      * @param target
      */
-    hydrate: (target: Node, def?: { binding?: (value: unknown) => void }) => void;
+    hydrate: (target: Node, def?: { binding?: (value: unknown) => void; scope?: string }) => void;
 };

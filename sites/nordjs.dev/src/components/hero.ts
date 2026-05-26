@@ -1,13 +1,15 @@
 import { grain } from '@grainular/grains';
 import { html } from '@grainular/nord';
+import { css, withStyles } from '@grainular/styled';
 import { Counter } from './counter';
 import { Editor } from './editor';
 
 export const Hero = () => {
     const count = grain(0);
 
-    return html`
-            <section class="hero">
+    return withStyles(
+        () => html`
+        <section class="hero">
                 <div class="hero-text">
                     <h1>Nørd</h1>
                     <div>Build apps, not bundles.</div>
@@ -17,8 +19,8 @@ export const Hero = () => {
                     ${Editor({ count })}
                     ${Counter({ count })}
                 </div>
-            </section>
-    `.css`
+            </section>`,
+        () => css`
         .hero {
             display: flex; 
             flex-wrap: wrap;
@@ -78,6 +80,6 @@ export const Hero = () => {
                     padding: 0; 
                 }
             }
-        }
-`;
+        }`,
+    );
 };

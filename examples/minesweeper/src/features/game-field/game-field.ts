@@ -10,9 +10,5 @@ export const GameField = () => {
                     return Cell({ cell, idx });
                 })}
             </div>
-        </div>`.css`
-    .grid {
-        grid-template-columns: repeat(var(--size), 1fr);
-        grid-template-rows: repeat(var(--size), 1fr);
-    }`;
+        </div>`;
 };

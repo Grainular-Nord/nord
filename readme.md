@@ -97,22 +97,26 @@ const App = () => {
 mount(App, { to: document.querySelector("#main") });
 ```
 
-### Styles are scoped and simpe
+### Styles are (optionally) scoped
 
 ```ts
 import { html, mount } from "@grainular/nord"; 
+import {withStyles, css} from "@grainular/styled";
 
 const Button = ({ label }) => { 
- return html`<button>${label}</button>`
-  .css`button { 
-   background: red; 
-   color: white; 
-  } 
-  /* Scoped to this component instance! */ `
+    return withStyles(
+        () => html`<button>${label}</button>`,
+        () => css`
+            /* Scoped to this component */ 
+            button { 
+                background: red; 
+                color: white; 
+            }`
+    )
 };
 
 mount(() => Button({ label: 'Click Me' }), { 
- to: document.querySelector("#app") 
+    to: document.querySelector("#app") 
 });
 ```
 

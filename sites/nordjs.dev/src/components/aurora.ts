@@ -1,7 +1,10 @@
 import { html } from '@grainular/nord';
+import { css, withStyles } from '@grainular/styled';
 
 export const Aurora = () => {
-    return html`<div class="aurora"></div>`.css`
+    return withStyles(
+        () => html`<div class="aurora"></div>`,
+        () => css`
         .aurora {
             position: fixed;
             inset: 0;
@@ -39,6 +42,6 @@ export const Aurora = () => {
                 transform: translate(30vw, 15vh) rotate(30deg);
                 filter: hue-rotate(30deg); 
             }
-        }
-`;
+        }`,
+    );
 };

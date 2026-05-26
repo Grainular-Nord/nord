@@ -10,9 +10,6 @@ export const createIdentifier = () => {
         create: (idx: string) => {
             _id = `nø-${idx.padStart(6, '0')}`;
         },
-        random: () => {
-            _id = `nø-${Math.random().toString(16).slice(2, 8).padStart(6, '0')}`;
-        },
         get: () => _id,
     };
 };

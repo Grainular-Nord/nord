@@ -12,3 +12,8 @@ body {
     padding: 0;
     background: var(--color-stone-950);
 }
+
+.grid {
+    grid-template-columns: repeat(var(--size), 1fr);
+    grid-template-rows: repeat(var(--size), 1fr);
+}

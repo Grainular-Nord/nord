@@ -1,5 +1,6 @@
 import { derived } from '@grainular/grains';
 import { $render, html, on } from '@grainular/nord';
+import { css, withStyles } from '@grainular/styled';
 import { themeStore } from '../stores/theme.store';
 
 const sun = html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
@@ -20,7 +21,8 @@ const ThemeToggle = () => {
 };
 
 export const Navigation = () => {
-    return html`
+    return withStyles(
+        () => html`
         <nav class="nav">
             <!-- 
                 We provide a consistent home logo link
@@ -50,55 +52,57 @@ export const Navigation = () => {
                     </a>
                 </li>
             </ul>
-        </nav>
-    `.css`
-    .nav {
-        position: fixed; 
-        height: var(--navigation-height); 
-        display: flex; 
-        align-items: center;
-        justify-content: space-between;
-        inset-inline: 0;
-        padding-inline: max(2rem, (100% - 1044px) / 2);
-        z-index: 10;
-
-        & .nav-logo {
+        </nav>`,
+        () => css`
+        .nav {
+            position: fixed; 
+            height: var(--navigation-height); 
             display: flex; 
-            align-items: center; 
-            gap: 0.75rem; 
-            font-weight: 800; 
-            font-size: 1.3rem; 
-            letter-spacing: -0.03em;
-            text-decoration: none; 
-            color: var(--text-main);
+            align-items: center;
+            justify-content: space-between;
+            inset-inline: 0;
+            padding-inline: max(2rem, (100% - 1044px) / 2);
+            z-index: 10;
 
-            & img {
-                height: 2rem; 
-                width: 2rem;
-            }
-        }
-
-        & .nav-links {
-            display: flex; 
-            align-items: center; 
-            gap: 0.25rem;
-            list-style-type: none; 
-
-            & .link {
-                padding-inline: 0.5rem;
-            }
-
-            & a {
+            & .nav-logo {
+                display: flex; 
+                align-items: center; 
+                gap: 0.75rem; 
+                font-weight: 800; 
+                font-size: 1.3rem; 
+                letter-spacing: -0.03em;
                 text-decoration: none; 
-                color: var(--text-sub); 
-                font-size: 0.95rem; 
-                font-weight: 500; 
-                transition: color 0.2s;
+                color: var(--text-main);
 
-                &:hover {
-                    color: var(--text-main);
+                & img {
+                    height: 2rem; 
+                    width: 2rem;
+                }
+            }
+
+            & .nav-links {
+                display: flex; 
+                align-items: center; 
+                gap: 0.25rem;
+                list-style-type: none; 
+
+                & .link {
+                    padding-inline: 0.5rem;
+                }
+
+                & a {
+                    text-decoration: none; 
+                    color: var(--text-sub); 
+                    font-size: 0.95rem; 
+                    font-weight: 500; 
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: var(--text-main);
+                    }
                 }
             }
         }
-    }`;
+        `,
+    );
 };

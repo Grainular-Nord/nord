@@ -1,5 +1,6 @@
 import type { WritableGrain } from '@grainular/grains';
 import { html, on } from '@grainular/nord';
+import { css, withStyles } from '@grainular/styled';
 
 // The simple counter component is (basically)
 // the same as the one displayed in the editor
@@ -11,12 +12,13 @@ export const Counter = ({ count }: { count: WritableGrain<number> }) => {
         count.set(count() + 1);
     };
 
-    return html`
+    return withStyles(
+        () => html`
         <button class="counter" ${on('click', increment)}>
             <span>Click to +</span>
             ${count}
-        </button>
-    `.css`
+        </button>`,
+        () => css`
         .counter {
             position: absolute;
             right: 0.5rem;
@@ -72,6 +74,6 @@ export const Counter = ({ count }: { count: WritableGrain<number> }) => {
                 transform: scale(2);
                 opacity: 0;
             }
-        }
-    `;
+        }`,
+    );
 };

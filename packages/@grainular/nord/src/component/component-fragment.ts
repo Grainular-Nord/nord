@@ -21,19 +21,3 @@ export const IS_COMPONENT: unique symbol = Symbol.for('nord.component');
 export type ComponentFragment = Fragment & {
     [IS_COMPONENT]: true;
 };
-
-/**
- * A `StylableFragment` extends `ComponentFragment` with a `css` method,
- * allowing scoped styles to be attached to a component. The `css` method
- * returns a plain `ComponentFragment`, so styles can only be applied once
- * per component.
- *
- * ```ts
- * const App = (): StylableFragment => html`<p>Hello</p>`.css`
- *     p { color: red; }
- * `;
- * ```
- */
-export type StylableFragment = ComponentFragment & {
-    css: (str: TemplateStringsArray, ...fragments: (string | number | boolean)[]) => ComponentFragment;
-};
