@@ -2,11 +2,14 @@
   "name": "grainular-nord-vscode",
   "version": "0.0.1",
   "main": "./dist/extension.js",
-  "publisher": "iamsebastiandev",  
+  "publisher": "iamsebastiandev",
   "icon": "logo.png",
+  "dependencies": {
+        "typescript": "^5.0.0"
+  },
   "devDependencies": {
     "@types/vscode": "^1.80.0",
-    "typescript": "^5.0.0"
+    "@vscode/vsce": "^3.9.1"
   },
   "activationEvents": [
     "onLanguage:javascript",
@@ -26,8 +29,95 @@
     "grammars": [
       {
         "scopeName": "inline.html.injection",
-        "path": "./syntaxes/html-injection.json",
-        "injectTo": ["source.ts", "source.js", "source.tsx", "source.jsx"]
+        "path": "./syntaxes/nord.tmLanguage.json",
+        "injectTo": [
+          "source.ts",
+          "source.js"
+        ],
+        "embeddedLanguages": {
+          "text.html.basic": "html",
+          "source.css": "css"
+        }
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "htmlTag",
+        "description": "HTML tag names in Nord templates"
+      },
+      {
+        "id": "htmlAttribute",
+        "description": "HTML attribute names in Nord templates"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "typescript",
+        "scopes": {
+          "keyword": ["keyword"],
+          "function": ["entity.name.function"],
+          "variable": ["variable"],
+          "property": ["variable.other.property"],
+          "comment": ["comment"],
+          "string": ["string"],
+          "number": ["constant.numeric"],
+          "operator": ["keyword.operator"],
+          "punctuation": ["punctuation"],
+          "type": ["entity.name.type"],
+          "htmlTag": ["entity.name.tag"],
+          "htmlAttribute": ["entity.other.attribute-name"]
+        }
+      },
+      {
+        "language": "javascript",
+        "scopes": {
+          "keyword": ["keyword"],
+          "function": ["entity.name.function"],
+          "variable": ["variable"],
+          "property": ["variable.other.property"],
+          "comment": ["comment"],
+          "string": ["string"],
+          "number": ["constant.numeric"],
+          "operator": ["keyword.operator"],
+          "punctuation": ["punctuation"],
+          "type": ["entity.name.type"],
+          "htmlTag": ["entity.name.tag"],
+          "htmlAttribute": ["entity.other.attribute-name"]
+        }
+      },
+      {
+        "language": "typescriptreact",
+        "scopes": {
+          "keyword": ["keyword"],
+          "function": ["entity.name.function"],
+          "variable": ["variable"],
+          "property": ["variable.other.property"],
+          "comment": ["comment"],
+          "string": ["string"],
+          "number": ["constant.numeric"],
+          "operator": ["keyword.operator"],
+          "punctuation": ["punctuation"],
+          "type": ["entity.name.type"],
+          "htmlTag": ["entity.name.tag"],
+          "htmlAttribute": ["entity.other.attribute-name"]
+        }
+      },
+      {
+        "language": "javascriptreact",
+        "scopes": {
+          "keyword": ["keyword"],
+          "function": ["entity.name.function"],
+          "variable": ["variable"],
+          "property": ["variable.other.property"],
+          "comment": ["comment"],
+          "string": ["string"],
+          "number": ["constant.numeric"],
+          "operator": ["keyword.operator"],
+          "punctuation": ["punctuation"],
+          "type": ["entity.name.type"],
+          "htmlTag": ["entity.name.tag"],
+          "htmlAttribute": ["entity.other.attribute-name"]
+        }
       }
     ]
   },
@@ -38,8 +128,8 @@
   "scripts": {
     "build": "bun run .build.ts",
     "dev": "bun run .build.ts --watch",
-    "package": "bun run build && vsce package --no-dependencies"
-  }, 
+    "package": "bun run build && bunx vsce package --no-dependencies"
+  },
   "repository": {
     "url": "https://github.com/grainular-nord/nord"
   }

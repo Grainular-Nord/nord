@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export const output = () => {
-    const output = vscode.window.createOutputChannel('@grainular/nord');
+    const output = vscode.window.createOutputChannel('nord');
 
     return {
         write: (...msg: unknown[]) => {

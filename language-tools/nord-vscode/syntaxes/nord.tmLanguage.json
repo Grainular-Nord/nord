@@ -1,0 +1,190 @@
+{
+  "scopeName": "inline.html.injection",
+  "injectionSelector": "L:source.ts -comment -string, L:source.js -comment -string, L:source.tsx -comment -string, L:source.jsx -comment -string",
+  "patterns": [
+    {
+      "include": "#html-tagged-template"
+    },
+    {
+      "include": "#css-tagged-template"
+    }
+  ],
+  "repository": {
+    "html-tagged-template": {
+      "begin": "(html)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation"
+        },
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    },
+    "css-tagged-template": {
+      "begin": "(\\.css|css)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation"
+        },
+        {
+          "include": "source.css"
+        }
+      ]
+    },
+    "interpolation": {
+      "name": "meta.embedded.expression.nord",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.ts" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.embedded.end.ts" }
+      },
+      "patterns": [
+        {
+          "comment": "Nested html tagged template inside interpolation",
+          "include": "#nested-html-tagged-template"
+        },
+        {
+          "comment": "Nested css tagged template inside interpolation",
+          "include": "#nested-css-tagged-template"
+        },
+        {
+          "comment": "Plain template literal (not tagged) inside interpolation",
+          "include": "#nested-plain-template"
+        },
+        {
+          "comment": "Braces inside interpolation that are NOT template-related (object literals, arrow functions, blocks). This rule consumes matched { } pairs so the interpolation end pattern does not match on them.",
+          "include": "#nested-braces"
+        },
+        {
+          "include": "source.ts"
+        }
+      ]
+    },
+    "nested-html-tagged-template": {
+      "begin": "(html)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "(`)",
+      "endCaptures": {
+        "1": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "comment": "After the html template closes, there might be a .css chain",
+          "include": "#css-method-chain"
+        },
+        {
+          "include": "#interpolation"
+        },
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    },
+    "nested-css-tagged-template": {
+      "begin": "(css)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "(`)",
+      "endCaptures": {
+        "1": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation"
+        },
+        {
+          "include": "source.css"
+        }
+      ]
+    },
+    "css-method-chain": {
+      "begin": "(\\.css)(`)",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tagged-template.ts" },
+        "2": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation"
+        },
+        {
+          "include": "source.css"
+        }
+      ]
+    },
+    "nested-plain-template": {
+      "comment": "A plain (non-tagged) template literal. Consumes the entire `...` so its content does not leak into the parent interpolation scope.",
+      "begin": "`",
+      "beginCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": { "name": "string.template.ts" }
+      },
+      "name": "string.template.ts",
+      "patterns": [
+        {
+          "include": "#interpolation"
+        }
+      ]
+    },
+    "nested-braces": {
+      "comment": "Matches a balanced { } pair inside an interpolation. This prevents the interpolation end-pattern from matching on braces that belong to object literals, arrow function bodies, or block statements. The rule is recursive so arbitrarily deep nesting works.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.ts" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.ts" }
+      },
+      "patterns": [
+        {
+          "include": "#nested-html-tagged-template"
+        },
+        {
+          "include": "#nested-css-tagged-template"
+        },
+        {
+          "include": "#nested-plain-template"
+        },
+        {
+          "include": "#nested-braces"
+        },
+        {
+          "include": "source.ts"
+        }
+      ]
+    }
+  }
+}
