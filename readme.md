@@ -60,7 +60,7 @@ mount(App, { to: document.querySelector("#main") });
 mount(() => html`Hello World`, { to: document.querySelector('#main') })
 ```
 
-### Applications are built from Components
+### Components are just functions
 
 ```ts
 import { html, mount } from "@grainular/nord";
