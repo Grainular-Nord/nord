@@ -124,7 +124,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                         keyIndex.set(prevKeys[i], i);
                     }
 
-                    const sources = new Int32Array(keys.length);
+                    const sources = new Int32Array(keys.length).fill(-1);
                     for (let i = 0; i < keys.length; i++) {
                         const idx = keyIndex.get(keys[i]);
                         sources[i] = idx !== undefined ? idx : -1;
@@ -152,7 +152,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                             entry = create(items[i], i, items);
                             cache.set(key, entry);
                             insert(entry.nodes, cursor);
-                        } else if (j < 0 || sources[i] !== seq[j]) {
+                        } else if (j < 0 || i !== seq[j]) {
                             if (entry) insert(entry.nodes, cursor);
                         } else {
                             j--;
@@ -196,11 +196,15 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
  * @returns {number[]} The values at the LIS positions in `sourceIndices`.
  */
 function getLIS(sourceIndices: Int32Array): number[] {
-    const predecessors = sourceIndices.slice();
+    const predecessors = new Int32Array(sourceIndices.length);
     const tails: number[] = [];
 
-    for (let currentIndex = 0; currentIndex < sourceIndices.length; currentIndex++) {
-        const value = sourceIndices[currentIndex];
+    predecessors.fill(-1);
+
+    for (let i = 0; i < sourceIndices.length; i++) {
+        const value = sourceIndices[i];
+
+        // New items are not part of the stable subsequence
         if (value === -1) continue;
 
         let low = 0;
@@ -208,27 +212,30 @@ function getLIS(sourceIndices: Int32Array): number[] {
 
         while (low < high) {
             const mid = (low + high) >> 1;
-            if (sourceIndices[tails[mid]] < value) low = mid + 1;
-            else high = mid;
+
+            if (sourceIndices[tails[mid]] < value) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
         }
 
         if (low > 0) {
-            predecessors[currentIndex] = tails[low - 1];
+            predecessors[i] = tails[low - 1];
         }
 
-        tails[low] = currentIndex;
+        tails[low] = i;
     }
 
-    // Guard against empty tails — happens when all items are new
     if (tails.length === 0) return [];
 
-    let length = tails.length;
-    let current = tails[length - 1];
+    const result = new Array<number>(tails.length);
+    let current = tails[tails.length - 1];
 
-    while (length--) {
-        tails[length] = sourceIndices[current];
+    for (let i = tails.length - 1; i >= 0; i--) {
+        result[i] = current;
         current = predecessors[current];
     }
 
-    return tails;
+    return result;
 }
