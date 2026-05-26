@@ -90,11 +90,16 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
 
         return (root: Comment) => {
             const currentNodes = nodes.get(initial);
+            let previousValue = initial;
             let evaluated = currentNodes?.() ?? [];
             root.before(...evaluated);
 
             if (isSubscribableValue(conditional)) {
                 return conditional.subscribe((value) => {
+                    // If no changes, do not recreate
+                    if (value === previousValue) return;
+                    previousValue = value;
+
                     disconnectNodes(evaluated);
                     evaluated = nodes.get(value)?.() ?? [];
                     root.before(...evaluated);
