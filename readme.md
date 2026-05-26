@@ -1,3 +1,5 @@
+> Current information for the [nørd@next](./nørd-@-next.md) testers.
+
 ## 🎯 Tenets of Nord
 
 Nord is a lightweight, reactive JavaScript framework for building single-page applications. Its design is determined by simplicity, performance, and developer-first ergonomics.
@@ -42,7 +44,11 @@ Nord is a lightweight, reactive JavaScript framework for building single-page ap
 ### 🛠️ Developer Experience
 
 - **Nord utilizes tagged template literals instead of JSX**, keeping it dependency-free and standards-aligned.
-- **Nord provides modern devtools**, including a browser inspector and IDE extensions for an elevated development experience.
+- **Nord provides modern devtools**, including an IDE extensions for an elevated development experience.
+
+## Why Nørd?
+
+Modern frontend development has drifted far from the browser. Frameworks reinvent what browsers already do well — reactivity, templating, styling — then ship megabytes of JavaScript to recreate it. Nørd takes the opposite approach: work with the browser, not against it. A minimal API surface is all that's needed.
 
 ## API Design
 
@@ -101,7 +107,7 @@ mount(App, { to: document.querySelector("#main") });
 
 ```ts
 import { html, mount } from "@grainular/nord"; 
-import {withStyles, css} from "@grainular/styled";
+import { withStyles, css } from "@grainular/styled";
 
 const Button = ({ label }) => { 
     return withStyles(
