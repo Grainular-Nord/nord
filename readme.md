@@ -20,7 +20,7 @@ Nord is a lightweight, reactive JavaScript framework for building single-page ap
 
 - **Nord uses grains (signals) as reactive primitives**, but does not enforce them. Any subscribable that exposes a `subscribe` function can be used.
 - **Nord surgically updates DOM nodes** based on grain changes — no re-rendering, virtual DOM, or diffing involved.
-- **Nord utilizes** a component-based architecture**, enabling composition through reactive building blocks.
+- **Nord utilizes a component-based architecture**, enabling composition through reactive building blocks.
 - **Nord abstracts DOM logic**, but exposes it via directives for advanced control.
 
 ---
