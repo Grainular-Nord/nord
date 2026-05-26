@@ -4,6 +4,15 @@ import { css, withStyles } from '@grainular/styled';
 import { Counter } from './counter';
 import { Editor } from './editor';
 
+const tags = [
+    'Because Functions are the better Components.',
+    '9kb Runtime. 0 Dependencies. 0 Tooling Required.',
+    'Work with the Browser, not against it.',
+    'The Browser is the framework. Ship what you write.',
+    'Smaller than your node_modules folder. Probably.',
+    'No compiler. No magic. No excuses.',
+];
+
 export const Hero = () => {
     const count = grain(0);
 
@@ -13,7 +22,7 @@ export const Hero = () => {
                 <div class="hero-text">
                     <h1>Nørd</h1>
                     <div>Build apps, not bundles.</div>
-                    <div class="sub-text">10kb Runtime. 0 Dependencies. 0 Tooling required.</div>
+                    <div class="sub-text">${tags[Math.floor(Math.random() * tags.length) * 1]}</div>
                 </div>
                 <div class="hero-code">
                     ${Editor({ count })}
