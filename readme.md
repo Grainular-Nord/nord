@@ -48,7 +48,7 @@ Nord is a lightweight, reactive JavaScript framework for building single-page ap
 
 ## Why Nørd?
 
-Modern frontend development has drifted far from the browser. Frameworks reinvent what browsers already do well — reactivity, templating, styling — then ship megabytes of JavaScript to recreate it. Nørd takes the opposite approach: work with the browser, not against it. A minimal API surface is all that's needed.
+Modern frontend development has drifted far from the browser. Frameworks reinvent what browsers already do well - reactivity, templating, styling - then ship megabytes of JavaScript to recreate it. Nørd takes the opposite approach: work with the browser, not against it. A minimal API surface is all that's needed.
 
 ## API Design
 
