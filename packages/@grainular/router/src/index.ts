@@ -1,12 +1,6 @@
-export type { Silo } from '@grainular/silo';
-export type { ActivatedRoute } from './lib/router/create-activated-route';
-export { createOutletStruct as $outlet } from './lib/router/create-outlet-struct';
-export { router } from './lib/router/create-router';
-export type { Router } from './lib/router/create-router';
-export type { LinkOptions } from './types/link-options';
-export type { Navigator } from './types/navigator';
-export type { NavigatorState } from './types/navigator-state';
-export type { Params } from './types/params';
-export type { Route } from './types/route';
-export type { GuardContext, GuardResult, RouteGuard } from './types/route-guard';
-export type { RouterState } from './types/router-state';
+export { createRouter } from './lib/create-router';
+export { active } from './lib/directives/active';
+export { post, pre, type NavigationHook, type NavigationHookContext } from './lib/hooks/hooks';
+export { navigate } from './lib/navigate';
+export { $outlet } from './lib/outlet';
+export { crossFade, fade, scale, slide } from './lib/transitions/prefabs';
