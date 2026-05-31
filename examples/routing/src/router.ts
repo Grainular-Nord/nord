@@ -1,16 +1,23 @@
-import { redirect, router } from '@grainular/router';
-import { About } from './pages/about';
-import { Home } from './pages/home';
-import { NotFound } from './pages/not-found';
-import { Products } from './pages/products';
-import { User } from './pages/user';
+import { createRouter, crossFade, slide } from '@grainular/router';
 
-// Create router with base path and object config
-export const { navigate, link, $router, params, query } = router('/', {
-    '/': () => redirect('/home'),
-    '/home': () => Home,
-    '/about': () => About,
-    '/user/:id': () => User,
-    '/products': () => Products,
-    '**': () => NotFound,
-});
+export const { params, query, ...router } = createRouter('/', [
+    {
+        path: '/',
+        component: () => import('./pages/home'),
+    },
+    {
+        path: '/docs',
+        component: () => import('./pages/docs'),
+        transition: slide(400, 'left'),
+    },
+    {
+        path: '/user/:id',
+        component: () => import('./pages/user'),
+        transition: slide(400, 'left'),
+    },
+    {
+        path: '*',
+        component: () => import('./pages/not-found'),
+        transition: crossFade(250),
+    },
+]);

@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@grainular/nord": "workspace:*",
-    "@grainular/router": "workspace:*"
+    "@grainular/router": "workspace:*",
+    "@tailwindcss/vite": "^4.3.0",
+    "tailwindcss": "^4.3.0"
   }
 }

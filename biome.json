@@ -48,5 +48,10 @@
             "bracketSpacing": true
         }
     },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        }
+    },
     "overrides": [{ "includes": ["**/*.html"] }]
 }
