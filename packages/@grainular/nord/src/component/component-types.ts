@@ -1,4 +1,4 @@
-import type { ComponentFragment, StylableFragment } from './component-fragment';
+import type { ComponentFragment } from './component-fragment';
 
 /**
  * The base type for component props. Any record with arbitrary keys and
@@ -19,7 +19,7 @@ export type ComponentProps = Record<PropertyKey, unknown>;
  * or `null` if no children are provided.
  */
 export type PropsWithChildren<T extends ComponentProps = Record<PropertyKey, unknown>> = {
-    children: string | ComponentFragment | StylableFragment | null;
+    children: string | ComponentFragment | null;
 } & T;
 
 /**

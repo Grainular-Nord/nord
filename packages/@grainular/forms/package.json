@@ -1,34 +1,36 @@
 {
     "name": "@grainular/forms",
-    "version": "2.0.0",
+    "version": "2.0.0-next.0",
     "type": "module",
     "packageManager": "bun@1.2.7",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
+    "types": "./dist/types/index.d.cts",
     "exports": {
         ".": {
-            "types": "./dist/types/index.d.ts",
+            "types": "./dist/types/index.d.cts",
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         }
     },
     "unpkg": "./dist/browser/index.js",
     "devDependencies": {
-        "@repository/config": "workspace:*",
         "@repository/builder": "workspace:*",
+        "@repository/config": "workspace:*",
         "@types/bun": "latest",
-        "typescript": "^5.0.0"
+        "tsup": "^8.5.1",
+        "typescript": "^6.0.3"
     },
     "scripts": {
-        "dev": "bun run .build.ts --watch",
-        "build": "bun run .build.ts",
-        "test": "bun test --coverage",
-        "prepublishOnly": "bun run build"
+        "dev": "bunx tsup --watch",
+        "build": "bunx tsup",
+        "prepublishOnly": "bunx tsup",
+        "test": "bun test --coverage"
     },
     "sideEffects": false,
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "tag": "next"
     },
     "files": [
         "dist",
@@ -38,7 +40,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/grainular/core.git"
+        "url": "git+https://github.com/grainular/nord.git"
     },
     "peerDependencies": {
         "@grainular/nord": "workspace:*"

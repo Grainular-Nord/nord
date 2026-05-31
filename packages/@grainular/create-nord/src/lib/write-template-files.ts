@@ -1,6 +1,12 @@
-import { exists, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import type { TemplateContext, TemplateCreatorFn } from './templates';
+
+const exists = (path: string) =>
+    stat(path).then(
+        () => true,
+        () => false,
+    );
 
 export const writeTemplateFiles = async (
     root: string,

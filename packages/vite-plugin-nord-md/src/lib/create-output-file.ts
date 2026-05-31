@@ -7,7 +7,9 @@ export const createOutputFile = (
     components: Map<string, string>,
     nodes: Map<string, NodeData>,
 ) => {
-    const componentEntries = [...components.entries().map(([id, path]) => `import { ${id} } from "${path}";\n`)];
+    const componentEntries = [
+        ...Array.from(components.entries()).map(([id, path]) => `import { ${id} } from "${path}";\n`),
+    ];
 
     let template = escapeHtmlString(content);
     for (const [key, { name, props, children }] of nodes) {

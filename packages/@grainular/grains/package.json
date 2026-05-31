@@ -1,29 +1,39 @@
 {
     "name": "@grainular/grains",
-    "version": "2.0.0",
+    "version": "2.0.0-next.2",
     "type": "module",
     "packageManager": "bun@1.1.18",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
+    "types": "./dist/types/index.d.cts",
     "exports": {
         ".": {
-            "types": "./dist/types/index.d.ts",
+            "types": "./dist/types/index.d.cts",
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         }
     },
     "unpkg": "./dist/browser/index.js",
     "devDependencies": {
-        "@repository/config": "workspace:*",
         "@repository/builder": "workspace:*",
+        "@repository/config": "workspace:*",
         "@types/bun": "latest",
-        "typescript": "^5.0.0"
+        "tsup": "^8.5.1",
+        "typescript": "^6.0.3"
     },
     "scripts": {
-        "dev": "bun run .build.ts --watch",
-        "build": "bun run .build.ts",
+        "dev": "bunx tsup --watch",
+        "build": "bunx tsup",
+        "prepublishOnly": "bunx tsup",
         "test": "bun test --coverage"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/grainular/nord.git"
+    },
+    "publishConfig": {
+        "access": "public",
+        "tag": "next"
     },
     "sideEffects": false
 }

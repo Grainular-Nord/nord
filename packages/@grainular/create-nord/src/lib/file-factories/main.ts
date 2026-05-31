@@ -5,7 +5,7 @@ export const main =
     async () => {
         return [
             'import { mount } from "@grainular/nord";',
-            `import { App } from "./app.${type};"`,
+            `import { App } from "./app.${type}";`,
             '',
             'mount(App, { to: document.querySelector("#app") })',
         ];

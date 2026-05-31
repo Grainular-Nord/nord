@@ -1,24 +1,24 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.0-next.5",
   "name": "@grainular/create-nord",
+  "description": "Scaffold your Nørd App with ease.",
   "type": "module",
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "@repository/builder": "workspace:*",
     "@repository/config": "workspace:*",
-    "@types/node": "^25.0.6"
+    "@types/node": "^25.9.1"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6.0.3"
   },
-  "bin": "./dist/index.js",
+  "bin": "./bin/index.js",
   "files": [
     "dist",
     "templates"
   ],
   "dependencies": {
-    "@clack/prompts": "^0.11.0"
+    "@clack/prompts": "^1.5.0"
   },
   "scripts": {
     "cli": "bun ./src/index.ts",
@@ -28,11 +28,12 @@
   },
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "next"
   },
   "license": "MIT",
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/grainular/core.git"
+      "type": "git",
+      "url": "git+https://github.com/grainular/nord.git"
   }
 }

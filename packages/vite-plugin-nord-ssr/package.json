@@ -7,23 +7,23 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
-      ".": {
-          "types": "./dist/types/index.d.ts",
-          "import": "./dist/esm/index.js",
-          "require": "./dist/cjs/index.js"
-      }
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/node": "^25.0.3",
-    "vite": "^7.3.1",
+    "@types/node": "^25.9.1",
+    "vite": "^7.3.3",
     "@repository/builder": "workspace:*"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6.0.3"
   },
- "scripts": {
+  "scripts": {
     "dev": "bun run .build.ts --watch",
     "build": "bun run .build.ts",
     "test": "bun test --coverage"

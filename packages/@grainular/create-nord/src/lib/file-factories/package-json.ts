@@ -7,8 +7,8 @@ export const packageJson: TemplateCreatorFn = async ({ additionalDependencies, n
 
     // Set vite as dependency
     dependencies.set('vite', 'latest');
-    dependencies.set('@grainular/nord', 'latest');
-    dependencies.set('@grainular/grains', 'latest');
+    dependencies.set('@grainular/nord', 'next');
+    dependencies.set('@grainular/grains', 'next');
 
     // Set ts as dependencies
     if (type.includes('ts')) {

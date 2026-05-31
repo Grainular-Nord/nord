@@ -18,6 +18,7 @@ export const app = (): TemplateCreatorFn => {
             '       <button ${on("click", increment)}>',
             '           ${count}',
             '       </button>`',
+            '}',
         ];
     };
 };

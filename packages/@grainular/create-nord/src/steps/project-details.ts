@@ -1,10 +1,16 @@
 import { cancel, confirm, text } from '@clack/prompts';
-import { exists } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { styleText } from 'node:util';
 import { isValidPackageName } from '../utils/is-valid-package-name';
 import { root } from '../utils/root';
 import { step } from '../utils/step';
+
+const exists = (path: string) =>
+    stat(path).then(
+        () => true,
+        () => false,
+    );
 
 export const projectDetails = async () => {
     // Require a project name to place the
@@ -15,7 +21,7 @@ export const projectDetails = async () => {
             placeholder: './',
             defaultValue: './',
             validate(value) {
-                if (value.length === 0) return 'Please select a directory for your application';
+                if (value?.length === 0) return 'Please select a directory for your application';
                 return;
             },
         }),
@@ -48,7 +54,7 @@ export const projectDetails = async () => {
             text({
                 message: "What's the name of your application?",
                 validate: (value) => {
-                    if (!isValidPackageName(value)) {
+                    if (value && !isValidPackageName(value)) {
                         return 'Please use a valid npm package name';
                     }
                 },

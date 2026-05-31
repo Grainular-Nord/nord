@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import { rm, watch } from 'node:fs/promises';
 import { dirname, join, sep } from 'node:path';
 import { styleText } from 'node:util';
-import { DiagnosticCategory, createProgram, getPreEmitDiagnostics } from 'typescript';
+import { createProgram, DiagnosticCategory, getPreEmitDiagnostics } from 'typescript';
 
 const strip = (path: string) => path.replace(process.cwd(), '');
 
@@ -199,6 +199,7 @@ export class Builder {
             plugins: this.plugins ?? [],
             throw: false,
             minify: this.target === 'browser',
+            splitting: false,
         });
 
         if (result.success) {

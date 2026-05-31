@@ -59,5 +59,7 @@ export function remarkPluginComponents(
             const marker = { type: 'text', value: `{{${id}}}`, children: [] };
             Object.assign(node, marker);
         });
+
+        await Promise.all(promises);
     };
 }

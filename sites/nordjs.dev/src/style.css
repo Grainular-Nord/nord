@@ -3,18 +3,18 @@
 /* -------------------------------------------------------------------------- */
 :root {
     /* Palette: Aurora */
-    --nord-aurora-1: oklch(88% 0.2 165);
+    --nord-aurora-1: oklch(90% 0.16 175);
     --nord-aurora-2: oklch(65% 0.25 290);
 
     /* Palette: Darks */
-    --nord-dark-1: oklch(20% 0.03 265);
-    --nord-dark-2: oklch(35% 0.03 265);
-    --nord-dark-3: oklch(45% 0.03 265);
+    --nord-dark-1: oklch(20% 0.01 265);
+    --nord-dark-2: oklch(35% 0.01 265);
+    --nord-dark-3: oklch(45% 0.01 265);
 
     /* Palette: Lights */
-    --nord-light-1: oklch(98% 0.01 240);
-    --nord-light-2: oklch(85% 0.02 240);
-    --nord-light-3: oklch(70% 0.02 240);
+    --nord-light-1: oklch(95% 0.01 240);
+    --nord-light-2: oklch(85% 0.01 240);
+    --nord-light-3: oklch(70% 0.01 240);
 
     /* Materials */
     --glass-light: oklch(98% 0.01 240 / 0.25);
@@ -90,7 +90,9 @@ body {
     height: 100%;
     background-color: var(--bg-app);
     color: var(--text-main);
-    transition: color var(--transition-speed);
+    transition:
+        color var(--transition-speed),
+        background-color var(--transition-speed);
 }
 
 #app {
@@ -130,7 +132,7 @@ footer {
 
 /* -- Button -- */
 .icon-btn {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
 
@@ -141,7 +143,9 @@ footer {
 
     cursor: pointer;
     color: var(--text-sub);
-    transition: var(--transition-speed);
+    transition:
+        color var(--transition-speed),
+        background-color var(--transition-speed);
 
     & svg {
         flex: 1 1 0;
