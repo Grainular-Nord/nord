@@ -1,6 +1,6 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
-import { FRAGMENT_ID, type Fragment } from './fragment';
+import { type Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
 // Creates a reactive fragment, that also updates the hydrated
@@ -8,7 +8,7 @@ import { createIdentifier } from './identifier';
 export const createReactiveFragment = (fragmentValue: Subscribable): Fragment => {
     const fragmentId = createIdentifier();
     return {
-        [FRAGMENT_ID]: fragmentId,
+        fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue() ?? ''),
         hydrate: (node: Node, { binding } = {}) => {

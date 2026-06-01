@@ -1,4 +1,4 @@
-import { FRAGMENT_ID, type Fragment } from './fragment';
+import { type Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
 // Creates a primitive fragment, containing a scalar value
@@ -6,7 +6,7 @@ import { createIdentifier } from './identifier';
 export const createPrimitiveFragment = (fragmentValue: boolean | string | number | bigint): Fragment => {
     const fragmentId = createIdentifier();
     return {
-        [FRAGMENT_ID]: fragmentId,
+        fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue),
         hydrate: (node: Node, { binding } = {}) => {

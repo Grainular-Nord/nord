@@ -1,5 +1,5 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
+import { type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 
 /**
@@ -42,7 +42,7 @@ import { createIdentifier } from '../internals/identifier';
 export const createDirective = (handler: (node: Element) => void | (() => void)): Fragment => {
     const fragmentId = createIdentifier();
     return {
-        [FRAGMENT_ID]: fragmentId,
+        fragmentId: fragmentId,
         resolve: () => fragmentId.get(),
         render: () => '',
         hydrate: (node: Node) => {
@@ -51,5 +51,5 @@ export const createDirective = (handler: (node: Element) => void | (() => void))
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
             }
         },
-    };
+    } satisfies Fragment;
 };

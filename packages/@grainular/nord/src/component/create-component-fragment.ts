@@ -1,4 +1,4 @@
-import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
+import { type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 import { type ComponentFragment, IS_COMPONENT } from './component-fragment';
 import { hydrateComponentTemplate } from './hydrate-component-template';
@@ -21,7 +21,7 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
     const fragmentId = createIdentifier();
 
     return {
-        [FRAGMENT_ID]: fragmentId,
+        fragmentId: fragmentId,
         [IS_COMPONENT]: true as const,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => {

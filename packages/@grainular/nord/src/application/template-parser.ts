@@ -1,7 +1,7 @@
 import { createComponentFragment } from '../component/create-component-fragment';
 import { createPrimitiveFragment } from '../internals/create-primitive-fragment';
 import { createReactiveFragment } from '../internals/create-reactive-fragment';
-import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
+import { type Fragment } from '../internals/fragment';
 import { isPrimitiveValue } from '../internals/is-primitive-value';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import { trimWhitespace } from '../internals/trim-whitespace';
@@ -38,8 +38,8 @@ export const templateParser = (
             trimWhitespace(strFragment),
             ((): string => {
                 const fragment = parseTemplateFragment(valueFragments[idx]);
-                if (FRAGMENT_ID in fragment) {
-                    fragment[FRAGMENT_ID].create(String(idx));
+                if ('fragmentId' in fragment) {
+                    fragment.fragmentId.create(String(idx));
                 }
                 fragments.push(fragment);
                 return fragment.resolve();

@@ -1,5 +1,5 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
-import { FRAGMENT_ID, type Fragment } from '../internals/fragment';
+import { type Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 /**
  * `createStruct` is the lower-level counterpart to `createDirective` — where
@@ -57,7 +57,7 @@ export const createStruct = (
 ): Fragment => {
     const fragmentId = createIdentifier();
     return {
-        [FRAGMENT_ID]: fragmentId,
+        fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => snapshot(),
         hydrate: (node: Node) => {

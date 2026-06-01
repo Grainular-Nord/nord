@@ -6,7 +6,7 @@ export const createIdentifier = () => {
     let _id = '';
 
     return {
-        [Symbol.for('component.id')]: true,
+        fragmentId: true,
         create: (idx: string) => {
             _id = `nø-${idx.padStart(6, '0')}`;
         },
