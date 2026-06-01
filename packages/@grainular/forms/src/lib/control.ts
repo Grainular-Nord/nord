@@ -1,5 +1,5 @@
 import { type Grain, type WritableGrain, derived, grain } from '@grainular/grains';
-import { type Fragment, createDirective } from '@grainular/nord';
+import { createDirective } from '@grainular/nord';
 import { getBinding } from './value-binding';
 
 type ControlBindingOptions = {
@@ -27,7 +27,7 @@ export type Control<V = unknown> = {
     // The directive used to bind
     // to the input element, using
     // a event
-    bind: (options?: ControlBindingOptions) => Fragment;
+    bind: (options?: ControlBindingOptions) => ReturnType<typeof createDirective>;
 };
 
 const handleNodeDisabledState = (node: Element, disabled: Grain<boolean>) => {

@@ -178,6 +178,7 @@
         "typescript": "^6.0.3",
       },
       "peerDependencies": {
+        "@grainular/grains": "workspace:*",
         "@grainular/nord": "workspace:*",
       },
     },
@@ -196,6 +197,7 @@
       "name": "@grainular/nord",
       "version": "2.0.0-next.2",
       "devDependencies": {
+        "@grainular/grains": "workspace:*",
         "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
@@ -203,25 +205,6 @@
         "jsdom": "^29.1.1",
         "tsup": "^8.5.1",
         "typescript": "^6.0.3",
-      },
-      "peerDependencies": {
-        "@grainular/grains": "workspace:*",
-        "@grainular/nord": "workspace:*",
-      },
-    },
-    "packages/@grainular/portal": {
-      "name": "@grainular/portal",
-      "version": "2.0.0",
-      "devDependencies": {
-        "@repository/builder": "workspace:*",
-        "@repository/config": "workspace:*",
-        "@types/bun": "latest",
-        "tsup": "^8.5.1",
-        "typescript": "6.0.3",
-      },
-      "peerDependencies": {
-        "@grainular/grains": "workspace:*",
-        "@grainular/nord": "workspace:*",
       },
     },
     "packages/@grainular/resource": {
@@ -616,8 +599,6 @@
     "@grainular/grains": ["@grainular/grains@workspace:packages/@grainular/grains"],
 
     "@grainular/nord": ["@grainular/nord@workspace:packages/@grainular/nord"],
-
-    "@grainular/portal": ["@grainular/portal@workspace:packages/@grainular/portal"],
 
     "@grainular/repository": ["@grainular/repository@root:", {}],
 
@@ -2078,8 +2059,6 @@
     "@grainular/grains/typescript": ["typescript@6.0.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw=="],
 
     "@grainular/nord/typescript": ["typescript@6.0.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw=="],
-
-    "@grainular/portal/typescript": ["typescript@6.0.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw=="],
 
     "@grainular/resource/typescript": ["typescript@6.0.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw=="],
 

@@ -14,6 +14,7 @@ export { attr } from './directives/attr.directive';
 export { createDirective } from './directives/create-directive';
 export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';
+export { portal } from './directives/portal.directive';
 export { createRef, ref } from './directives/ref.directive';
 
 // --- Structs & Struct Factory
