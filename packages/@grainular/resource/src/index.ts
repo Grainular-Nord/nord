@@ -1,4 +1,4 @@
-import { type Grain, combined, derived, grain, readonly } from '@grainular/grains';
+import { combined, derived, type Grain, grain, readonly } from '@grainular/grains';
 
 /**
  * Represents the lifecycle state of a resource.
@@ -7,7 +7,7 @@ import { type Grain, combined, derived, grain, readonly } from '@grainular/grain
  * - `pending` — a request is currently running
  * - `error`   — the last request failed
  */
-type ResourceState = 'idle' | 'pending' | 'error';
+export type ResourceState = 'idle' | 'pending' | 'error';
 
 /**
  * A reactive, abortable async resource.
@@ -87,9 +87,11 @@ type StateInitializer<T> = (state: { abortSignal: AbortSignal }) => Promise<T>;
  * @param deps Optional dependency grains that trigger a refresh when changed.
  */
 export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unknown>> = []): Resource<T> => {
-    const data = grain<T>(undefined as T);
-    const error = grain<Error | null>(null);
-    const state = grain<ResourceState>('idle');
+    const snapshot = grain<{ data: T; error: Error | null; state: ResourceState }>({
+        data: undefined as T,
+        error: null,
+        state: 'idle',
+    });
     let abortController = new AbortController();
 
     // The refresh fn is the actual quiet star
@@ -104,23 +106,34 @@ export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unkn
 
         // Run the resourceFn to retrieve the data
         // of the resource and store it (or any error)
-        state.set('pending');
-        fetcher({ abortSignal: signal })
-            .then((result) => {
+        snapshot.update((current) => ({
+            ...current,
+            state: 'pending',
+        }));
+        fetcher({ abortSignal: signal }).then(
+            (result) => {
                 if (signal.aborted) return;
 
-                data.set(result);
-                error.set(null);
-                state.set('idle');
-            })
-            .catch((err: unknown) => {
+                snapshot.update((current) => ({
+                    ...current,
+                    data: result,
+                    state: 'idle',
+                    error: null,
+                }));
+            },
+            (err: unknown) => {
                 if (signal.aborted) return;
 
                 const errorCtor = err instanceof Error ? err : new Error(String(err));
-                data.set(undefined as T);
-                error.set(errorCtor);
-                state.set('error');
-            });
+
+                snapshot.update((current) => ({
+                    ...current,
+                    data: null as T,
+                    state: 'error',
+                    error: errorCtor,
+                }));
+            },
+        );
     };
 
     // We call refresh once to start
@@ -136,7 +149,7 @@ export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unkn
     // just facade function and do not hold
     // any internal complexity
     const abort = () => abortController.abort();
-    const mutate = (next: T) => data.set(next);
+    const mutate = (next: T) => snapshot.update((current) => ({ ...current, data: next }));
     const destroy = () => {
         dependencies();
         abort();
@@ -148,10 +161,14 @@ export const resource = <T>(fetcher: StateInitializer<T>, deps: Array<Grain<unkn
         abort,
         mutate,
         destroy,
-        state: readonly(state),
-        idle: derived(state, (state) => state === 'idle'),
-        pending: derived(state, (state) => state === 'pending'),
-        error: readonly(error),
-        data: readonly(data),
+        state: derived(readonly(snapshot), (snapshot) => snapshot.state),
+        idle: derived(snapshot, ({ state }) => {
+            return state === 'idle';
+        }),
+        pending: derived(snapshot, ({ state }) => {
+            return state === 'pending';
+        }),
+        error: derived(readonly(snapshot), (snapshot) => snapshot.error),
+        data: derived(readonly(snapshot), (snapshot) => snapshot.data),
     };
 };

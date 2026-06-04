@@ -123,4 +123,32 @@ describe('resource', () => {
         expect(res.idle()).toBe(true);
         expect(res.pending()).toBe(false);
     });
+
+    it('does not refresh twice on creation when dependencies are provided', async () => {
+        const dep = grain(0);
+        let calls = 0;
+        const res = resource(async () => {
+            calls++;
+            return calls;
+        }, [dep]);
+
+        await flush(100);
+        expect(calls).toBe(1);
+        expect(res.data()).toBe(1);
+    });
+
+    it('refreshes exactly once when a dependency changes', async () => {
+        const dep = grain(0);
+        let calls = 0;
+        const res = resource(async () => {
+            calls++;
+            return calls;
+        }, [dep]);
+
+        await flush(100);
+        dep.set(1);
+        await flush(100);
+        expect(calls).toBe(2);
+        expect(res.data()).toBe(2);
+    });
 });
