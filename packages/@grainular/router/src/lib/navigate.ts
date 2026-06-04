@@ -1,1 +1,1 @@
-export const navigate = navigation.navigate;
+export const navigate = (path: string) => navigation.navigate(path);

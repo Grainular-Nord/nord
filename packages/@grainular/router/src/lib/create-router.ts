@@ -1,6 +1,6 @@
 import { grain, readonly } from '@grainular/grains';
 import type { ComponentFragment } from '@grainular/nord';
-import { fragmentCache, getFragment } from './fragments';
+import { getFragment } from './fragments';
 import { resolveHooks } from './hooks/resolve-hook';
 import { getPathParamGroup } from './params/get-path-param-group';
 import { parameterized } from './params/parameterized';
@@ -42,7 +42,14 @@ export const createRouter = (base: string, routes: Route[]) => {
 
     const setRouterState = async (next: NonNullable<ReturnType<typeof getURLState>>) => {
         const { pattern, route, params: matchedParams, query: matchedQuery, url } = next;
-        const fragment = fragmentCache.getOrInsert(pattern, getFragment(await route.component()));
+
+        // Run pre hooks
+        const preHooks = (route.use ?? []).filter((hook) => hook.run === 'pre');
+        const canNavigate = await resolveHooks(preHooks, next);
+
+        if (!canNavigate) return;
+
+        const fragment = getFragment(await route.component());
         params.set(matchedParams);
         query.set(matchedQuery);
         state.update(() => {
@@ -67,7 +74,6 @@ export const createRouter = (base: string, routes: Route[]) => {
             scroll: 'after-transition',
             precommitHandler: async () => {
                 // Run all post hooks of the previous route
-
                 const postHooks = (state().route?.use ?? []).filter((hook) => hook.run === 'post');
                 canNavigate = await resolveHooks(postHooks, { ...state(), params: params(), query: query() });
 
@@ -81,7 +87,7 @@ export const createRouter = (base: string, routes: Route[]) => {
 
                 // update router state & post hooks
                 const { pattern, route, params: matchedParams, query: matchedQuery } = nextState;
-                const fragment = fragmentCache.getOrInsert(pattern, getFragment(await route.component()));
+                const fragment = getFragment(await route.component());
                 params.set(matchedParams);
                 query.set(matchedQuery);
                 state.update(() => {
