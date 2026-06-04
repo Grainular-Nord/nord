@@ -93,9 +93,6 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
     const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>) =>
         createStruct(
             (anchor) => {
-                const root = anchor.parentNode;
-                if (!root) return;
-
                 const cache = new Map<unknown, { nodes: Node[] }>();
                 let prevKeys: unknown[] = [];
 
@@ -103,16 +100,16 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                     nodes: hydrateFragment(render(item, idx, arr)),
                 });
 
-                const insert = (nodes: Node[], ref: Node) => {
+                const insert = (nodes: Node[], cursor: Node) => {
+                    const parent = cursor.parentNode;
                     const fragment = document.createDocumentFragment();
-                    for (const node of nodes) fragment.appendChild(node);
-                    root.insertBefore(fragment, ref);
+                    fragment.append(...nodes);
+                    parent?.insertBefore(fragment, cursor);
                 };
 
                 const removeNodes = (nodes: Node[]) => {
                     for (const node of nodes) {
-                        const parent = node.parentNode;
-                        if (parent) parent.removeChild(node);
+                        node.parentNode?.removeChild(node);
                     }
                 };
 
@@ -125,17 +122,21 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                     }
 
                     const sources = new Int32Array(keys.length).fill(-1);
+
                     for (let i = 0; i < keys.length; i++) {
                         const idx = keyIndex.get(keys[i]);
                         sources[i] = idx !== undefined ? idx : -1;
                     }
 
-                    // remove stale entries — O(n) lookup via Set
                     const newKeySet = new Set(keys);
                     for (const key of prevKeys) {
                         if (!newKeySet.has(key)) {
                             const entry = cache.get(key);
-                            if (entry) removeNodes(entry.nodes);
+
+                            if (entry) {
+                                removeNodes(entry.nodes);
+                            }
+
                             cache.delete(key);
                         }
                     }
@@ -153,20 +154,31 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                             cache.set(key, entry);
                             insert(entry.nodes, cursor);
                         } else if (j < 0 || i !== seq[j]) {
-                            if (entry) insert(entry.nodes, cursor);
+                            if (entry) {
+                                insert(entry.nodes, cursor);
+                            }
                         } else {
                             j--;
                         }
 
-                        if (entry) cursor = entry.nodes[0];
+                        if (entry) {
+                            cursor = entry.nodes[0];
+                        }
                     }
 
                     prevKeys = keys;
                 };
 
                 reconcile(source());
+
                 if (isSubscribableValue(source)) {
-                    return source.subscribe(reconcile);
+                    const unsubscribe = source.subscribe(reconcile);
+                    return () => {
+                        unsubscribe?.();
+                        cache.forEach(({ nodes }) => {
+                            removeNodes(nodes);
+                        });
+                    };
                 }
             },
             () =>

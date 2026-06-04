@@ -251,4 +251,29 @@ describe('[Nørd Runtime] Lists', () => {
         expect(next).not.toBe(first);
         expect(next?.textContent).toBe('B');
     });
+
+    test('$each updates when used as first top-level node of a hydrated fragment', () => {
+        const items = grain([
+            { id: 1, title: 'A' },
+            { id: 2, title: 'B' },
+        ]);
+
+        const List = () => html`
+            ${$each(items)
+                .$withKey((item) => item.id)
+                .$as((item) => html`<div>${item.title}</div>`)}
+        `;
+
+        mount(List, { to: document.querySelector('#app') });
+        expect(document.querySelector('#app')?.textContent.trim()).toBe('AB');
+
+        expect(() => {
+            items.set([
+                { id: 2, title: 'B' },
+                { id: 1, title: 'A' },
+            ]);
+        }).not.toThrow();
+
+        expect(document.querySelector('#app')?.textContent.trim()).toBe('BA');
+    });
 });
