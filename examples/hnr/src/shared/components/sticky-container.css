@@ -1,0 +1,15 @@
+.sticky-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+    top: var(--navigation-height);
+    padding: 0.5rem;
+    background: var(--bg-glass);
+    width: 100%;
+
+    backdrop-filter: blur(20px);
+    border-radius: 0.25rem;
+}

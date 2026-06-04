@@ -1,0 +1,27 @@
+.detail-bar {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--text-shade);
+    align-items: center;
+    padding-top: 0.5rem;
+
+    & .accent {
+        color: var(--text-accent);
+    }
+
+    & .detail {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    & .secondary-link {
+        font-weight: 600;
+        color: var(--text-shade);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

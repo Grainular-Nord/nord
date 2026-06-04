@@ -1,0 +1,12 @@
+.clout-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    & .item {
+        display: flex;
+        gap: 0.25;
+        justify-content: center;
+        align-items: center;
+    }
+}

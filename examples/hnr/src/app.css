@@ -1,0 +1,134 @@
+/* -------------------------------------------------------------------------- */
+/* 1. VARIABLES                               */
+/* -------------------------------------------------------------------------- */
+:root {
+    /* Palette: Aurora */
+    --nord-aurora-1: oklch(90% 0.16 175);
+    --nord-aurora-2: oklch(65% 0.25 290);
+
+    /* Palette: Darks */
+    --nord-dark-1: oklch(20% 0.01 265);
+    --nord-dark-2: oklch(35% 0.01 265);
+    --nord-dark-3: oklch(45% 0.01 265);
+
+    /* Palette: Lights */
+    --nord-light-1: oklch(95% 0.01 240);
+    --nord-light-2: oklch(85% 0.01 240);
+    --nord-light-3: oklch(70% 0.01 240);
+
+    /* Materials */
+    --glass-light: oklch(98% 0.01 240 / 0.25);
+    --glass-dark: oklch(5% 0.01 240 / 0.1);
+
+    /* Config */
+    --navigation-height: 4rem;
+    --transition-speed: 0.2s; /* Explicitly defined since it was used but missing */
+    --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Theme: Light */
+[data-theme="light"] {
+    --bg-app: var(--nord-light-1);
+    --bg-shade: var(--nord-light-2);
+    --text-main: var(--nord-dark-2);
+    --text-sub: var(--nord-dark-1);
+    --text-shade: var(--nord-dark-3);
+    --text-accent: var(--nord-aurora-2);
+
+    --text-link: var(--nord-dark-2);
+    --text-link-hover: var(--nord-dark-1);
+
+    --bg-glass: var(--glass-light);
+}
+
+/* Theme: Dark */
+[data-theme="dark"] {
+    --bg-app: var(--nord-dark-1);
+    --bg-shade: var(--nord-dark-2);
+    --text-main: var(--nord-light-1);
+    --text-sub: var(--nord-light-2);
+    --text-shade: var(--nord-light-3);
+    --text-accent: var(--nord-aurora-2);
+
+    --text-link: var(--nord-light-2);
+    --text-link-hover: var(--nord-light-1);
+
+    --bg-glass: var(--glass-dark);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+
+    font-family: var(--font-sans);
+    overscroll-behavior: none;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+
+    /* Global Touch Defaults */
+    touch-action: manipulation;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+}
+
+#app {
+    display: contents;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    min-height: 100%;
+    height: auto;
+    padding-top: var(--navigation-height);
+    padding-bottom: 1.5rem;
+    padding-inline: max(2rem, (100% - 1044px) / 2);
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+button {
+    background: none;
+    border: none;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: var(--font-sans);
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+a {
+    color: var(--text-link);
+
+    &:hover {
+        color: var(--text-link-hover);
+    }
+}

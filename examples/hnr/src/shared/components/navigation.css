@@ -1,0 +1,44 @@
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: var(--navigation-height);
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    background: var(--bg-app);
+    z-index: 5;
+
+    & ul {
+        display: flex;
+        list-style-type: none;
+        gap: 1rem;
+    }
+
+    & .navigation-item {
+        padding: 0.25rem;
+
+        & a {
+            text-decoration: none;
+            font-size: 1.125rem;
+            color: var(--text-main);
+            font-weight: 500;
+
+            &:hover {
+                color: var(--text-accent);
+            }
+        }
+
+        &:has(.link-active) {
+            & a {
+                color: var(--text-accent);
+            }
+        }
+    }
+
+    & .theme-toggle {
+        position: absolute;
+        right: max(2rem, (100% - 1044px) / 2);
+    }
+}

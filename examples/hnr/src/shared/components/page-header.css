@@ -1,0 +1,16 @@
+.head {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: var(--bg-app);
+
+    & h2 {
+        font-size: 2.5rem;
+        margin-top: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5rem;
+        color: var(--text-accent);
+    }
+}

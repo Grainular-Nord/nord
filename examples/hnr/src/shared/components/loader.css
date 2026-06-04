@@ -1,0 +1,19 @@
+.loader {
+    flex-grow: 1;
+    min-height: 12rem;
+    display: grid;
+    place-content: center;
+    animation: spinner 1s ease-in-out infinite;
+}
+
+@keyframes spinner {
+    0% {
+        rotate: 0deg;
+    }
+    80% {
+        rotate: 360deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}

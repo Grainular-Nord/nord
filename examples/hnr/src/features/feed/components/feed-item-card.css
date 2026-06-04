@@ -1,0 +1,11 @@
+.feed-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    color: var(--text-main);
+    text-decoration: none;
+
+    &:hover {
+        background: var(--bg-shade);
+    }
+}
