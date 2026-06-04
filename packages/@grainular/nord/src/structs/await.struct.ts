@@ -57,6 +57,7 @@ export const $await = <T>(source: Promise<T> | T) => {
         $then: (template: (value: T) => ComponentFragment) => {
             let pendingFragment: () => ComponentFragment;
             let errorFragment: (error: Error) => ComponentFragment;
+            let resolvedNodes: Element[] = [];
 
             const struct = createStruct(
                 (root: Comment) => {
@@ -70,6 +71,7 @@ export const $await = <T>(source: Promise<T> | T) => {
                             const nodes = hydrateFragment(template(result));
                             disconnectNodes(initialNodes);
                             root.before(...nodes);
+                            resolvedNodes = nodes;
                         })
                         .catch((error) => {
                             if (!root.isConnected) return;
@@ -82,9 +84,13 @@ export const $await = <T>(source: Promise<T> | T) => {
                             if (errorFragment) {
                                 const nodes = hydrateFragment(errorFragment(error));
                                 root.before(...nodes);
-                                return;
+                                resolvedNodes = nodes;
                             }
                         });
+
+                    return () => {
+                        disconnectNodes(resolvedNodes);
+                    };
                 },
                 // For our SSR snapshot, we only render the Pending nodes if they
                 // exist. Everything else is ignored.
