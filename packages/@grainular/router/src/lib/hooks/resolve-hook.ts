@@ -1,12 +1,9 @@
 import type { NavigationHook, NavigationHookContext } from './hooks';
 
-export const resolveHooks = async (hooks: NavigationHook[], context: Omit<NavigationHookContext, 'navigate'>) => {
+export const resolveHooks = (hooks: NavigationHook[], context: NavigationHookContext) => {
     for (const { handler } of hooks) {
-        const result = await handler({
+        const result = handler({
             ...context,
-            navigate: (path: string) => {
-                return navigation.navigate(path);
-            },
         });
 
         // Bail if a hook returns false explicitly
