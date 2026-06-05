@@ -22,7 +22,7 @@ export const createRouter = (base: string, routes: Route[]) => {
     const params = grain({});
     const query = grain<Record<string, string>>({});
 
-    const { match, registry } = createPatternMatcher(base, routes);
+    const { match } = createPatternMatcher(base, routes);
     const state = grain<RouterStateSnapshot>({ resolved: null, component: null, path: null, route: null });
 
     const getURLState = (url: URL) => {
@@ -111,9 +111,8 @@ export const createRouter = (base: string, routes: Route[]) => {
         query: readonly(query),
         state: readonly(state),
         match,
-        registry,
         base,
     };
 };
 
-export type Router = Omit<ReturnType<typeof createRouter>, 'registry' | 'match' | 'params' | 'query'>;
+export type Router = Omit<ReturnType<typeof createRouter>, 'match' | 'params' | 'query'>;
