@@ -1,4 +1,4 @@
-import { type Grain, combined, derived, flattened } from '@grainular/grains';
+import { combined, derived, flattened, type Grain } from '@grainular/grains';
 import type { FormSchema } from './form-schema';
 
 export const deriveSchemaTouched = <T>(schema: FormSchema<T>): Grain<boolean[]> => {
@@ -9,10 +9,14 @@ export const deriveSchemaTouched = <T>(schema: FormSchema<T>): Grain<boolean[]> 
 
     // Lists are deeply flattened and normalized
     if ('isControlList' in schema) {
-        return flattened(
-            derived(schema.controls, (schemas) => {
-                return schemas.map((s) => deriveSchemaTouched(s));
-            }),
+        return derived(
+            flattened(
+                derived(
+                    derived(schema.controls, (schemas) => schemas.map(deriveSchemaTouched)),
+                    (grains) => combined(grains),
+                ),
+            ),
+            (nested) => nested.flat(),
         );
     }
 

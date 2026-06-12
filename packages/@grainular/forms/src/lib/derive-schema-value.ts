@@ -1,4 +1,4 @@
-import { type Grain, combined, derived, flattened, readonly } from '@grainular/grains';
+import { combined, derived, flattened, type Grain, readonly } from '@grainular/grains';
 import type { FormSchema } from './form-schema';
 
 export const deriveSchemaValue = <T>(schema: FormSchema<T>): Grain<T> => {
@@ -8,11 +8,15 @@ export const deriveSchemaValue = <T>(schema: FormSchema<T>): Grain<T> => {
 
     // We check for the 'controls' grain and array methods
     if ('isControlList' in schema) {
-        return flattened(
-            derived(schema.controls, (schemas) => {
-                return combined(schemas.map(deriveSchemaValue));
-            }),
-        );
+        return derived(
+            flattened(
+                derived(
+                    derived(schema.controls, (schemas) => schemas.map(deriveSchemaValue)),
+                    (grains) => combined(grains),
+                ),
+            ),
+            (nested) => nested.flat(),
+        ) as Grain<T>;
     }
 
     // Get all the child value grains

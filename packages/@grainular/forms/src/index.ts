@@ -1,5 +1,6 @@
 export { bind } from './directives/bind.directive';
 export { control, type Control } from './lib/control';
+export type { ControlList } from './lib/control-list';
 export { form, type Form } from './lib/form';
 export { touchAll } from './lib/touch-all';
 export { $controlErrors } from './structs/control-errors.struct';
