@@ -4,9 +4,6 @@
   "workspaces": {
     "": {
       "name": "@grainular/repository",
-      "dependencies": {
-        "@grainular/repository": ".",
-      },
       "devDependencies": {
         "@biomejs/biome": "^2.4.15",
         "@changesets/changelog-github": "^0.5.0",
@@ -14,7 +11,6 @@
         "@commitlint/cli": "^19.3.0",
         "@commitlint/config-conventional": "^19.2.2",
         "@types/bun": "^1.2.16",
-        "husky": "^9.0.11",
         "lefthook": "^1.11.9",
         "prettier": "^3.3.2",
         "turbo": "^2.0.6",
@@ -183,7 +179,7 @@
     },
     "packages/@grainular/forms": {
       "name": "@grainular/forms",
-      "version": "2.0.0-next.0",
+      "version": "2.0.0-next.3",
       "devDependencies": {
         "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
@@ -198,7 +194,7 @@
     },
     "packages/@grainular/grains": {
       "name": "@grainular/grains",
-      "version": "2.0.0-next.2",
+      "version": "2.0.0-next.3",
       "devDependencies": {
         "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
@@ -209,7 +205,7 @@
     },
     "packages/@grainular/nord": {
       "name": "@grainular/nord",
-      "version": "2.0.0-next.2",
+      "version": "2.0.0-next.4",
       "devDependencies": {
         "@grainular/grains": "workspace:*",
         "@repository/builder": "workspace:*",
@@ -223,7 +219,7 @@
     },
     "packages/@grainular/resource": {
       "name": "@grainular/resource",
-      "version": "2.0.0",
+      "version": "2.0.0-next.3",
       "devDependencies": {
         "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
@@ -237,7 +233,7 @@
     },
     "packages/@grainular/router": {
       "name": "@grainular/router",
-      "version": "2.0.0-next.1",
+      "version": "2.0.0-next.15",
       "devDependencies": {
         "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
@@ -613,8 +609,6 @@
     "@grainular/grains": ["@grainular/grains@workspace:packages/@grainular/grains"],
 
     "@grainular/nord": ["@grainular/nord@workspace:packages/@grainular/nord"],
-
-    "@grainular/repository": ["@grainular/repository@root:", {}],
 
     "@grainular/resource": ["@grainular/resource@workspace:packages/@grainular/resource"],
 
@@ -1329,8 +1323,6 @@
     "https-proxy-agent": ["https-proxy-agent@7.0.6", "", { "dependencies": { "agent-base": "^7.1.2", "debug": "4" } }, "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw=="],
 
     "human-id": ["human-id@4.1.3", "", { "bin": { "human-id": "dist/cli.js" } }, "sha512-tsYlhAYpjCKa//8rXZ9DqKEawhPoSytweBC2eNvcaDK+57RZLHGqNs3PZTQO6yekLFSuvA6AlnAfrw1uBvtb+Q=="],
-
-    "husky": ["husky@9.1.7", "", { "bin": { "husky": "bin.js" } }, "sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA=="],
 
     "iconv-lite": ["iconv-lite@0.7.2", "", { "dependencies": { "safer-buffer": ">= 2.1.2 < 3.0.0" } }, "sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw=="],
 
