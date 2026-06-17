@@ -28,9 +28,9 @@ export const Sequencer = () => {
             ${$each(() => grid).$as(
                 (track, trackIdx) => html`
                 <div class="track">
-                    <div class="label">Track ${trackIdx + 1}</div>
+                    <div class="label">Track ${trackIdx() + 1}</div>
                     ${$each(() => track).$as((step, stepIdx) => {
-                        return Step({ state: step, stepIdx });
+                        return Step({ state: step, stepIdx: stepIdx() });
                     })}
                 </div>`,
             )}

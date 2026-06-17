@@ -3,6 +3,7 @@ import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
+import { type Settable, settable } from '../internals/settable';
 import { createStruct } from './create-struct';
 
 /**
@@ -28,7 +29,7 @@ import { createStruct } from './create-struct';
  */
 
 type KeyFn<T> = (entry: T) => unknown;
-type RenderFn<T> = (entry: T, idx: number, arr: T[]) => ComponentFragment;
+type RenderFn<T> = (entry: T, idx: Subscribable<number>, arr: T[]) => ComponentFragment;
 
 type EachStruct<T> = {
     /**
@@ -93,12 +94,17 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
     const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>) =>
         createStruct(
             (anchor) => {
+                const indexed = new Map<unknown, Settable<number>>();
                 const cache = new Map<unknown, { nodes: Node[] }>();
                 let prevKeys: unknown[] = [];
 
-                const create = (item: T, idx: number, arr: T[]) => ({
-                    nodes: hydrateFragment(render(item, idx, arr)),
-                });
+                const create = (item: T, idx: number, arr: T[]) => {
+                    const reactiveIdx = settable(idx);
+                    indexed.set(keyFn(item), reactiveIdx);
+                    return {
+                        nodes: hydrateFragment(render(item, reactiveIdx, arr)),
+                    };
+                };
 
                 const insert = (nodes: Node[], cursor: Node) => {
                     const parent = cursor.parentNode;
@@ -138,6 +144,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                             }
 
                             cache.delete(key);
+                            indexed.delete(key);
                         }
                     }
 
@@ -161,6 +168,8 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                             j--;
                         }
 
+                        indexed.get(key)?.set(i);
+
                         if (entry) {
                             cursor = entry.nodes[0];
                         }
@@ -183,7 +192,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
             },
             () =>
                 source()
-                    .map((value, idx, arr) => render(value, idx, arr).render())
+                    .map((value, idx, arr) => render(value, settable(idx), arr).render())
                     .join(''),
         );
 
