@@ -1,6 +1,6 @@
 {
     "name": "@grainular/router",
-    "version": "2.0.0-next.9",
+    "version": "2.0.0-next.15",
     "type": "module",
     "packageManager": "bun@1.2.7",
     "main": "./dist/cjs/index.js",

@@ -1,6 +1,6 @@
 import { grain } from '@grainular/grains';
 import { $render, type ComponentFragment, html, type Ref } from '@grainular/nord';
-import type { Router } from './create-router';
+import type { Router, RouterStateSnapshot } from './create-router';
 
 type OutletConfig = {
     for: Router;
@@ -11,7 +11,7 @@ export const $outlet = ({ for: router, transitionElement: transitionRef }: Outle
     const currentComponent = grain<ComponentFragment>(html``);
     const name = `outlet-${router.base.replace(/[^a-zA-Z0-9-_]/g, '') || 'root'}`;
 
-    router.state.subscribe((state) => {
+    const setComponent = (state: RouterStateSnapshot) => {
         const { component, route } = state;
         const next = component ?? html``;
         if (!route?.transition) return currentComponent.set(next);
@@ -30,8 +30,11 @@ export const $outlet = ({ for: router, transitionElement: transitionRef }: Outle
                 });
             });
         });
-    });
+    };
 
-    // No wrapper div at all — just $render directly
+    setComponent(router.state());
+    router.state.subscribe(setComponent);
+
+    router.attach();
     return $render(currentComponent);
 };

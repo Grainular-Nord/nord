@@ -2,7 +2,7 @@ import { createDirective } from '@grainular/nord';
 
 export const active = (cls: string, { exact }: { exact: boolean } = { exact: true }) => {
     return createDirective((node) => {
-        const handler = () => {
+        const toggleClasses = () => {
             const href = node.getAttribute('href');
             const destination = navigation.currentEntry?.url;
 
@@ -12,7 +12,8 @@ export const active = (cls: string, { exact }: { exact: boolean } = { exact: tru
             node.classList.toggle(cls, exact ? url.pathname === href : url.pathname.startsWith(href));
         };
 
-        navigation.addEventListener('navigatesuccess', handler);
-        return () => navigation.removeEventListener('navigatesuccess', handler);
+        toggleClasses();
+        navigation.addEventListener('navigatesuccess', toggleClasses);
+        return () => navigation.removeEventListener('navigatesuccess', toggleClasses);
     });
 };

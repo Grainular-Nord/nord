@@ -8,7 +8,7 @@ import { createPatternMatcher } from './pattern-matcher';
 import { redirector } from './redirector';
 import type { Route } from './route';
 
-type RouterStateSnapshot = {
+export type RouterStateSnapshot = {
     path: string | null;
     resolved: string | null;
     component: ComponentFragment | null;
@@ -41,53 +41,19 @@ export const createRouter = (base: string, routes: Route[]) => {
         };
     };
 
-    const setRouterState = async (next: NonNullable<ReturnType<typeof getURLState>>) => {
-        const { pattern, route, params: matchedParams, query: matchedQuery, url } = next;
-
-        const redirects = redirector();
-        const redirect = (path: string) => redirects.add(path);
-
-        // Run pre hooks
-        const preHooks = (route.use ?? []).filter((hook) => hook.run === 'pre');
-        const canNavigate = resolveHooks(preHooks, { ...next, redirect });
-
-        // Cancel navigation based on hook result
-        // We redirect to the first stored redirect
-        // handler, and loose all others
-        if (!canNavigate || redirects.hasRedirects()) {
-            return redirects.execute();
-        }
-
-        // Run the load hooks
-        const loadHooks = (route.use ?? []).filter((h) => h.run === 'load');
-        resolveHooks(loadHooks, { ...next, redirect });
-
-        const fragment = getFragment(await route.component());
-        params.set(matchedParams);
-        query.set(matchedQuery);
-        state.update(() => {
-            return {
-                route,
-                component: fragment,
-                resolved: pattern.pathname,
-                path: url.pathname,
-            };
-        });
-    };
-
     const isOwnRoute = (route: Route) => {
         return routes.some((ownRoute) => ownRoute === route);
     };
 
-    navigation.addEventListener('navigate', (event) => {
-        if (!isRouterEvent(event)) return;
-        const url = new URL(event.destination.url);
+    const checkForNavigationViability = (nextState: ReturnType<typeof getURLState>) => {
+        if (!nextState || !isOwnRoute(nextState.route))
+            return {
+                canNavigate: false,
+            };
 
-        const nextState = getURLState(url);
-        if (!nextState || !isOwnRoute(nextState.route)) return;
         let canNavigate = true;
-        const redirects = redirector();
-        const redirect = (path: string) => redirects.add(path);
+        const redirectController = redirector();
+        const redirect = (path: string) => redirectController.add(path);
 
         // Run all post hooks of the previous route
         const postHooks = (state().route?.use ?? []).filter((hook) => hook.run === 'post');
@@ -97,44 +63,74 @@ export const createRouter = (base: string, routes: Route[]) => {
         const preHooks = (nextState.route.use ?? []).filter((hook) => hook.run === 'pre');
         canNavigate = canNavigate && resolveHooks(preHooks, { ...nextState, redirect });
 
-        // Cancel navigation based on hook result
-        // We redirect to the first stored redirect
-        // handler, and loose all others
-        if (!canNavigate || redirects.hasRedirects()) {
-            return redirects.execute(event);
+        return {
+            canNavigate,
+            redirects: redirectController,
+        };
+    };
+
+    const runNavigationProcedure = async (nextState: NonNullable<ReturnType<typeof getURLState>>) => {
+        // update router state & post hooks
+        const { pattern, route, params: matchedParams, query: matchedQuery } = nextState;
+        const fragment = getFragment(await route.component());
+
+        const loadHooks = (route.use ?? []).filter((hook) => hook.run === 'load');
+        for (const hook of loadHooks) {
+            hook.handler({ ...nextState });
         }
 
-        event.intercept({
-            scroll: 'after-transition',
-            // As the handler is not yes baseline as of mid 2026, we cannot
-            // use the precommitController. Without it, pre and post hooks need
-            // to be resolved synchronously.
-            // precommitHandler: async () => {},
-            handler: async () => {
-                // update router state & post hooks
-                const { pattern, route, params: matchedParams, query: matchedQuery } = nextState;
-                const fragment = getFragment(await route.component());
-
-                const loadHooks = (route.use ?? []).filter((h) => h.run === 'load');
-                resolveHooks(loadHooks, { ...nextState, redirect });
-
-                params.set(matchedParams);
-                query.set(matchedQuery);
-                state.update(() => {
-                    return {
-                        route,
-                        component: fragment,
-                        resolved: pattern.pathname,
-                        path: url.pathname,
-                    };
-                });
-            },
+        params.set(matchedParams);
+        query.set(matchedQuery);
+        state.update(() => {
+            return {
+                route,
+                component: fragment,
+                resolved: pattern.pathname,
+                path: nextState.url.pathname,
+            };
         });
-    });
+    };
 
-    // Get the initial route set and set the routerState
-    const current = getURLState(new URL(navigation.currentEntry?.url ?? ''));
-    if (current) setRouterState(current);
+    const initializeRouterState = () => {
+        // Create the initial router state
+        const nextState = getURLState(new URL(navigation.currentEntry?.url ?? ''));
+        const { canNavigate, redirects } = checkForNavigationViability(nextState);
+
+        if (!nextState || !canNavigate || redirects?.hasRedirects()) {
+            return redirects?.execute();
+        }
+
+        runNavigationProcedure(nextState);
+    };
+
+    let attached = false;
+    const attach = () => {
+        if (attached) return;
+        attached = true;
+
+        navigation.addEventListener('navigate', (event) => {
+            if (!isRouterEvent(event)) return;
+            const url = new URL(event.destination.url);
+
+            const nextState = getURLState(url);
+            const { canNavigate, redirects } = checkForNavigationViability(nextState);
+
+            // Cancel navigation based on hook result
+            // We redirect to the first stored redirect
+            // handler, and loose all others
+            if (!nextState || !canNavigate || redirects?.hasRedirects()) {
+                return redirects?.execute(event);
+            }
+
+            event.intercept({
+                scroll: 'after-transition',
+                handler: async () => {
+                    await runNavigationProcedure(nextState);
+                },
+            });
+        });
+        initializeRouterState();
+    };
 
     return {
         params: parameterized(params),
@@ -142,7 +138,8 @@ export const createRouter = (base: string, routes: Route[]) => {
         state: readonly(state),
         match,
         base,
+        attach,
     };
 };
 
-export type Router = Omit<ReturnType<typeof createRouter>, 'match' | 'params' | 'query'>;
+export type Router = Omit<ReturnType<typeof createRouter>, 'params' | 'query'>;
