@@ -37,20 +37,23 @@ import { createDirective } from './create-directive';
 export const attr = (setup: Record<PropertyKey, unknown>) => {
     return createDirective((node) => {
         const subscribers = new Set<(() => void) | void>();
+        const setAttribute = (key: string, value: unknown) => {
+            value ? node.setAttribute(key, String(value)) : node.removeAttribute(key);
+        };
 
         for (const [key, value] of Object.entries(setup)) {
-            node.setAttribute(key, String(value));
+            setAttribute(key, value);
             if (isSubscribableValue(value)) {
                 subscribers.add(
                     value.subscribe((value) => {
-                        node.setAttribute(key, String(value));
+                        setAttribute(key, value);
                     }),
                 );
             }
         }
 
         return () => {
-            for (const fn of subscribers) {
+            for (const fn of Array.from(subscribers)) {
                 fn?.();
             }
         };
