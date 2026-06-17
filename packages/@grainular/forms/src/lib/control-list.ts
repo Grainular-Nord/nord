@@ -1,5 +1,5 @@
-import { type WritableGrain, grain } from '@grainular/grains';
-import { type FormSchema, createFormSchema } from './form-schema';
+import { grain, type WritableGrain } from '@grainular/grains';
+import { createFormSchema, type FormSchema } from './form-schema';
 
 export type ControlList<T> = {
     isControlList: true;
@@ -7,7 +7,6 @@ export type ControlList<T> = {
     add: (value: T) => void;
     remove: (control: FormSchema<T>) => void;
     at: (idx: number) => FormSchema<T> | undefined;
-
     reset: () => void;
     set: (value: T[]) => void;
 };

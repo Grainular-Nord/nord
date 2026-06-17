@@ -4,7 +4,6 @@ import { deriveSchemaTouched } from './derive-schema-touched';
 import { deriveSchemaValue } from './derive-schema-value';
 import { createFormSchema, type FormSchema } from './form-schema';
 import { setFormValue } from './handle-form-value';
-import { iterateSchema } from './iterate-schema';
 import { touchAll } from './touch-all';
 
 export type Form<T> = {
@@ -38,7 +37,7 @@ export const form = <T extends Record<PropertyKey, unknown>>(
 
     // Create the form setter and reset fn
     const set = (value: T) => setFormValue(controls, value);
-    const reset = () => iterateSchema(controls, (control) => control.reset());
+    const reset = () => set(model);
     const validate = () => {
         touchAll(controls);
         schema(controls);
