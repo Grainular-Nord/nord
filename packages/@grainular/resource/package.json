@@ -1,6 +1,6 @@
 {
     "name": "@grainular/resource",
-    "version": "2.0.0",
+    "version": "2.0.0-next.3",
     "type": "module",
     "packageManager": "bun@1.2.7",
     "main": "./dist/cjs/index.js",
@@ -29,7 +29,8 @@
     },
     "sideEffects": false,
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "tag": "next"
     },
     "files": [
         "dist",
@@ -39,9 +40,9 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/grainular/core.git"
+        "url": "git+https://github.com/grainular/nord.git"
     },
     "peerDependencies": {
-        "@grainular/grains": "workspace:*"
+        "@grainular/grains": "^2.0.0-next.2"
     }
 }

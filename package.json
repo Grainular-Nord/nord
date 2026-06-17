@@ -36,8 +36,5 @@
         "packages/*",
         "language-tools/*",
         "sites/*"
-    ],
-    "dependencies": {
-        "@grainular/repository": "."
-    }
+    ]
 }

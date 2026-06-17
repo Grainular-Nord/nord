@@ -66,3 +66,4 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.vscode/gitcharm-changelists.json
