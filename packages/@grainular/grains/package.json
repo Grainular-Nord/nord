@@ -1,6 +1,6 @@
 {
     "name": "@grainular/grains",
-    "version": "2.0.0-next.3",
+    "version": "2.0.0-next.4",
     "type": "module",
     "packageManager": "bun@1.1.18",
     "main": "./dist/cjs/index.js",
@@ -15,7 +15,6 @@
     },
     "unpkg": "./dist/browser/index.js",
     "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -35,5 +34,10 @@
         "access": "public",
         "tag": "next"
     },
-    "sideEffects": false
+    "sideEffects": false,
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE.md"
+    ]
 }

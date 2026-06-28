@@ -138,12 +138,13 @@
         "@repository/builder": "workspace:*",
         "@types/bun": "latest",
         "@types/node": "^25.0.3",
+        "tsup": "^8.5.1",
         "vite": "^7.3.1",
       },
       "peerDependencies": {
         "@grainular/grains": "workspace:*",
         "@grainular/nord": "workspace:*",
-        "typescript": "^5",
+        "typescript": "6.0.3",
       },
     },
     "packages/@grainular/create-nord": {
@@ -364,14 +365,10 @@
       "name": "playground.nordjs.dev",
       "version": "0.0.0",
       "dependencies": {
-        "@grainular/grains": "workspace:*",
-        "@grainular/nord": "workspace:*",
-        "@shikijs/rehype": "^4.0.2",
-        "shiki": "^4.0.2",
+        "@grainular/aurora": "workspace:*",
       },
       "devDependencies": {
         "vite": "^8.0.4",
-        "vite-plugin-nord-md": "workspace:*",
       },
     },
   },
