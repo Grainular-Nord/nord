@@ -1,3 +1,4 @@
+import type { Subscribable } from '../application/subscribable';
 import type { Fragment } from '../internals/fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import { createDirective } from './create-directive';
@@ -35,10 +36,14 @@ import { createDirective } from './create-directive';
  */
 
 export const attr = (setup: Record<PropertyKey, unknown>) => {
+    const unwrap = (value: unknown | Subscribable<unknown>): unknown => {
+        return isSubscribableValue(value) ? value() : value;
+    };
+
     return createDirective((node) => {
         const subscribers = new Set<(() => void) | void>();
         const setAttribute = (key: string, value: unknown) => {
-            value ? node.setAttribute(key, String(value)) : node.removeAttribute(key);
+            value ? node.setAttribute(key, String(unwrap(value))) : node.removeAttribute(key);
         };
 
         for (const [key, value] of Object.entries(setup)) {
