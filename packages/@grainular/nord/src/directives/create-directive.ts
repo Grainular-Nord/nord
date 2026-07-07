@@ -39,7 +39,7 @@ import { createIdentifier } from '../internals/identifier';
  * html`<input ${autofocus} type="text" />`;
  * ```
  */
-export const createDirective = (handler: (node: Element) => void | (() => void)): Fragment => {
+export const createDirective = <T extends Element = Element>(handler: (node: T) => void | (() => void)): Fragment => {
     const fragmentId = createIdentifier();
     return {
         fragmentId: fragmentId,
@@ -47,7 +47,7 @@ export const createDirective = (handler: (node: Element) => void | (() => void))
         render: () => '',
         hydrate: (node: Node) => {
             if (node instanceof Element) {
-                const onDestroy = handler(node);
+                const onDestroy = handler(node as T);
                 if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
             }
         },
