@@ -1,6 +1,7 @@
 import { setAttribute } from '../internals/attribute-bindings';
 import type { Fragment } from '../internals/fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
+import { unwrap } from '../internals/unwrap';
 import { createDirective } from './create-directive';
 
 /**
@@ -40,7 +41,7 @@ export const attr = (dict: Record<PropertyKey, unknown>) => {
         const subscribers = new Set<(() => void) | void>();
 
         for (const [key, value] of Object.entries(dict)) {
-            setAttribute(node, key, value);
+            setAttribute(node, key, unwrap(value));
             if (isSubscribableValue(value)) {
                 const sub = value.subscribe((value) => setAttribute(node, key, value));
                 subscribers.add(sub);
