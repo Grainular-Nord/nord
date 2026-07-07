@@ -1,6 +1,19 @@
 const nodeState = new WeakMap<Element, Map<string, string[]>>();
 const booleanAttributes = /^(disabled|checked|readonly|required|hidden|open|selected|autofocus|multiple)$/;
 
+export const setAttribute = (node: Element, key: string, value: unknown) => {
+    const isBoolean = booleanAttributes.test(key);
+
+    // Handle non boolean update
+    if (!isBoolean) {
+        node.setAttribute(key, String(value));
+        return;
+    }
+
+    // Handle ugly boolean attribute update
+    value === 'false' || !value ? node.removeAttribute(key) : node.setAttribute(key, '');
+};
+
 /**
  * Creates a binding and returns a direct update function.
  * No global IDs required.
@@ -29,7 +42,6 @@ export const createAttributeBinding = (
         bindings.set(attributeName, parts);
     }
 
-    const isBoolean = booleanAttributes.test(attributeName);
     const partIndex = parts.indexOf(marker);
     if (partIndex === -1) return () => {};
 
@@ -39,16 +51,6 @@ export const createAttributeBinding = (
     return (value: unknown) => {
         parts[partIndex] = String(value);
         const attributeValue = parts.join('');
-
-        // Handle non boolean update
-        if (!isBoolean) {
-            node.setAttribute(attributeName, attributeValue);
-            return;
-        }
-
-        // Handle ugly boolean attribute update
-        attributeValue === 'false' || !attributeValue
-            ? node.removeAttribute(attributeName)
-            : node.setAttribute(attributeName, '');
+        setAttribute(node, attributeName, attributeValue);
     };
 };

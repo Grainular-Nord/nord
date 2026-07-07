@@ -1,6 +1,7 @@
-import type { Subscribable } from '../application/subscribable';
+import { setAttribute } from '../internals/attribute-bindings';
 import type { Fragment } from '../internals/fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
+import { unwrap } from '../internals/unwrap';
 import { createDirective } from './create-directive';
 
 /**
@@ -21,7 +22,7 @@ import { createDirective } from './create-directive';
 /**
  * Creates a directive that binds attributes to a DOM element.
  *
- * @param {Record<PropertyKey, unknown>} setup - A record mapping attribute
+ * @param {Record<PropertyKey, unknown>} dict - A record mapping attribute
  * names to their values. Values may be static or `Subscribable`.
  *
  * @returns {Fragment} A directive that sets the given attributes on the
@@ -35,25 +36,15 @@ import { createDirective } from './create-directive';
  * ```
  */
 
-export const attr = (setup: Record<PropertyKey, unknown>) => {
-    const unwrap = (value: unknown | Subscribable<unknown>): unknown => {
-        return isSubscribableValue(value) ? value() : value;
-    };
-
+export const attr = (dict: Record<PropertyKey, unknown>) => {
     return createDirective((node) => {
         const subscribers = new Set<(() => void) | void>();
-        const setAttribute = (key: string, value: unknown) => {
-            value ? node.setAttribute(key, String(unwrap(value))) : node.removeAttribute(key);
-        };
 
-        for (const [key, value] of Object.entries(setup)) {
-            setAttribute(key, value);
+        for (const [key, value] of Object.entries(dict)) {
+            setAttribute(node, key, unwrap(value));
             if (isSubscribableValue(value)) {
-                subscribers.add(
-                    value.subscribe((value) => {
-                        setAttribute(key, value);
-                    }),
-                );
+                const sub = value.subscribe((value) => setAttribute(node, key, value));
+                subscribers.add(sub);
             }
         }
 
