@@ -16,6 +16,7 @@ export { mounted } from './directives/mounted.directive';
 export { on } from './directives/on.directive';
 export { portal } from './directives/portal.directive';
 export { createRef, ref, type Ref } from './directives/ref.directive';
+export type { Fragment } from './internals/fragment';
 
 // --- Structs & Struct Factory
 export { $await } from './structs/await.struct';

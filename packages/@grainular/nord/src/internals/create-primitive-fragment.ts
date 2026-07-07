@@ -1,4 +1,4 @@
-import { type Fragment } from './fragment';
+import type { Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
 // Creates a primitive fragment, containing a scalar value

@@ -1,6 +1,6 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
-import { type Fragment } from './fragment';
+import type { Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
 // Creates a reactive fragment, that also updates the hydrated
