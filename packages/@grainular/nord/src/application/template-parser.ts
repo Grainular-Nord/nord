@@ -1,7 +1,7 @@
 import { createComponentFragment } from '../component/create-component-fragment';
 import { createPrimitiveFragment } from '../internals/create-primitive-fragment';
 import { createReactiveFragment } from '../internals/create-reactive-fragment';
-import { type Fragment } from '../internals/fragment';
+import type { Fragment } from '../internals/fragment';
 import { isPrimitiveValue } from '../internals/is-primitive-value';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import { trimWhitespace } from '../internals/trim-whitespace';

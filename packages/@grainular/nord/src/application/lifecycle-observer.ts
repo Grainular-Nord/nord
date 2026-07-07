@@ -5,7 +5,7 @@ export const lifecycleObserver = new (
               // on trigger check if any of the nodes are connected.
               // if yes, the callbacks get executed and the return
               // added to the unmounts
-              pendingMounts = new Set<{ node: Node; callback: () => void | (() => void) }>();
+              pendingMounts = new Set<{ node: Node; callback: () => () => void }>();
 
               // On trigger, we check all nodes in the map if they are
               // still mounted, and if not, run the unmount callback
@@ -58,7 +58,7 @@ export const lifecycleObserver = new (
                   this.observe(node, { childList: true, subtree: true });
               }
 
-              trackMount(node: Node, callback: () => void | (() => void)) {
+              trackMount(node: Node, callback: () => () => void) {
                   this.pendingMounts.add({ node, callback });
               }
 

@@ -2,5 +2,5 @@
 // to implement it's own readonly reactive state mechanism.
 export type Subscribable<Value = unknown> = {
     (): Value;
-    subscribe: (subscriber: (value: Value) => void) => void | (() => void);
+    subscribe: (subscriber: (value: Value) => void) => () => void;
 };

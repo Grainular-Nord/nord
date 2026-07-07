@@ -1,4 +1,4 @@
-import { type Fragment } from '../internals/fragment';
+import type { Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 import { type ComponentFragment, IS_COMPONENT } from './component-fragment';
 import { hydrateComponentTemplate } from './hydrate-component-template';
