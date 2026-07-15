@@ -11,7 +11,7 @@ const getTemplate = (html: string) => {
     }
 
     const created = document.createElement('template');
-    created.innerHTML = html.trim();
+    created.innerHTML = html;
     templateCache.set(html, created);
     return created;
 };
