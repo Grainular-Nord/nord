@@ -1,6 +1,7 @@
 import rehypeStringify from 'rehype-stringify';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
+import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { type PluggableList, unified } from 'unified';
@@ -18,6 +19,7 @@ export const parseMarkdown = async (
 ) => {
     const processor = unified()
         .use(remarkParse)
+        .use(remarkGfm)
         // Frontmatter
         .use(remarkFrontmatter, ['yaml'])
         .use(() => (_, file) => matter(file))
