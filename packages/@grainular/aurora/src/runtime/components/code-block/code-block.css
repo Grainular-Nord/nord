@@ -92,13 +92,13 @@
         }
 
         &.diff-add {
-            background: color-mix(in srgb, #4ade80, transparent 90%);
-            box-shadow: inset 2px 0 #4ade80;
+            background: color-mix(in srgb, var(--aurora-syntax-token-inserted), transparent 90%);
+            box-shadow: inset 2px 0 var(--aurora-syntax-token-inserted);
         }
 
         &.diff-remove {
-            background: color-mix(in srgb, #fb7185, transparent 90%);
-            box-shadow: inset 2px 0 #fb7185;
+            background: color-mix(in srgb, var(--aurora-syntax-token-deleted), transparent 90%);
+            box-shadow: inset 2px 0 var(--aurora-syntax-token-deleted);
         }
     }
 

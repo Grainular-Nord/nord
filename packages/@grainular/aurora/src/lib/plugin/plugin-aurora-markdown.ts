@@ -2,7 +2,7 @@ import rehypeShiki from '@shikijs/rehype';
 import type { Plugin } from 'vite';
 import { nordMarkdown } from 'vite-plugin-nord-md';
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
-import { auroraDarkTheme, auroraLightTheme } from '../markdown/aurora-shiki-theme';
+import { auroraTheme } from '../markdown/aurora-shiki-theme';
 import { codeBlockTransformer } from '../markdown/code-block-transformer';
 import { rehypeHeadingIds } from '../markdown/rehype-heading-ids';
 import { rehypeHeadingLinks } from '../markdown/rehype-heading-links';
@@ -26,11 +26,7 @@ export const pluginAuroraMarkdown = (config: ResolvedAuroraConfig): Plugin =>
             [
                 rehypeShiki,
                 {
-                    themes: {
-                        light: auroraLightTheme,
-                        dark: auroraDarkTheme,
-                    },
-                    defaultColor: 'light-dark()',
+                    theme: auroraTheme,
                     colorsRendering: 'none',
                     defaultLanguage: 'text',
                     transformers: [codeBlockTransformer()],

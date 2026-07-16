@@ -12,7 +12,7 @@ const build = new Builder({
 await build.for('node').from({
     ...pkg,
     entry: './src/index.ts',
-    external: ['vite', '@shikijs/rehype', 'vite-plugin-nord-md'],
+    external: ['vite', '@shikijs/rehype', 'vite-plugin-nord-md', 'shiki/core'],
 });
 
 await build.for('node').from({

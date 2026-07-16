@@ -26,6 +26,19 @@ html {
         --aurora-text-faint: oklch(0.53 0.012 250);
         --aurora-accent-text: color-mix(in srgb, var(--aurora-accent), var(--aurora-text) 38%);
         --aurora-code: oklch(0.95 0.005 250 / 0.78);
+        --aurora-syntax-background: transparent;
+        --aurora-syntax-foreground: #263244;
+        --aurora-syntax-token-comment: #5d697c;
+        --aurora-syntax-token-keyword: #0866bd;
+        --aurora-syntax-token-punctuation: #59677c;
+        --aurora-syntax-token-string: #317545;
+        --aurora-syntax-token-constant: #7855b8;
+        --aurora-syntax-token-parameter: #263244;
+        --aurora-syntax-token-function: #006f82;
+        --aurora-syntax-token-string-expression: #317545;
+        --aurora-syntax-token-link: #0866bd;
+        --aurora-syntax-token-inserted: #317545;
+        --aurora-syntax-token-deleted: #b43b62;
     }
 
     &[data-theme="dark"] {
@@ -40,5 +53,18 @@ html {
         --aurora-text-faint: oklch(0.59 0.014 250);
         --aurora-accent-text: color-mix(in srgb, var(--aurora-accent), var(--aurora-text) 15%);
         --aurora-code: oklch(0.12 0.01 250 / 0.72);
+        --aurora-syntax-background: transparent;
+        --aurora-syntax-foreground: #cbd5e3;
+        --aurora-syntax-token-comment: #718097;
+        --aurora-syntax-token-keyword: #67adff;
+        --aurora-syntax-token-punctuation: #8290a5;
+        --aurora-syntax-token-string: #9bd6a8;
+        --aurora-syntax-token-constant: #c0a4ff;
+        --aurora-syntax-token-parameter: #cbd5e3;
+        --aurora-syntax-token-function: #74d7e8;
+        --aurora-syntax-token-string-expression: #9bd6a8;
+        --aurora-syntax-token-link: #67adff;
+        --aurora-syntax-token-inserted: #9bd6a8;
+        --aurora-syntax-token-deleted: #ff7e9f;
     }
 }
