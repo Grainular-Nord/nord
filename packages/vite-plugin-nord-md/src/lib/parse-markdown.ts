@@ -15,7 +15,8 @@ export const parseMarkdown = async (
     code: string,
     components: Map<string, string>,
     nodes: Map<string, NodeData>,
-    plugins: PluggableList,
+    remarkPlugins: PluggableList,
+    rehypePlugins: PluggableList,
 ) => {
     const processor = unified()
         .use(remarkParse)
@@ -26,11 +27,12 @@ export const parseMarkdown = async (
 
         // Custom directives
         .use(remarkDirective)
-        .use(remarkPluginComponents(components, nodes, plugins))
+        .use(remarkPlugins)
+        .use(remarkPluginComponents(components, nodes, rehypePlugins))
 
         // Other plugins
         .use(remarkRehype)
-        .use(plugins)
+        .use(rehypePlugins)
         .use(rehypeStringify);
 
     const { data, value } = await processor.process(code);
