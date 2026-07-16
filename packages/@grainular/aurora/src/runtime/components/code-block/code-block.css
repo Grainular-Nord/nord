@@ -53,6 +53,7 @@
         background: transparent;
         border: 0;
         border-radius: var(--aurora-radius-small);
+        margin-inline-start: auto;
 
         &:hover {
             color: var(--aurora-text);
