@@ -5,7 +5,6 @@ export const createComponentModule = (name: string) => `
     import { renderComponentHost } from "@grainular/aurora/runtime";
 
     const definition = (config.components ?? []).find(({ name }) => name === ${JSON.stringify(name)});
-    if (!definition) throw new Error(${JSON.stringify(`Unknown Aurora component: ${name}`)});
     const { default: component } = await definition.component();
 
     export const ${name} = (props) => renderComponentHost(definition, component, props);

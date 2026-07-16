@@ -1,7 +1,6 @@
 import type { Plugin } from 'vite';
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
 import { createComponentModule } from '../virtual/component-module';
-import { createConfigModule } from '../virtual/config-module';
 import { createSsgEntry } from '../virtual/ssg-entry';
 import { AURORA_COMPONENT_PREFIX, AURORA_CONFIG_ID, AURORA_SSG_ENTRY } from './constants';
 
@@ -24,7 +23,11 @@ export const pluginAuroraSsg = (config: ResolvedAuroraConfig): Plugin => {
             }
         },
         load(id) {
-            if (id === resolvedConfigId) return createConfigModule(config);
+            if (id === resolvedConfigId) {
+                return config.configFile
+                    ? `export { default } from ${JSON.stringify(config.configFile)};`
+                    : 'export default {};';
+            }
             if (id === resolvedSsgEntry) return createSsgEntry(config, base);
             if (id.startsWith(resolvedComponentPrefix)) {
                 return createComponentModule(decodeURIComponent(id.slice(resolvedComponentPrefix.length)));

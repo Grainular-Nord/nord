@@ -9,9 +9,9 @@ const contentImports = (config: ResolvedAuroraConfig) =>
         )
         .join('\n');
 
-const pageRecords = (config: ResolvedAuroraConfig) =>
+const sourcePages = (config: ResolvedAuroraConfig) =>
     config.navigation
-        .map((_route, index) => `{ route: navigationItems[${index}], meta: meta${index}, content: content${index} }`)
+        .map(({ path }, index) => `{ path: ${JSON.stringify(path)}, meta: meta${index}, content: content${index} }`)
         .join(',\n');
 
 const notFoundImport = (config: ResolvedAuroraConfig) =>
@@ -30,7 +30,6 @@ const runtimeNavigation = (config: ResolvedAuroraConfig) => {
 };
 
 export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
-    const navigation = config.navigation.map(({ path, label, meta }) => ({ path, label, meta }));
     const navigationTree = runtimeNavigation(config);
 
     return `
@@ -41,11 +40,10 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
         ${notFoundImport(config)}
 
         const site = auroraConfig.site ?? {};
-        const pageDefaults = auroraConfig.page?.meta ?? {};
+        const page = auroraConfig.page ?? {};
         const buildBase = ${JSON.stringify(base)};
-        const navigationItems = ${JSON.stringify(navigation)};
         const navigationTree = ${JSON.stringify(navigationTree)};
-        const sourcePages = [${pageRecords(config)}];
+        const sourcePages = [${sourcePages(config)}];
         const layoutDefinitions = [...builtInLayouts, ...(auroraConfig.layouts ?? [])];
         const layouts = new Map(await Promise.all(
             layoutDefinitions.map(async (definition) => {
@@ -92,15 +90,15 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
                 path,
                 ...(fileName ? { fileName } : {}),
                 markup: renderToString(() => App({ meta, content, layouts })),
-                head: renderToString(() => $pageMeta(resolvedMeta)),
-                language: resolvedMeta.language ?? 'en',
+                head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page })),
+                language: page.language ?? 'en',
                 ...(status ? { status } : {})
             };
         };
 
-        const contentPages = sourcePages.map(({ route, meta: markdownMeta, content }) => renderPage({
-            path: route.path,
-            meta: { ...pageDefaults, ...(markdownMeta ?? {}), ...(route.meta ?? {}) },
+        const contentPages = sourcePages.map(({ path, meta, content }) => renderPage({
+            path,
+            meta,
             content
         }));
 
@@ -111,7 +109,6 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
             fileName: '404.html',
             status: 404,
             meta: {
-                ...pageDefaults,
                 title: 'Page not found',
                 description: 'The requested page could not be found.',
                 layout: 'page',

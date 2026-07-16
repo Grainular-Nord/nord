@@ -9,7 +9,7 @@ export const loadLlmsPages = async (config: ResolvedAuroraConfig): Promise<LlmsP
             const markdown = await readFile(route.source, 'utf8');
             return {
                 content: stripFrontmatter(markdown),
-                description: route.meta?.description ?? readFrontmatterValue(markdown, 'description'),
+                description: readFrontmatterValue(markdown, 'description'),
                 label: route.label,
                 path: route.path,
             };

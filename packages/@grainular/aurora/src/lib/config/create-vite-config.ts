@@ -1,5 +1,10 @@
 import { createLogger, type InlineConfig, type PluginOption } from 'vite';
-import { plugin } from '../plugin/plugin';
+import { pluginAuroraCore } from '../plugin/plugin-aurora-core';
+import { pluginAuroraCss } from '../plugin/plugin-aurora-css';
+import { pluginAuroraLlms } from '../plugin/plugin-aurora-llms';
+import { pluginAuroraMarkdown } from '../plugin/plugin-aurora-markdown';
+import { pluginAuroraSearch } from '../plugin/plugin-aurora-search';
+import { pluginAuroraSsg } from '../plugin/plugin-aurora-ssg';
 import type { ResolvedAuroraConfig } from './resolve-config';
 
 const defined = <T extends object>(value: T | undefined): Partial<T> =>
@@ -18,6 +23,14 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
         preview: { ...vite.preview, ...defined(overrides.preview) },
         root: config.root,
         server: { ...vite.server, ...defined(overrides.server) },
-        plugins: [...(plugins as PluginOption[]), ...plugin(config)],
+        plugins: [
+            ...(plugins as PluginOption[]),
+            pluginAuroraMarkdown(config),
+            pluginAuroraSsg(config),
+            pluginAuroraLlms(config),
+            pluginAuroraCore(config),
+            pluginAuroraSearch(),
+            pluginAuroraCss(),
+        ],
     };
 };

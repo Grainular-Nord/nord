@@ -25,8 +25,6 @@ export type AuroraNavigationRoute = {
     path: string;
     /** Human-readable label exposed to the application navigation. */
     label: string;
-    /** Route-level metadata overriding Markdown and page defaults. */
-    meta?: Partial<AuroraPageMeta>;
     /** Nested routes or navigation groups rendered below this route. */
     children?: AuroraNavigationItem[];
 };
@@ -38,7 +36,6 @@ export type AuroraNavigationGroup = {
     children: AuroraNavigationItem[];
     source?: never;
     path?: never;
-    meta?: never;
 };
 
 export type AuroraNavigationItem = AuroraNavigationRoute | AuroraNavigationGroup;
@@ -53,13 +50,15 @@ export type AuroraRuntimeNavigationItem = {
 export type AuroraPageMeta = {
     title?: string;
     description?: string;
-    language?: string;
-    canonical?: string;
     robots?: string;
-    themeColor?: string;
-    /** Additional trusted markup appended to the document head. */
-    head?: string | ComponentFragment;
     layout?: string;
+};
+
+export type AuroraPageConfig = {
+    language?: string;
+    themeColor?: string;
+    /** Additional trusted markup appended to every document head. */
+    head?: string | ComponentFragment;
 };
 
 export type AuroraStaticPage = {
@@ -127,10 +126,8 @@ export type AuroraConfig = {
     components?: AuroraComponentDefinition[];
     /** Additional or replacement layouts selectable from Markdown frontmatter. */
     layouts?: AuroraLayoutDefinition[];
-    /** Metadata defaults applied to every generated page. */
-    page?: {
-        meta?: Partial<AuroraPageMeta>;
-    };
+    /** Document settings applied to every generated page. */
+    page?: AuroraPageConfig;
     site?: {
         /**
          * The title of the documentation site. This

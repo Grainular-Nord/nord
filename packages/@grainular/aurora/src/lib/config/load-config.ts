@@ -4,10 +4,9 @@ import { createServer, type Plugin } from 'vite';
 import type { AuroraConfig } from './config';
 import { type ResolvedAuroraConfig, resolveConfig } from './resolve-config';
 
-const CONFIG_FILE = 'aurora.config.ts';
 const CSS_STUB_PREFIX = '\0aurora-config-css:';
 
-const configCssStub = (): Plugin => ({
+const configCssStub: Plugin = {
     name: 'aurora-config-css-stub',
     enforce: 'pre',
     resolveId(id) {
@@ -16,18 +15,18 @@ const configCssStub = (): Plugin => ({
     load(id) {
         if (id.startsWith(CSS_STUB_PREFIX)) return 'export default undefined;';
     },
-});
+};
 
 export const loadConfig = async (root = process.cwd()): Promise<ResolvedAuroraConfig> => {
     const resolvedRoot = resolve(root);
-    const configFile = resolve(resolvedRoot, CONFIG_FILE);
+    const configFile = resolve(resolvedRoot, 'aurora.config.ts');
     if (!existsSync(configFile)) return resolveConfig({}, resolvedRoot);
 
     const server = await createServer({
         appType: 'custom',
         configFile: false,
         logLevel: 'silent',
-        plugins: [configCssStub()],
+        plugins: [configCssStub],
         root: resolvedRoot,
         server: { middlewareMode: true },
     });

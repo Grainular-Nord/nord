@@ -1,11 +1,10 @@
 import { createStruct } from '@grainular/nord';
-import type { AuroraPageMeta } from '../../lib/config/config';
-import { escapeHtml } from '../../lib/html/escape-html';
+import type { AuroraPageConfig, AuroraPageMeta } from '../../lib/config/config';
+import { escapeHtml } from '../../lib/utils/escape-html';
 
-const renderPageMeta = (meta: AuroraPageMeta) => {
+const renderPageMeta = (meta: AuroraPageConfig & AuroraPageMeta) => {
     const tags = [
         meta.description && `<meta name="description" content="${escapeHtml(meta.description)}" />`,
-        meta.canonical && `<link rel="canonical" href="${escapeHtml(meta.canonical)}" />`,
         meta.robots && `<meta name="robots" content="${escapeHtml(meta.robots)}" />`,
         meta.themeColor && `<meta name="theme-color" content="${escapeHtml(meta.themeColor)}" />`,
         `<title>${escapeHtml(meta.title || 'Aurora')}</title>`,
@@ -16,7 +15,7 @@ const renderPageMeta = (meta: AuroraPageMeta) => {
 };
 
 /** Renders the resolved page metadata into Aurora's generated document head. */
-export const $pageMeta = (meta: AuroraPageMeta) =>
+export const $pageMeta = (meta: AuroraPageConfig & AuroraPageMeta) =>
     createStruct(
         () => {},
         () => renderPageMeta(meta),

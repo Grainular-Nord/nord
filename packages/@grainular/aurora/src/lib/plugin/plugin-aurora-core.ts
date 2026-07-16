@@ -1,10 +1,10 @@
 import type { Plugin } from 'vite';
 import type { AuroraStaticPage } from '../config/config';
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
-import { createIndexHtml } from '../html/create-index-html';
 import { renderStaticPages } from '../render/render-static-pages';
 import { createClientEntry } from '../virtual/client-entry';
 import { AURORA_CLIENT_ENTRY } from './constants';
+import { createIndexHtml } from './create-index-html';
 import { devPageMiddleware } from './dev-page-middleware';
 import { previewPageMiddleware } from './preview-page-middleware';
 
@@ -32,8 +32,7 @@ export const pluginAuroraCore = (config: ResolvedAuroraConfig): Plugin => {
         generateBundle(_options, bundle) {
             if (pages.length === 0) return;
 
-            const entry = Object.values(bundle).find((output) => output.type === 'chunk' && output.isEntry);
-            if (!entry) throw new Error('Aurora could not find the islands client entry.');
+            const entry = Object.values(bundle).filter((output) => output.type === 'chunk' && output.isEntry)[0];
 
             const stylesheets = Object.values(bundle)
                 .filter((output) => output.type === 'asset' && output.fileName.endsWith('.css'))

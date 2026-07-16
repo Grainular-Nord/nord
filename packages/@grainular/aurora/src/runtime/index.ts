@@ -5,6 +5,7 @@ export { builtInComponents } from './components/built-in-components';
 // Prebuilt components
 export { Caution, Important, Note, Tip, Warning } from './components/callout/callout';
 export { renderComponentHost } from './components/component-host';
+export { Details } from './components/details/details';
 export { Footer } from './components/footer/footer';
 export { Header } from './components/header/header';
 export { ThemeToggle } from './components/header/theme-toggle';

@@ -1,8 +1,8 @@
 import type { Connect, ViteDevServer } from 'vite';
 import type { AuroraStaticPage } from '../config/config';
-import { createIndexHtml } from '../html/create-index-html';
 import { stripBasePath } from '../path/strip-base-path';
 import { AURORA_CLIENT_ENTRY, AURORA_DEV_STYLESHEET, AURORA_SSG_ENTRY } from './constants';
+import { createIndexHtml } from './create-index-html';
 
 export const devPageMiddleware = (server: ViteDevServer, base: string): Connect.NextHandleFunction => {
     return async (request, response, next) => {

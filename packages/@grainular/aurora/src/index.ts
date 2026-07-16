@@ -11,6 +11,7 @@ export {
     type AuroraNavigationGroup,
     type AuroraNavigationItem,
     type AuroraNavigationRoute,
+    type AuroraPageConfig,
     type AuroraPageMeta,
     type AuroraRuntimeNavigationItem,
     type AuroraSearchEntry,
