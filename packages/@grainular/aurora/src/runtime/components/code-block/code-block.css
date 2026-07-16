@@ -1,5 +1,7 @@
 .aurora-code-block {
+    inline-size: 100%;
     max-inline-size: 100%;
+    margin-inline: 0;
     overflow: hidden;
     background: var(--aurora-code);
     border: 1px solid var(--aurora-border);
@@ -44,28 +46,6 @@
         }
     }
 
-    & .aurora-code-copy {
-        min-inline-size: 3.8rem;
-        padding: 0.4rem 0.55rem;
-        font: 600 0.7rem / 1 var(--aurora-font-sans);
-        color: var(--aurora-text-faint);
-        cursor: pointer;
-        background: transparent;
-        border: 0;
-        border-radius: var(--aurora-radius-small);
-        margin-inline-start: auto;
-
-        &:hover {
-            color: var(--aurora-text);
-            background: var(--aurora-overlay);
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--aurora-accent);
-            outline-offset: 1px;
-        }
-    }
-
     & pre {
         margin: 0;
         padding: 0.9rem 0;
@@ -106,5 +86,27 @@
     &.aurora-code-focus .line:not(.highlighted) {
         opacity: 0.55;
         filter: blur(1px);
+    }
+}
+
+.aurora-code-copy {
+    min-inline-size: 3.8rem;
+    padding: 0.4rem 0.55rem;
+    margin-inline-start: auto;
+    font: 600 0.7rem / 1 var(--aurora-font-body);
+    color: var(--aurora-text-faint);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--aurora-radius-small);
+
+    &:hover {
+        color: var(--aurora-text);
+        background: var(--aurora-overlay);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--aurora-accent);
+        outline-offset: 1px;
     }
 }

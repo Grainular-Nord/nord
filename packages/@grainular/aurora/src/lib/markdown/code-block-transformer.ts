@@ -1,8 +1,9 @@
 import type { ShikiTransformer } from 'shiki';
+import { parseCodeBlockTitle } from './parse-code-block-title';
 
-const titlePattern = /(?:^|\s)(?:title|filename)=(?:"([^"]*)"|'([^']*)'|([^\s]+))/;
 const highlightPattern = /(?:^|\s)\{([\d,\s-]+)\}(?=\s|$)/;
 const blurPattern = /(?:^|\s)blur(?::|=)true(?=\s|$)/i;
+const groupPattern = /(?:^|\s)aurora-code-group(?=\s|$)/;
 
 const codeCopyHost = () => ({
     type: 'element' as const,
@@ -59,11 +60,11 @@ export const codeBlockTransformer = (): ShikiTransformer => {
         },
         root(root) {
             const meta = this.options.meta?.__raw ?? '';
-            const titleMatch = meta.match(titlePattern);
-            const title = titleMatch?.[1] ?? titleMatch?.[2] ?? titleMatch?.[3];
+            const title = parseCodeBlockTitle(meta);
             const language = String(this.options.lang);
             const highlightedLines = (this.meta as { highlightedLines?: Set<number> }).highlightedLines;
             const blur = blurPattern.test(meta) && Boolean(highlightedLines?.size);
+            const grouped = groupPattern.test(meta);
             const pre = root.children[0];
             if (pre?.type !== 'element') return;
 
@@ -74,33 +75,35 @@ export const codeBlockTransformer = (): ShikiTransformer => {
                     properties: {
                         className: ['aurora-code-block', ...(blur ? ['aurora-code-focus'] : [])],
                     },
-                    children: [
-                        {
-                            type: 'element',
-                            tagName: 'figcaption',
-                            properties: { className: ['aurora-code-toolbar'] },
-                            children: [
-                                {
-                                    type: 'element',
-                                    tagName: 'span',
-                                    properties: { className: ['aurora-code-title'] },
-                                    children: [{ type: 'text', value: title ?? language }],
-                                },
-                                ...(title
-                                    ? [
-                                          {
-                                              type: 'element' as const,
-                                              tagName: 'span',
-                                              properties: { className: ['aurora-code-language'] },
-                                              children: [{ type: 'text' as const, value: language }],
-                                          },
-                                      ]
-                                    : []),
-                                codeCopyHost(),
-                            ],
-                        },
-                        pre,
-                    ],
+                    children: grouped
+                        ? [pre]
+                        : [
+                              {
+                                  type: 'element',
+                                  tagName: 'figcaption',
+                                  properties: { className: ['aurora-code-toolbar'] },
+                                  children: [
+                                      {
+                                          type: 'element',
+                                          tagName: 'span',
+                                          properties: { className: ['aurora-code-title'] },
+                                          children: [{ type: 'text', value: title ?? language }],
+                                      },
+                                      ...(title
+                                          ? [
+                                                {
+                                                    type: 'element' as const,
+                                                    tagName: 'span',
+                                                    properties: { className: ['aurora-code-language'] },
+                                                    children: [{ type: 'text' as const, value: language }],
+                                                },
+                                            ]
+                                          : []),
+                                      codeCopyHost(),
+                                  ],
+                              },
+                              pre,
+                          ],
                 },
             ];
         },

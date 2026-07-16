@@ -9,7 +9,11 @@ export const CodeCopy = () => {
     const lifecycle = mounted(() => () => window.clearTimeout(reset));
     const copy = async (event: Event) => {
         const button = event.currentTarget as HTMLButtonElement;
-        const code = button.closest('.aurora-code-block')?.querySelector('code')?.textContent;
+        const group = button.closest('.aurora-code-group');
+        const code = (
+            group?.querySelector('.aurora-code-group-toggle:checked ~ .aurora-code-block code') ??
+            button.closest('.aurora-code-block')?.querySelector('code')
+        )?.textContent;
         if (!code) return;
 
         try {

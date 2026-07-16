@@ -6,6 +6,7 @@ import { auroraTheme } from '../markdown/aurora-shiki-theme';
 import { codeBlockTransformer } from '../markdown/code-block-transformer';
 import { rehypeHeadingIds } from '../markdown/rehype-heading-ids';
 import { rehypeHeadingLinks } from '../markdown/rehype-heading-links';
+import { remarkCodeGroups } from '../markdown/remark-code-groups';
 import { AURORA_COMPONENT_PREFIX } from './constants';
 
 export const pluginAuroraMarkdown = (config: ResolvedAuroraConfig): Plugin =>
@@ -20,7 +21,8 @@ export const pluginAuroraMarkdown = (config: ResolvedAuroraConfig): Plugin =>
                 importPath: `${AURORA_COMPONENT_PREFIX}${encodeURIComponent(name)}`,
             })),
         ],
-        plugins: [
+        remarkPlugins: [[remarkCodeGroups, {}]],
+        rehypePlugins: [
             [rehypeHeadingIds, {}],
             [rehypeHeadingLinks, {}],
             [

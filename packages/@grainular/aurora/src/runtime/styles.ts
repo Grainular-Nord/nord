@@ -1,6 +1,7 @@
 import app from './app.css' with { type: 'text' };
 import callout from './components/callout/callout.css' with { type: 'text' };
 import codeBlock from './components/code-block/code-block.css' with { type: 'text' };
+import codeGroup from './components/code-group/code-group.css' with { type: 'text' };
 import componentHost from './components/component-host.css' with { type: 'text' };
 import details from './components/details/details.css' with { type: 'text' };
 import footer from './components/footer/footer.css' with { type: 'text' };
@@ -23,6 +24,7 @@ export default [
     callout,
     details,
     codeBlock,
+    codeGroup,
     docs,
     page,
     header,
