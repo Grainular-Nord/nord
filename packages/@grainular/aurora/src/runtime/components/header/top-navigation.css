@@ -1,0 +1,24 @@
+.aurora-top-navigation {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: 0.2rem;
+
+    & a {
+        padding: 0.45rem 0.65rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--aurora-text-muted);
+        text-decoration: none;
+        border-radius: var(--aurora-radius);
+
+        &:hover {
+            color: var(--aurora-text);
+            background: var(--aurora-overlay);
+        }
+    }
+
+    @container aurora-header (width < 36rem) {
+        display: none;
+    }
+}

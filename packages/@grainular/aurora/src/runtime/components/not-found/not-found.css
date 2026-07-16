@@ -1,0 +1,57 @@
+.aurora-not-found {
+    display: grid;
+    align-content: center;
+    min-block-size: min(36rem, calc(100dvh - var(--aurora-header-height) - 10rem));
+    text-align: center;
+
+    & .aurora-not-found-visual {
+        display: flex;
+        gap: 0.02em;
+        align-items: baseline;
+        justify-content: center;
+        padding-block-end: 1.25rem;
+        font: 780 clamp(4.5rem, 16cqi, 8rem) / 0.82 var(--aurora-font-body);
+        color: var(--aurora-text);
+        letter-spacing: -0.09em;
+        border-block-end: 1px solid var(--aurora-border);
+    }
+
+    & .aurora-not-found-zero {
+        color: var(--aurora-accent);
+    }
+
+    & .aurora-not-found-content {
+        margin-block-start: 1.25rem;
+
+        & > * {
+            margin-block: 0;
+        }
+
+        /* biome-ignore lint/style/noDescendingSpecificity: Sibling flow intentionally overrides the child reset. */
+        & > * + * {
+            margin-block-start: 0.85rem;
+        }
+    }
+
+    & .aurora-not-found-content > :is(p, ul, ol) {
+        max-inline-size: 32rem;
+        margin-inline: auto;
+    }
+
+    & .aurora-not-found-home {
+        justify-self: center;
+        padding: 0.6rem 0.85rem;
+        margin-block-start: 1.5rem;
+        font-weight: 650;
+        color: var(--aurora-accent-text);
+        text-underline-offset: 0.2em;
+
+        &:hover {
+            color: var(--aurora-text);
+        }
+
+        &::before {
+            content: "← ";
+        }
+    }
+}

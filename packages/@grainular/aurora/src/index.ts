@@ -1,1 +1,20 @@
-export { plugin as aurora } from './lib/plugin';
+export {
+    type AuroraComponentDefinition,
+    type AuroraComponentModule,
+    type AuroraConfig,
+    type AuroraContext,
+    type AuroraFooterConfig,
+    type AuroraLayoutDefinition,
+    type AuroraLayoutModule,
+    type AuroraLayoutProps,
+    type AuroraLink,
+    type AuroraNavigationGroup,
+    type AuroraNavigationItem,
+    type AuroraNavigationRoute,
+    type AuroraPageMeta,
+    type AuroraRuntimeNavigationItem,
+    type AuroraSearchEntry,
+    type AuroraSocialLink,
+    type AuroraStaticPage,
+    defineConfig,
+} from './lib/config/config';

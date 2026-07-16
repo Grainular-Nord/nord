@@ -1,24 +1,28 @@
-import { type Fragment, html } from '@grainular/nord';
-import type { AuroraConfig } from '../lib/config';
-import { Docs } from './layouts/docs';
-import { Page } from './layouts/page';
-import { $pageTitle } from './structs/$page-title';
+import { type ComponentFragment, html } from '@grainular/nord';
+import type { AuroraLayoutModule, AuroraPageMeta } from '../lib/config/config';
+import { Footer } from './components/footer/footer';
+import { Header } from './components/header/header';
 
 export type AppProps = {
-    content: Fragment;
-    meta: { title?: string; layout?: 'page' | string };
-    config: AuroraConfig['site'];
+    content: ComponentFragment;
+    meta: AuroraPageMeta;
+    layouts: Map<string, AuroraLayoutModule['default']>;
 };
-export const App = ({ content, meta, config }: AppProps) => {
-    console.log({ content, meta, config });
-    // We want to find and extract the selected
-    // layout from the frontmatter meta
-    const layout = { page: Page, docs: Docs }[meta.layout ?? 'page'] ?? Page;
+export const App = ({ content, layouts, meta }: AppProps) => {
+    const layout = layouts.get(meta.layout ?? 'page') ?? layouts.get('page');
+    if (!layout) throw new Error('Aurora requires a default "page" layout.');
+    const staticContent = html`<div data-aurora-content>${content}</div>`;
 
     return html`
-        ${$pageTitle(meta.title)}
-        <div class="application-shell">
-            ${layout({ content, meta })}
+        <div class="aurora-app">
+            <a class="aurora-skip-link" href="#aurora-main-content">Skip to main content</a>
+            <div class="aurora-background" aria-hidden="true"></div>
+            ${Header()}
+            <button class="aurora-navigation-backdrop" type="button" tabindex="-1" aria-label="Close navigation"></button>
+            <div id="aurora-main-content" class="application-shell" tabindex="-1">
+                ${layout({ content: staticContent, meta })}
+            </div>
+            ${Footer()}
         </div>
     `;
 };

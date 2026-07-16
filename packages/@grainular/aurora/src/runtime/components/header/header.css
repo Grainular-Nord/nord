@@ -1,0 +1,34 @@
+.aurora-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: var(--aurora-sidebar-offset) 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    block-size: var(--aurora-header-height);
+    padding: 0.5rem clamp(0.75rem, 2vw, 1rem);
+    background: color-mix(in srgb, var(--aurora-background), transparent 12%);
+    border-bottom: 1px solid var(--aurora-border-subtle);
+    backdrop-filter: blur(18px);
+    container: aurora-header / inline-size;
+
+    & .aurora-header-actions {
+        display: flex;
+        flex: 0 0 auto;
+        gap: 0.25rem;
+        margin-inline-start: auto;
+
+        @container aurora-header (width < 30rem) {
+            & > .aurora-icon-button:not(:first-child) {
+                display: none;
+            }
+        }
+    }
+
+    @media (width < 45rem) {
+        .aurora-app:has(.aurora-sidebar) & {
+            padding-inline-start: 3.75rem;
+        }
+    }
+}

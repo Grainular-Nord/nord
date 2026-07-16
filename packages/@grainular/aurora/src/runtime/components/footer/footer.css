@@ -1,0 +1,35 @@
+.aurora-footer {
+    position: relative;
+    z-index: 1;
+    padding-block: 1rem 1.5rem;
+    padding-inline: calc(var(--aurora-sidebar-offset) + clamp(1.25rem, 3vw, 2rem)) clamp(1.25rem, 3vw, 2rem);
+    font-size: 0.75rem;
+    color: var(--aurora-text-faint);
+
+    & .aurora-footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        max-inline-size: 64rem;
+        padding-block-start: 1rem;
+        margin: auto;
+        border-top: 1px solid var(--aurora-border-subtle);
+    }
+
+    & .aurora-footer-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        & a {
+            color: var(--aurora-text-faint);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--aurora-text);
+            }
+        }
+    }
+}

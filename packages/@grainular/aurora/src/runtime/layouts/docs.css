@@ -1,0 +1,13 @@
+.aurora-docs-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(8rem, var(--aurora-outline-width));
+    gap: clamp(2rem, 4cqi, 3.5rem);
+    justify-content: center;
+    align-items: start;
+    inline-size: 100%;
+    padding: clamp(2rem, 5cqi, 3.5rem) clamp(1.25rem, 4cqi, 4rem) clamp(4rem, 7cqi, 6rem);
+
+    @container aurora-shell (width < 64rem) {
+        grid-template-columns: minmax(0, 46rem);
+    }
+}

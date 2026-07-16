@@ -1,0 +1,352 @@
+.application-content {
+    min-inline-size: 0;
+    font-size: clamp(0.94rem, 0.91rem + 0.12cqi, 1rem);
+    line-height: 1.72;
+    color: var(--aurora-text-muted);
+
+    & :is(h1, h2, h3, h4, h5, h6) {
+        margin-block: 0;
+        color: var(--aurora-text);
+        line-height: 1.2;
+        text-wrap: balance;
+        letter-spacing: -0.025em;
+        scroll-margin-block-start: calc(var(--aurora-header-height) + 2rem);
+
+        &:is(:hover, :target, :focus-within) > .aurora-heading-link::after {
+            opacity: 1;
+        }
+    }
+
+    & .aurora-heading-link {
+        color: inherit;
+        text-decoration: none;
+
+        &::after {
+            margin-inline-start: 0.65em;
+            font-size: 0.72em;
+            font-weight: 600;
+            color: var(--aurora-text-faint);
+            content: "#" / "";
+            opacity: 0;
+            transition:
+                color 140ms ease,
+                opacity 140ms ease;
+        }
+
+        &:hover::after {
+            color: var(--aurora-accent-text);
+        }
+
+        &:focus-visible {
+            outline: 2px solid currentcolor;
+            outline-offset: 0.2em;
+        }
+
+        @media (hover: none) {
+            &::after {
+                opacity: 0.55;
+            }
+        }
+    }
+
+    & h1 {
+        font-size: clamp(2.15rem, 1.75rem + 2cqi, 3rem);
+        font-weight: 780;
+    }
+
+    & h2 {
+        font-size: clamp(1.4rem, 1.28rem + 0.55cqi, 1.55rem);
+        font-weight: 740;
+    }
+
+    & h3 {
+        font-size: clamp(1.08rem, 1.03rem + 0.25cqi, 1.18rem);
+        font-weight: 700;
+    }
+
+    & h4 {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    & :is(h5, h6) {
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+
+    & h6 {
+        color: var(--aurora-text-muted);
+    }
+
+    & :is(p, ul, ol, dl, blockquote, figure) {
+        margin-block: 0;
+    }
+
+    & p {
+        text-wrap: pretty;
+    }
+
+    & [data-aurora-content] > h1 + p {
+        --aurora-flow-space: 1.2rem;
+
+        font-size: 1.05em;
+        line-height: 1.75;
+        color: var(--aurora-text-muted);
+    }
+
+    & a {
+        color: var(--aurora-accent-text);
+        text-decoration-thickness: 0.08em;
+        text-underline-offset: 0.18em;
+        overflow-wrap: anywhere;
+
+        &:hover {
+            color: var(--aurora-text);
+        }
+    }
+
+    & :is(strong, b) {
+        font-weight: 700;
+        color: var(--aurora-text);
+    }
+
+    & :is(del, s) {
+        color: var(--aurora-text-faint);
+        text-decoration-thickness: 0.08em;
+    }
+
+    & :is(ul, ol) {
+        padding-inline-start: 1.35rem;
+
+        & :is(ul, ol) {
+            margin-block: 0.45rem 0;
+        }
+    }
+
+    & li {
+        & + li {
+            margin-block-start: 0.35rem;
+        }
+
+        & > :is(p, ul, ol) + :is(p, ul, ol) {
+            margin-block-start: 0.45rem;
+        }
+
+        &::marker {
+            color: var(--aurora-text-faint);
+        }
+    }
+
+    & ol li::marker {
+        font-variant-numeric: tabular-nums;
+    }
+
+    & .contains-task-list {
+        padding-inline-start: 0;
+        list-style: none;
+    }
+
+    & .task-list-item {
+        list-style: none;
+
+        & input[type="checkbox"] {
+            inline-size: 1rem;
+            block-size: 1rem;
+            margin: 0 0.5rem 0 0;
+            vertical-align: -0.12rem;
+            accent-color: var(--aurora-accent);
+        }
+    }
+
+    & blockquote {
+        padding: 0.1rem 0 0.1rem 1.15rem;
+        color: var(--aurora-text-muted);
+        border-inline-start: 3px solid var(--aurora-accent);
+
+        & > * + * {
+            margin-block-start: 0.65rem;
+        }
+    }
+
+    & hr {
+        block-size: 1px;
+        margin-inline: 0;
+        background: var(--aurora-border-subtle);
+        border: 0;
+    }
+
+    & table {
+        display: block;
+        inline-size: max-content;
+        max-inline-size: 100%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        font-size: 0.88em;
+        line-height: 1.5;
+        border-spacing: 0;
+        border: 1px solid var(--aurora-border);
+    }
+
+    & :is(th, td) {
+        min-inline-size: 8rem;
+        padding: 0.65rem 0.8rem;
+        text-align: start;
+        vertical-align: top;
+        border-block-end: 1px solid var(--aurora-border-subtle);
+        border-inline-end: 1px solid var(--aurora-border-subtle);
+
+        &:last-child {
+            border-inline-end: 0;
+        }
+    }
+
+    & th {
+        font-weight: 700;
+        color: var(--aurora-text);
+        background: var(--aurora-overlay);
+    }
+
+    & tr:last-child td {
+        border-block-end: 0;
+    }
+
+    & tbody tr:nth-child(even) {
+        background: color-mix(in srgb, var(--aurora-overlay), transparent 60%);
+    }
+
+    & figure > :is(img, video) {
+        inline-size: 100%;
+    }
+
+    & :is(img, video) {
+        block-size: auto;
+        border-radius: var(--aurora-radius);
+    }
+
+    & figcaption {
+        font-size: 0.8em;
+        color: var(--aurora-text-faint);
+        text-align: center;
+    }
+
+    & code {
+        padding: 0.12rem 0.38rem;
+        font-family: var(--aurora-font-mono);
+        font-size: 0.86em;
+        color: var(--aurora-text);
+        overflow-wrap: anywhere;
+        background: var(--aurora-overlay);
+        border: 1px solid var(--aurora-border-subtle);
+        border-radius: var(--aurora-radius-small);
+    }
+
+    & pre {
+        position: relative;
+        max-inline-size: 100%;
+        padding: 1.2rem 1.3rem;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        font: 0.82rem / 1.65 var(--aurora-font-mono);
+        background: var(--aurora-code);
+        border: 1px solid var(--aurora-border);
+        border-radius: var(--aurora-radius);
+        box-shadow: 0 12px 28px -24px black;
+        backdrop-filter: blur(16px);
+
+        &.shiki {
+            /* biome-ignore lint/complexity/noImportantStyles: Shiki writes its background as an inline style. */
+            background: var(--aurora-code) !important;
+        }
+
+        & code {
+            padding: 0;
+            overflow-wrap: normal;
+            white-space: pre;
+            background: none;
+            border: 0;
+        }
+    }
+
+    & kbd {
+        padding: 0.12rem 0.38rem;
+        font: 0.78em var(--aurora-font-mono);
+        color: var(--aurora-text);
+        background: var(--aurora-surface);
+        border: 1px solid var(--aurora-border);
+        border-block-end-width: 2px;
+        border-radius: var(--aurora-radius-small);
+    }
+
+    & mark {
+        padding-inline: 0.15em;
+        color: var(--aurora-text);
+        background: color-mix(in srgb, var(--aurora-accent), transparent 70%);
+    }
+
+    & dt {
+        font-weight: 700;
+        color: var(--aurora-text);
+    }
+
+    & dd {
+        margin: 0.25rem 0 0.8rem 1.25rem;
+    }
+
+    & :is(details, summary) {
+        color: var(--aurora-text);
+    }
+
+    & summary {
+        cursor: pointer;
+        font-weight: 650;
+    }
+
+    & [data-footnote-ref] {
+        font-size: 0.75em;
+    }
+
+    & [data-footnotes] {
+        margin-block-start: 3.75rem;
+        font-size: 0.86em;
+        color: var(--aurora-text-faint);
+        border-block-start: 1px solid var(--aurora-border-subtle);
+    }
+}
+
+[data-aurora-content] {
+    display: contents;
+
+    & > h2 {
+        --aurora-flow-space: 3.75rem;
+    }
+
+    & > h3 {
+        --aurora-flow-space: 2.5rem;
+    }
+
+    & > :is(h4, h5, h6) {
+        --aurora-flow-space: 2rem;
+    }
+
+    /* biome-ignore lint/style/noDescendingSpecificity: Flow overrides intentionally follow component rhythm. */
+    & > :is(h2, h3, h4, h5, h6) + * {
+        --aurora-flow-space: 0.75rem;
+    }
+
+    & > :is(pre, blockquote, table, figure, .aurora-callout) {
+        --aurora-flow-space: 1.5rem;
+    }
+}
+
+/* Keep flow composition last so it wins over element-level margin resets. */
+.application-content [data-aurora-content] {
+    & > * {
+        margin-block: 0;
+    }
+
+    /* biome-ignore lint/style/noDescendingSpecificity: The final flow rule must win over element margin resets. */
+    & > * + * {
+        margin-block-start: var(--aurora-flow-space, 1rem);
+    }
+}

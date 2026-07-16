@@ -6,6 +6,9 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
+  "bin": {
+    "aurora": "./dist/esm/cli/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
@@ -32,6 +35,7 @@
   },
   "peerDependencies": {
     "typescript": "^5",
+    "vite": "^7 || ^8",
     "@grainular/nord": "workspace:*",
     "@grainular/grains": "workspace:*"
   },

@@ -1,0 +1,109 @@
+.aurora-code-block {
+    max-inline-size: 100%;
+    overflow: hidden;
+    background: var(--aurora-code);
+    border: 1px solid var(--aurora-border);
+    border-radius: 0.5rem;
+    box-shadow:
+        0 1px 2px rgb(0 0 0 / 12%),
+        0 14px 32px -22px rgb(0 0 0 / 45%);
+    backdrop-filter: blur(16px);
+
+    & .aurora-code-toolbar {
+        display: flex;
+        align-items: center;
+        min-block-size: 2.55rem;
+        padding-inline: 1rem 0.55rem;
+        color: var(--aurora-text-faint);
+        text-align: start;
+        background: color-mix(in srgb, var(--aurora-overlay), transparent 35%);
+        border-block-end: 1px solid var(--aurora-border-subtle);
+    }
+
+    & .aurora-code-title {
+        min-inline-size: 0;
+        overflow: hidden;
+        font: 600 0.76rem / 1.2 var(--aurora-font-mono);
+        color: var(--aurora-text-muted);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    & .aurora-code-copy-host {
+        margin-inline-start: auto;
+    }
+
+    & .aurora-code-language {
+        margin-inline-start: auto;
+        font: 600 0.66rem / 1 var(--aurora-font-mono);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+
+        & + .aurora-code-copy-host {
+            margin-inline-start: 0.65rem;
+        }
+    }
+
+    & .aurora-code-copy {
+        min-inline-size: 3.8rem;
+        padding: 0.4rem 0.55rem;
+        font: 600 0.7rem / 1 var(--aurora-font-sans);
+        color: var(--aurora-text-faint);
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        border-radius: var(--aurora-radius-small);
+
+        &:hover {
+            color: var(--aurora-text);
+            background: var(--aurora-overlay);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--aurora-accent);
+            outline-offset: 1px;
+        }
+    }
+
+    & pre {
+        margin: 0;
+        padding: 0.9rem 0;
+        line-height: 1.4;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+
+        & code {
+            display: inline;
+            inline-size: max-content;
+            min-inline-size: 100%;
+        }
+    }
+
+    & .line {
+        display: inline-block;
+        min-inline-size: 100%;
+        padding-inline: 1rem;
+
+        &.highlighted {
+            background: color-mix(in srgb, var(--aurora-accent), transparent 88%);
+            box-shadow: inset 2px 0 var(--aurora-accent);
+        }
+
+        &.diff-add {
+            background: color-mix(in srgb, #4ade80, transparent 90%);
+            box-shadow: inset 2px 0 #4ade80;
+        }
+
+        &.diff-remove {
+            background: color-mix(in srgb, #fb7185, transparent 90%);
+            box-shadow: inset 2px 0 #fb7185;
+        }
+    }
+
+    &.aurora-code-focus .line:not(.highlighted) {
+        opacity: 0.55;
+        filter: blur(1px);
+    }
+}
