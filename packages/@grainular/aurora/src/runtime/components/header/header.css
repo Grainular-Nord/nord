@@ -17,7 +17,6 @@
         display: flex;
         flex: 0 0 auto;
         gap: 0.25rem;
-        margin-inline-start: auto;
 
         @container aurora-header (width < 30rem) {
             & > .aurora-icon-button:not(:first-child) {
