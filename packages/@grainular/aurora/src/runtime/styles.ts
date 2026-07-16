@@ -10,6 +10,7 @@ import topNavigation from './components/header/top-navigation.css' with { type: 
 import navigation from './components/navigation/navigation.css' with { type: 'text' };
 import notFound from './components/not-found/not-found.css' with { type: 'text' };
 import outline from './components/outline/outline.css' with { type: 'text' };
+import pageLinks from './components/page-links/page-links.css' with { type: 'text' };
 import icon from './components/primitives/icon.css' with { type: 'text' };
 import iconButton from './components/primitives/icon-button.css' with { type: 'text' };
 import search from './components/search/search.css' with { type: 'text' };
@@ -33,5 +34,6 @@ export default [
     navigation,
     notFound,
     outline,
+    pageLinks,
     footer,
 ].join('\n');

@@ -12,6 +12,7 @@ export { ThemeToggle } from './components/header/theme-toggle';
 export { Navigation } from './components/navigation/navigation';
 export { DefaultNotFoundContent, NotFound } from './components/not-found/not-found';
 export { Outline } from './components/outline/outline';
+export { PageLinks } from './components/page-links/page-links';
 export { type AuroraIconName, Icon } from './components/primitives/icon';
 export { IconButton } from './components/primitives/icon-button';
 export { SiteLink } from './components/primitives/site-link';

@@ -7,6 +7,11 @@ export type AuroraLink = {
     text: string;
 };
 
+export type AuroraPageLinks = {
+    prev?: AuroraLink;
+    next?: AuroraLink;
+};
+
 export type AuroraSocialLink = {
     link: string;
     label: string;
@@ -49,6 +54,7 @@ export type AuroraPageMeta = {
     description?: string;
     robots?: string;
     layout?: string;
+    links?: AuroraPageLinks;
 };
 
 export type AuroraPageConfig = {
