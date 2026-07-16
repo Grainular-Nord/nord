@@ -1,6 +1,7 @@
 import { createLogger, type InlineConfig, type PluginOption } from 'vite';
 import { pluginAuroraCore } from '../plugin/plugin-aurora-core';
 import { pluginAuroraCss } from '../plugin/plugin-aurora-css';
+import { pluginAuroraLinks } from '../plugin/plugin-aurora-links';
 import { pluginAuroraLlms } from '../plugin/plugin-aurora-llms';
 import { pluginAuroraMarkdown } from '../plugin/plugin-aurora-markdown';
 import { pluginAuroraSearch } from '../plugin/plugin-aurora-search';
@@ -30,6 +31,7 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
             pluginAuroraSsg(config),
             pluginAuroraLlms(config),
             pluginAuroraCore(config),
+            pluginAuroraLinks(),
             pluginAuroraSearch(),
             pluginAuroraSitemap(config),
             pluginAuroraCss(),
