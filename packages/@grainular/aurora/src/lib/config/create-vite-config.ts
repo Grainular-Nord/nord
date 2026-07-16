@@ -4,6 +4,7 @@ import { pluginAuroraCss } from '../plugin/plugin-aurora-css';
 import { pluginAuroraLlms } from '../plugin/plugin-aurora-llms';
 import { pluginAuroraMarkdown } from '../plugin/plugin-aurora-markdown';
 import { pluginAuroraSearch } from '../plugin/plugin-aurora-search';
+import { pluginAuroraSitemap } from '../plugin/plugin-aurora-sitemap';
 import { pluginAuroraSsg } from '../plugin/plugin-aurora-ssg';
 import type { ResolvedAuroraConfig } from './resolve-config';
 
@@ -30,6 +31,7 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
             pluginAuroraLlms(config),
             pluginAuroraCore(config),
             pluginAuroraSearch(),
+            pluginAuroraSitemap(config),
             pluginAuroraCss(),
         ],
     };

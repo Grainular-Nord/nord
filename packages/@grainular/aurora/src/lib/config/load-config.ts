@@ -1,21 +1,8 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { createServer, type Plugin } from 'vite';
+import { createServer } from 'vite';
 import type { AuroraConfig } from './config';
 import { type ResolvedAuroraConfig, resolveConfig } from './resolve-config';
-
-const CSS_STUB_PREFIX = '\0aurora-config-css:';
-
-const configCssStub: Plugin = {
-    name: 'aurora-config-css-stub',
-    enforce: 'pre',
-    resolveId(id) {
-        if (id.split('?')[0]?.endsWith('.css')) return `${CSS_STUB_PREFIX}${id}`;
-    },
-    load(id) {
-        if (id.startsWith(CSS_STUB_PREFIX)) return 'export default undefined;';
-    },
-};
 
 export const loadConfig = async (root = process.cwd()): Promise<ResolvedAuroraConfig> => {
     const resolvedRoot = resolve(root);
@@ -26,7 +13,6 @@ export const loadConfig = async (root = process.cwd()): Promise<ResolvedAuroraCo
         appType: 'custom',
         configFile: false,
         logLevel: 'silent',
-        plugins: [configCssStub],
         root: resolvedRoot,
         server: { middlewareMode: true },
     });

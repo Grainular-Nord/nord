@@ -2,6 +2,7 @@ import type { Plugin } from 'vite';
 import type { AuroraStaticPage } from '../config/config';
 import { extractSearchEntries } from '../search/extract-search-entries';
 import { AURORA_SEARCH_FILE, AURORA_SSG_ENTRY } from './constants';
+import { generatedHtmlPages } from './generated-html-pages';
 
 export const pluginAuroraSearch = (): Plugin => {
     return {
@@ -9,19 +10,9 @@ export const pluginAuroraSearch = (): Plugin => {
         generateBundle: {
             order: 'post',
             handler(_options, bundle) {
-                const entries = Object.values(bundle).flatMap((output) => {
-                    if (
-                        output.type !== 'asset' ||
-                        !output.fileName.endsWith('.html') ||
-                        output.fileName === '404.html'
-                    ) {
-                        return [];
-                    }
-                    const path = output.fileName.replace(/(?:^|\/)index\.html$/, '');
-                    const source =
-                        typeof output.source === 'string' ? output.source : new TextDecoder().decode(output.source);
-                    return extractSearchEntries(path ? `/${path}` : '/', source);
-                });
+                const entries = generatedHtmlPages(bundle).flatMap(({ path, source }) =>
+                    extractSearchEntries(path, source),
+                );
 
                 this.emitFile({ type: 'asset', fileName: AURORA_SEARCH_FILE, source: JSON.stringify(entries) });
             },

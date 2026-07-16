@@ -134,6 +134,9 @@ export type AuroraConfig = {
     /** Document settings applied to every generated page. */
     page?: AuroraPageConfig;
     site?: {
+        /** Absolute public site URL used for generated files such as sitemap.xml. */
+        url?: string;
+
         /**
          * The title of the documentation site. This
          * will be shown after the page title, eg:
