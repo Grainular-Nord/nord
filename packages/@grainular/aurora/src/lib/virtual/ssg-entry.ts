@@ -2,7 +2,7 @@ import type { ResolvedAuroraConfig } from '../config/resolve-config';
 import { AURORA_CONFIG_ID } from '../plugin/constants';
 
 const contentImports = (config: ResolvedAuroraConfig) =>
-    config.navigation
+    config.content
         .map(
             ({ source }, index) =>
                 `import { meta as meta${index}, content as content${index} } from ${JSON.stringify(source)};`,
@@ -10,7 +10,7 @@ const contentImports = (config: ResolvedAuroraConfig) =>
         .join('\n');
 
 const sourcePages = (config: ResolvedAuroraConfig) =>
-    config.navigation
+    config.content
         .map(({ path }, index) => `{ path: ${JSON.stringify(path)}, meta: meta${index}, content: content${index} }`)
         .join(',\n');
 

@@ -70,7 +70,7 @@ export const pluginAuroraCore = (config: ResolvedAuroraConfig): Plugin => {
                 previewPageMiddleware(
                     server,
                     base,
-                    config.navigation.map(({ path }) => path),
+                    config.content.map(({ path }) => path),
                 ),
             );
         },

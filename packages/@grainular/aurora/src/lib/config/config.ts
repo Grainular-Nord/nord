@@ -18,27 +18,24 @@ export type AuroraFooterConfig = {
     navigation?: (AuroraLink | ComponentFragment)[];
 };
 
-export type AuroraNavigationRoute = {
-    /** Markdown file rendered for this route. */
-    source: string;
-    /** Public URL path. */
+export type AuroraNavigationLink = {
+    /** Link rendered in the sidebar. */
     path: string;
     /** Human-readable label exposed to the application navigation. */
     label: string;
-    /** Nested routes or navigation groups rendered below this route. */
+    /** Nested links or navigation groups rendered below this link. */
     children?: AuroraNavigationItem[];
 };
 
 export type AuroraNavigationGroup = {
     /** Human-readable label for this navigation group. */
     label: string;
-    /** Nested routes or groups contained by this group. */
+    /** Nested links or groups contained by this group. */
     children: AuroraNavigationItem[];
-    source?: never;
     path?: never;
 };
 
-export type AuroraNavigationItem = AuroraNavigationRoute | AuroraNavigationGroup;
+export type AuroraNavigationItem = AuroraNavigationLink | AuroraNavigationGroup;
 
 export type AuroraRuntimeNavigationItem = {
     label: string;
@@ -120,7 +117,9 @@ export type AuroraContext = NonNullable<AuroraConfig['site']> & {
 };
 
 export type AuroraConfig = {
-    /** Markdown-backed routes used to generate pages and application navigation. */
+    /** Markdown files used to generate pages. Routes are inferred from file paths. */
+    content?: string | string[];
+    /** Static sidebar links. */
     navigation?: AuroraNavigationItem[];
     /** Components available to Markdown. `client` controls browser activation. */
     components?: AuroraComponentDefinition[];

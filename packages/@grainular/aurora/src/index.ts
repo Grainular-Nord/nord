@@ -10,7 +10,7 @@ export {
     type AuroraLink,
     type AuroraNavigationGroup,
     type AuroraNavigationItem,
-    type AuroraNavigationRoute,
+    type AuroraNavigationLink,
     type AuroraPageConfig,
     type AuroraPageMeta,
     type AuroraRuntimeNavigationItem,

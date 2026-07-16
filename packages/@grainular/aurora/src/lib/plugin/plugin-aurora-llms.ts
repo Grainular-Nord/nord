@@ -40,7 +40,7 @@ export const pluginAuroraLlms = (config: ResolvedAuroraConfig): Plugin => {
             this.emitFile({ type: 'asset', fileName: LLMS_FULL, source: createLlmsFull(config, pages) });
         },
         configureServer(server) {
-            server.watcher.add(config.navigation.map((route) => route.source));
+            server.watcher.add(config.content.map((route) => route.source));
             server.middlewares.use(llmsMiddleware(config, () => base));
         },
     };

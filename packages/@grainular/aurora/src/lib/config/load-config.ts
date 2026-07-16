@@ -33,7 +33,7 @@ export const loadConfig = async (root = process.cwd()): Promise<ResolvedAuroraCo
 
     try {
         const module = (await server.ssrLoadModule(configFile)) as { default?: AuroraConfig };
-        return resolveConfig(module.default ?? {}, resolvedRoot, configFile);
+        return await resolveConfig(module.default ?? {}, resolvedRoot, configFile);
     } finally {
         await server.close();
     }
