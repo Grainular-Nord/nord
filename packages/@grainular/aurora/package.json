@@ -1,24 +1,24 @@
 {
   "name": "@grainular/aurora",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
-  "packageManager": "bun@1.1.18",
-  "main": "./dist/cjs/index.js",
+  "packageManager": "bun@1.3.14",
+  "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/index.d.cts",
   "bin": {
     "aurora": "./dist/esm/cli/index.js"
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/types/index.d.cts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./runtime": {
-      "types": "./dist/types/runtime/index.d.ts",
+      "types": "./dist/types/runtime/index.d.cts",
       "import": "./dist/esm/runtime/index.js",
-      "require": "./dist/cjs/runtime/index.js"
+      "require": "./dist/cjs/runtime/index.cjs"
     }
   },
   "private": true,
@@ -26,7 +26,7 @@
     "@types/bun": "latest",
     "@types/node": "^25.0.3",
     "vite": "^7.3.1",
-    "@repository/builder": "workspace:*"
+    "tsup": "^8.5.1"
   },
   "dependencies": {
     "@shikijs/rehype": "^4.0.2",
@@ -41,8 +41,19 @@
     "@grainular/grains": "workspace:*"
   },
   "scripts": {
-    "dev": "bun run .build.ts --watch",
-    "build": "bun run .build.ts",
+    "dev": "bunx tsup --watch",
+    "build": "bunx tsup",
+    "prepublishOnly": "bunx tsup",
     "test": "bun test --coverage"
+  },
+  "files": [
+      "dist",
+      "README.md",
+      "LICENSE.md"
+  ],
+  "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/grainular/nord.git"
   }
 }

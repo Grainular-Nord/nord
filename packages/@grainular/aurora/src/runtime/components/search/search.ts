@@ -123,10 +123,13 @@ export const Search = ({ index, base }: SearchProps) => {
 
     const resultContent = $if(loading)
         .$then(() => html`<div class="aurora-search-status" role="status">Searching…</div>`)
-        .$else(() =>
-            $if(hasResults)
-                .$then(() => resultList)
-                .$else(() => html`<div class="aurora-search-status" role="status">No results for “${query}”</div>`),
+        .$else(
+            () =>
+                html`${$if(hasResults)
+                    .$then(() => html`${resultList}`)
+                    .$else(
+                        () => html`<div class="aurora-search-status" role="status">No results for “${query}”</div>`,
+                    )}`,
         );
 
     return html`

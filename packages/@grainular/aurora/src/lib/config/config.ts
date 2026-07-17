@@ -161,7 +161,7 @@ export type AuroraConfig = {
         logo?: string;
     };
     markdown?: {
-        plugins?: Parameters<typeof nordMarkdown>[0]['plugins'];
+        plugins?: Parameters<typeof nordMarkdown>[0]['rehypePlugins'];
         transforms?: Parameters<typeof nordMarkdown>[0]['transforms'];
     };
     /** Additional Vite configuration merged into Aurora's generated configuration. */

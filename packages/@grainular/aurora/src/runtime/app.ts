@@ -9,9 +9,9 @@ export type AppProps = {
     layouts: Map<string, AuroraLayoutModule['default']>;
 };
 export const App = ({ content, layouts, meta }: AppProps) => {
-    const layout = [layouts.get(meta.layout ?? 'page'), layouts.get('page')].filter(
-        (layout) => layout !== undefined,
-    )[0];
+    // The built-in `page` layout is always registered, so the fallback chain
+    // resolves even when `meta.layout` names an unknown layout.
+    const layout = (layouts.get(meta.layout ?? 'page') ?? layouts.get('page'))!;
     const staticContent = html`<div data-aurora-content>${content}</div>`;
 
     return html`
