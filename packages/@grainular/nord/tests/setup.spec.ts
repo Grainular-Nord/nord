@@ -6,11 +6,11 @@ export const setup = () => {
     globalThis.window = dom.window as unknown as Window & typeof globalThis;
     globalThis.document = dom.window.document as unknown as Document;
 
-    // biome-ignore lint:
+    // biome-ignore lint: because
     globalThis.Node = dom.window.Node as any;
-    // biome-ignore lint:
+    // biome-ignore lint: because
     globalThis.MutationObserver = dom.window.MutationObserver as any;
-    // biome-ignore lint:
+    // biome-ignore lint: because
     globalThis.HTMLElement = dom.window.HTMLElement as any;
     globalThis.DocumentFragment = dom.window.DocumentFragment;
     globalThis.Element = dom.window.Element;

@@ -20,10 +20,13 @@
         "rules": {
             "preset": "recommended",
             "suspicious": {
-                "noConfusingVoidType": "off"
+                "noConfusingVoidType": "off",
+                "noTemplateCurlyInString": "off",
+                "useIterableCallbackReturn": "off"
             },
             "style": {
                 "noInferrableTypes": "off",
+                "noDescendingSpecificity": "off",
                 "noRestrictedImports": {
                     "level": "error",
                     "options": {
