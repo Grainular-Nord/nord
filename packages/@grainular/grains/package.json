@@ -1,8 +1,8 @@
 {
     "name": "@grainular/grains",
-    "version": "2.0.0-next.4",
+    "version": "2.0.0",
     "type": "module",
-    "packageManager": "bun@1.1.18",
+    "packageManager": "bun@1.3.14",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
     "types": "./dist/types/index.d.cts",
@@ -31,8 +31,7 @@
         "url": "git+https://github.com/grainular/nord.git"
     },
     "publishConfig": {
-        "access": "public",
-        "tag": "next"
+        "access": "public"
     },
     "sideEffects": false,
     "files": [

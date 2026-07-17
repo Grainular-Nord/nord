@@ -132,10 +132,10 @@
         "@clack/prompts": "^1.5.0",
       },
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "@types/node": "^25.9.1",
+        "tsup": "^8.5.1",
       },
       "peerDependencies": {
         "typescript": "^6.0.3",
@@ -145,7 +145,6 @@
       "name": "@grainular/custom-elements",
       "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -157,9 +156,8 @@
     },
     "packages/@grainular/forms": {
       "name": "@grainular/forms",
-      "version": "2.0.0-next.3",
+      "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -172,7 +170,7 @@
     },
     "packages/@grainular/grains": {
       "name": "@grainular/grains",
-      "version": "2.0.0-next.4",
+      "version": "2.0.0",
       "devDependencies": {
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
@@ -182,10 +180,9 @@
     },
     "packages/@grainular/nord": {
       "name": "@grainular/nord",
-      "version": "2.0.0-next.6",
+      "version": "2.0.0",
       "devDependencies": {
         "@grainular/grains": "workspace:*",
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "@types/jsdom": "^28.0.3",
@@ -196,23 +193,21 @@
     },
     "packages/@grainular/resource": {
       "name": "@grainular/resource",
-      "version": "2.0.0-next.3",
+      "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
         "typescript": "6.0.3",
       },
       "peerDependencies": {
-        "@grainular/grains": "^2.0.0-next.2",
+        "@grainular/grains": "workspace:*",
       },
     },
     "packages/@grainular/router": {
       "name": "@grainular/router",
-      "version": "2.0.0-next.15",
+      "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -227,7 +222,6 @@
       "name": "@grainular/silo",
       "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -239,9 +233,8 @@
     },
     "packages/@grainular/styled": {
       "name": "@grainular/styled",
-      "version": "2.0.0-next.0",
+      "version": "2.0.0",
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@repository/config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "^8.5.1",
@@ -268,7 +261,7 @@
     },
     "packages/vite-plugin-nord-md": {
       "name": "vite-plugin-nord-md",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "dependencies": {
         "mdast-util-directive": "^3.1.0",
         "rehype-stringify": "^10.0.1",
@@ -283,10 +276,10 @@
         "vfile-matter": "^5.0.1",
       },
       "devDependencies": {
-        "@repository/builder": "workspace:*",
         "@types/bun": "latest",
         "@types/mdast": "^4.0.4",
         "@types/node": "^25.9.1",
+        "tsup": "^8.5.1",
         "vite": "^7.3.3",
       },
       "peerDependencies": {

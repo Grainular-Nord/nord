@@ -22,6 +22,11 @@ const templates = [
 
 const features = [
     {
+        value: [{ name: '@grainular/styled', version: 'latest', dev: false }],
+        label: 'Nørd Styled',
+        hint: 'Scoped styling solution for Nørd',
+    },
+    {
         value: [{ name: '@grainular/router', version: 'latest', dev: false }],
         label: 'Nørd Router',
         hint: 'Client side routing',
