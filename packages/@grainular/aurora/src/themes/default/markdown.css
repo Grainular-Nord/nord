@@ -101,6 +101,16 @@
         text-underline-offset: 0.18em;
         overflow-wrap: anywhere;
 
+        &:is([href^="http://"], [href^="https://"])::after {
+            display: inline-block;
+            margin-inline-start: 0.18em;
+            font-size: 0.78em;
+            line-height: 1;
+            vertical-align: 0.08em;
+            content: "↗" / "external link";
+            text-decoration: none;
+        }
+
         &:hover {
             color: var(--aurora-text);
         }

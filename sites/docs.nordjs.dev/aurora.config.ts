@@ -1,4 +1,5 @@
 import { defineConfig } from '@grainular/aurora';
+import { EcosystemPopover } from './src/components/ecosystem-popover';
 import './custom.css';
 
 export default defineConfig({
@@ -61,6 +62,50 @@ export default defineConfig({
         image: '/og-image.png',
         logo: '/logo-aurora-squircle-o.svg',
         navigation: [
+            EcosystemPopover({
+                items: [
+                    {
+                        name: 'Aurora',
+                        description: 'Static documentation and content sites with independent interactive islands.',
+                        href: 'https://aurora.nordjs.dev',
+                    },
+                    {
+                        name: 'Grains',
+                        description: 'Small synchronous reactive primitives for local and shared state.',
+                        href: 'https://grains.nordjs.dev',
+                    },
+                    {
+                        name: 'Router',
+                        description: 'Client-side routes, navigation, outlets, hooks, and transitions.',
+                        href: 'https://router.nordjs.dev',
+                    },
+                    {
+                        name: 'Forms',
+                        description: 'Reactive controls, validation, bindings, and error rendering.',
+                        href: 'https://forms.nordjs.dev',
+                    },
+                    {
+                        name: 'Resource',
+                        description: 'Abortable reactive resources for asynchronous data and dependencies.',
+                        href: 'https://resource.nordjs.dev',
+                    },
+                    {
+                        name: 'Silo',
+                        description: 'Small stores with readonly state and focused reactive selectors.',
+                        href: 'https://silo.nordjs.dev',
+                    },
+                    {
+                        name: 'Styled',
+                        description: 'Scoped component styles that stay close to their implementation.',
+                        href: 'https://styled.nordjs.dev',
+                    },
+                    {
+                        name: 'Custom Elements',
+                        description: 'Expose Nørd components as platform-native custom elements.',
+                        href: 'https://elements.nordjs.dev',
+                    },
+                ],
+            }),
             { text: 'Guide', link: '/getting-started' },
             { text: 'API', link: '/api-reference' },
             { text: 'LLMs', link: '/llms' },
