@@ -21,6 +21,17 @@ This reference lists the public exports provided by Nørd and Grains.
 ### `syncReactive`
 
 `syncReactive({ get, subscribe })` adapts an external reactive source into a readonly Nørd subscribable. The source is read synchronously through `get`, subscribed lazily when Nørd needs it, and unsubscribed once its final consumer disconnects.
+
+### `Subscribable`
+
+`Subscribable<T>` is Nørd's reactive input contract: a callable getter paired with `subscribe(listener)`. Nørd accepts a compatible value wherever a reactive interpolation, attribute, or control-flow source is expected; Grains are one implementation of this contract.
+
+```ts
+type Subscribable<T> = {
+    (): T;
+    subscribe(listener: (value: T) => void): () => void;
+};
+```
 ## Templates and components
 
 ### `html`
@@ -30,6 +41,10 @@ This reference lists the public exports provided by Nørd and Grains.
 ### `ComponentFragment`
 
 `ComponentFragment` is the value returned by `html` and by Nørd components. It represents a fragment that can be rendered to an HTML string or hydrated into live DOM nodes, allowing fragments to compose without a separate virtual-node type.
+
+### `Fragment`
+
+`Fragment` is the lower-level render unit behind component fragments, directives, structs, primitive values, and reactive bindings. Most application code should use `ComponentFragment`; use `Fragment` when writing a reusable low-level primitive such as a directive or struct.
 
 ### `PureComponent`
 

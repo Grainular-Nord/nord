@@ -37,6 +37,20 @@ Nørd is a small reactive framework for building web interfaces with JavaScript 
 
 Nørd is a good fit for applications that benefit from reactive UI without taking on a compiler pipeline or a broad framework runtime. It can be dropped into an existing page, used for independently activated islands, or used to build a complete client application. The focus is a compact, readable API that leaves the browser platform and application architecture in view.
 
+## Ecosystem
+
+Nørd's core is deliberately small. Companion packages add focused capabilities without becoming part of the runtime:
+
+- `@grainular/forms` provides reactive controls, validation, bindings, and error rendering.
+- `@grainular/router` provides client-side routing, navigation, outlets, hooks, and transitions.
+- `@grainular/resource` provides abortable reactive asynchronous resources.
+- `@grainular/silo` provides small selector-based stores.
+- `@grainular/styled` provides scoped component styles.
+- `@grainular/custom-elements` exposes Nørd components as platform custom elements.
+- `@grainular/aurora` builds static documentation and content sites with optional independent islands.
+
+These packages have their own APIs and should not be inferred from React, Vue, or other ecosystem conventions. This guide deliberately documents Nørd core and Grains rather than companion-package APIs. Nørd does not currently provide an official i18n package; use the platform `Intl` APIs or an application-level library.
+
 ## Examples
 
 These examples are a quick tour, not the whole documentation. The dedicated guides explain each API in detail.

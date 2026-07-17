@@ -145,3 +145,13 @@ const Toggle = () => html`
 Standard HTML boolean attributes follow HTML presence semantics. A truthy `disabled`, `checked`, `hidden`, or `required` binding renders the empty attribute; a falsy value removes it. Other attributes, including ARIA attributes, are serialized as ordinary strings, so `aria-pressed` becomes `"true"` or `"false"`.
 
 Grains are the default reactive values in these docs, but Nørd accepts any compatible subscribable. Continue with [Reactivity and grains](/reactivity) for writable state, derived values, and integrating other reactive sources.
+
+## Familiar patterns that do not apply
+
+Nørd resembles the platform more than component frameworks with compiler transforms or render loops. Do not carry these patterns across unchanged:
+
+- **Do not interpolate a getter:** `${() => count()}` is not a reactive binding. Interpolate the subscribable itself: `${count}`.
+- **Do not use `onClick`, `@click`, or similar template attributes for events.** They are not event bindings. Use a directive: `${on('click', handler)}`.
+- **Do not interpolate a component function without calling it.** Render `${Counter()}`, not `${Counter}`.
+- **Do not expect a component to run again when state changes.** Components create fragments once; interpolate a subscribable or use a control-flow struct for the part that must update.
+- **Do not use a virtual-DOM mental model.** Nørd updates a bound node directly, and structs own their explicit DOM regions.
