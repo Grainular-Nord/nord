@@ -26,7 +26,7 @@ Navigation is recursive. Groups contain only a label and children; Markdown-back
 
 Aurora supplies its default theme automatically. Any CSS imported by the config joins the client bundle and can override it.
 
-Every site also exposes `llms.txt`, containing its documentation index, and `llms-full.txt`, containing all configured Markdown pages in navigation order. Both are available during development and emitted during production builds without configuration.
+Production builds emit `llms.txt`, containing the documentation index, and `llms-full.txt`, containing all configured Markdown pages in navigation order, without additional configuration.
 
 ```bash
 aurora dev

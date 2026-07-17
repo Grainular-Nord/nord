@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { Connect, PreviewServer } from 'vite';
 import { stripBasePath } from '../path/strip-base-path';
@@ -25,6 +25,14 @@ export const previewPageMiddleware = (
             request.url = `${url.pathname}${url.search}`;
             return next();
         }
+
+        const asset = resolve(server.config.root, server.config.build.outDir, requestPath.slice(1));
+        if (
+            await stat(asset)
+                .then((entry) => entry.isFile())
+                .catch(() => false)
+        )
+            return next();
 
         if (!request.headers.accept?.includes('text/html')) return next();
 
