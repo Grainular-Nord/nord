@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Aurora">
+    <defs>
+        <linearGradient id="aurora" x1="10" y1="118" x2="118" y2="10" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#1769ee" />
+            <stop offset=".34" stop-color="#22d3ee" />
+            <stop offset=".62" stop-color="#8cf5cb" />
+            <stop offset="1" stop-color="#925cf4" />
+        </linearGradient>
+        <mask id="letter">
+            <rect width="128" height="128" fill="white" />
+            <circle cx="64" cy="64" r="27" fill="none" stroke="black" stroke-width="14" />
+            <path d="m35 97 58-66" stroke="black" stroke-width="10" />
+        </mask>
+    </defs>
+    <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#aurora)" mask="url(#letter)" />
+</svg>
