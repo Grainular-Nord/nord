@@ -23,7 +23,7 @@ export const pluginAuroraLlms = (config: ResolvedAuroraConfig): Plugin => {
             const pages = await loadLlmsPages(config);
             assets = [
                 [LLMS_INDEX, createLlmsIndex(config, pages, base)],
-                [LLMS_FULL, createLlmsFull(config, pages)],
+                [LLMS_FULL, createLlmsFull(pages)],
             ];
 
             for (const [fileName, source] of assets) this.emitFile({ type: 'asset', fileName, source });
