@@ -146,6 +146,9 @@ export type AuroraConfig = {
 
         description?: string;
 
+        /** Global social preview image, resolved against `url` and Vite's public base. */
+        image?: string;
+
         /** Links rendered in the top navigation. */
         navigation?: (AuroraLink | ComponentFragment)[];
 

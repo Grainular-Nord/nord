@@ -1,5 +1,6 @@
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
 import { AURORA_CONFIG_ID } from '../plugin/constants';
+import { deploymentUrl } from '../url/deployment-url';
 
 const contentImports = (config: ResolvedAuroraConfig) =>
     config.content
@@ -31,6 +32,7 @@ const runtimeNavigation = (config: ResolvedAuroraConfig) => {
 
 export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
     const navigationTree = runtimeNavigation(config);
+    const deploymentRoot = config.site?.url ? deploymentUrl(config.site.url, base).href : '';
 
     return `
         import { renderToString } from "@grainular/nord";
@@ -42,6 +44,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
         const site = auroraConfig.site ?? {};
         const page = auroraConfig.page ?? {};
         const buildBase = ${JSON.stringify(base)};
+        const deploymentRoot = ${JSON.stringify(deploymentRoot)};
         const navigationTree = ${JSON.stringify(navigationTree)};
         const sourcePages = [${sourcePages(config)}];
         const layoutDefinitions = [...builtInLayouts, ...(auroraConfig.layouts ?? [])];
@@ -85,12 +88,23 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
                 title,
                 description: meta.description ?? siteConfig.description
             };
+            const social = {
+                siteName: siteConfig.title,
+                url: deploymentRoot
+                    ? new URL(path === '/' ? '' : path.slice(1), deploymentRoot).href
+                    : undefined,
+                image: siteConfig.image
+                    ? deploymentRoot
+                        ? new URL(siteConfig.image.replace(/^\\//, ''), deploymentRoot).href
+                        : siteConfig.image
+                    : undefined
+            };
 
             return {
                 path,
                 ...(fileName ? { fileName } : {}),
                 markup: renderToString(() => App({ meta, content, layouts })),
-                head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page })),
+                head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page }, social)),
                 language: page.language ?? 'en',
                 ...(status ? { status } : {})
             };
