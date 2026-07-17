@@ -8,9 +8,8 @@
     gap: 1rem;
     block-size: var(--aurora-header-height);
     padding: 0.5rem clamp(0.75rem, 2vw, 1rem);
-    background: color-mix(in srgb, var(--aurora-background), transparent 12%);
+    background: color-mix(in srgb, var(--aurora-background), transparent 4%);
     border-bottom: 1px solid var(--aurora-border-subtle);
-    backdrop-filter: blur(18px);
     container: aurora-header / inline-size;
 
     & .aurora-header-actions {

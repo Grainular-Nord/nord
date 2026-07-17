@@ -50,31 +50,18 @@
     position: fixed;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
     pointer-events: none;
-    filter: blur(150px);
-
-    &::before,
-    &::after {
-        position: absolute;
-        inline-size: 42rem;
-        block-size: 42rem;
-        content: "";
-        border-radius: 50%;
-        opacity: 0.13;
-    }
-
-    &::before {
-        inset-block-start: -25rem;
-        inset-inline-start: 8rem;
-        background: var(--aurora-mint);
-    }
-
-    &::after {
-        inset-block-start: -18rem;
-        inset-inline-end: -10rem;
-        background: var(--aurora-violet);
-    }
+    background:
+        radial-gradient(
+            40rem circle at 22% -18rem,
+            color-mix(in srgb, var(--aurora-mint), transparent 89%),
+            transparent
+        ),
+        radial-gradient(
+            36rem circle at 96% -13rem,
+            color-mix(in srgb, var(--aurora-violet), transparent 90%),
+            transparent
+        );
 }
 
 .application-shell {

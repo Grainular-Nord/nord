@@ -9,7 +9,6 @@
     box-shadow:
         0 1px 2px rgb(0 0 0 / 12%),
         0 14px 32px -22px rgb(0 0 0 / 45%);
-    backdrop-filter: blur(16px);
 
     & .aurora-code-toolbar {
         display: flex;
@@ -54,7 +53,6 @@
         border: 0;
         border-radius: 0;
         box-shadow: none;
-        backdrop-filter: none;
 
         & code {
             display: inline;

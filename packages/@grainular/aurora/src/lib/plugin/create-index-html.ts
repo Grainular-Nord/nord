@@ -23,10 +23,10 @@ export const createIndexHtml = (entry: string, page: AuroraStaticPage, styleshee
             </script>
             ${page.head}
             ${styles}
-            <script type="module" crossorigin src="${entry}"></script>
         </head>
         <body>
             <div id="app">${page.markup}</div>
+            <script type="module" crossorigin src="${entry}"></script>
         </body>
     </html>`;
 };

@@ -1,4 +1,4 @@
-import { $each, html } from '@grainular/nord';
+import { $each, type ComponentFragment, html } from '@grainular/nord';
 import type { AuroraRuntimeNavigationItem } from '../../../lib/config/config';
 import { resolveSiteLink } from '../../lib/resolve-site-link';
 import { context } from '../../store/context';
@@ -8,13 +8,13 @@ const NavigationLink = ({ active, label, path }: AuroraRuntimeNavigationItem & {
         ? html`<a class="aurora-navigation-link" href="${path}" aria-current="page">${label}</a>`
         : html`<a class="aurora-navigation-link" href="${path}">${label}</a>`;
 
-const NavigationChildren = (children: AuroraRuntimeNavigationItem[]) => html`
+const NavigationChildren = (children: AuroraRuntimeNavigationItem[]): ComponentFragment => html`
     <div class="aurora-navigation-children">
         ${$each(() => children).$as(NavigationNode)}
     </div>
 `;
 
-const NavigationNode = (item: AuroraRuntimeNavigationItem) => {
+const NavigationNode = (item: AuroraRuntimeNavigationItem): ComponentFragment => {
     const label = item.path
         ? NavigationLink({ ...item, path: item.path })
         : html`<div class="aurora-navigation-group-label">${item.label}</div>`;

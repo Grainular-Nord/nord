@@ -252,7 +252,6 @@
         border: 1px solid var(--aurora-border);
         border-radius: var(--aurora-radius);
         box-shadow: 0 12px 28px -24px black;
-        backdrop-filter: blur(16px);
 
         &.shiki {
             /* biome-ignore lint/complexity/noImportantStyles: Shiki writes its background as an inline style. */

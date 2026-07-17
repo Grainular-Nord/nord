@@ -1,59 +1,44 @@
-import { html, mounted, on } from '@grainular/nord';
+import { html, mounted } from '@grainular/nord';
 import type { AuroraComponentDefinition } from '../../../lib/config/config';
 import { Icon } from '../primitives/icon';
 
-const backgroundElements = (application: HTMLElement, toggle: HTMLElement) =>
-    Array.from(
-        application.querySelectorAll<HTMLElement>(
-            '.aurora-header > *, .application-shell main, .aurora-outline, .aurora-footer',
-        ),
-    ).filter((element) => !element.contains(toggle));
-
-const setNavigationOpen = (application: HTMLElement, button: HTMLElement, open: boolean, restoreFocus = true) => {
-    application.toggleAttribute('data-navigation-open', open);
-    button.setAttribute('aria-expanded', String(open));
-    for (const element of backgroundElements(application, button)) element.inert = open;
-
-    if (open) {
-        window.setTimeout(() => {
-            if (!application.hasAttribute('data-navigation-open')) return;
-            application.querySelector<HTMLElement>('.aurora-sidebar-body a')?.focus();
-        });
-    } else if (restoreFocus) {
-        button.focus();
-    }
-};
+const inactiveContent =
+    '.aurora-header > :not(.aurora-navigation-toggle-host), .application-shell main, .aurora-outline, .aurora-footer';
 
 export const NavigationToggle = () => {
-    const lifecycle = mounted((node) => {
-        const application = node.closest<HTMLElement>('.aurora-app');
-        if (!application) return;
+    const onMount = mounted((button) => {
+        const btn = button as HTMLButtonElement;
+        const application = btn.closest<HTMLElement>('.aurora-app')!;
 
-        const close = (restoreFocus = true) => setNavigationOpen(application, node, false, restoreFocus);
-        const keyboard = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') close();
-        };
-        const dismiss = (event: MouseEvent) => {
-            const target = event.target as Element | null;
-            if (target?.closest('.aurora-navigation-backdrop')) close();
-            else if (target?.closest('.aurora-navigation-link')) close(false);
+        const setOpen = (open: boolean) => {
+            application.toggleAttribute('data-navigation-open', open);
+            btn.ariaExpanded = String(open);
+            for (const element of application.querySelectorAll<HTMLElement>(inactiveContent)) element.inert = open;
+            if (open) application.querySelector<HTMLElement>('.aurora-sidebar-body a')?.focus();
         };
 
-        document.addEventListener('keydown', keyboard);
+        const close = () => {
+            setOpen(false);
+            btn.focus();
+        };
+
+        const dismiss = (event: Event) => {
+            if (event instanceof KeyboardEvent && event.key === 'Escape') close();
+            if (event.target instanceof Element && event.target.closest('.aurora-navigation-backdrop')) close();
+        };
+
+        const toggle = () => setOpen(!application.hasAttribute('data-navigation-open'));
+
+        btn.addEventListener('click', toggle);
+        document.addEventListener('keydown', dismiss);
         document.addEventListener('click', dismiss);
         return () => {
-            document.removeEventListener('keydown', keyboard);
+            btn.removeEventListener('click', toggle);
+            document.removeEventListener('keydown', dismiss);
             document.removeEventListener('click', dismiss);
-            setNavigationOpen(application, node, false, false);
+            setOpen(false);
         };
     });
-
-    const toggle = (event: Event) => {
-        const button = event.currentTarget as HTMLButtonElement;
-        const application = button.closest<HTMLElement>('.aurora-app');
-        if (!application) return;
-        setNavigationOpen(application, button, !application.hasAttribute('data-navigation-open'));
-    };
 
     return html`
         <button
@@ -62,8 +47,7 @@ export const NavigationToggle = () => {
             aria-label="Toggle navigation"
             aria-controls="aurora-sidebar-navigation"
             aria-expanded="false"
-            ${lifecycle}
-            ${on('click', toggle)}
+            ${onMount}
         >
             ${Icon({ name: 'menu' })}
         </button>
@@ -74,4 +58,5 @@ export const navigationToggleDefinition: AuroraComponentDefinition = {
     name: 'navigation-toggle',
     client: true,
     component: async () => ({ default: NavigationToggle }),
+    host: { class: 'aurora-navigation-toggle-host' },
 };
