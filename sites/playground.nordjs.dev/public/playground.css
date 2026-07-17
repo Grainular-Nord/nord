@@ -1,0 +1,131 @@
+:root {
+    color-scheme: dark;
+    --playground-background: #090d13;
+    --playground-surface: #111823;
+    --playground-text: #cbd5e3;
+    --playground-muted: #8290a5;
+    --playground-accent: #67adff;
+    --playground-border: #253044;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+    --playground-background: #f1f4f8;
+    --playground-surface: #fff;
+    --playground-text: #263244;
+    --playground-muted: #59677c;
+    --playground-accent: #0866bd;
+    --playground-border: #d6dde8;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+    min-block-size: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.5;
+    color: var(--playground-text);
+    background: var(--playground-background);
+}
+
+#app {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: clamp(1.25rem, 5vw, 3rem);
+}
+
+main {
+    display: grid;
+    gap: 0.75rem;
+    max-inline-size: 44rem;
+}
+
+h1,
+p {
+    margin: 0;
+}
+
+h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    letter-spacing: -0.035em;
+}
+
+p {
+    color: var(--playground-muted);
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    inline-size: fit-content;
+    padding: 0.55rem 0.8rem;
+    font-weight: 650;
+    color: var(--playground-background);
+    cursor: pointer;
+    background: var(--playground-accent);
+    border: 1px solid var(--playground-accent);
+    border-radius: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--playground-accent);
+    outline-offset: 3px;
+}
+
+a {
+    color: var(--playground-accent);
+}
+
+ul {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Small shared utilities individual lessons opt into. */
+.highlight {
+    padding: 0.1rem 0.35rem;
+    background: color-mix(in srgb, var(--playground-accent), transparent 80%);
+    border-radius: 2px;
+}
+
+.box {
+    padding: 1rem;
+    border: 1px dashed var(--playground-border);
+    border-radius: 2px;
+}
+
+[data-done="true"] {
+    color: var(--playground-muted);
+    text-decoration: line-through;
+}

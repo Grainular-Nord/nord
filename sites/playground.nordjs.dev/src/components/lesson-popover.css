@@ -1,0 +1,82 @@
+.lesson-popover {
+    display: block;
+    margin-block-end: clamp(1.75rem, 4cqi, 2.75rem);
+
+    & .lesson-popover-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        inline-size: 100%;
+        padding: 0.75rem 0.85rem;
+        font: inherit;
+        font-size: 0.88rem;
+        font-weight: 500;
+        line-height: 1.2;
+        anchor-name: --playground-lessons-trigger;
+        color: var(--aurora-text);
+        cursor: pointer;
+        background: var(--aurora-surface);
+        border: 1px solid var(--aurora-border);
+        border-radius: var(--aurora-radius);
+
+        &:is(:hover, :focus-visible) {
+            border-color: var(--aurora-accent);
+            background: var(--aurora-overlay);
+            outline: 2px solid color-mix(in srgb, var(--aurora-accent), transparent 75%);
+            outline-offset: 2px;
+        }
+
+        &::after {
+            inline-size: 0.36rem;
+            block-size: 0.36rem;
+            content: "";
+            border-block-end: 1.5px solid currentColor;
+            border-inline-end: 1.5px solid currentColor;
+            transform: translateY(-0.1rem) rotate(45deg);
+            transition: transform 160ms ease;
+        }
+
+        &:has(+ :popover-open)::after {
+            transform: translateY(0.1rem) rotate(225deg);
+        }
+    }
+}
+
+.lesson-popover-panel {
+    position: fixed;
+    position-anchor: --playground-lessons-trigger;
+    inset-block: anchor(bottom) auto;
+    inset-inline: anchor(left) auto;
+    inline-size: anchor-size(width);
+    margin: 0.45rem 0 0;
+    padding: 0.4rem;
+    color: var(--aurora-text);
+    background: var(--aurora-background);
+    border: 1px solid var(--aurora-border);
+    border-radius: calc(var(--aurora-radius) + 2px);
+    box-shadow: 0 1rem 2.5rem color-mix(in srgb, #000, transparent 75%);
+
+    &:popover-open {
+        display: grid;
+    }
+
+    & a {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+        color: var(--aurora-text-muted);
+        text-decoration: none;
+        border-radius: var(--aurora-radius);
+
+        &:is(:hover, :focus-visible) {
+            color: var(--aurora-text);
+            background: var(--aurora-overlay);
+            outline: none;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lesson-popover-trigger::after {
+        transition: none;
+    }
+}

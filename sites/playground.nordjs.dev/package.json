@@ -1,0 +1,26 @@
+{
+  "name": "playground.nordjs.dev",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "playground:dev": "aurora dev",
+    "playground:build": "tsc && aurora build",
+    "playground:preview": "aurora preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.4"
+  },
+  "dependencies": {
+    "@lezer/highlight": "^1.2.3",
+    "@codemirror/commands": "^6.10.4",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/state": "^6.7.1",
+    "@codemirror/view": "^6.43.6",
+    "@grainular/aurora": "workspace:*",
+    "@grainular/grains": "workspace:*",
+    "@grainular/nord": "workspace:*",
+    "esbuild-wasm": "0.28.1"
+  }
+}

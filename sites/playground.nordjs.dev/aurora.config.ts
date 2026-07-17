@@ -1,0 +1,90 @@
+import { defineConfig } from '@grainular/aurora';
+import './custom.css';
+
+// Aurora also evaluates this config module client-side (client-entry.ts
+// reads `config.components`/`config.layouts` at runtime), so anything at
+// module scope has to be browser-safe — no `node:url`/`node:path`, plain
+// `URL` only.
+const workspacePackage = (path: string) => new URL(`../../packages/${path}`, import.meta.url).pathname;
+
+export default defineConfig({
+    content: 'lessons/**/*.md',
+    layouts: [
+        { name: 'lesson', layout: () => import('./src/layouts/lesson') },
+        { name: 'playground', layout: () => import('./src/layouts/playground') },
+    ],
+    components: [
+        {
+            name: 'CodeEditor',
+            client: true,
+            component: () => import('./src/components/code-editor'),
+            host: { class: 'lesson-editor-host' },
+        },
+        {
+            name: 'WorkspaceControls',
+            client: true,
+            component: () => import('./src/components/workspace-controls'),
+            host: { class: 'lesson-workspace-controls-host' },
+        },
+    ],
+    navigation: [
+        {
+            label: 'Lessons',
+            children: [
+                { path: '/01-hello-nord', label: '1. Hello Nørd' },
+                { path: '/02-components-and-props', label: '2. Components & Props' },
+                { path: '/03-children', label: '3. Children' },
+                { path: '/04-grains', label: '4. Grains' },
+                { path: '/05-derived-state', label: '5. Derived State' },
+                { path: '/06-events', label: '6. Events' },
+                { path: '/07-attributes', label: '7. Attributes' },
+                { path: '/08-refs', label: '8. Refs' },
+                { path: '/09-lifecycle', label: '9. Lifecycle' },
+                { path: '/10-custom-directives', label: '10. Custom Directives' },
+                { path: '/11-conditional-rendering', label: '11. Conditional Rendering' },
+                { path: '/12-lists', label: '12. Lists' },
+                { path: '/13-async-rendering', label: '13. Async Rendering' },
+            ],
+        },
+    ],
+    page: {
+        language: 'en',
+        themeColor: '#0b0c0f',
+        head: '<meta name="generator" content="Aurora" />',
+    },
+    site: {
+        url: 'https://playground.nordjs.dev',
+        title: 'Nørd Playground',
+        description: 'Learn Nørd by editing a real, running project.',
+        logo: 'https://nordjs.dev/logo-aurora-squircle-o.svg',
+        navigation: [
+            { text: 'Playground', link: '/' },
+            { text: 'Tutorial', link: '/01-hello-nord' },
+            { text: 'Guide', link: 'https://nordjs.dev/getting-started' },
+            { text: 'API', link: 'https://nordjs.dev/api-reference' },
+            { text: 'LLMs', link: 'https://nordjs.dev/llms' },
+        ],
+        social: [{ label: 'GitHub repository', link: 'https://github.com/grainular-nord/nord', icon: 'github' }],
+        footer: false,
+    },
+    // @grainular/nord and @grainular/grains are singletons internally (the
+    // lifecycle observer that backs `mounted()` lives at module scope). This
+    // site's own node_modules symlink for them resolves through bun's
+    // install store, a separate file from the one Aurora's runtime imports
+    // via an absolute path straight into packages/@grainular/*  — so without
+    // aliasing them to that exact same file, this site ends up with two
+    // independent copies of the singleton, and directives registered through
+    // one never get processed because only the other's observer is ever
+    // started. The alias forces both to resolve to one shared instance.
+    vite: {
+        resolve: {
+            alias: {
+                '@grainular/nord': workspacePackage('@grainular/nord/dist/esm/index.js'),
+                '@grainular/grains': workspacePackage('@grainular/grains/dist/esm/index.js'),
+            },
+        },
+        optimizeDeps: {
+            exclude: ['@grainular/nord', '@grainular/grains'],
+        },
+    },
+});

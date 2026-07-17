@@ -1,0 +1,26 @@
+.lesson-workspace-controls {
+    display: contents;
+}
+
+.lesson-resize-handle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: max(25rem, var(--lesson-pane-size));
+    z-index: 3;
+    inline-size: 0.75rem;
+    cursor: col-resize;
+    transform: translateX(-50%);
+
+    &::after {
+        position: absolute;
+        inset-block: 0;
+        inset-inline: calc(50% - 0.5px);
+        content: "";
+        background: var(--aurora-border-subtle);
+        transition: background 140ms ease;
+    }
+
+    &:is(:hover, :focus-visible)::after {
+        background: var(--aurora-accent);
+    }
+}
