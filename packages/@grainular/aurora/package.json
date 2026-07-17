@@ -21,7 +21,6 @@
       "require": "./dist/cjs/runtime/index.cjs"
     }
   },
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^25.0.3",
@@ -55,5 +54,8 @@
   "repository": {
       "type": "git",
       "url": "git+https://github.com/grainular/nord.git"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

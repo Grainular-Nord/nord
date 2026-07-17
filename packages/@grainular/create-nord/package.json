@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0-next.5",
+  "version": "2.0.0",
   "name": "@grainular/create-nord",
   "description": "Scaffold your Nørd App with ease.",
   "packageManager": "bun@1.3.14",
