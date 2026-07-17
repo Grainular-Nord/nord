@@ -1,321 +1,221 @@
-# Hej! Nice to see you
+---
+title: Nørd Overview
+description: Nørd's core ideas and a quick tour of its rendering API.
+layout: docs
+links:
+  next:
+    text: Getting started
+    link: /getting-started
+---
 
-Welcome to Nørd — a modern JavaScript framework for building web UIs. You can read more about Nørd’s mission and philosophy [on the Tenets page.](./tenets.md)
+# Nørd
 
-<llm-exclude>
-::: tip
-Use the toggle in the navigation to switch between importing from npm or from a CDN. Examples using the CDN import can be copied directly into the browser and will run as expected. Since the examples are written in TypeScript, you may need to remove the types.
+:::Tip
+Want to get started? Skip to [Getting started](/getting-started).
 :::
 
-::: info
-The examples below will give you a quick overview of **Nørd**s capabilities, but it isn't the whole documentation. There is much more to learn in the [playground](/playground/) and [tutorial](/playground/tutorial/01-hello-world) as well as in the rest of the documentation.
-:::
-</llm-exclude>
+Nørd is a small reactive framework for building web interfaces with JavaScript or TypeScript. It stays close to the platform: ordinary functions compose interfaces, tagged templates create DOM fragments, and reactive values update only the DOM locations that use them.
 
-## Hello World
+## Tenets
 
-The snippet below shows a simple “Hello World” application. This is all that’s required to render HTML to the page.
+- **Stay close to JavaScript.** Components are functions, templates use tagged template literals instead of JSX, and state can live in ordinary closures or modules.
+- **Keep the runtime small.** Nørd has no third-party runtime dependencies, compiler, JSX transform, framework plugin, or special file format.
+- **Update the DOM directly.** Reactive changes update their bound nodes without re-running components, using a virtual DOM, or diffing a tree.
+- **Use the browser platform.** HTML, CSS, events, and browser APIs remain available, with directives for controlled DOM access.
+- **Do not prescribe architecture.** Nørd works in a standalone page, an existing site, or a larger application without imposing a file or state structure.
+- **Render static HTML where it fits.** Server rendering supports static output and independently activated islands rather than stateful incremental hydration.
 
-```ts
-import { html, mount } from "@grainular/nord";
+## Core concepts
+
+- **Templates and components** use `html` tagged templates and ordinary functions to create fragments.
+- **Reactive values** such as Grains subscribe DOM bindings. Any compatible value with a `subscribe` method can be used instead.
+- **Directives** attach behavior to one element: events, attributes, refs, lifecycle work, and browser integrations.
+- **Structs** own dynamic regions of the DOM for conditions, lists, promises, and other multi-node updates.
+- **Rendering** mounts a fragment in the browser or renders it to an HTML string on the server.
+
+## Why Nørd?
+
+Nørd is a good fit for applications that benefit from reactive UI without taking on a compiler pipeline or a broad framework runtime. It can be dropped into an existing page, used for independently activated islands, or used to build a complete client application. The focus is a compact, readable API that leaves the browser platform and application architecture in view.
+
+## Examples
+
+These examples are a quick tour, not the whole documentation. The dedicated guides explain each API in detail.
+
+### Hello World
+
+This is all that is required to render a fragment into a page:
+
+```ts title="app.ts"
+import { html, mount } from '@grainular/nord';
 
 const App = () => html`Hello World`;
 
-mount(App, { to: document.querySelector("#main") });
+mount(App, { to: document.querySelector('#app') });
 
-// Or in one line
-
-mount(() => html`Hello World`, { to: document.querySelector("#main") });
+// Or, equivalently:
+// mount(() => html`Hello World`, { to: document.querySelector('#app') });
 ```
 
-## Applications are built from components
+### Components are just functions
 
-Components are just functions that return `null` or a `fragment` created by the `html` tagged template function.
+Components return fragments. Passing props and composing components is just calling functions with ordinary objects.
 
-```ts
-import { html, mount } from "@grainular/nord";
+```ts title="app.ts"
+import { html } from '@grainular/nord';
 
-const Child = () => {
-    return html`I'm a child component.`;
-};
+const Greeting = ({ name }: { name: string }) => html`<h1>Hej, ${name}!</h1>`;
 
-const App = () => {
-    return html`<div>${Child()}</div>`;
-};
-
-mount(App, { to: document.querySelector("#main") });
+export const App = () => html`<main>${Greeting({ name: 'Nørd' })}</main>`;
 ```
 
-## Components can receive props
+[Templates and components](/templates-and-components) covers props, children, and composition.
 
-You are free to pass state and functions down into child components. There are no limitations and no magic transformations. When you include a component in a template, you are simply calling the function you defined.
+### Component functions only run once
 
-```ts
-import { html, mount, type PureComponent } from "@grainular/nord";
+Nørd evaluates a component when its fragment is created, then maintains the reactive bindings and structs inside that fragment. It does not call the component again for every update.
 
-// You can type props inline
-const Child = ({ name }: { name: string }) => {
-    return html`Hello ${name}`;
+```ts title="app.ts"
+import { html } from '@grainular/nord';
+
+export const App = () => {
+    console.log('Created once');
+    return html`<p>This fragment can still contain reactive values.</p>`;
 };
-
-// Or use the `PureComponent<T>` type
-const ChildTyped: PureComponent<{ name: string }> = ({ name }) => {
-    return html`Hello ${name}`;
-};
-
-const App = () => {
-    return html`<div>${Child({ name: "World" })}</div>`;
-};
-
-mount(App, { to: document.querySelector("#main") });
-```
-
-## Component functions only run once
-
-Nørd evaluates a component during hydration and, after the first evaluation, never re-runs the component function.
-
-```ts
-import { html, mount } from "@grainular/nord";
-
-const App = () => {
-    console.log("Rendered");
-    return html`Hello World`;
-};
-
-mount(App, { to: document.querySelector("#main") });
-
-// Logs "Rendered" only once.
-```
-
-## Components can use grains for reactive values
-
-```ts
-import { html, mount, on } from "@grainular/nord";
-import { grain } from "@grainular/grains";
-
-const App = () => {
-    const count = grain(0);
-    const handleClick = () => count.set(count() + 1);
-
-    return html`
-        <button ${on("click", handleClick)}>
-            ${count}
-        </button>
-    `;
-};
-
-mount(App, { to: document.querySelector("#main") });
-
-// Renders: <button>0</button>
-// After clicking:
-// Renders: <button>1</button>
 ```
 
 ### Grains are not scoped — unless you scope them
 
-```ts
-import { html, mount, on } from "@grainular/nord";
-import { grain } from "@grainular/grains";
+State can be local to a component, shared from a module, or passed through props. A grain has no special scope of its own; it updates wherever it is used.
 
-// Can be used anywhere.
-// Wherever this grain is used, it will update accordingly.
+```ts title="counter.ts"
+import { grain } from '@grainular/grains';
+import { html, on } from '@grainular/nord';
+
 export const count = grain(0);
 
-const App = () => {
-    const handleClick = () => count.set(count() + 1);
-
-    return html`
-        <button ${on("click", handleClick)}>
-            ${count}
-        </button>
-    `;
-};
-
-mount(App, { to: document.querySelector("#main") });
+export const Counter = () => html`
+    <button ${on('click', () => count.update((value) => value + 1))}>
+        Count: ${count}
+    </button>
+`;
 ```
 
-### State is passed via props
+[Reactivity and grains](/reactivity) explains local state, shared state, derived values, and other subscribable sources.
 
-```ts
-import { html, mount, on } from "@grainular/nord";
-import { grain, type Grain } from "@grainular/grains";
+### Comments are just HTML comments
 
-type CounterProps = {
-    count: Grain<number>;
-};
+Templates use HTML syntax. Nothing special is required for a comment:
 
-const Counter = ({ count }: CounterProps) => {
-    const increment = () => count.set(count() + 1);
+```ts title="app.ts"
+import { html } from '@grainular/nord';
 
-    return html`
-        <button ${on("click", increment)}>
-            ${count}
-        </button>
-    `;
-};
-
-const App = () => {
-    const count = grain(0);
-    const reset = () => count.set(0);
-
-    return html`
-        ${Counter({ count })}
-        <button ${on("click", reset)}>Reset</button>
-    `;
-};
-
-mount(App, { to: document.querySelector("#main") });
+export const App = () => html`
+    <main>
+        <!-- Not visible in the DOM. -->
+    </main>
+`;
 ```
 
-## Children are just props
+### Directives access the DOM
 
-When passing children to components, no special rules apply. Anything that is a `fragment` or `string` can be used as a child (when using `PropsWithChildren`). Otherwise, you’re free to pass whatever you want.
+Directives are small functions placed on an element. The built-in `on` directive attaches an event listener and cleans it up when the element leaves the document.
 
-```ts
-import { html, mount, type PropsWithChildren } from "@grainular/nord";
+```ts title="button.ts"
+import { html, on } from '@grainular/nord';
 
-const Child = ({ children }: PropsWithChildren) => {
-    return html`I'm a child component. ${children}`;
-};
-
-const App = () => {
-    return html`<div>${Child({ children: "Some text" })}</div>`;
-};
-
-mount(App, { to: document.querySelector("#main") });
+export const Button = () => html`
+    <button ${on('click', () => console.log('Clicked'))}>Click me!</button>
+`;
 ```
 
-## Comments are just HTML comments
+[Directives](/directives) cover events, attributes, refs, portals, and custom directives.
 
-Nothing special is required — just use standard HTML comment syntax.
+### Structs handle control flow
 
-```ts
-import { html, mount } from "@grainular/nord";
+Structs manage dynamic regions rather than a property on a single element. `$if` replaces its region when the condition changes.
 
-const App = () => {
-    return html`
-        <div>
-            <!-- Comment. Not visible in the DOM -->
-        </div>
-    `;
-};
+```ts title="status.ts"
+import { grain } from '@grainular/grains';
+import { $if, html } from '@grainular/nord';
 
-mount(App, { to: document.querySelector("#main") });
+const isReady = grain(true);
+
+export const Status = () => html`
+    ${$if(isReady)
+        .$then(() => html`Ready`)
+        .$else(() => html`Not ready`)}
+`;
 ```
 
-## Components can use directives to access the DOM
+### Async is not an issue
 
-Directives are special functions inserted into templates that allow direct access to the DOM. For example, the `on` directive attaches event listeners to elements.
+Promises can have pending, resolved, and error fragments without introducing a separate component type.
 
-```ts
-import { html, mount, on } from "@grainular/nord";
+```ts title="profile.ts"
+import { $await, html } from '@grainular/nord';
 
-const App = () => {
-    const handleClick = () => console.log("Clicked");
+const profile = fetch('/api/profile').then((response) => response.json());
 
-    return html`
-        <button ${on("click", handleClick)}>Click me!</button>
-    `;
-};
-
-mount(App, { to: document.querySelector("#main") });
-
-// Clicking the button logs "Clicked" to the console.
+export const Profile = () => html`
+    ${$await(profile)
+        .$then((user) => html`<p>Hej, ${user.name}!</p>`)
+        .$pending(() => html`<p>Loading...</p>`)
+        .$catch((error) => html`<p>${error.message}</p>`)}
+`;
 ```
 
-## Structs handle control flow
+### Lists are the final boss
 
-Structs are a special kind of function that manipulate DOM nodes directly, rather than properties of a single node. This allows declarative control flow.
+`$each` reconciles a reactive iterable and uses keys to preserve each item’s DOM identity.
 
-```ts
-import { html, mount, $if } from "@grainular/nord";
-import { grain } from "@grainular/grains";
+```ts title="users.ts"
+import { grain } from '@grainular/grains';
+import { $each, html } from '@grainular/nord';
 
-const App = () => {
-    const condition = grain(true);
+const users = grain([
+    { id: 'ada', name: 'Ada' },
+    { id: 'lin', name: 'Lin' },
+]);
 
-    return html`
-        <div>
-            ${$if(condition, () => html`Boolean is true`)
-                .$else(() => html`Boolean is false`)}
-        </div>
-    `;
-};
-
-mount(App, { to: document.querySelector("#main") });
+export const Users = () => html`
+    <ul>
+        ${$each(users)
+            .$withKey((user) => user.id)
+            .$as((user) => html`<li>${user.name}</li>`)}
+    </ul>
+`;
 ```
 
-## Async is not an issue
+### If Nørd does not have what is needed, build it
 
-Handling promises is straightforward using the `$await` struct.
+`createDirective` and `createStruct` expose the same extension points used by the built-in primitives.
 
-```ts
-import { html, mount, $await } from "@grainular/nord";
+```ts title="color.ts"
+import { createDirective, html } from '@grainular/nord';
 
-export const App = () => {
-    const promise = new Promise<string>((res) => {
-        setTimeout(() => res("Hello World"), 2000);
-    });
-
-    return html`
-        <div>
-            ${$await(promise)
-                .$then((data) => html`${data}`)
-                .$catch((err) => html`${err.message}`)
-                .$pending(() => html`Loading...`)}
-        </div>
-    `;
-};
-
-mount(App, { to: document.querySelector("main#app") });
-```
-
-## Lists are the final boss
-
-Using the `$each` struct, lists and iterables — reactive or not — can be rendered efficiently.
-
-```ts
-import { html, mount, $each } from "@grainular/nord";
-import { grain } from "@grainular/grains";
-
-export const App = () => {
-    const users = grain([
-        { name: "A", age: 2 },
-        { name: "B", age: 20 },
-    ]);
-
-    return html`
-        <div>
-            ${$each(() => users).$as(
-                ({ name, age }) =>
-                    html`<div>Name: ${name}, Age: ${age}</div>`
-            )}
-        </div>
-    `;
-};
-
-mount(App, { to: document.querySelector("main#app") });
-```
-
-## If Nørd doesn’t have what you need, build it yourself
-
-Nørd exposes `createDirective` and `createStruct`, allowing you to implement your own directives and structs. Anything you can’t express with the standard library can be built directly.
-
-```ts
-import { html, mount, createDirective } from "@grainular/nord";
-
-// Creating a directive is simple and type-safe
 const color = (value: string) =>
     createDirective((node) => {
         node.style.backgroundColor = value;
     });
 
-export const App = () => {
-    return html`
-        <div ${color("red")}>I'm a red div</div>
-        <div ${color("blue")}>I'm a blue div</div>
-    `;
-};
-
-mount(App, { to: document.querySelector("main#app") });
+export const App = () => html`<p ${color('rebeccapurple')}>Custom directive.</p>`;
 ```
+
+[Structs](/structs) cover dynamic regions, including lists and asynchronous values. Custom directives and structs each have their own guide.
+
+### Rendering HTML
+
+The same component model can produce static HTML on the server:
+
+```ts title="server.ts"
+import { renderToString } from '@grainular/nord';
+import { App } from './app';
+
+const html = renderToString(App);
+```
+
+[Server rendering](/server-rendering) explains static generation and independent islands.
+
+## Next steps
+
+[Getting started](/getting-started) covers installation and project setup. The following guides expand each concept without requiring a particular application architecture or tooling choice.

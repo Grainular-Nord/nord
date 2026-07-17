@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+    <title id="title">Nørd circular aurora logo</title>
+    <desc id="description">A circular northern-light mark with a transparent letter N cut through its center.</desc>
+
+    <defs>
+        <clipPath id="disc">
+            <circle cx="256" cy="256" r="208" />
+        </clipPath>
+        <mask id="negative-n">
+            <rect width="512" height="512" fill="#fff" />
+            <path
+                d="M166 350V162l180 188V162"
+                fill="none"
+                stroke="#000"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="58"
+            />
+        </mask>
+        <linearGradient id="aurora-primary" x1="96" y1="416" x2="412" y2="84" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#196eff" />
+            <stop offset="0.34" stop-color="#22e2e0" />
+            <stop offset="0.57" stop-color="#b2ffd0" />
+            <stop offset="0.78" stop-color="#9b78ff" />
+            <stop offset="1" stop-color="#6b39de" />
+        </linearGradient>
+        <linearGradient id="aurora-secondary" x1="104" y1="390" x2="408" y2="126" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#063cba" />
+            <stop offset="0.45" stop-color="#22bff2" />
+            <stop offset="0.72" stop-color="#62f4d1" />
+            <stop offset="1" stop-color="#8051ed" />
+        </linearGradient>
+        <linearGradient id="aurora-highlight" x1="152" y1="394" x2="370" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#75d6ff" stop-opacity="0" />
+            <stop offset="0.46" stop-color="#e4fff2" stop-opacity="0.8" />
+            <stop offset="1" stop-color="#d9c8ff" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+
+    <g clip-path="url(#disc)" mask="url(#negative-n)">
+        <rect width="512" height="512" fill="#07143f" />
+        <path
+            d="M25 420C128 390 105 186 260 98c91-52 174-24 239 48"
+            fill="none"
+            stroke="url(#aurora-primary)"
+            stroke-linecap="round"
+            stroke-width="142"
+        />
+        <path
+            d="M20 458C154 427 184 244 302 164c72-49 132-44 198-12"
+            fill="none"
+            stroke="url(#aurora-secondary)"
+            stroke-linecap="round"
+            stroke-width="68"
+            opacity="0.9"
+        />
+        <path
+            class="aurora-highlight"
+            d="M73 384C177 343 156 190 282 117c67-39 123-31 168 2"
+            fill="none"
+            stroke="url(#aurora-highlight)"
+            stroke-linecap="round"
+            stroke-width="12"
+        />
+    </g>
+
+    <style>
+        @media (max-width: 48px) {
+            .aurora-highlight {
+                display: none;
+            }
+        }
+    </style>
+</svg>
