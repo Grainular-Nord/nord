@@ -32,6 +32,7 @@ type Subscribable<T> = {
     subscribe(listener: (value: T) => void): () => void;
 };
 ```
+
 ## Templates and components
 
 ### `html`
@@ -57,6 +58,7 @@ type Subscribable<T> = {
 ### `PropsWithChildren`
 
 `PropsWithChildren<T>` adds a `children` field to a props object. Children are passed explicitly as a string, `ComponentFragment`, or `null`; they are ordinary props rather than a separate slot or special component syntax.
+
 ## Directives
 
 ### `attr`
@@ -82,6 +84,7 @@ type Subscribable<T> = {
 ### `createDirective`
 
 `createDirective(handler)` creates a directive from a function receiving the host element. The handler may return a cleanup function, which Nørd invokes when the element is removed, and forms the extension point behind custom element behavior.
+
 ## Structs
 
 ### `$if`
@@ -123,6 +126,7 @@ type Subscribable<T> = {
 ### `createStruct`
 
 `createStruct(handler, snapshot?)` creates a dynamic region anchored by a comment node. The handler owns DOM inserted around that anchor and may return cleanup; the optional snapshot supplies its server-rendered HTML, making this the extension point for custom structs.
+
 ## Grains
 
 ### `grain`

@@ -1,10 +1,10 @@
-import { combined, derived } from '@grainular/grains';
+import { combined, derived, type Grain } from '@grainular/grains';
 import { $each, $if, type ComponentFragment, html } from '@grainular/nord';
 import type { resource } from '@grainular/resource';
 
 export type ListRendererProps<T extends { id: number }> = {
     resource: ReturnType<typeof resource<T[]>>;
-    renderItem: (item: T, idx: number) => ComponentFragment;
+    renderItem: (item: T, idx: Grain<number>) => ComponentFragment;
     renderLoad: () => ComponentFragment;
 };
 export const ListRenderer = <T extends { id: number }>(props: ListRendererProps<T>) => {

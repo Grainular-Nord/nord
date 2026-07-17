@@ -3,7 +3,7 @@ import { Icon, icons } from '../../components/icon/icon.component';
 import { type Cell as CellModel, gameState } from '../../store/game-state';
 import './cell.css';
 
-export type CellProps = { cell: CellModel; idx: number };
+export type CellProps = { cell: CellModel };
 export const Cell = ({ cell }: CellProps) => {
     const flagCell = (ev: Event) => {
         ev.preventDefault();
