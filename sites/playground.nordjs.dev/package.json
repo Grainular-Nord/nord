@@ -23,6 +23,8 @@
     "@grainular/aurora": "workspace:*",
     "@grainular/grains": "workspace:*",
     "@grainular/nord": "workspace:*",
-    "esbuild-wasm": "0.28.1"
+    "esbuild-wasm": "0.28.1",
+    "prettier": "^3.9.5",
+    "typescript": "^5.9.3"
   }
 }

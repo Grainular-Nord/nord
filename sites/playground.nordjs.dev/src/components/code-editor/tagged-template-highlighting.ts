@@ -1,6 +1,6 @@
 import { syntaxTree } from '@codemirror/language';
 import { RangeSetBuilder } from '@codemirror/state';
-import { Decoration, type DecorationSet, EditorView, ViewPlugin, type ViewUpdate } from '@codemirror/view';
+import { Decoration, type DecorationSet, type EditorView, ViewPlugin, type ViewUpdate } from '@codemirror/view';
 
 const taggedTemplate = Decoration.mark({ class: 'cm-nord-template-tag' });
 const templateText = Decoration.mark({ class: 'cm-nord-template-text' });

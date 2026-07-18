@@ -56,5 +56,19 @@
             "tailwindDirectives": true
         }
     },
-    "overrides": [{ "includes": ["**/*.html"] }]
+    "overrides": [
+        {
+            "includes": ["sites/playground.nordjs.dev/public/lessons/**/*.ts"],
+            "linter": {
+                "rules": {
+                    "correctness": {
+                        "noUnusedFunctionParameters": "off",
+                        "noUnusedImports": "off",
+                        "noUnusedVariables": "off"
+                    }
+                }
+            }
+        },
+        { "includes": ["**/*.html"] }
+    ]
 }

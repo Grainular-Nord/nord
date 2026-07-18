@@ -1,6 +1,12 @@
 import type { CompileDiagnostic } from '../../lib/transpile';
 
-export type CodeEditorProps = { src: string; title?: string };
+export type CodeEditorControls = {
+    format?: boolean;
+    reset?: boolean;
+    solve?: boolean;
+};
+
+export type CodeEditorProps = { controls?: CodeEditorControls; src: string; title?: string };
 export type EditorLayout = 'split' | 'stacked';
 export type ProjectFile = { path: string; contents: string };
 export type PlaygroundDiagnostic = CompileDiagnostic & { path: string };

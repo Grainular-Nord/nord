@@ -1,5 +1,5 @@
-import { html } from '@grainular/nord';
 import type { AuroraLink, AuroraPageLinks } from '@grainular/aurora';
+import { html } from '@grainular/nord';
 
 const TutorialLink = (direction: 'prev' | 'next', link?: AuroraLink) => {
     if (!link) return null;

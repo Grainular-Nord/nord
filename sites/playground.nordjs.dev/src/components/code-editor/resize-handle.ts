@@ -1,6 +1,6 @@
 import { derived, type Grain } from '@grainular/grains';
 import { html } from '@grainular/nord';
-import { resizable, type ResizeAxis } from '../../directives/resizable.directive';
+import { type ResizeAxis, resizable } from '../../directives/resizable.directive';
 import type { EditorLayout } from './types';
 
 const axisFor = (layout: EditorLayout, workspace: HTMLElement): ResizeAxis =>

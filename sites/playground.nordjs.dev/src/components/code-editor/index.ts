@@ -7,14 +7,14 @@ import { ResizeHandle } from './resize-handle';
 import type { CodeEditorProps } from './types';
 import '../code-editor.css';
 
-const CodeEditor = ({ src, title }: CodeEditorProps) => {
+const CodeEditor = ({ controls, src, title }: CodeEditorProps) => {
     const controller = createPlaygroundController(src);
     return html`<section class="aurora-code-editor" data-layout="${controller.layout}" ${controller.load} aria-label="Interactive code editor">
         ${ProjectTabs({ activePath: controller.activePath, files: controller.files, onAdd: controller.addFile, onDelete: controller.deleteFile })}
         <div class="aurora-code-editor-workspace">
-            <div class="aurora-code-editor-code-panel">${CodeMirrorEditor({ diagnostics: controller.diagnostics, file: controller.activeFile, onChange: controller.updateActiveFile, onRun: () => void controller.run() })}</div>
+            <div class="aurora-code-editor-code-panel">${CodeMirrorEditor({ diagnostics: controller.diagnostics, file: controller.activeFile, files: controller.files, onChange: controller.updateActiveFile, onFormat: () => void controller.formatActiveFile(), onRun: () => void controller.run() })}</div>
             ${ResizeHandle({ layout: controller.layout })}
-            ${PreviewPanel({ consoleOpen: controller.consoleOpen, layout: controller.layout, onRun: () => void controller.run(), preview: controller.preview, previewEvents: controller.previewEvents, session: controller.previewSession, status: controller.status, title })}
+            ${PreviewPanel({ controls, consoleOpen: controller.consoleOpen, layout: controller.layout, onFormat: () => void controller.formatActiveFile(), onReset: () => void controller.resetLesson(), onRun: () => void controller.run(), onSolve: () => void controller.solveLesson(), preview: controller.preview, previewEvents: controller.previewEvents, session: controller.previewSession, status: controller.status, title })}
         </div>
     </section>`;
 };

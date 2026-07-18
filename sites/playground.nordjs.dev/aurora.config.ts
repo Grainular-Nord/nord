@@ -65,6 +65,12 @@ export default defineConfig({
         },
         optimizeDeps: {
             exclude: ['@grainular/nord', '@grainular/grains'],
+            include: [
+                'prettier/standalone',
+                'prettier/plugins/estree',
+                'prettier/plugins/html',
+                'prettier/plugins/typescript',
+            ],
         },
     },
 });

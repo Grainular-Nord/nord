@@ -139,7 +139,7 @@
 }
 
 .aurora-code-editor-workspace {
-    --editor-stacked-size: 58%;
+    --editor-stacked-size: calc((100% - 0.5rem) / 2);
     --editor-split-size: 50%;
     display: grid;
     grid-template-rows: minmax(14rem, var(--editor-stacked-size)) 0.5rem minmax(12rem, 1fr);
@@ -253,6 +253,7 @@
 }
 
 .aurora-code-editor-run,
+.aurora-code-editor-action,
 .aurora-code-editor-console-toggle,
 .aurora-code-editor-console-toolbar button {
     flex: none;

@@ -1,4 +1,4 @@
-import { createDirective } from '@grainular/nord';
+import { mounted } from '@grainular/nord';
 
 export type ResizeAxis = 'block' | 'inline';
 
@@ -15,9 +15,12 @@ const pointerPosition = (event: PointerEvent, axis: ResizeAxis) => (axis === 'in
 
 /** Makes a separator keyboard- and pointer-resizable within its container. */
 export const resizable = ({ axis, bounds, container: findContainer, resize }: ResizableOptions) =>
-    createDirective<HTMLElement>((handle) => {
+    // The container may be outside a component's template. Resolve it after
+    // mount, when the template has been inserted into its actual layout.
+    mounted((handle) => {
+        if (!(handle instanceof HTMLElement)) return () => {};
         const container = findContainer(handle);
-        if (!container) return;
+        if (!container) return () => {};
 
         const currentSize = () => {
             const containerBounds = container.getBoundingClientRect();
