@@ -57,7 +57,6 @@ export const createPlaygroundEditorConfig = ({
         format: async (contents, path) => (/\.tsx?$/.test(path) ? formatTypeScript(contents) : contents),
         imports: playgroundImports,
         initialLayout: shared?.layout,
-        initialPath: shared?.activePath,
         tools: [
             (editor) =>
                 controls?.format === false
