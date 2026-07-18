@@ -42,6 +42,12 @@ export const Aurora = () => {
                 transform: translate(30vw, 15vh) rotate(30deg);
                 filter: hue-rotate(30deg); 
             }
+        }
+
+        @media (width < 48rem), (prefers-reduced-motion: reduce) {
+            .aurora {
+                display: none;
+            }
         }`,
     );
 };
