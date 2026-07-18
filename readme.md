@@ -1,4 +1,4 @@
-> Current information for the [nørd@next](./nørd-@-next.md) testers.
+> 📚 Full documentation is available at [docs.nordjs.dev](https://docs.nordjs.dev).
 
 ## 🎯 Tenets of Nord
 
