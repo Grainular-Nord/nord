@@ -23,4 +23,8 @@
     &:is(:hover, :focus-visible)::after {
         background: var(--aurora-accent);
     }
+
+    @container aurora-shell (width < 64rem) {
+        display: none;
+    }
 }

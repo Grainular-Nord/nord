@@ -57,12 +57,16 @@
     box-shadow: 0 1rem 2.5rem color-mix(in srgb, #000, transparent 75%);
 
     &:popover-open {
-        display: grid;
+        display: flex;
+        flex-direction: column;
     }
 
     & a {
+        display: block;
+        min-block-size: 0;
         padding: 0.5rem 0.6rem;
         font-size: 0.8rem;
+        line-height: 1.2;
         color: var(--aurora-text-muted);
         text-decoration: none;
         border-radius: var(--aurora-radius);
