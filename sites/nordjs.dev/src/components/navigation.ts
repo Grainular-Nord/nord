@@ -45,6 +45,9 @@ export const Navigation = () => {
                 <li class="link">
                     <a href="https://playground.nordjs.dev" rel="noopener noreferrer">Playground.</a>
                 </li>
+                <li class="link">
+                    <a href="https://docs.nordjs.dev/llms" rel="noopener noreferrer">LLMs.</a>
+                </li>
                 <li>${ThemeToggle()}</li>
                 <li>
                     <a href="https://github.com/grainular-nord/nord" class="icon-btn" rel="noopener noreferrer" aria-label="Github Repository Link">

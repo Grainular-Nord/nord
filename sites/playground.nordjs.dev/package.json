@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "playground:dev": "aurora dev",
-    "playground:build": "tsc && aurora build",
-    "playground:preview": "aurora preview"
+    "docs:dev": "aurora dev",
+    "docs:build": "tsc && aurora build",
+    "docs:preview": "aurora preview"
   },
   "devDependencies": {
     "vite": "^8.0.4"

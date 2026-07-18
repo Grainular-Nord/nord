@@ -102,6 +102,7 @@ export default defineConfig({
                     },
                 ],
             }),
+            { text: 'Playground', link: 'https://playground.nordjs.dev' },
             { text: 'Guide', link: '/getting-started' },
             { text: 'API', link: '/api-reference' },
             { text: 'LLMs', link: '/llms' },
