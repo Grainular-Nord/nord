@@ -1,6 +1,6 @@
 import { defineConfig } from '@grainular/aurora';
-import { EcosystemPopover } from './src/components/ecosystem-popover';
 import './custom.css';
+import { EcosystemPopover } from './src/components/ecosystem-popover';
 
 export default defineConfig({
     content: 'docs/**/*.md',
@@ -70,39 +70,34 @@ export default defineConfig({
                         href: 'https://aurora.nordjs.dev',
                     },
                     {
-                        name: 'Grains',
-                        description: 'Small synchronous reactive primitives for local and shared state.',
-                        href: 'https://grains.nordjs.dev',
-                    },
-                    {
                         name: 'Router',
                         description: 'Client-side routes, navigation, outlets, hooks, and transitions.',
-                        href: 'https://router.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/router',
                     },
                     {
                         name: 'Forms',
                         description: 'Reactive controls, validation, bindings, and error rendering.',
-                        href: 'https://forms.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/forms',
                     },
                     {
                         name: 'Resource',
                         description: 'Abortable reactive resources for asynchronous data and dependencies.',
-                        href: 'https://resource.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/resource',
                     },
                     {
                         name: 'Silo',
                         description: 'Small stores with readonly state and focused reactive selectors.',
-                        href: 'https://silo.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/silo',
                     },
                     {
                         name: 'Styled',
                         description: 'Scoped component styles that stay close to their implementation.',
-                        href: 'https://styled.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/styled',
                     },
                     {
                         name: 'Custom Elements',
                         description: 'Expose Nørd components as platform-native custom elements.',
-                        href: 'https://elements.nordjs.dev',
+                        href: 'https://github.com/Grainular-Nord/nord/tree/main/packages/%40grainular/custom-elements',
                     },
                 ],
             }),
