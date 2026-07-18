@@ -50,13 +50,13 @@ export default defineConfig({
     page: {
         language: 'en',
         themeColor: '#0b0c0f',
-        head: '<meta name="generator" content="Aurora" />',
+        head: '<link rel="icon" type="image/svg+xml" href="/nord-logo.svg" /><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" /><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" /><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" /><link rel="manifest" href="/site.webmanifest" /><meta name="generator" content="Aurora" />',
     },
     site: {
         url: 'https://playground.nordjs.dev',
         title: 'Nørd Playground',
         description: 'Learn Nørd by editing a real, running project.',
-        logo: 'https://nordjs.dev/logo-aurora-squircle-o.svg',
+        logo: '/nord-logo.svg',
         navigation: [
             { text: 'Playground', link: '/' },
             { text: 'Tutorial', link: '/01-hello-nord' },

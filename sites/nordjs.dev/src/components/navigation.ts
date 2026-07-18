@@ -29,7 +29,7 @@ export const Navigation = () => {
                 to increase recognizability
             -->
             <a href="/" class="nav-logo">
-                <img src="./logo-min.png" alt="Nord Logo"/>
+                <img src="/nord-logo.svg" alt="Nord Logo"/>
                 <span>Nørd</span>
             </a>
 

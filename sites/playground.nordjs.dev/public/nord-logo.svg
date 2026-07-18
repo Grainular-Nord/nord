@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+    <title id="title">Nørd aurora squircle Ø logo</title>
+    <desc id="description">An aurora-filled squircle with a geometric transparent letter Ø cut through its center.</desc>
+
+    <defs>
+        <clipPath id="body">
+            <path d="M160 48h192c72 0 112 40 112 112v192c0 72-40 112-112 112H160c-72 0-112-40-112-112V160C48 88 88 48 160 48Z" />
+        </clipPath>
+        <mask id="negative-o">
+            <rect width="512" height="512" fill="#fff" />
+            <circle cx="256" cy="256" r="104" fill="none" stroke="#000" stroke-width="54" />
+            <path d="M152 374 360 138" fill="none" stroke="#000" stroke-linecap="square" stroke-width="38" />
+        </mask>
+        <linearGradient id="aurora-body" x1="66" y1="438" x2="446" y2="70" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#185de8" />
+            <stop offset="0.24" stop-color="#18bff1" />
+            <stop offset="0.48" stop-color="#55edda" />
+            <stop offset="0.67" stop-color="#b5f6d2" />
+            <stop offset="0.84" stop-color="#9b74f5" />
+            <stop offset="1" stop-color="#6b36d4" />
+        </linearGradient>
+        <linearGradient id="aurora-fold" x1="74" y1="420" x2="440" y2="96" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#2141ba" />
+            <stop offset="0.32" stop-color="#167fe8" />
+            <stop offset="0.62" stop-color="#35d9e3" />
+            <stop offset="0.82" stop-color="#6df3ce" />
+            <stop offset="1" stop-color="#8d5be8" />
+        </linearGradient>
+        <linearGradient id="aurora-light" x1="128" y1="410" x2="404" y2="84" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#b8eaff" stop-opacity="0" />
+            <stop offset="0.48" stop-color="#effff4" stop-opacity="0.72" />
+            <stop offset="1" stop-color="#e5d8ff" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+
+    <g clip-path="url(#body)" mask="url(#negative-o)">
+        <rect width="512" height="512" fill="url(#aurora-body)" />
+        <path
+            d="M-10 474C122 448 147 268 274 178c88-62 168-66 256-22"
+            fill="none"
+            stroke="url(#aurora-fold)"
+            stroke-linecap="round"
+            stroke-width="94"
+            opacity="0.76"
+        />
+        <path
+            class="aurora-highlight"
+            d="M44 414C165 378 168 220 294 136c70-47 130-48 190-21"
+            fill="none"
+            stroke="url(#aurora-light)"
+            stroke-linecap="round"
+            stroke-width="14"
+        />
+    </g>
+
+    <style>
+        @media (max-width: 48px) {
+            .aurora-highlight {
+                display: none;
+            }
+        }
+    </style>
+</svg>

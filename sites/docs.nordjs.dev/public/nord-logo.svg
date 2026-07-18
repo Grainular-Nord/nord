@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
-    <title id="title">Nørd aurora squircle logo</title>
-    <desc id="description">An aurora-filled squircle with a sharp transparent letter N cut through its center.</desc>
+    <title id="title">Nørd aurora squircle Ø logo</title>
+    <desc id="description">An aurora-filled squircle with a geometric transparent letter Ø cut through its center.</desc>
 
     <defs>
         <clipPath id="body">
             <path d="M160 48h192c72 0 112 40 112 112v192c0 72-40 112-112 112H160c-72 0-112-40-112-112V160C48 88 88 48 160 48Z" />
         </clipPath>
-        <mask id="negative-n">
+        <mask id="negative-o">
             <rect width="512" height="512" fill="#fff" />
-            <path d="M148 360V152h58l100 120V152h58v208h-58L206 240v120Z" fill="#000" />
+            <circle cx="256" cy="256" r="104" fill="none" stroke="#000" stroke-width="54" />
+            <path d="M152 374 360 138" fill="none" stroke="#000" stroke-linecap="square" stroke-width="38" />
         </mask>
         <linearGradient id="aurora-body" x1="66" y1="438" x2="446" y2="70" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#185de8" />
@@ -32,7 +33,7 @@
         </linearGradient>
     </defs>
 
-    <g clip-path="url(#body)" mask="url(#negative-n)">
+    <g clip-path="url(#body)" mask="url(#negative-o)">
         <rect width="512" height="512" fill="url(#aurora-body)" />
         <path
             d="M-10 474C122 448 147 268 274 178c88-62 168-66 256-22"

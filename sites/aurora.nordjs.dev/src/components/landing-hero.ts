@@ -6,7 +6,7 @@ type LandingHeroProps = {
 
 const LandingHero = ({ children }: LandingHeroProps) => html`
     <a class="aurora-landing-brand" href="/" aria-label="Aurora home">
-        <img src="/aurora.svg" alt="" />
+        <img src="/nord-logo.svg" alt="" />
         <span>Aurora</span>
     </a>
     <section class="aurora-hero">
