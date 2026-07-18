@@ -6,7 +6,7 @@
         <clipPath id="body">
             <path d="M160 48h192c72 0 112 40 112 112v192c0 72-40 112-112 112H160c-72 0-112-40-112-112V160C48 88 88 48 160 48Z" />
         </clipPath>
-        <mask id="negative-o">
+        <mask id="negative-o" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="512" height="512" mask-type="luminance" style="mask-type: luminance">
             <rect width="512" height="512" fill="#fff" />
             <circle cx="256" cy="256" r="104" fill="none" stroke="#000" stroke-width="54" />
             <path d="M152 374 360 138" fill="none" stroke="#000" stroke-linecap="square" stroke-width="38" />

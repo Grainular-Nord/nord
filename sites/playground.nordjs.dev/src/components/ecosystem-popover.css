@@ -77,8 +77,11 @@
     }
 
     & a {
-        display: grid;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 0.12rem;
+        min-block-size: 0;
         padding: 0.45rem 0.55rem;
         color: var(--aurora-text);
         text-decoration: none;
@@ -90,10 +93,11 @@
     }
 
     & strong {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         gap: 0.38rem;
         font-size: 0.8rem;
+        line-height: 1.2;
     }
 
     & .nord-external-link-icon {
