@@ -6,7 +6,7 @@ const Playground = ({ meta }: AuroraLayoutProps) => {
     const playground = (meta as AuroraLayoutProps['meta'] & { playground?: PlaygroundMeta }).playground;
 
     return html` <div class="playground-layout">
-        ${playground && EditorHost(playground)}
+        ${playground && EditorHost({ ...playground, controls: { ...playground.controls, download: true, share: true } })}
     </div> `;
 };
 

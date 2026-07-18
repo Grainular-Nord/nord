@@ -1,5 +1,5 @@
 import { html } from '@grainular/nord';
-import { resizable } from '../directives/resizable.directive';
+import { resizable } from '@grainular/codemirror';
 import './workspace-controls.css';
 
 const limits = (workspace: HTMLElement) => ({
