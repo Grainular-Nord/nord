@@ -43,9 +43,10 @@ export default defineConfig({
             ],
         },
         {
-            label: 'Rendering',
+            label: 'Resources',
             children: [
                 { path: '/server-rendering', label: 'Server rendering' },
+                { path: '/tooling', label: 'Tooling' },
                 { path: '/api-reference', label: 'API reference' },
             ],
         },
