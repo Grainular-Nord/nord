@@ -1,13 +1,20 @@
 import { stripTypes } from './transpile';
 
 export type ProjectFile = { path: string; contents: string };
+export type PreviewEvent = { level: 'error' | 'info' | 'log' | 'warn'; message: string };
+export type PreviewMessage = { channel: 'nord-playground'; event: PreviewEvent; session: string };
 
 const CDN_IMPORTS: Record<string, string> = {
     '@grainular/nord': 'https://esm.sh/@grainular/nord@next',
     '@grainular/grains': 'https://esm.sh/@grainular/grains@next',
 };
 
-const shell = (importMap: Record<string, string>, entryUrl: string, theme: 'dark' | 'light') => `<!doctype html>
+const shell = (
+    importMap: Record<string, string>,
+    entryUrl: string,
+    theme: 'dark' | 'light',
+    session: string,
+) => `<!doctype html>
 <html data-theme="${theme}">
 <head>
 <meta charset="UTF-8" />
@@ -18,6 +25,32 @@ const shell = (importMap: Record<string, string>, entryUrl: string, theme: 'dark
 <body>
 <div id="app"></div>
 <script type="module" src="${entryUrl}"></script>
+<script>
+(() => {
+    const session = ${JSON.stringify(session)};
+    const format = (value) => {
+        if (value instanceof Error) return value.stack || value.message;
+        if (typeof value === 'string') return value;
+        try { return JSON.stringify(value); } catch { return String(value); }
+    };
+    const report = (level, values) => parent.postMessage({
+        channel: 'nord-playground',
+        session,
+        event: { level, message: values.map(format).join(' ') },
+    }, location.origin);
+
+    for (const level of ['log', 'info', 'warn', 'error']) {
+        const original = console[level];
+        console[level] = (...values) => {
+            original.apply(console, values);
+            report(level, values);
+        };
+    }
+
+    addEventListener('error', (event) => report('error', [event.error || event.message]));
+    addEventListener('unhandledrejection', (event) => report('error', [event.reason]));
+})();
+</script>
 </body>
 </html>`;
 
@@ -40,6 +73,7 @@ export const buildPreviewDocument = async (
     files: ProjectFile[],
     entryPath: string,
     theme: 'dark' | 'light',
+    session: string,
 ): Promise<{ document: string; urls: string[] }> => {
     const knownPaths = new Set(files.map((file) => file.path));
     const resolveRelative = (ref: string) => {
@@ -51,7 +85,7 @@ export const buildPreviewDocument = async (
     const transpiled = await Promise.all(
         files.map(async (file) => ({
             path: file.path,
-            code: /\.tsx?$/.test(file.path) ? await stripTypes(file.contents) : file.contents,
+            code: /\.tsx?$/.test(file.path) ? await stripTypes(file.contents, file.path) : file.contents,
         })),
     );
 
@@ -75,5 +109,5 @@ export const buildPreviewDocument = async (
     const entryUrl = urls.get(entryPath);
     if (!entryUrl) throw new Error(`Entry file "${entryPath}" was not found.`);
 
-    return { document: shell(CDN_IMPORTS, entryUrl, theme), urls: createdUrls };
+    return { document: shell(CDN_IMPORTS, entryUrl, theme, session), urls: createdUrls };
 };
