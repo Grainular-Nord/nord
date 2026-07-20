@@ -20,13 +20,19 @@
     }
 }
 
-@keyframes particle-rise {
+@keyframes streak-rise {
     from {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.9;
+        transform: translate(0, 0) rotate(var(--tilt)) scaleX(0.7);
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0.85;
     }
     to {
-        transform: translate(var(--px), -90px) scale(0.4);
+        transform: translate(var(--px), -70px) rotate(var(--tilt)) scaleX(1.3);
         opacity: 0;
     }
 }
