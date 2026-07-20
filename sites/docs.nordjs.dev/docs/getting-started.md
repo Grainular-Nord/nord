@@ -17,11 +17,16 @@ links:
 Want to know more about Nørd? Start with the [overview](/).
 :::
 
+:::Tip
+You can test our Nørd directly in the browser on [Stackblitz](https://stackblitz.com/edit/vitejs-vite-zbzdwtcn?file=src%2Fapp.ts)
+:::
+
 ## Installation
 
 The official scaffolder is the quickest way to start a project. Run one of the following commands and follow the prompts:
 
 :::CodeGroup{label="Create a Nørd project"}
+
 ```bash title="npm"
 npm create @grainular/nord
 ```
@@ -33,6 +38,7 @@ pnpm create @grainular/nord
 ```bash title="Bun"
 bun create @grainular/nord
 ```
+
 :::
 
 The scaffolder selects a project directory and template interactively. The Vite TypeScript template is a sensible default for most applications. The browser template is useful when no package installation or build process is needed.
@@ -42,6 +48,7 @@ Vite is only used for development and bundling. Nørd does not need a Vite plugi
 For an existing project, install Nørd and Grains directly:
 
 :::CodeGroup{label="Install manually"}
+
 ```bash title="npm"
 npm install @grainular/nord @grainular/grains
 ```
@@ -53,6 +60,7 @@ pnpm add @grainular/nord @grainular/grains
 ```bash title="Bun"
 bun add @grainular/nord @grainular/grains
 ```
+
 :::
 
 `@grainular/nord` contains the renderer and its core APIs. `@grainular/grains` provides the reactive values used throughout this guide. Grains is optional: Nørd can work with any compatible subscribable value.
@@ -112,6 +120,7 @@ my-app/
 Start the development server with the command for the selected package manager:
 
 :::CodeGroup{label="Run the project"}
+
 ```bash title="npm"
 npm run dev
 ```
@@ -123,6 +132,7 @@ pnpm dev
 ```bash title="Bun"
 bun run dev
 ```
+
 :::
 
 Use the matching `build` command to create production assets and `preview` to inspect them locally. These commands belong to Vite; Nørd itself does not add another build layer.
