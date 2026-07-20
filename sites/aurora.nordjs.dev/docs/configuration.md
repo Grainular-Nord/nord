@@ -165,7 +165,18 @@ Names are the public identifiers used by Markdown:
 :::
 ```
 
-See [Components and islands](/islands) and [Layouts](/layouts) for complete examples.
+A top-level `slots` field overrides the header and footer, which wrap every page outside of any layout:
+
+```ts
+slots: {
+    header: {
+        client: false,
+        component: () => import('./src/components/custom-header'),
+    },
+},
+```
+
+See [Components and islands](/islands) and [Layouts](/layouts) for complete examples, including how a layout exposes its own slots.
 
 ## Advanced Markdown
 
