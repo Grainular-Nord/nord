@@ -43,6 +43,7 @@ export default defineConfig({
             layout: () => import('./src/layouts/landing'),
         },
     ],
+    search: true,
     page: {
         language: 'en',
         themeColor: '#090d13',

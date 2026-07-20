@@ -61,11 +61,15 @@
     }
 
     /* Reserves the search bar's height so it doesn't cover the first nav
-       link. Below 45rem the search bar returns to the normal document
-       flow (see above), so the sidebar's own responsive rules stand
-       unmodified there — this only needs to hold at the fixed width. */
+       link — but only when a search element is actually rendered. When
+       `search` is off (and no slot override fills its place), the slot
+       collapses to nothing, so this reservation must collapse with it
+       rather than leave a permanent empty gap above the nav. Below 45rem
+       the search bar returns to the normal document flow (see above), so
+       the sidebar's own responsive rules stand unmodified there — this
+       only needs to hold at the fixed width. */
     @media (width >= 45rem) {
-        & > .aurora-sidebar .aurora-sidebar-body {
+        &:has(.aurora-search-container) > .aurora-sidebar .aurora-sidebar-body {
             padding-block-start: calc(1.5rem + var(--aurora-docs-search-block));
             max-block-size: calc(100dvh - var(--aurora-header-height) - var(--aurora-docs-search-block));
         }

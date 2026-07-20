@@ -66,7 +66,7 @@ A layout may expose named regions, called slots, that a site can fill without re
 
 The built-in `docs` layout exposes:
 
-- `search` — rendered above the sidebar navigation. Defaults to Aurora's search island.
+- `search` — rendered above the sidebar navigation. Defaults to Aurora's search island, but only when `search` is enabled (see below).
 - `sidebar` — the navigation tree. Defaults to `Navigation`.
 - `beforeContent` — rendered above the Markdown content. Empty by default.
 - `pageLinks` — rendered below the content. Defaults to the previous and next links from frontmatter.
@@ -148,3 +148,17 @@ See [Components and islands](/islands) for `client`, `component`, and `host`, wh
 :::Note
 Site navigation, background, and accessibility controls remain available around custom layouts. The header and footer remain available too, unless overridden through `slots`.
 :::
+
+## Search
+
+Search is off by default. Enabling it does two things: Aurora indexes every generated page into `aurora-search.json`, and the `docs` layout's `search` slot renders the built-in search island instead of nothing.
+
+```ts title="aurora.config.ts"
+export default defineConfig({
+    search: true,
+});
+```
+
+A site that doesn't need search skips both costs entirely — no index is generated at build or dev time, and no search UI is rendered. `search` is a plain boolean today; there is no provider configuration yet.
+
+A `slots.search` override on the `docs` layout is independent of this flag: it always renders, whether `search` is `true` or `false`. This is the way to use a different search implementation, such as a hosted or client-side alternative, without waiting on built-in provider support.

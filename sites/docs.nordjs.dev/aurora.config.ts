@@ -51,6 +51,7 @@ export default defineConfig({
             ],
         },
     ],
+    search: true,
     page: {
         language: 'en',
         themeColor: '#0b0c0f',

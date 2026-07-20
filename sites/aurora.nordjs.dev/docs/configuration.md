@@ -178,6 +178,18 @@ slots: {
 
 See [Components and islands](/islands) and [Layouts](/layouts) for complete examples, including how a layout exposes its own slots.
 
+## Search
+
+`search` is `false` by default. Set it to `true` to index every page into `aurora-search.json` and render the built-in search island on the `docs` layout.
+
+```ts
+export default defineConfig({
+    search: true,
+});
+```
+
+A site that leaves it unset pays no build or dev cost for indexing. See [Layouts](/layouts) for overriding search with a different implementation regardless of this flag.
+
 ## Advanced Markdown
 
 Additional rehype-compatible plugins and source transforms can customize Markdown output.

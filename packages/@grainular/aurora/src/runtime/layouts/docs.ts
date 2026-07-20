@@ -9,11 +9,16 @@ import { searchDefinition } from '../components/search/search-definition';
 import { context } from '../store/context';
 
 export const Docs: AuroraLayoutModule['default'] = ({ content, meta, slots }) => {
-    const { base = '/' } = context();
+    const { base = '/', search } = context();
 
     return html`
         <div class="aurora-docs-layout">
-            ${slots?.search?.({}) ?? renderComponentHost(searchDefinition, Search, { index: `${base}aurora-search.json`, base })}
+            ${
+                slots?.search?.({}) ??
+                (search
+                    ? renderComponentHost(searchDefinition, Search, { index: `${base}aurora-search.json`, base })
+                    : null)
+            }
             ${slots?.sidebar?.({}) ?? Navigation()}
             <main class="application-content docs">
                 ${slots?.beforeContent?.({ meta }) ?? null}

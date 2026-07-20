@@ -13,7 +13,7 @@ export type ResolvedNavigationItem = Omit<AuroraNavigationItem, 'children'> & {
     children: ResolvedNavigationItem[];
 };
 
-export type ResolvedAuroraConfig = Omit<AuroraConfig, 'content' | 'navigation' | 'vite'> & {
+export type ResolvedAuroraConfig = Omit<AuroraConfig, 'content' | 'navigation' | 'vite' | 'search'> & {
     root: string;
     configFile?: string;
     contentPatterns: string[];
@@ -21,6 +21,7 @@ export type ResolvedAuroraConfig = Omit<AuroraConfig, 'content' | 'navigation' |
     navigationTree: ResolvedNavigationItem[];
     notFoundSource?: string;
     vite: UserConfig;
+    search: boolean;
 };
 
 const normalizePath = (path: string) => {
@@ -89,5 +90,6 @@ export const resolveConfig = async (
         navigationTree: resolveNavigation(config.navigation),
         ...(existsSync(notFoundSource) ? { notFoundSource } : {}),
         vite: config.vite ?? {},
+        search: config.search ?? false,
     };
 };

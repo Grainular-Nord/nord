@@ -127,6 +127,7 @@ export type AuroraContext = NonNullable<AuroraConfig['site']> & {
     /** Public link to the site root from the page currently being rendered. */
     base: string;
     routes: AuroraRuntimeNavigationItem[];
+    search: boolean;
 };
 
 export type AuroraConfig = {
@@ -140,6 +141,8 @@ export type AuroraConfig = {
     layouts?: AuroraLayoutDefinition[];
     /** Overrides for the header and footer rendered around every page. */
     slots?: AuroraSlots;
+    /** Generates the search index and renders the built-in search island on the `docs` layout. Off by default. */
+    search?: boolean;
     /** Document settings applied to every generated page. */
     page?: AuroraPageConfig;
     site?: {

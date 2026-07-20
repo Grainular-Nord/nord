@@ -32,7 +32,7 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
             pluginAuroraLlms(config),
             pluginAuroraCore(config),
             pluginAuroraLinks(),
-            pluginAuroraSearch(),
+            ...(config.search ? [pluginAuroraSearch()] : []),
             pluginAuroraSitemap(config),
             pluginAuroraCss(),
         ],
