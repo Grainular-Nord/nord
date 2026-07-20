@@ -18,7 +18,7 @@ Want to know more about Nørd? Start with the [overview](/).
 :::
 
 :::Tip
-You can test our Nørd directly in the browser on [Stackblitz](https://stackblitz.com/edit/vitejs-vite-zbzdwtcn?file=src%2Fapp.ts)
+You can try out Nørd directly in the browser on [Stackblitz](https://stackblitz.com/edit/grainular-nord-vite-ts?file=src%2Fapp.ts)
 :::
 
 ## Installation
