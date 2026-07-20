@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@keyframes drift-a {
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(30px, -20px);
+    }
+}
+
+@keyframes drift-b {
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-24px, 26px);
+    }
+}
+
+@keyframes particle-rise {
+    from {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.9;
+    }
+    to {
+        transform: translate(var(--px), -90px) scale(0.4);
+        opacity: 0;
+    }
+}
+
+@keyframes cursor-blink {
+    0%,
+    45% {
+        opacity: 1;
+    }
+    50%,
+    100% {
+        opacity: 0;
+    }
+}

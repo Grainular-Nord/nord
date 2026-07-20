@@ -1,8 +1,8 @@
-import { cancel, confirm, log, spinner } from '@clack/prompts';
 import { spawn } from 'node:child_process';
+import { rm } from 'node:fs/promises';
 import { styleText } from 'node:util';
-import { type TemplateContext, templates } from '../lib/templates';
-import { writeTemplateFiles } from '../lib/write-template-files';
+import { cancel, confirm, log, spinner } from '@clack/prompts';
+import { type ScaffoldContext, scaffoldViteTemplate } from '../lib/scaffold';
 import { step } from '../utils/step';
 
 const getPkgManager = (): string => {
@@ -46,17 +46,27 @@ const runDev = async (cwd: string, manager: string): Promise<void> => {
 
 export const createViteTemplate = async (
     type: 'vite' | 'vite-ts',
-    { path, name, ...context }: TemplateContext & { path: string },
+    { path, name, ...context }: ScaffoldContext & { path: string },
 ) => {
     const loader = spinner();
     loader.start();
     loader.message('Creating Nørd for Vite.');
 
-    const files = templates.get(type) ?? {};
-    const { created, stats } = await writeTemplateFiles(path, { name, ...context }, files);
+    const started = performance.now();
+    let created = 0;
+    try {
+        ({ created } = await scaffoldViteTemplate(type, path, { name, ...context }));
+    } catch (error) {
+        await rm(path, { recursive: true, force: true });
+        console.error(error);
+        process.exit(1);
+    }
 
     const target = styleText(['bold', 'cyan'], path.replace(process.cwd(), ''));
-    const infos = styleText(['dim', 'gray'], `(created ${created} files in ${stats.toFixed(2)}ms)`);
+    const infos = styleText(
+        ['dim', 'gray'],
+        `(created ${created} files in ${(performance.now() - started).toFixed(2)}ms)`,
+    );
     loader.stop(`Created Nørd Vite Application in ${target} ${infos}`);
 
     // Infer package manager

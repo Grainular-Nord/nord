@@ -1,7 +1,7 @@
-import { cancel, confirm, text } from '@clack/prompts';
 import { stat } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { styleText } from 'node:util';
+import { cancel, confirm, text } from '@clack/prompts';
 import { isValidPackageName } from '../utils/is-valid-package-name';
 import { root } from '../utils/root';
 import { step } from '../utils/step';

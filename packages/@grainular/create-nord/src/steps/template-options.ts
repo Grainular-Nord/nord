@@ -1,5 +1,5 @@
-import { confirm, multiselect, select } from '@clack/prompts';
 import { styleText } from 'node:util';
+import { confirm, multiselect, select } from '@clack/prompts';
 import { step } from '../utils/step';
 
 const templates = [
@@ -42,11 +42,6 @@ const features = [
         hint: 'Store solution for grains',
     },
     {
-        value: [{ name: '@grainular/portal', version: 'latest', dev: false }],
-        label: 'Nørd Portal',
-        hint: 'Allows portaling Nørd fragments',
-    },
-    {
         value: [{ name: '@grainular/resource', version: 'latest', dev: false }],
         label: 'Nørd Resource',
         hint: 'Async resource abstraction for grains & Nørd',
@@ -76,26 +71,6 @@ const dependencies = [
         value: [{ name: 'lefthook', version: '^2.0.14', dev: true }],
         label: 'Lefthook',
         hint: 'githooks framework ⎔ https://lefthook.dev',
-    },
-    // {
-    //     value: 'eslint@',
-    //     label: 'ESLint',
-    //     hint: 'linter ⎔ https://eslint.org',
-    // },
-    {
-        value: [{ name: '@biomejs/biome', version: 'latest', dev: true }],
-        label: 'Biome',
-        hint: 'Rust based linting & formatting ⎔ https://biomejs.dev',
-    },
-    {
-        value: [{ name: 'oxlint', version: 'latest', dev: true }],
-        label: 'Oxlint',
-        hint: 'Rust based linting ⎔ https://oxc.rs',
-    },
-    {
-        value: [{ name: 'oxfmt', version: 'latest', dev: true }],
-        label: 'Oxfmt',
-        hint: 'Rust based formatting ⎔ https://oxc.rs',
     },
 ];
 
