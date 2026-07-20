@@ -85,6 +85,8 @@ export type AuroraSearchEntry = {
 export type AuroraLayoutProps = {
     content: ComponentFragment;
     meta: AuroraPageMeta;
+    /** Resolved region overrides, called by the layout in place of its defaults. */
+    slots?: Record<string, AuroraComponentModule['default']>;
 };
 
 export type AuroraLayoutModule = {
@@ -96,6 +98,8 @@ export type AuroraLayoutDefinition = {
     name: string;
     /** Lazily loads the layout's default export during static generation. */
     layout: () => Promise<AuroraLayoutModule>;
+    /** Overrides for the regions this layout exposes, e.g. `sidebar`, `pageLinks`. */
+    slots?: AuroraSlots;
 };
 
 export type AuroraComponentModule = {
@@ -116,6 +120,9 @@ export type AuroraComponentDefinition = {
     };
 };
 
+/** Overrides for named regions, keyed by region name — defined exactly like any other component. */
+export type AuroraSlots = Record<string, Omit<AuroraComponentDefinition, 'name'>>;
+
 export type AuroraContext = NonNullable<AuroraConfig['site']> & {
     /** Public link to the site root from the page currently being rendered. */
     base: string;
@@ -131,6 +138,8 @@ export type AuroraConfig = {
     components?: AuroraComponentDefinition[];
     /** Additional or replacement layouts selectable from Markdown frontmatter. */
     layouts?: AuroraLayoutDefinition[];
+    /** Overrides for the header and footer rendered around every page. */
+    slots?: AuroraSlots;
     /** Document settings applied to every generated page. */
     page?: AuroraPageConfig;
     site?: {
