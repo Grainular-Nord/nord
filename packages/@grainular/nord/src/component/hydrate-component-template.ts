@@ -33,7 +33,7 @@ export const hydrateComponentTemplate = (node: Node, fragments: Fragment[], scop
                 const fragment = fragments[idx];
 
                 if (fragment) {
-                    hydrationUnits.push({ fragment, args: [current as Comment] });
+                    hydrationUnits.push({ fragment, args: [current] });
                 }
             }
         }

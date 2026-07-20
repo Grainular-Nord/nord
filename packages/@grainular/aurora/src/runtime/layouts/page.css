@@ -1,0 +1,5 @@
+.aurora-page-content {
+    inline-size: min(46rem, calc(100% - 3rem));
+    padding-block: 4rem 6rem;
+    margin: auto;
+}

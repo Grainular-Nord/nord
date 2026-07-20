@@ -1,25 +1,19 @@
 {
   "name": "docs.nordjs.dev",
-  "module": "index.ts",
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/markdown-it-container": "^2.0.11",
-    "markdown-it-container": "^4.0.0",
-    "oxc-minify": "^0.107.0",
-    "vitepress": "^2.0.0-alpha.15",
-    "vitepress-plugin-llms": "^1.10.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:dev": "aurora dev",
+    "docs:build": "tsc && aurora build",
+    "docs:preview": "aurora preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.4"
   },
   "dependencies": {
-    "vue": "^3.5.26"
+    "@grainular/aurora": "workspace:*",
+    "@grainular/grains": "workspace:*",
+    "@grainular/nord": "workspace:*"
   }
 }

@@ -2,7 +2,7 @@
     "name": "@grainular/repository",
     "type": "module",
     "private": true,
-    "packageManager": "bun@1.1.18",
+    "packageManager": "bun@1.3.14",
     "devDependencies": {
         "@biomejs/biome": "^2.4.15",
         "@changesets/changelog-github": "^0.5.0",

@@ -1,0 +1,17 @@
+{
+    "name": "{{name}}",
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "vite": "latest",
+        "@grainular/nord": "latest",
+        "@grainular/grains": "latest"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.3"
+    }
+}

@@ -1,10 +1,6 @@
 import { html } from '@grainular/nord';
-import type { LayoutComponent } from './core';
+import type { AuroraLayoutModule } from '../../lib/config/config';
 
-export const Page: LayoutComponent = ({ content }) => {
-    return html`
-    <section class="application-content">
-        ${content}
-    </section>
-    `;
-};
+export const Page: AuroraLayoutModule['default'] = ({ content }) => html`
+    <main class="application-content aurora-page-content">${content}</main>
+`;

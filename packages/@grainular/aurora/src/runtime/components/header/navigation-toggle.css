@@ -1,0 +1,10 @@
+.aurora-icon-button.aurora-navigation-toggle {
+    display: none;
+    flex: 0 0 auto;
+
+    @media (width < 45rem) {
+        .aurora-app:has(.aurora-sidebar) & {
+            display: inline-flex;
+        }
+    }
+}

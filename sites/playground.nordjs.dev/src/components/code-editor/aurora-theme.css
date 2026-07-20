@@ -1,0 +1,24 @@
+/* Maps this site's Aurora design tokens onto @grainular/codemirror's own
+   theme contract. The package ships with self-contained defaults and knows
+   nothing about Aurora; this file is what makes the editor match the rest
+   of the site, and must load after @grainular/codemirror/theme.css so these
+   overrides win. */
+.grainular-codemirror {
+    --grainular-editor-background: var(--aurora-syntax-background);
+    --grainular-editor-surface: var(--aurora-surface);
+    --grainular-editor-overlay: var(--aurora-overlay);
+    --grainular-editor-border: var(--aurora-border-subtle);
+    --grainular-editor-border-strong: var(--aurora-border);
+    --grainular-editor-foreground: var(--aurora-text);
+    --grainular-editor-syntax-foreground: var(--aurora-syntax-foreground);
+    --grainular-editor-text-faint: var(--aurora-text-faint);
+    --grainular-editor-text-muted: var(--aurora-text-muted);
+    --grainular-editor-accent: var(--aurora-accent);
+    --grainular-editor-font-mono: var(--aurora-font-mono);
+    --grainular-editor-token-comment: var(--aurora-syntax-token-comment);
+    --grainular-editor-token-keyword: var(--aurora-syntax-token-keyword);
+    --grainular-editor-token-string: var(--aurora-syntax-token-string-expression);
+    --grainular-editor-token-constant: var(--aurora-syntax-token-constant);
+    --grainular-editor-token-function: var(--aurora-syntax-token-function);
+    --grainular-editor-token-punctuation: var(--aurora-syntax-token-punctuation);
+}

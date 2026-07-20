@@ -1,6 +1,6 @@
 {
-    "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
-    "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+    "$schema": "https://biomejs.dev/schemas/2.5.4/schema.json",
+    "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
     "files": { "ignoreUnknown": false, "includes": ["**"] },
     "formatter": {
         "enabled": true,
@@ -18,12 +18,15 @@
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true,
+            "preset": "recommended",
             "suspicious": {
-                "noConfusingVoidType": "off"
+                "noConfusingVoidType": "off",
+                "noTemplateCurlyInString": "off",
+                "useIterableCallbackReturn": "off"
             },
             "style": {
                 "noInferrableTypes": "off",
+                "noDescendingSpecificity": "off",
                 "noRestrictedImports": {
                     "level": "error",
                     "options": {
@@ -53,5 +56,24 @@
             "tailwindDirectives": true
         }
     },
-    "overrides": [{ "includes": ["**/*.html"] }]
+    "html": {
+        "parser": {
+            "interpolation": true
+        }
+    },
+    "overrides": [
+        {
+            "includes": ["sites/playground.nordjs.dev/public/lessons/**/*.ts"],
+            "linter": {
+                "rules": {
+                    "correctness": {
+                        "noUnusedFunctionParameters": "off",
+                        "noUnusedImports": "off",
+                        "noUnusedVariables": "off"
+                    }
+                }
+            }
+        },
+        { "includes": ["**/*.html"] }
+    ]
 }

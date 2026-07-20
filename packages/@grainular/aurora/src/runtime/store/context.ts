@@ -1,4 +1,4 @@
 import { grain } from '@grainular/grains';
-import type { AuroraConfig } from '../../lib/config';
+import type { AuroraContext } from '../../lib/config/config';
 
-export const context = grain<Required<AuroraConfig>['site']>({});
+export const context = grain<Partial<AuroraContext>>({});

@@ -1,0 +1,44 @@
+.aurora-outline {
+    position: sticky;
+    inset-block-start: calc(var(--aurora-header-height) + 2rem);
+    display: flex;
+    flex-direction: column;
+    max-block-size: calc(100dvh - var(--aurora-header-height) - 4rem);
+    padding-inline-start: 1.25rem;
+    overflow-y: auto;
+    border-inline-start: 1px solid var(--aurora-border-subtle);
+
+    & .aurora-outline-title {
+        margin: 0 0 0.65rem;
+        font-size: 0.68rem;
+        font-weight: 750;
+        color: var(--aurora-text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    & a {
+        padding: 0.28rem 0;
+        font-size: 0.76rem;
+        line-height: 1.35;
+        color: var(--aurora-text-faint);
+        text-decoration: none;
+
+        &:hover {
+            color: var(--aurora-text);
+        }
+
+        &[aria-current="location"] {
+            color: var(--aurora-text);
+            font-weight: 650;
+        }
+
+        &[data-level="3"] {
+            padding-inline-start: 0.75rem;
+        }
+    }
+
+    @container aurora-shell (width < 64rem) {
+        display: none;
+    }
+}

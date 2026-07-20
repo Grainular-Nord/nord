@@ -43,7 +43,7 @@ Both can be extended with `createDirective` and `createStruct` for custom primit
 
 ## Contributing
 
-Contributions to Nørd are always welcome! Whether it's bug reports, feature requests, or code contributions, please read our [contribution guidelines](./contributing.md) for more information on getting involved.
+Contributions to Nørd are always welcome! Whether it's bug reports, feature requests, or code contributions, please read our [contribution guidelines](../../../contributing.md) for more information on getting involved.
 
 ## Disclaimer on the usage of AI & LLMs
 

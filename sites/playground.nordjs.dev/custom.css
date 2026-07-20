@@ -1,0 +1,104 @@
+/* A real two-pane IDE shell, not content flowing down the page: full width,
+   full height below Aurora's fixed header, each pane scrolling on its own.
+   Aurora's outer chrome (.aurora-app / .application-shell) has no max-width
+   of its own — the built-in `page`/`docs` layouts impose one via their own
+   classes, but this layout intentionally doesn't follow that pattern. */
+.lesson-layout {
+    --lesson-pane-size: 42%;
+    display: grid;
+    position: relative;
+    grid-template-columns: minmax(25rem, max(25rem, var(--lesson-pane-size))) minmax(0, 1fr);
+    block-size: calc(100vh - var(--aurora-header-height));
+    overflow: hidden;
+
+    @container aurora-shell (width < 64rem) {
+        grid-template-columns: minmax(0, 100%);
+        grid-template-rows: minmax(20rem, auto) minmax(28rem, 1fr);
+        block-size: auto;
+        min-block-size: calc(100vh - var(--aurora-header-height));
+        overflow: visible;
+    }
+}
+
+.lesson-prose {
+    overflow-y: auto;
+    padding: clamp(1rem, 4cqi, 2rem) clamp(2rem, 4cqi, 4rem);
+    border-inline-end: 1px solid var(--aurora-border-subtle);
+
+    @container aurora-shell (width < 64rem) {
+        border-inline-end: none;
+        border-block-end: 1px solid var(--aurora-border-subtle);
+    }
+}
+
+.playground-layout {
+    display: flex;
+    block-size: calc(100vh - var(--aurora-header-height));
+    overflow: hidden;
+}
+
+.lesson-editor-host {
+    display: flex;
+    min-block-size: 0;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.aurora-code-editor-placeholder {
+    padding: 1rem;
+    font-family: var(--aurora-font-mono);
+    font-size: 0.78rem;
+    color: var(--aurora-text-faint);
+}
+
+.tutorial-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: 0.75rem;
+    margin-block-start: clamp(3rem, 7cqi, 5rem);
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--aurora-border-subtle);
+
+    & .tutorial-nav-link {
+        display: grid;
+        gap: 0.1rem;
+        min-inline-size: 0;
+        padding: 0.65rem 0.75rem;
+        color: var(--aurora-text-muted);
+        text-decoration: none;
+        border: 1px solid var(--aurora-border);
+        border-radius: var(--aurora-radius);
+        transition:
+            color 140ms ease,
+            border-color 140ms ease,
+            background 140ms ease;
+
+        &[data-direction="prev"] {
+            text-align: start;
+        }
+
+        &[data-direction="next"] {
+            text-align: end;
+        }
+
+        & span {
+            font-size: 0.68rem;
+            color: var(--aurora-text-faint);
+        }
+
+        & strong {
+            overflow: hidden;
+            font-size: 0.82rem;
+            color: var(--aurora-text);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:is(:hover, :focus-visible) {
+            color: var(--aurora-accent-text);
+            background: var(--aurora-overlay);
+            border-color: var(--aurora-accent);
+            outline: none;
+        }
+    }
+}

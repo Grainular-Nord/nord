@@ -1,33 +1,38 @@
 import * as vscode from 'vscode';
-import pkg from '../package.json';
-import { provideCompletions } from './syntax/provide-completions';
-import { output } from './system/output';
+import { autoCloseHtmlTag } from './auto-close';
+import { toggleHtmlComment } from './comments';
+import { provideCompletions } from './completions';
+import { provideFoldingRanges } from './folding';
 
-export const communications = output();
+const DOCUMENT_SELECTOR: vscode.DocumentSelector = ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'];
 
-export function activate(context: vscode.ExtensionContext) {
-    communications.write('Extension Activated 🚀');
-    communications.write(`Extension is available, v. ${pkg.version}`);
+export const activate = (context: vscode.ExtensionContext) => {
+    const output = vscode.window.createOutputChannel('Nord');
+    output.appendLine(`Activated Nord for VS Code v${context.extension.packageJSON.version}.`);
+    let loggedFoldingRequest = false;
 
-    // 1. Completion provider (existing)
-    const completionProvider = vscode.languages.registerCompletionItemProvider(
-        ['typescript', 'javascript', 'typescriptreact', 'javascriptreact'],
-        {
-            provideCompletionItems(document, position) {
-                return provideCompletions(document, position);
+    context.subscriptions.push(
+        output,
+        vscode.languages.registerCompletionItemProvider(
+            DOCUMENT_SELECTOR,
+            {
+                provideCompletionItems: provideCompletions,
             },
-        },
-        '<',
-        '$',
+            '<',
+        ),
+        vscode.commands.registerTextEditorCommand('nord.toggleHtmlComment', toggleHtmlComment),
+        vscode.workspace.onDidChangeTextDocument(autoCloseHtmlTag),
+        vscode.languages.registerFoldingRangeProvider(DOCUMENT_SELECTOR, {
+            provideFoldingRanges(document) {
+                const ranges = provideFoldingRanges(document);
+                if (!loggedFoldingRequest) {
+                    output.appendLine(`Folding provider returned ${ranges.length} range(s).`);
+                    loggedFoldingRequest = true;
+                }
+                return ranges;
+            },
+        }),
     );
+};
 
-    // // 2. Semantic tokens provider (NEW - handles nested templates)
-    // const semanticTokensProvider = vscode.languages.registerDocumentSemanticTokensProvider(
-    //     ['typescript', 'javascript', 'typescriptreact', 'javascriptreact'],
-    //     new NordSemanticTokensProvider(),
-    //     legend,
-    // );
-
-    context.subscriptions.push(completionProvider);
-    communications.write('Semantic tokens provider registered');
-}
+export const deactivate = () => undefined;

@@ -15,11 +15,8 @@ export const { query, params, ...router } = createRouter('/', [
         path: '/story/:storyId',
         component: () => import('./features/story/pages/story.page.ts'),
         use: [
-            pre(async (ctx) => {
-                if (ctx.params.storyId) {
-                    await storyState.actions.fetchStory(Number(ctx.params.storyId));
-                }
-
+            pre((ctx) => {
+                if (ctx.params.storyId) storyState.actions.fetchStory(Number(ctx.params.storyId));
                 return true;
             }),
         ],
@@ -28,11 +25,8 @@ export const { query, params, ...router } = createRouter('/', [
         path: '/user/:userId',
         component: () => import('./features/users/pages/profile.page.ts'),
         use: [
-            pre(async (ctx) => {
-                if (ctx.params.userId) {
-                    await userState.actions.fetchUser(ctx.params.userId);
-                }
-
+            pre((ctx) => {
+                if (ctx.params.userId) userState.actions.fetchUser(ctx.params.userId);
                 return true;
             }),
         ],

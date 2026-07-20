@@ -4,7 +4,6 @@ import { createReactiveFragment } from '../internals/create-reactive-fragment';
 import type { Fragment } from '../internals/fragment';
 import { isPrimitiveValue } from '../internals/is-primitive-value';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
-import { trimWhitespace } from '../internals/trim-whitespace';
 import type { Subscribable } from './subscribable';
 
 const parseTemplateFragment = (
@@ -35,7 +34,7 @@ export const templateParser = (
 
     const template = stringFragments.flatMap((strFragment, idx) => {
         return [
-            trimWhitespace(strFragment),
+            strFragment,
             ((): string => {
                 const fragment = parseTemplateFragment(valueFragments[idx]);
                 if ('fragmentId' in fragment) {

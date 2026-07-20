@@ -1,10 +1,22 @@
-import { grain } from '@grainular/grains';
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { grain } from '@grainular/grains';
 import { $render, $unsafeHtml, html, mount, on, renderToString } from '../src';
 import { setup } from './setup.spec';
 
 describe('[Nørd Runtime] Rendering', () => {
     beforeEach(() => setup());
+
+    test('should preserve template whitespace', () => {
+        const value = 'value';
+        const App = () => html`<pre>first
+    second
+        ${value}
+    fourth</pre><p>regular   whitespace</p>`;
+
+        expect(renderToString(App)).toBe(
+            '<pre>first\n    second\n        value\n    fourth</pre><p>regular   whitespace</p>',
+        );
+    });
 
     test('should not render null or undefined values', () => {
         const App = () => html`<div>${null}${undefined}</div>`;

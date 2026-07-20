@@ -12,7 +12,9 @@ export const createOutputFile = (
     ];
 
     let template = escapeHtmlString(content);
-    for (const [key, { name, props, children }] of nodes) {
+    // Parent directives are inserted before their nested child markers are
+    // expanded, so nested component expressions remain inside the parent.
+    for (const [key, { name, props, children }] of Array.from(nodes).reverse()) {
         const insert = `\${${name}({...${props}, children: html\`${children}\`})}`;
         template = template.replace(`{{${key}}}`, insert);
     }

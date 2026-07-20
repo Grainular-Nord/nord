@@ -6,10 +6,16 @@ export type ComponentDefinition = { identifier: string; importPath: string };
 export type NodeData = { name: string; props: string; children: string };
 type PluginOptions = {
     components: ComponentDefinition[];
-    plugins?: PluggableList;
+    remarkPlugins?: PluggableList;
+    rehypePlugins?: PluggableList;
     transforms?: ((code: string, id: string) => string | Promise<string>)[];
 };
-export const nordMarkdown = ({ components, plugins = [], transforms = [] }: PluginOptions): Plugin => {
+export const nordMarkdown = ({
+    components,
+    remarkPlugins = [],
+    rehypePlugins: plugins = [],
+    transforms = [],
+}: PluginOptions): Plugin => {
     return {
         name: 'nord-markdown',
         enforce: 'pre',
@@ -24,7 +30,7 @@ export const nordMarkdown = ({ components, plugins = [], transforms = [] }: Plug
                 transformed = await fn(transformed, id);
             }
 
-            return parseMarkdown(transformed, componentMap, nodes, plugins);
+            return parseMarkdown(transformed, componentMap, nodes, remarkPlugins, plugins);
         },
     };
 };

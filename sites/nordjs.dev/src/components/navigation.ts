@@ -29,7 +29,7 @@ export const Navigation = () => {
                 to increase recognizability
             -->
             <a href="/" class="nav-logo">
-                <img src="./logo-min.png" alt="Nord Logo"/>
+                <img src="/nord-logo.svg" alt="Nord Logo"/>
                 <span>Nørd</span>
             </a>
 
@@ -44,6 +44,9 @@ export const Navigation = () => {
                 </li>
                 <li class="link">
                     <a href="https://playground.nordjs.dev" rel="noopener noreferrer">Playground.</a>
+                </li>
+                <li class="link">
+                    <a href="https://docs.nordjs.dev/llms" rel="noopener noreferrer">LLMs.</a>
                 </li>
                 <li>${ThemeToggle()}</li>
                 <li>

@@ -1,0 +1,204 @@
+@layer aurora.overrides {
+    :root {
+        --aurora-mint: oklch(80% 0.15 185);
+        --aurora-violet: oklch(72% 0.15 310);
+    }
+
+    html:has(.aurora-landing-content) {
+        & .aurora-search {
+            display: none;
+        }
+
+        & .aurora-header {
+            justify-content: flex-end;
+        }
+    }
+
+    .aurora-landing-brand {
+        position: fixed;
+        inset-block-start: 0.75rem;
+        inset-inline-start: clamp(0.75rem, 3vw, 2rem);
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: var(--aurora-text);
+        font-size: 1rem;
+        font-weight: 750;
+        text-decoration: none;
+
+        & img {
+            inline-size: 2rem;
+            block-size: 2rem;
+        }
+    }
+
+    .aurora-landing-content {
+        display: grid;
+        inline-size: min(100% - 3rem, 65rem);
+        min-block-size: calc(100svh - var(--aurora-header-height));
+        margin-inline: auto;
+        padding-block: clamp(3rem, 8vw, 6rem);
+    }
+
+    .aurora-hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(3rem, 8vw, 6rem);
+    }
+
+    .aurora-hero-copy,
+    .aurora-hero-demo {
+        flex: 1 1 25rem;
+        min-inline-size: min(100%, 18rem);
+    }
+
+    .aurora-hero h1 {
+        margin: 0;
+        color: transparent;
+        font-size: clamp(4rem, 9vw, 6rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+        background: linear-gradient(105deg, var(--aurora-mint), var(--aurora-violet));
+        background-clip: text;
+        filter: drop-shadow(0 0 1.5rem color-mix(in srgb, var(--aurora-accent), transparent 78%));
+    }
+
+    .aurora-hero-tagline {
+        margin: 1rem 0 0;
+        color: var(--aurora-text);
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        font-weight: 650;
+        letter-spacing: -0.025em;
+    }
+
+    .aurora-hero-summary {
+        max-inline-size: 30rem;
+        margin: 0.45rem 0 0;
+        color: var(--aurora-text-muted);
+    }
+
+    .aurora-hero-link {
+        display: inline-flex;
+        gap: 0.5rem;
+        margin-block-start: 1.5rem;
+        color: var(--aurora-text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover {
+            color: var(--aurora-accent);
+        }
+    }
+
+    .aurora-hero-demo {
+        position: relative;
+        padding: 2rem 1.5rem 1.5rem;
+        overflow: hidden;
+        background: color-mix(in srgb, var(--aurora-surface), transparent 35%);
+        border: 1px solid var(--aurora-border-subtle);
+        border-radius: 0.5rem;
+        box-shadow: 0 1rem 2rem -1.5rem color-mix(in srgb, black, transparent 60%);
+        backdrop-filter: blur(20px);
+
+        &::before {
+            position: absolute;
+            inset-block-start: 0.75rem;
+            inset-inline-start: 1rem;
+            inline-size: 0.4rem;
+            block-size: 0.4rem;
+            background: var(--aurora-text-subtle);
+            border-radius: 50%;
+            box-shadow:
+                0.75rem 0 var(--aurora-text-subtle),
+                1.5rem 0 var(--aurora-text-subtle);
+            content: "";
+            opacity: 0.4;
+        }
+
+        & pre {
+            margin: 0 0 1.5rem;
+            padding: 0;
+            overflow: auto;
+            color: var(--aurora-text-muted);
+            font-size: 0.82rem;
+            line-height: 1.65;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        & code {
+            font: inherit;
+            color: inherit;
+            background: transparent;
+        }
+    }
+
+    .aurora-code-key {
+        color: var(--aurora-accent);
+    }
+
+    .aurora-demo-island {
+        margin: 0;
+    }
+
+    .aurora-island-demo {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding-block-start: 1rem;
+        border-top: 1px solid var(--aurora-border-subtle);
+
+        & strong {
+            display: block;
+            color: var(--aurora-text);
+            font-size: 0.82rem;
+        }
+
+        & span {
+            color: var(--aurora-text-subtle);
+            font-size: 0.72rem;
+        }
+
+        & button {
+            padding: 0.45rem 0.7rem;
+            color: var(--aurora-text);
+            font: 600 0.76rem / 1.4 inherit;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid var(--aurora-border);
+            border-radius: 0.2rem;
+
+            &:hover {
+                color: var(--aurora-accent);
+                border-color: var(--aurora-accent);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--aurora-accent);
+                outline-offset: 3px;
+            }
+        }
+    }
+
+    @media (width < 40rem) {
+        .aurora-landing-brand span {
+            display: none;
+        }
+
+        .aurora-landing-content {
+            inline-size: min(100% - 1.5rem, 65rem);
+            padding-block-start: 3rem;
+        }
+
+        .aurora-hero {
+            gap: 2.75rem;
+        }
+    }
+}

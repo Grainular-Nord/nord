@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { intro, outro } from '@clack/prompts';
 import { clear } from 'node:console';
 import { styleText } from 'node:util';
+import { intro, outro } from '@clack/prompts';
 import pkg from '../package.json';
 import { createBrowserTemplate } from './steps/create-browser-template';
 import { createViteTemplate } from './steps/create-vite-template';
@@ -31,10 +31,10 @@ switch (type) {
         await createBrowserTemplate({ path, name });
         break;
     case 'vite':
-        await createViteTemplate('vite', { path, name, type, additionalDependencies, useRolldown });
+        await createViteTemplate('vite', { path, name, additionalDependencies, useRolldown });
         break;
     case 'vite-ts':
-        await createViteTemplate('vite-ts', { path, name, type, additionalDependencies, useRolldown });
+        await createViteTemplate('vite-ts', { path, name, additionalDependencies, useRolldown });
         break;
 }
 

@@ -1,6 +1,104 @@
-html,
-body {
-    margin: 0;
+.aurora-app {
+    --aurora-sidebar-offset: 0rem;
+
+    position: relative;
+    min-block-size: 100vh;
+    color: var(--aurora-text);
+    background: var(--aurora-background);
+    transition:
+        color 180ms ease,
+        background 180ms ease;
+
+    &:has(.aurora-sidebar) {
+        --aurora-sidebar-offset: var(--aurora-sidebar-width);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+
+    @media (width < 45rem) {
+        &:has(.aurora-sidebar) {
+            --aurora-sidebar-offset: 0rem;
+        }
+    }
+}
+
+.aurora-skip-link {
+    position: fixed;
+    inset-block-start: 0.65rem;
+    inset-inline-start: 0.65rem;
+    z-index: 100;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--aurora-background);
+    text-decoration: none;
+    background: var(--aurora-text);
+    border: 1px solid var(--aurora-background);
+    border-radius: var(--aurora-radius);
+    transform: translateY(calc(-100% - 1rem));
+
+    &:focus-visible {
+        color: var(--aurora-background);
+        outline-color: var(--aurora-accent);
+        transform: none;
+    }
+}
+
+.aurora-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            40rem circle at 22% -18rem,
+            color-mix(in srgb, var(--aurora-mint), transparent 89%),
+            transparent
+        ),
+        radial-gradient(
+            36rem circle at 96% -13rem,
+            color-mix(in srgb, var(--aurora-violet), transparent 90%),
+            transparent
+        );
+}
+
+.application-shell {
+    position: relative;
+    min-block-size: calc(100vh - 3rem);
+    padding-block-start: var(--aurora-header-height);
+    padding-inline-start: var(--aurora-sidebar-offset);
+    container: aurora-shell / inline-size;
+}
+
+.aurora-navigation-backdrop {
+    position: fixed;
+    inset: var(--aurora-header-height) 0 0;
+    z-index: 18;
+    display: none;
     padding: 0;
-    box-sizing: border-box;
+    cursor: pointer;
+    background: color-mix(in srgb, #000, transparent 45%);
+    border: 0;
+    opacity: 0;
+
+    @media (width < 45rem) {
+        display: block;
+        visibility: hidden;
+        transition:
+            opacity 160ms ease,
+            visibility 160ms;
+    }
+}
+
+.aurora-app[data-navigation-open] .aurora-navigation-backdrop {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (width < 45rem) {
+    html:has(.aurora-app[data-navigation-open]) {
+        overflow: hidden;
+    }
 }

@@ -1,8 +1,34 @@
 const nodeState = new WeakMap<Element, Map<string, string[]>>();
-const booleanAttributes = /^(disabled|checked|readonly|required|hidden|open|selected|autofocus|multiple)$/;
+const booleanAttributes = new Set([
+    'allowfullscreen',
+    'async',
+    'autofocus',
+    'autoplay',
+    'checked',
+    'controls',
+    'default',
+    'defer',
+    'disabled',
+    'formnovalidate',
+    'hidden',
+    'inert',
+    'ismap',
+    'itemscope',
+    'loop',
+    'multiple',
+    'muted',
+    'nomodule',
+    'novalidate',
+    'open',
+    'playsinline',
+    'readonly',
+    'required',
+    'reversed',
+    'selected',
+]);
 
 export const setAttribute = (node: Element, key: string, value: unknown) => {
-    const isBoolean = booleanAttributes.test(key);
+    const isBoolean = booleanAttributes.has(key.toLowerCase());
 
     // Handle non boolean update
     if (!isBoolean) {

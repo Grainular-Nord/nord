@@ -1,46 +1,51 @@
 # Nord for VS Code
 
-Official VS Code language tools for **Nørd**. This extension provides a rich development experience with syntax highlighting and intelligent suggestions.
+Focused VS Code language support for Nørd's `html` tagged templates.
 
 ## Features
 
-### Syntax Highlighting
+- HTML syntax highlighting in JavaScript, TypeScript, JSX, and TSX files.
+- HTML element completion after typing `<` and automatic closing tags after `>`.
+- Folding for complete multiline `html` templates, including nested templates.
+- HTML comment insertion and removal inside literal template sections.
 
-Get full HTML and CSS syntax highlighting inside Nord's tagged templates.
+Use **Nord: Toggle HTML Comment** from the command palette or the normal
+<kbd>Cmd</kbd>+<kbd>/</kbd> / <kbd>Ctrl</kbd>+<kbd>/</kbd> shortcut. Outside a
+Nord HTML template, the shortcut falls back to VS Code's normal line comment.
+
+To confirm activation, open VS Code's **Output** panel and select **Nord**. The
+extension writes one activation entry containing its version and otherwise stays
+quiet during normal editing.
 
 ```ts
-// HTML highlighting works automatically
-const template = html`
-  <div class="container">
-    <h1>Hello World</h1>
-  </div>
-`;
+import { html } from '@grainular/nord';
 
-// CSS highlighting
-const style = css`
-  .container { color: red; }
+const Greeting = (name: string) => html`
+    <section>
+        <h1>Hello ${name}</h1>
+    </section>
 `;
-
 ```
 
-### Intelligent Suggestions
+The extension intentionally recognizes the canonical `html` tag. Aliased imports
+are regular JavaScript but cannot be identified by the TextMate grammar and are
+therefore outside the supported syntax.
 
-Speeds up development with context-aware suggestions.
+## Scope
 
-- **HTML Tags**: Smart completion for standard HTML5 tags (div, span, input, etc.).
-- **Structural Directives**: Type $ to instantly access control flow:
-- **Element Directives**
+The extension owns editor behavior specific to the boundary between JavaScript
+and Nørd HTML templates. TypeScript already owns completion and diagnostics inside
+`${...}` expressions, while VS Code owns general JavaScript and TypeScript editing.
 
-## Usage
+The extension does not provide framework API snippets, directive documentation,
+CSS templates, formatting, linting, diagnostics, or a language server. See
+[Architecture and scope](./docs/architecture.md) for the rationale.
 
-1. Install the extension.
-2. Open any .ts or .js file using Nord.
-3. Type "html" followed by a backtick to see highlighting in action.
+## Development
 
-## Extension Settings
-
-This extension currently requires no configuration. It activates automatically on JavaScript and TypeScript files.
-
-## Contributing
-
-Found a bug or have a feature request? Please open an issue on our GitHub Repository.
+```sh
+bun run test
+bun run typecheck
+bun run build
+bun run package
+```

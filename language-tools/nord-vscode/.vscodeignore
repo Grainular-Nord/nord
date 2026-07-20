@@ -1,6 +1,13 @@
 .vscode
+.gitignore
+.turbo/
 node_modules
 out/
 src/
+tests/
+docs/
 tsconfig.json
-.build.ts
+tsup.config.ts
+coverage/
+*.vsix
+dist/*.map
