@@ -1,6 +1,6 @@
 {
   "name": "@grainular/aurora",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "type": "module",
   "packageManager": "bun@1.3.14",
   "main": "./dist/cjs/index.cjs",

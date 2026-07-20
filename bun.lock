@@ -100,7 +100,7 @@
     },
     "packages/@grainular/aurora": {
       "name": "@grainular/aurora",
-      "version": "2.0.0",
+      "version": "2.1.1",
       "bin": {
         "aurora": "./dist/esm/cli/index.js",
       },
@@ -152,7 +152,7 @@
     },
     "packages/@grainular/create-nord": {
       "name": "@grainular/create-nord",
-      "version": "2.0.0",
+      "version": "2.0.2",
       "bin": "./bin/index.js",
       "dependencies": {
         "@clack/prompts": "^1.5.0",
@@ -276,7 +276,7 @@
     },
     "packages/vite-plugin-nord-md": {
       "name": "vite-plugin-nord-md",
-      "version": "2.0.0",
+      "version": "2.0.2",
       "dependencies": {
         "mdast-util-directive": "^3.1.0",
         "rehype-stringify": "^10.0.1",
