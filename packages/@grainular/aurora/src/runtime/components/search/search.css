@@ -5,6 +5,11 @@ body {
     }
 }
 
+::highlight(aurora-search) {
+    color: var(--aurora-text);
+    background-color: color-mix(in srgb, var(--aurora-accent), transparent 65%);
+}
+
 .aurora-search-container {
     position: relative;
     flex: 1 1 14rem;

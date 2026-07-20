@@ -3,6 +3,7 @@ import { $switch, html, on } from '@grainular/nord';
 import { createSearch, type SearchResult } from '../../features/search/create-search';
 import { Icon } from '../primitives/icon';
 import { connectDialog } from './connect-dialog';
+import { highlightMatches } from './highlight-matches';
 import { SearchPreview } from './search-preview';
 import { SearchResults } from './search-results';
 
@@ -99,6 +100,7 @@ export const Search = ({ index, base }: SearchProps) => {
                 class="aurora-search-dialog"
                 aria-label="Search documentation"
                 ${connectDialog({ dialog, open, results, active })}
+                ${highlightMatches(query, results, active)}
             >
                 <label class="aurora-search-field">
                     ${Icon({ name: 'search' })}
