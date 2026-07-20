@@ -37,7 +37,7 @@ const patternRoot = (root: string, pattern: string) => {
 };
 
 const commonRoot = (paths: string[]) => {
-    let root = paths[0];
+    let root = paths[0] ?? '';
     while (paths.some((path) => relative(root, path).startsWith('..'))) root = dirname(root);
     return root;
 };
@@ -65,7 +65,7 @@ export const resolveContent = async (patterns: string[], root: string) => {
 const resolveNavigation = (items: AuroraNavigationItem[] = []): ResolvedNavigationItem[] =>
     items.map((item) => ({
         ...item,
-        ...('path' in item ? { path: normalizePath(item.path) } : {}),
+        ...('path' in item ? { path: normalizePath(item.path!) } : {}),
         children: resolveNavigation(item.children ?? []),
     }));
 
@@ -91,5 +91,6 @@ export const resolveConfig = async (
         ...(existsSync(notFoundSource) ? { notFoundSource } : {}),
         vite: config.vite ?? {},
         search: config.search ?? false,
+        llms: config.llms ?? true,
     };
 };

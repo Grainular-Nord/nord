@@ -29,6 +29,7 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
             ...(plugins as PluginOption[]),
             pluginAuroraMarkdown(config),
             pluginAuroraSsg(config),
+            ...(config.llms ? [pluginAuroraSsg(config)] : []),
             pluginAuroraLlms(config),
             pluginAuroraCore(config),
             pluginAuroraLinks(),
