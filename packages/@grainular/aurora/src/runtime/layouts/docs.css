@@ -19,6 +19,14 @@
        which is `display: contents` and so invisible to layout, but
        still a node the `>` combinator would otherwise need to cross. */
     & .aurora-search-container {
+        /* At >= 45rem, both this and .aurora-sidebar are fixed — out of
+           flow, so the grid only ever places <main> and the outline.
+           Below 45rem, navigation.css makes .aurora-sidebar static too,
+           so this becomes a real grid item alongside it; spanning every
+           column keeps it on its own row instead of auto-placed into
+           whichever cell the sidebar didn't claim. */
+        grid-column: 1 / -1;
+
         position: fixed;
         inset-block-start: var(--aurora-header-height);
         inset-inline-start: 0;
@@ -35,7 +43,13 @@
         border-block-end: 1px solid var(--aurora-border-subtle);
 
         @media (width < 45rem) {
+            /* z-index applies to grid items even at position: static (an
+               explicit carve-out in the spec for flex/grid children), so
+               without resetting it here this would keep tying with, and
+               winning paint order over, the off-canvas nav's own z-index
+               when both sit in the same stacking context. */
             position: static;
+            z-index: auto;
             display: block;
             block-size: auto;
             inline-size: auto;
