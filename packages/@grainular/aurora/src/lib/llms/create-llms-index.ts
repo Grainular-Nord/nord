@@ -3,7 +3,7 @@ import type { LlmsPage } from './llms-page';
 
 const routeHref = (path: string, base: string) => {
     const prefix = base === './' || base === '' ? './' : base.endsWith('/') ? base : `${base}/`;
-    return path === '/' ? prefix : `${prefix}${path.slice(1)}`;
+    return path === '/' ? `${prefix}index.llms.txt` : `${prefix}${path.slice(1)}/index.llms.txt`;
 };
 
 export const createLlmsIndex = (config: ResolvedAuroraConfig, pages: LlmsPage[], base: string) => {
