@@ -16,6 +16,7 @@ export {
     type AuroraPageMeta,
     type AuroraRuntimeNavigationItem,
     type AuroraSearchEntry,
+    type AuroraSlots,
     type AuroraSocialLink,
     type AuroraStaticPage,
     defineConfig,

@@ -1,4 +1,6 @@
 .aurora-docs-layout {
+    --aurora-docs-search-block: 3.75rem;
+
     display: grid;
     grid-template-columns: minmax(0, 46rem) minmax(8rem, var(--aurora-outline-width));
     gap: clamp(2rem, 4cqi, 3.5rem);
@@ -9,5 +11,67 @@
 
     @container aurora-shell (width < 64rem) {
         grid-template-columns: minmax(0, 46rem);
+    }
+
+    /* The search slot sits above the sidebar's nav, in the same fixed
+       column, rather than in the flex bar it occupied inside Header.
+       Not a direct child: a client component is wrapped by its host,
+       which is `display: contents` and so invisible to layout, but
+       still a node the `>` combinator would otherwise need to cross. */
+    & .aurora-search-container {
+        /* At >= 45rem, both this and .aurora-sidebar are fixed — out of
+           flow, so the grid only ever places <main> and the outline.
+           Below 45rem, navigation.css makes .aurora-sidebar static too,
+           so this becomes a real grid item alongside it; spanning every
+           column keeps it on its own row instead of auto-placed into
+           whichever cell the sidebar didn't claim. */
+        grid-column: 1 / -1;
+
+        position: fixed;
+        inset-block-start: var(--aurora-header-height);
+        inset-inline-start: 0;
+        z-index: 22;
+        display: flex;
+        align-items: center;
+        block-size: var(--aurora-docs-search-block);
+        inline-size: var(--aurora-sidebar-width);
+        max-inline-size: none;
+        flex: initial;
+        padding-inline: 1rem;
+        background: var(--aurora-surface);
+        border-inline-end: 1px solid var(--aurora-border-subtle);
+        border-block-end: 1px solid var(--aurora-border-subtle);
+
+        @media (width < 45rem) {
+            /* z-index applies to grid items even at position: static (an
+               explicit carve-out in the spec for flex/grid children), so
+               without resetting it here this would keep tying with, and
+               winning paint order over, the off-canvas nav's own z-index
+               when both sit in the same stacking context. */
+            position: static;
+            z-index: auto;
+            display: block;
+            block-size: auto;
+            inline-size: auto;
+            max-inline-size: none;
+            margin-inline: clamp(1.25rem, 4cqi, 4rem);
+            padding: 0;
+            border: 0;
+        }
+    }
+
+    /* Reserves the search bar's height so it doesn't cover the first nav
+       link — but only when a search element is actually rendered. When
+       `search` is off (and no slot override fills its place), the slot
+       collapses to nothing, so this reservation must collapse with it
+       rather than leave a permanent empty gap above the nav. Below 45rem
+       the search bar returns to the normal document flow (see above), so
+       the sidebar's own responsive rules stand unmodified there — this
+       only needs to hold at the fixed width. */
+    @media (width >= 45rem) {
+        &:has(.aurora-search-container) > .aurora-sidebar .aurora-sidebar-body {
+            padding-block-start: calc(1.5rem + var(--aurora-docs-search-block));
+            max-block-size: calc(100dvh - var(--aurora-header-height) - var(--aurora-docs-search-block));
+        }
     }
 }

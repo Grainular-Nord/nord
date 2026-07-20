@@ -15,6 +15,21 @@ const attribute = (tag: string, name: string) => {
 };
 
 const tagName = (tag: string) => tag.match(/^<\/?\s*([a-z][\w-]*)/i)?.[1]?.toLowerCase();
+
+// UI chrome rendered into the content — code toolbars (title, language
+// badge, copy button) and code group tabs — is presentation, not prose,
+// and would otherwise pollute every code-heavy section's index entry.
+// The code itself stays indexed; only the chrome around it is skipped.
+const skippedClasses = [
+    'aurora-code-toolbar',
+    'aurora-code-copy-host',
+    'aurora-code-group-tab',
+    'aurora-code-group-label',
+];
+const isSkipped = (tag: string) => {
+    const classes = attribute(tag, 'class');
+    return Boolean(classes && skippedClasses.some((name) => classes.split(/\s+/).includes(name)));
+};
 const voidElements = new Set([
     'area',
     'base',
@@ -39,11 +54,12 @@ const extractSections = (markup: string) => {
     let contentDepth = 0;
     let headingText: string[] | undefined;
     let ignoredDepth = 0;
+    let skippedAt: number | undefined;
 
     for (const token of markup.match(/<!--[\s\S]*?-->|<[^>]+>|[^<]+/g) ?? []) {
         if (token.startsWith('<!--')) continue;
         if (!token.startsWith('<')) {
-            if (contentDepth === 0 || ignoredDepth > 0) continue;
+            if (contentDepth === 0 || ignoredDepth > 0 || skippedAt !== undefined) continue;
             const text = decodeHtml(token);
             if (headingText) headingText.push(text);
             else if (active) active.text.push(text);
@@ -66,6 +82,7 @@ const extractSections = (markup: string) => {
                 headingText = undefined;
             }
             contentDepth -= 1;
+            if (skippedAt !== undefined && contentDepth <= skippedAt) skippedAt = undefined;
             if (contentDepth === 0) break;
             continue;
         }
@@ -77,7 +94,10 @@ const extractSections = (markup: string) => {
             headingText = [];
         }
         if (name === 'script' || name === 'style') ignoredDepth += 1;
-        if (!voidElements.has(name) && !token.endsWith('/>')) contentDepth += 1;
+        if (!voidElements.has(name) && !token.endsWith('/>')) {
+            if (skippedAt === undefined && isSkipped(token)) skippedAt = contentDepth;
+            contentDepth += 1;
+        }
     }
 
     return sections;

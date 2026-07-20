@@ -36,24 +36,40 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
 
     return `
         import { renderToString } from "@grainular/nord";
-        import { $pageMeta, App, builtInLayouts, context, DefaultNotFoundContent, NotFound } from "@grainular/aurora/runtime";
+        import { $pageMeta, App, builtInLayouts, context, DefaultNotFoundContent, NotFound, renderComponentHost } from "@grainular/aurora/runtime";
         import auroraConfig from ${JSON.stringify(AURORA_CONFIG_ID)};
         ${contentImports(config)}
         ${notFoundImport(config)}
 
         const site = auroraConfig.site ?? {};
         const page = auroraConfig.page ?? {};
+        const search = ${JSON.stringify(config.search)};
         const buildBase = ${JSON.stringify(base)};
         const deploymentRoot = ${JSON.stringify(deploymentRoot)};
         const navigationTree = ${JSON.stringify(navigationTree)};
         const sourcePages = [${sourcePages(config)}];
+
+        // A slot is resolved once, like a layout, then wrapped as a host so
+        // \`client: true\` slots hydrate through the same mechanism as any
+        // other component. \`namespace\` keeps DOM identifiers unique across
+        // layouts that reuse the same slot name (e.g. two \`sidebar\`s).
+        const resolveSlots = async (definitions, namespace) => Object.fromEntries(
+            await Promise.all(Object.entries(definitions ?? {}).map(async ([key, { client, host, component }]) => {
+                const { default: render } = await component();
+                const name = namespace + ':' + key;
+                return [key, (props) => renderComponentHost({ name, client, host }, render, props)];
+            }))
+        );
+
         const layoutDefinitions = [...builtInLayouts, ...(auroraConfig.layouts ?? [])];
         const layouts = new Map(await Promise.all(
             layoutDefinitions.map(async (definition) => {
                 const { default: layout } = await definition.layout();
-                return [definition.name, layout];
+                const slots = await resolveSlots(definition.slots, definition.name);
+                return [definition.name, (props) => layout({ ...props, slots })];
             })
         ));
+        const shellSlots = await resolveSlots(auroraConfig.slots, 'app');
 
         const routeHref = (targetPath, currentPath) => {
             if (buildBase === './' || buildBase === '') {
@@ -80,7 +96,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
 
         const renderPage = ({ path, linkPath = path, meta, content, fileName, status }) => {
             const routes = resolveNavigation(navigationTree, path, linkPath);
-            const siteConfig = { ...site, base: routeHref('/', linkPath), routes };
+            const siteConfig = { ...site, base: routeHref('/', linkPath), routes, search };
             context.set(siteConfig);
             const title = [meta.title, siteConfig.title].filter(Boolean).join(" | ");
             const resolvedMeta = {
@@ -103,7 +119,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
             return {
                 path,
                 ...(fileName ? { fileName } : {}),
-                markup: renderToString(() => App({ meta, content, layouts })),
+                markup: renderToString(() => App({ meta, content, layouts, slots: shellSlots })),
                 head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page }, social)),
                 language: page.language ?? 'en',
                 ...(status ? { status } : {})

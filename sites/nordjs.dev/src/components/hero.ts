@@ -23,6 +23,7 @@ export const Hero = () => {
                     <h1>Nørd</h1>
                     <div>Build apps, not bundles.</div>
                     <div class="sub-text">${tags[Math.floor(Math.random() * tags.length) * 1]}</div>
+                    <a class="docs-link" href="https://docs.nordjs.dev" rel="noopener noreferrer">Read the Docs &rarr;</a>
                 </div>
                 <div class="hero-code">
                     ${Editor({ count })}
@@ -62,10 +63,28 @@ export const Hero = () => {
                     font-weight: 600;
                 }
 
-                & div:last-of-type {
+                & .sub-text {
                     font-size: 1rem;
                     font-weight: 400;
                     color: var(--text-sub);
+                }
+
+                & .docs-link {
+                    margin-top: 0.75rem;
+                    width: fit-content;
+
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: var(--text-main);
+                    text-decoration: underline;
+                    text-decoration-color: color-mix(in srgb, var(--text-main), transparent 60%);
+                    text-underline-offset: 4px;
+                    transition: color var(--transition-speed), text-decoration-color var(--transition-speed);
+
+                    &:hover {
+                        color: var(--nord-aurora-2);
+                        text-decoration-color: currentColor;
+                    }
                 }
             }
 

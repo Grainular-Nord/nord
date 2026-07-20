@@ -16,6 +16,10 @@ Aurora is a static site generator built with Nørd for creating documentation an
 
 The generated document is the application. Aurora does not hydrate the whole page or require a client-side router. JavaScript is only loaded for components explicitly registered as client islands; everything else remains static HTML.
 
+:::Tip
+You can try out Aurora directly in the browser on [Stackblitz](https://stackblitz.com/edit/grainular-aurora?file=index.md)
+:::
+
 ## Installation
 
 Install Aurora with Nørd, Grains, Vite, and TypeScript.
