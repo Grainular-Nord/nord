@@ -47,6 +47,7 @@ export default defineConfig({
         social: [{ label: 'GitHub repository', link: 'https://github.com/grainular-nord/nord', icon: 'github' }],
         footer: false,
     },
+    llms: false,
     // @grainular/nord and @grainular/grains are singletons internally (the
     // lifecycle observer that backs `mounted()` lives at module scope). This
     // site's own node_modules symlink for them resolves through bun's

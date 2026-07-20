@@ -4,6 +4,7 @@ import type { Plugin } from 'vite';
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
 import { createLlmsFull } from '../llms/create-llms-full';
 import { createLlmsIndex } from '../llms/create-llms-index';
+import { createLlmsPage } from '../llms/create-llms-page';
 import { loadLlmsPages } from '../llms/load-llms-pages';
 
 const LLMS_INDEX = 'llms.txt';
@@ -24,6 +25,7 @@ export const pluginAuroraLlms = (config: ResolvedAuroraConfig): Plugin => {
             assets = [
                 [LLMS_INDEX, createLlmsIndex(config, pages, base)],
                 [LLMS_FULL, createLlmsFull(pages)],
+                ...pages.map(createLlmsPage),
             ];
 
             for (const [fileName, source] of assets) this.emitFile({ type: 'asset', fileName, source });

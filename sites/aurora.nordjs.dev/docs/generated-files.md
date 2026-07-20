@@ -33,6 +33,12 @@ Every site exposes two plain-text files:
 
 Both files are emitted on every production build without a feature flag.
 
+In addition to the general files, a single index.llms.txt is emitted per page, allowing easy integration and indexing.
+
+:::Tip
+If you do not need Llms.txt files, you can disable generation with `config.llms: false` in the aurora config.
+:::
+
 ## Metadata
 
 Aurora combines global document configuration with Markdown frontmatter, then renders the title, description, robots directives, theme color, and trusted custom head content into each independent HTML document.

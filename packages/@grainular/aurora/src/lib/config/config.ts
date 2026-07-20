@@ -143,6 +143,8 @@ export type AuroraConfig = {
     slots?: AuroraSlots;
     /** Generates the search index and renders the built-in search island on the `docs` layout. Off by default. */
     search?: boolean;
+    /** Generates the llms.txt files for the site. On by default */
+    llms?: boolean;
     /** Document settings applied to every generated page. */
     page?: AuroraPageConfig;
     site?: {
