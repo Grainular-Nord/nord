@@ -1,5 +1,5 @@
 import { grain } from '@grainular/grains';
-import { beforeEach, describe, expect, it } from 'bun:test';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { resource } from '.';
 
 const flush = (ms = 100) => new Promise<void>((res) => setTimeout(res, ms));

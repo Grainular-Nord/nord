@@ -1,6 +1,6 @@
 /** @format */
 
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, test } from 'vitest';
 import { flattened } from './flattened';
 import { grain } from './grain';
 
@@ -109,6 +109,6 @@ describe('Flattened', () => {
         const outer = grain(inner);
         const flat = flattened(outer);
 
-        expect('set' in flat).toBeFalse();
+        expect('set' in flat).toBeFalsy();
     });
 });

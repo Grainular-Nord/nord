@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { $await, $suspend, html, mount } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 describe('[Nørd Runtime] Async Operations', () => {
     beforeEach(() => setup());

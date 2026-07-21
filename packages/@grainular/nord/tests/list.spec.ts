@@ -1,7 +1,7 @@
 import { grain } from '@grainular/grains';
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { $each, html, mount } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 describe('[Nørd Runtime] Lists', () => {
     beforeEach(() => setup());
@@ -25,7 +25,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(3);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
 
         // Assert the individual elements
         expect(listElement?.children.item(0)?.tagName).toBe('LI');
@@ -57,7 +57,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(3);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
 
         // Assert the individual elements
         expect(listElement?.children.item(0)?.tagName).toBe('LI');
@@ -89,7 +89,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(1);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
         const firstElement = listElement?.children.item(0);
         // Assert the individual elements
         expect(listElement?.children.item(0)?.tagName).toBe('LI');
@@ -100,7 +100,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(2);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
 
         // Assert node stability
         expect(firstElement).toBe(listElement?.children.item(0));
@@ -132,7 +132,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(1);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
 
         // Assert the individual elements
         expect(listElement?.children.item(0)?.tagName).toBe('LI');
@@ -146,7 +146,7 @@ describe('[Nørd Runtime] Lists', () => {
 
         // Assert that the correct amount of children is present
         expect(listElement?.childElementCount).toBe(1);
-        expect(Array.from(listElement?.children ?? [])).toBeArray();
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
 
         // Assert the individual elements
         expect(listElement?.children.item(0)?.tagName).toBe('LI');

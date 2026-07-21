@@ -1,7 +1,7 @@
 import runtime from '../../runtime/styles';
-import base from './base.css' with { type: 'text' };
-import markdown from './markdown.css' with { type: 'text' };
-import tokens from './tokens.css' with { type: 'text' };
+import base from './base.css?inline';
+import markdown from './markdown.css?inline';
+import tokens from './tokens.css?inline';
 
 export default `
 @layer aurora.tokens, aurora.base, aurora.content, aurora.components, aurora.overrides;

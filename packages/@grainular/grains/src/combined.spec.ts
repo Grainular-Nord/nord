@@ -1,6 +1,6 @@
 /** @format */
 
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, test } from 'vitest';
 import { combined } from './combined';
 import { grain } from './grain';
 

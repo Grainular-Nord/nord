@@ -111,23 +111,23 @@ Wrap related fences in `CodeGroup` to present them as tabs. Each fence title bec
 
 ````md
 :::CodeGroup{label="Install Aurora"}
-```bash title="Bun"
-bun add --dev @grainular/aurora
-```
-
 ```bash title="npm"
 npm install --save-dev @grainular/aurora
+```
+
+```bash title="Bun"
+bun add --dev @grainular/aurora
 ```
 :::
 ````
 
 :::CodeGroup{label="Install Aurora"}
-```bash title="Bun"
-bun add --dev @grainular/aurora
-```
-
 ```bash title="npm"
 npm install --save-dev @grainular/aurora
+```
+
+```bash title="Bun"
+bun add --dev @grainular/aurora
 ```
 :::
 

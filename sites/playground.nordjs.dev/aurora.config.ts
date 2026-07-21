@@ -62,8 +62,6 @@ export default defineConfig({
             alias: {
                 '@grainular/codemirror/theme.css': workspacePackage('@grainular/codemirror/src/styles/theme.css'),
                 '@grainular/codemirror': workspacePackage('@grainular/codemirror/src/index.ts'),
-                '@grainular/nord': workspacePackage('@grainular/nord/dist/esm/index.js'),
-                '@grainular/grains': workspacePackage('@grainular/grains/dist/esm/index.js'),
             },
         },
         optimizeDeps: {

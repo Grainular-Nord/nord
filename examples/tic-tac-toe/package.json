@@ -9,11 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@grainular/nord": "workspace:*",
-    "@grainular/grains": "workspace:*"
+    "@grainular/nord": "*",
+    "@grainular/grains": "*"
   },
   "devDependencies": {
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite": "^8.0.14"
   }
 }

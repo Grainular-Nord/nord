@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~6.0.2",
+    "typescript": "~7.0.2",
     "vite": "^8.0.12"
   },
   "dependencies": {
-    "@grainular/nord":"workspace:*",
-    "@grainular/grains": "workspace:*",
-    "@grainular/resource": "workspace:*",
-    "@grainular/router": "workspace:*"
+    "@grainular/nord":"*",
+    "@grainular/grains": "*",
+    "@grainular/resource": "*",
+    "@grainular/router": "*"
   }
 }

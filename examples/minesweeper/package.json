@@ -9,14 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@grainular/grains": "workspace:*",
-    "@grainular/nord": "workspace:*",
-    "@grainular/forms": "workspace:*",
+    "@grainular/grains": "*",
+    "@grainular/nord": "*",
+    "@grainular/forms": "*",
     "@tailwindcss/vite": "^4.3.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "vite": "npm:rolldown-vite@7.3.1"
   },
   "overrides": {
