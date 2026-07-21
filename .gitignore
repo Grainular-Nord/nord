@@ -23,8 +23,8 @@ Icon
 .turbo
 
 # Only the root lockfile is authoritative for this workspace
-bun.lock
-!/bun.lock
+package-lock.json
+!/package-lock.json
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100

@@ -2,14 +2,16 @@
   "name": "grainular-nord-vscode",
   "version": "1.0.0",
   "description": "Focused VS Code language support for Nørd html templates.",
-  "main": "./dist/extension.js",
+  "type": "module",
+  "main": "./dist/extension.cjs",
   "publisher": "iamsebastiandev",
   "icon": "logo.png",
   "devDependencies": {
     "@types/bun": "^1.2.16",
     "@types/vscode": "1.80.0",
     "@vscode/vsce": "^3.9.1",
-    "tsup": "^8.5.1"
+    "tsdown": "^0.22.13",
+    "vitest": "^4.1.10"
   },
   "activationEvents": [
     "onLanguage:javascript",
@@ -55,11 +57,11 @@
     "vscode": "^1.80.0"
   },
   "scripts": {
-    "build": "bunx tsup",
-    "dev": "bunx tsup --watch",
-    "test": "bun test",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "package": "bun run build && bunx vsce package --no-dependencies"
+    "package": "npm run build && npx vsce package --no-dependencies"
   },
   "categories": ["Programming Languages"],
   "keywords": ["nord", "nørd", "html", "tagged templates"],

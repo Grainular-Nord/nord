@@ -1,46 +1,52 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsdown';
+
+const entry = {
+    index: 'src/index.ts',
+    'runtime/index': 'src/runtime/index.ts',
+    'cli/index': 'src/cli/index.ts',
+};
+
+const external = [
+    'vite',
+    '@shikijs/rehype',
+    'shiki/core',
+    'vite-plugin-nord-md',
+    '@grainular/nord',
+    '@grainular/grains',
+];
 
 export default defineConfig([
     // ESM bundle
     {
-        entry: ['src/index.ts'],
+        entry,
+        platform: 'node',
         format: ['esm'],
         outDir: 'dist/esm',
+        external,
         dts: false,
-        clean: false,
+        clean: true,
         sourcemap: true,
         splitting: false,
         treeshake: true,
-        minify: true,
+        minify: false,
     },
     // CJS bundle
     {
-        entry: ['src/index.ts'],
+        entry,
+        platform: 'node',
         format: ['cjs'],
         outDir: 'dist/cjs',
+        external,
         dts: false,
         clean: false,
         sourcemap: true,
         splitting: false,
         treeshake: true,
-        minify: true,
-    },
-    // IIFE browser bundle
-    {
-        entry: ['src/index.ts'],
-        format: ['iife'],
-        outDir: 'dist/browser',
-        globalName: 'Nord',
-        dts: false,
-        clean: false,
-        sourcemap: true,
-        splitting: false,
-        minify: true,
-        treeshake: true,
+        minify: false,
     },
     // Types only
     {
-        entry: ['src/index.ts'],
+        entry,
         outDir: 'dist/types',
         dts: { only: true },
         clean: false,

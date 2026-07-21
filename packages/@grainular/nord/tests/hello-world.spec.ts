@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { html, mount, renderToString } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 /**
  * Similar to the baseline test, this test really just tests

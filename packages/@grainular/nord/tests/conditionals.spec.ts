@@ -1,7 +1,7 @@
 import { grain } from '@grainular/grains';
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { $if, $switch, html, mount, on, renderToString } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 /**
  * We test our conditional rendering here in
@@ -52,7 +52,7 @@ describe('[Nørd Runtime] Conditionals', () => {
 
     test('should update mount and unmount nodes using the lifecycle observer', () => {
         const bool = grain(true);
-        const handler = mock(() => {});
+        const handler = vi.fn(() => {});
         const App = () => {
             return html`${$if(bool).$then(() => {
                 return html`<button ${on('click', () => handler())}>Is True</button>`;
@@ -120,7 +120,7 @@ describe('[Nørd Runtime] Conditionals', () => {
 
     test('should mount and unmount nodes correctly with event handlers', () => {
         const val = grain(1);
-        const handler = mock(() => {});
+        const handler = vi.fn(() => {});
         const App = () =>
             html`${$switch(val)
                 .$case(1, () => html`<button ${on('click', () => handler())}>One</button>`)

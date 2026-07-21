@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { html, mount } from '../src';
 import { $try } from '../src/structs/try.struct';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 describe('[Nørd Runtime] $try / Error Boundaries', () => {
     beforeEach(() => setup());

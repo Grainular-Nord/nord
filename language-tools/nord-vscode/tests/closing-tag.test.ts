@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, test } from 'vitest';
 import { getAutoClosingTag } from '../src/core/closing-tag';
 
 const closingTagAtCursor = (markedSource: string) => {

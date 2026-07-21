@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { grain } from '@grainular/grains';
 import { $render, $unsafeHtml, html, mount, on, renderToString } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 describe('[Nørd Runtime] Rendering', () => {
     beforeEach(() => setup());
@@ -61,7 +61,7 @@ describe('[Nørd Runtime] Rendering', () => {
     });
 
     test('should support fragments with events', () => {
-        const handler = mock();
+        const handler = vi.fn();
         const val = grain(html`<button ${on('click', handler)}>Click</button>`);
         const App = () => html`${$render(val)}`;
 

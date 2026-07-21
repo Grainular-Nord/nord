@@ -2,29 +2,31 @@
     "name": "@grainular/resource",
     "version": "2.0.0",
     "type": "module",
-    "packageManager": "bun@1.3.14",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.cts",
+    "packageManager": "npm@11.6.0",
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/types/index.d.mts",
     "exports": {
         ".": {
-            "types": "./dist/types/index.d.cts",
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js"
+            "types": "./dist/types/index.d.mts",
+            "import": "./dist/esm/index.mjs",
+            "require": "./dist/cjs/index.cjs"
         }
     },
-    "unpkg": "./dist/browser/index.js",
+    "unpkg": "./dist/browser/index.iife.js",
     "devDependencies": {
-        "@repository/config": "workspace:*",
+        "@repository/config": "*",
         "@types/bun": "latest",
-        "tsup": "^8.5.1",
-        "typescript": "6.0.3"
+        "@vitest/coverage-v8": "^4.1.10",
+        "tsdown": "^0.22.13",
+        "typescript": "7.0.2",
+        "vitest": "^4.1.10"
     },
     "scripts": {
-        "dev": "bunx tsup --watch",
-        "build": "bunx tsup",
-        "prepublishOnly": "bunx tsup",
-        "test": "bun test --coverage"
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "prepublishOnly": "tsdown",
+        "test": "vitest run --coverage"
     },
     "sideEffects": false,
     "publishConfig": {
@@ -41,6 +43,6 @@
         "url": "git+https://github.com/grainular/nord.git"
     },
     "peerDependencies": {
-        "@grainular/grains": "workspace:*"
+        "@grainular/grains": "*"
     }
 }

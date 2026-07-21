@@ -1,7 +1,7 @@
 import { grain } from '@grainular/grains';
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { html, mount, on } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 /**
  * This test suite explicitly tests the attribute binding
@@ -17,7 +17,7 @@ describe('[Nørd Runtime] Attribute bindings', () => {
 
         mount(App, { to: document.querySelector('#app') });
 
-        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('data-test')).toBeTrue();
+        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('data-test')).toBeTruthy();
         expect(document.querySelector('#app')?.firstElementChild?.getAttribute('data-test')).toBe('0');
     });
 
@@ -57,12 +57,12 @@ describe('[Nørd Runtime] Attribute bindings', () => {
         mount(App, { to: document.querySelector('#app') });
 
         // Check state of the falsy attribute
-        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('disabled')).toBeFalse();
+        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('disabled')).toBeFalsy();
         expect(document.querySelector('#app')?.firstElementChild?.outerHTML).toBe('<button></button>');
 
         // Set disabled and check state
         disabled.set(true);
-        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('disabled')).toBeTrue();
+        expect(document.querySelector('#app')?.firstElementChild?.hasAttribute('disabled')).toBeTruthy();
         expect(document.querySelector('#app')?.firstElementChild?.outerHTML).toBe('<button disabled=""></button>');
     });
 });

@@ -1,23 +1,21 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     // ESM bundle
     {
         entry: ['src/index.ts'],
-        platform: 'node',
         format: ['esm'],
         outDir: 'dist/esm',
         dts: false,
-        clean: true,
+        clean: false,
         sourcemap: true,
         splitting: false,
         treeshake: true,
-        minify: false,
+        minify: true,
     },
     // CJS bundle
     {
         entry: ['src/index.ts'],
-        platform: 'node',
         format: ['cjs'],
         outDir: 'dist/cjs',
         dts: false,
@@ -25,7 +23,20 @@ export default defineConfig([
         sourcemap: true,
         splitting: false,
         treeshake: true,
-        minify: false,
+        minify: true,
+    },
+    // IIFE browser bundle
+    {
+        entry: ['src/index.ts'],
+        format: ['iife'],
+        outDir: 'dist/browser',
+        globalName: 'Nord',
+        dts: false,
+        clean: false,
+        sourcemap: true,
+        splitting: false,
+        minify: true,
+        treeshake: true,
     },
     // Types only
     {

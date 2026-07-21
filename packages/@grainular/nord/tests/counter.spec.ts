@@ -1,7 +1,7 @@
 import { grain } from '@grainular/grains';
-import { beforeEach, describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { html, mount, on } from '../src';
-import { setup } from './setup.spec';
+import { setup } from './setup';
 
 /**
  * The counter example is a more in depth example, testing

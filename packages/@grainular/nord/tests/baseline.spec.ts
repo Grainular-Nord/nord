@@ -1,5 +1,5 @@
-import { beforeEach, expect, test } from 'bun:test';
-import { setup } from './setup.spec';
+import { beforeEach, expect, test } from 'vitest';
+import { setup } from './setup';
 
 beforeEach(() => {
     setup();
