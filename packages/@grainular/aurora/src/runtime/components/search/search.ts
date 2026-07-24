@@ -130,7 +130,12 @@ export const Search = ({ index, base }: SearchProps) => {
                     .$default(
                         () => html`
                             <div class="aurora-search-panes">
-                                ${SearchResults({ results, active, href: search.href, dismiss: () => dialog()?.close() })}
+                                ${SearchResults({
+                                    results,
+                                    active,
+                                    href: search.href,
+                                    dismiss: () => dialog()?.close(),
+                                })}
                                 ${SearchPreview(activeResult)}
                             </div>
                         `,

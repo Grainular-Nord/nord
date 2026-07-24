@@ -19,25 +19,25 @@ export const CommentCard = (props: CommentCardProps) => {
         };
     };
 
-    return html`
-        <div role="button" class="comment-card" id="${props.id}" data-level="${props.level}" ${on('click', handleToggleCollapse(true))}>
-            <div class="comment-content">
-                <div class="comment-details">
-                    ${props.time_ago} by
-                    <a class="secondary-link" href="/user/${props.user}" ${on('click', (e) => e.stopPropagation())}>${props.user}</a>
-                    ${$if(collapsed).$then(() => {
-                        return html`
-                            <button ${on('click', handleToggleCollapse(false))}>
-                                Show more
-                            </button>`;
-                    })}
-                </div>
-                <div data-collapsed="${collapsed}">
-                    ${$unsafeHtml(props.content)}
-                </div>
+    return html` <div
+        role="button"
+        class="comment-card"
+        id="${props.id}"
+        data-level="${props.level}"
+        ${on('click', handleToggleCollapse(true))}
+    >
+        <div class="comment-content">
+            <div class="comment-details">
+                ${props.time_ago} by
+                <a class="secondary-link" href="/user/${props.user}" ${on('click', (e) => e.stopPropagation())}
+                    >${props.user}</a
+                >
+                ${$if(collapsed).$then(() => {
+                    return html` <button ${on('click', handleToggleCollapse(false))}>Show more</button>`;
+                })}
             </div>
-            <div data-collapsed="${collapsed}">
-                ${$each(() => props.comments).$as(CommentCard)}
-            </div>
-        </div>`;
+            <div data-collapsed="${collapsed}">${$unsafeHtml(props.content)}</div>
+        </div>
+        <div data-collapsed="${collapsed}">${$each(() => props.comments).$as(CommentCard)}</div>
+    </div>`;
 };

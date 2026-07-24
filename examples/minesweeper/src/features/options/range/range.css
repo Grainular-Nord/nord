@@ -25,7 +25,7 @@
 }
 
 .range-control::before {
-    content: "";
+    content: '';
     position: absolute;
     /* Shrink height to look more filigree */
     top: calc(var(--spacing) * 0.5);
@@ -63,7 +63,7 @@
     font-size: calc(var(--spacing) * 3);
 }
 
-input[type="range"] {
+input[type='range'] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;

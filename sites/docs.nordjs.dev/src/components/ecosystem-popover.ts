@@ -19,9 +19,7 @@ const ExternalLinkIcon = () => html`
 
 export const EcosystemPopover = ({ items }: EcosystemPopoverProps) => html`
     <div class="nord-ecosystem">
-        <button type="button" class="nord-ecosystem-trigger" popovertarget="nord-ecosystem-popover">
-            Ecosystem
-        </button>
+        <button type="button" class="nord-ecosystem-trigger" popovertarget="nord-ecosystem-popover">Ecosystem</button>
         <div id="nord-ecosystem-popover" class="nord-ecosystem-popover" popover="auto">
             <p class="nord-ecosystem-label">Nørd ecosystem</p>
             <ul>

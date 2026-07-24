@@ -23,7 +23,7 @@ const AssetProvider = (() => {
                 cacheMap.set(fn, result.default);
             }
 
-            // biome-ignore lint: if it didn't exist, we created it
+            // The cache entry was created immediately above.
             return cacheMap.get(fn)!;
         },
     };

@@ -9,9 +9,7 @@ const close = (event: Event) =>
 
 export const LessonPopover = ({ current, lessons }: { current: string; lessons: LessonLink[] }) => html`
     <div class="lesson-popover">
-        <button type="button" class="lesson-popover-trigger" popovertarget="playground-lessons">
-            ${current}
-        </button>
+        <button type="button" class="lesson-popover-trigger" popovertarget="playground-lessons">${current}</button>
         <nav id="playground-lessons" class="lesson-popover-panel" popover="auto" aria-label="Lessons">
             ${$each(() => lessons)
                 .$withKey((lesson) => lesson.path)

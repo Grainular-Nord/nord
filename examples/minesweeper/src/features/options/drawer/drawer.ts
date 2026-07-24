@@ -17,8 +17,20 @@ export const Drawer = () => {
 
     return html`<aside class="drawer" data-expanded="${drawerState.expanded}">
         <div class="drawer-content" ${clickOutside(() => drawerState.close())}>
-            ${Range({ control: options.controls.mines, formatter: (value) => `${value} Mines`, label: 'Mine Count', min: 1, max: 100 })}
-            ${Range({ control: options.controls.size, formatter: (value) => `${value} R/C`, label: 'Board Size', min: 4, max: 12 })}
+            ${Range({
+                control: options.controls.mines,
+                formatter: (value) => `${value} Mines`,
+                label: 'Mine Count',
+                min: 1,
+                max: 100,
+            })}
+            ${Range({
+                control: options.controls.size,
+                formatter: (value) => `${value} R/C`,
+                label: 'Board Size',
+                min: 4,
+                max: 12,
+            })}
             ${Button({
                 children: 'Start new Game',
                 onClick: () => {
@@ -29,6 +41,6 @@ export const Drawer = () => {
                     }
                 },
             })}
-            </div>
+        </div>
     </aside>`;
 };

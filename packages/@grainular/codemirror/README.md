@@ -9,9 +9,7 @@ host supplies framework-specific preview and runtime behaviour.
 ```ts
 import { createEditorProject, downloadProject, projectShareUrl } from '@grainular/codemirror';
 
-const project = createEditorProject([
-    { path: 'main.ts', contents: 'export {};' },
-]);
+const project = createEditorProject([{ path: 'main.ts', contents: 'export {};' }]);
 
 const shareUrl = projectShareUrl({ files: project.files() });
 downloadProject(project.files(), 'my-app');

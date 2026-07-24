@@ -12,7 +12,12 @@ body {
     margin: 0;
     background: oklch(0.135 0.008 250);
     color: oklch(0.94 0.003 250);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        sans-serif;
 }
 
 .scaffold {
@@ -76,7 +81,7 @@ body {
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.logo[data-pressed="true"] {
+.logo[data-pressed='true'] {
     transform: scale(0.94);
     transition: transform 0.12s ease-out;
 }
@@ -98,7 +103,7 @@ body {
     align-items: center;
     gap: 10px;
     margin: 0;
-    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
     font-size: 15px;
     color: oklch(0.7 0.012 250);
 }
@@ -125,7 +130,7 @@ body {
 }
 
 .links a {
-    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
     font-size: 13px;
     letter-spacing: 0.02em;
     color: oklch(0.7 0.19 255 / 0.85);

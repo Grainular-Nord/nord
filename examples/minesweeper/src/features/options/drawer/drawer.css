@@ -9,7 +9,7 @@
     padding: calc(var(--spacing) * 4);
     transition: opacity 0.25s ease-in-out;
 
-    &[data-expanded="true"] {
+    &[data-expanded='true'] {
         opacity: 1;
         backdrop-filter: blur(0.125rem);
         pointer-events: all;

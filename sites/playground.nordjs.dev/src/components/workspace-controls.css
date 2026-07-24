@@ -15,7 +15,7 @@
         position: absolute;
         inset-block: 0;
         inset-inline: calc(50% - 0.5px);
-        content: "";
+        content: '';
         background: var(--aurora-border-subtle);
         transition: background 140ms ease;
     }

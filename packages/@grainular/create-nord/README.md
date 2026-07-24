@@ -12,9 +12,9 @@ bunx @grainular/create-nord
 
 You'll be prompted for a project directory and name, then walked through:
 
--   A template: **Nørd Web** (browser, module-based), **Nørd Vite**, or **Nørd Vite + TypeScript**
--   Companion packages (router, forms, silo, portal, resource, custom elements)
--   Additional tooling (Prettier, Tailwind CSS, Lefthook, Biome, Oxlint, Oxfmt)
+- A template: **Nørd Web** (browser, module-based), **Nørd Vite**, or **Nørd Vite + TypeScript**
+- Companion packages (router, forms, silo, portal, resource, custom elements)
+- Additional tooling (Prettier, Oxfmt, Oxlint, Tailwind CSS, Lefthook)
 
 ## Contributing
 

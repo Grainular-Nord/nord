@@ -31,8 +31,13 @@ const Lesson = ({ content, meta }: AuroraLayoutProps) => {
                 <div class="application-content">${content}</div>
                 ${meta.links && TutorialNav(meta.links)}
             </div>
-            ${playground && EditorHost({ ...playground, controls: { ...playground.controls, reset: true, solve: true } })}
-            <div class="aurora-component lesson-workspace-controls-host" data-aurora-component="WorkspaceControls" data-aurora-component-props="%7B%7D">
+            ${playground &&
+            EditorHost({ ...playground, controls: { ...playground.controls, reset: true, solve: true } })}
+            <div
+                class="aurora-component lesson-workspace-controls-host"
+                data-aurora-component="WorkspaceControls"
+                data-aurora-component-props="%7B%7D"
+            >
                 ${WorkspaceControls()}
             </div>
         </div>

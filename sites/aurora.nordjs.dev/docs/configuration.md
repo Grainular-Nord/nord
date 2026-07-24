@@ -3,12 +3,12 @@ title: Configuration
 description: Configure site metadata, routes, components, layouts, Markdown, and Vite.
 layout: docs
 links:
-  prev:
-    text: CLI and deployment
-    link: /cli
-  next:
-    text: Markdown
-    link: /markdown
+    prev:
+        text: CLI and deployment
+        link: /cli
+    next:
+        text: Markdown
+        link: /markdown
 ---
 
 # Configuration
@@ -25,9 +25,7 @@ import './custom.css';
 
 export default defineConfig({
     content: 'docs/*.md',
-    navigation: [
-        { path: '/guide', label: 'Guide' },
-    ],
+    navigation: [{ path: '/guide', label: 'Guide' }],
     page: {
         language: 'en',
         themeColor: '#090d13',
@@ -39,9 +37,7 @@ export default defineConfig({
         image: '/social-preview.png',
         logo: '/logo.svg',
         navigation: [{ text: 'Guide', link: '/guide' }],
-        social: [
-            { label: 'GitHub', link: 'https://github.com/example/project', icon: 'github' },
-        ],
+        social: [{ label: 'GitHub', link: 'https://github.com/example/project', icon: 'github' }],
         footer: 'Built with Aurora.',
     },
 });
@@ -98,12 +94,12 @@ Page-specific `title`, `description`, `robots`, `layout`, and previous or next l
 title: Configuration
 layout: docs
 links:
-  prev:
-    text: Getting started
-    link: /getting-started
-  next:
-    text: Markdown
-    link: /markdown
+    prev:
+        text: Getting started
+        link: /getting-started
+    next:
+        text: Markdown
+        link: /markdown
 ---
 ```
 
@@ -114,7 +110,7 @@ Aurora combines the page title with `site.title` for the document `<title>`. A p
 `content` accepts a Markdown glob or an array of globs. Every matched file becomes a page, with its route inferred from its path.
 
 ```ts
-content: 'docs/**/*.md'
+content: 'docs/**/*.md';
 ```
 
 The content tree must contain an `index.md` that resolves to `/`.
@@ -125,11 +121,9 @@ The content tree must contain an `index.md` that resolves to `/`.
 navigation: [
     {
         label: 'Guide',
-        children: [
-            { path: '/start', label: 'Getting started' },
-        ],
+        children: [{ path: '/start', label: 'Getting started' }],
     },
-]
+];
 ```
 
 Top-level navigation groups are collapsible. Children may contain further links or groups without a fixed nesting limit. Navigation paths do not need to correspond to Markdown sources, allowing links to generated pages or other site locations.

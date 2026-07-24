@@ -30,13 +30,14 @@ const TaskList = () => html`
 
 Reach for `.$withKey(...)` instead when object identity can't do the job — a list of primitives (which have no identity beyond their value), or a source that rebuilds every item on each update (a `.map()` that returns a new object for every entry, even ones that didn't logically change). A key function gives Nørd something stable to match against when the objects themselves aren't stable.
 
-Set a new array when updating a grain so subscribers receive the change: `tasks.update((current) => [...current, newTask])` — note this only creates a new array and a new item; every *existing* task keeps its original reference, so identity alone is enough for this list.
+Set a new array when updating a grain so subscribers receive the change: `tasks.update((current) => [...current, newTask])` — note this only creates a new array and a new item; every _existing_ task keeps its original reference, so identity alone is enough for this list.
 
 :::Tip{title="Your task"}
 Two things are unfinished in `main.ts`: the `$each` call renders an empty fragment for every item, and `addTask` doesn't add anything. Complete `.$as` so each task shows as an `<li>`, and make `addTask` append a new task to the list.
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { $each, html, mount, on } from '@grainular/nord';
@@ -62,6 +63,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [async rendering](/13-async-rendering) to connect a promise to a region of the page.

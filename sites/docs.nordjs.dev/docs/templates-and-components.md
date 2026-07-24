@@ -94,9 +94,7 @@ const Header = () => html`<header>Nørd</header>`;
 
 export const Page = () => html`
     ${Header()}
-    <main>
-        ${Card({ title: 'Composition', children: html`<p>Functions all the way down.</p>` })}
-    </main>
+    <main>${Card({ title: 'Composition', children: html`<p>Functions all the way down.</p>` })}</main>
 `;
 ```
 
@@ -114,12 +112,7 @@ export const Counter = () => {
     const count = grain(0);
 
     return html`
-        <button
-            aria-label="${count}"
-            ${on('click', () => count.update((value) => value + 1))}
-        >
-            Count: ${count}
-        </button>
+        <button aria-label="${count}" ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button>
     `;
 };
 ```
@@ -132,11 +125,7 @@ Attribute interpolation works exactly like text interpolation: pass a subscribab
 const enabled = grain(false);
 
 const Toggle = () => html`
-    <button
-        disabled="${enabled}"
-        aria-pressed="${enabled}"
-        ${on('click', () => enabled.update((value) => !value))}
-    >
+    <button disabled="${enabled}" aria-pressed="${enabled}" ${on('click', () => enabled.update((value) => !value))}>
         Toggle
     </button>
 `;

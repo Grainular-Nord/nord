@@ -4,7 +4,10 @@ import { html } from '@grainular/nord';
 
 /** Minimal toolbar primitive for a custom `EditorWorkspace` composition. */
 export const EditorToolbar = ({ end, start }: { end?: ComponentFragment; start?: ComponentFragment }) =>
-    html`<header data-grainular-editor="toolbar"><div data-grainular-editor="toolbar-start">${start}</div><div data-grainular-editor="toolbar-end">${end}</div></header>`;
+    html`<header data-grainular-editor="toolbar">
+        <div data-grainular-editor="toolbar-start">${start}</div>
+        <div data-grainular-editor="toolbar-end">${end}</div>
+    </header>`;
 
 /** Minimal file-tree shell for a custom composition. */
 export const EditorFileTree = ({
@@ -16,7 +19,10 @@ export const EditorFileTree = ({
     children: ComponentFragment;
     title?: string;
 }) =>
-    html`<aside data-grainular-editor="file-tree"><header><span>${title}</span>${actions}</header>${children}</aside>`;
+    html`<aside data-grainular-editor="file-tree">
+        <header><span>${title}</span>${actions}</header>
+        ${children}
+    </aside>`;
 
 /** Minimal status-bar primitive for a custom composition. */
 export const EditorStatusBar = ({ children }: { children?: ComponentFragment }) =>

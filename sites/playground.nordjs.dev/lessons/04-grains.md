@@ -33,6 +33,7 @@ The button's click handler in `main.ts` is empty. Call `count.update(...)` insid
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { html, mount, on } from '@grainular/nord';

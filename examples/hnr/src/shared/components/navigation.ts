@@ -31,7 +31,7 @@ export const Navigation = () => {
             <ul>
                 ${$each(() => items).$as((item) => {
                     return html`
-                        <li class="navigation-item" >
+                        <li class="navigation-item">
                             <a href="/feed/${item.type}" ${active('link-active')}>${item.label}</a>
                         </li>
                     `;

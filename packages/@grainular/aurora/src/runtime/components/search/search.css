@@ -156,7 +156,7 @@ body {
         text-decoration: none;
         border-radius: var(--aurora-radius);
 
-        &:is(:hover, [aria-selected="true"]) {
+        &:is(:hover, [aria-selected='true']) {
             background: var(--aurora-overlay);
         }
     }

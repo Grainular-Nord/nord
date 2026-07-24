@@ -5,9 +5,12 @@ import { EditorHost, type PlaygroundMeta } from '../components/editor-host';
 const Playground = ({ meta }: AuroraLayoutProps) => {
     const playground = (meta as AuroraLayoutProps['meta'] & { playground?: PlaygroundMeta }).playground;
 
-    return html` <div class="playground-layout">
-        ${playground && EditorHost({ ...playground, controls: { ...playground.controls, download: true, share: true } })}
-    </div> `;
+    return html`
+        <div class="playground-layout">
+            ${playground &&
+            EditorHost({ ...playground, controls: { ...playground.controls, download: true, share: true } })}
+        </div>
+    `;
 };
 
 export default Playground;

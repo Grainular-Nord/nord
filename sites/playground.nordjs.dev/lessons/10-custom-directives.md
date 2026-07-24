@@ -34,6 +34,7 @@ Directives compose by appearing together on the same element, and each one owns 
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { createDirective, html, mount } from '@grainular/nord';
 
@@ -54,6 +55,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [conditional rendering](/11-conditional-rendering) for control flow that updates only the active branch.

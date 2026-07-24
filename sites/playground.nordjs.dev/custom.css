@@ -73,11 +73,11 @@
             border-color 140ms ease,
             background 140ms ease;
 
-        &[data-direction="prev"] {
+        &[data-direction='prev'] {
             text-align: start;
         }
 
-        &[data-direction="next"] {
+        &[data-direction='next'] {
             text-align: end;
         }
 

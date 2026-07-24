@@ -17,9 +17,7 @@ import { html, type PureComponent } from '@grainular/nord';
 
 type GreetingProps = { name: string };
 
-export const Greeting: PureComponent<GreetingProps> = ({ name }) => html`
-    <h1>Hej, ${name}!</h1>
-`;
+export const Greeting: PureComponent<GreetingProps> = ({ name }) => html` <h1>Hej, ${name}!</h1> `;
 ```
 
 `PureComponent` is a convention, not a special runtime type. It accepts no argument for a component without props and one typed props object otherwise.
@@ -104,9 +102,7 @@ import { html, on } from '@grainular/nord';
 export const Counter = () => {
     const count = grain(0);
 
-    return html`<button ${on('click', () => count.update((value) => value + 1))}>
-        Count: ${count}
-    </button>`;
+    return html`<button ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button>`;
 };
 ```
 

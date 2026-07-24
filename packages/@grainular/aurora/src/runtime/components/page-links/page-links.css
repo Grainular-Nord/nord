@@ -27,21 +27,21 @@
             color: var(--aurora-text-faint);
         }
 
-        &[data-direction="prev"] {
+        &[data-direction='prev'] {
             grid-template-columns: auto minmax(0, 1fr);
 
             &::before {
-                content: "←";
+                content: '←';
             }
         }
 
-        &[data-direction="next"] {
+        &[data-direction='next'] {
             grid-template-columns: minmax(0, 1fr) auto;
             text-align: end;
 
             &::before {
                 grid-column: 2;
-                content: "→";
+                content: '→';
             }
         }
 

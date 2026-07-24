@@ -40,11 +40,11 @@ export const EditorResizeHandle = ({ layout }: { layout: Grain<EditorLayout> }) 
     });
 
     return html`<div
-    data-grainular-editor="resize-handle"
-    role="separator"
-    aria-label="Resize editor and preview"
-    aria-orientation="${orientation}"
-    tabindex="0"
-    ${resize}
-  ></div>`;
+        data-grainular-editor="resize-handle"
+        role="separator"
+        aria-label="Resize editor and preview"
+        aria-orientation="${orientation}"
+        tabindex="0"
+        ${resize}
+    ></div>`;
 };

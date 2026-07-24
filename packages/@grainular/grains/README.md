@@ -19,7 +19,7 @@ import { grain } from '@grainular/grains';
 const count = grain(0);
 
 // Subscribe to changes — called whenever the value updates
-count.subscribe(value => console.log(value));
+count.subscribe((value) => console.log(value));
 
 // Set a new value, notifying all subscribers
 count.set(1); // Logs: 1

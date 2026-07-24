@@ -3,9 +3,9 @@ title: Nørd Overview
 description: Nørd's core ideas and a quick tour of its rendering API.
 layout: docs
 links:
-  next:
-    text: Getting started
-    link: /getting-started
+    next:
+        text: Getting started
+        link: /getting-started
 ---
 
 # Nørd
@@ -108,9 +108,7 @@ import { html, on } from '@grainular/nord';
 export const count = grain(0);
 
 export const Counter = () => html`
-    <button ${on('click', () => count.update((value) => value + 1))}>
-        Count: ${count}
-    </button>
+    <button ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button>
 `;
 ```
 
@@ -137,9 +135,7 @@ Directives are small functions placed on an element. The built-in `on` directive
 ```ts title="button.ts"
 import { html, on } from '@grainular/nord';
 
-export const Button = () => html`
-    <button ${on('click', () => console.log('Clicked'))}>Click me!</button>
-`;
+export const Button = () => html` <button ${on('click', () => console.log('Clicked'))}>Click me!</button> `;
 ```
 
 [Directives](/directives) cover events, attributes, refs, portals, and custom directives.

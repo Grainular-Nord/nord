@@ -22,6 +22,7 @@ The `<h1>` in `main.ts` is empty. Interpolate a greeting into it — `${...}` wo
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { html, mount } from '@grainular/nord';
 
@@ -34,6 +35,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 When you're ready, move on to [components and props](/02-components-and-props).

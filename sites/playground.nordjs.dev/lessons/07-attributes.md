@@ -35,6 +35,7 @@ Clicking Save in `main.ts` sets `saving` to `true` for 1.5 seconds, but nothing 
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { html, mount, on } from '@grainular/nord';

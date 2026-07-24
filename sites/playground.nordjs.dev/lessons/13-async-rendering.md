@@ -21,9 +21,7 @@ links:
 ```ts
 const quote = fetch('/api/quote').then((response) => response.json());
 
-const Quote = () => html`
-    ${$await(quote).$then((value) => html`<blockquote>${value.text}</blockquote>`)}
-`;
+const Quote = () => html` ${$await(quote).$then((value) => html`<blockquote>${value.text}</blockquote>`)} `;
 ```
 
 On its own, that region is simply blank until the promise settles. Chain `.$pending(...)` to render something while it's still in flight, and `.$catch(...)` to handle a rejection — both take the same kind of callback as `.$then`.
@@ -33,6 +31,7 @@ On its own, that region is simply blank until the promise settles. Chain `.$pend
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { $await, html, mount } from '@grainular/nord';
 
@@ -54,6 +53,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 That's the last lesson in this preview, so **next** loops back to [Hello Nørd](/). From here, the [API reference](https://nordjs.dev/api-reference) covers everything in Nørd and Grains in one place.

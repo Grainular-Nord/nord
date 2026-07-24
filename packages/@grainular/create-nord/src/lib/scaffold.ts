@@ -71,7 +71,7 @@ export const scaffoldBrowserTemplate = async (root: string, ctx: { name: string 
 export const scaffoldViteTemplate = async (type: 'vite' | 'vite-ts', root: string, ctx: ScaffoldContext) => {
     const ext = type === 'vite-ts' ? 'ts' : 'js';
     const has = (match: string) => ctx.additionalDependencies.flat().some(({ name }) => name.includes(match));
-    const [tailwind, prettier, lefthook] = [has('tailwindcss'), has('prettier'), has('lefthook')];
+    const [tailwind, prettier, oxc, lefthook] = [has('tailwindcss'), has('prettier'), has('oxfmt'), has('lefthook')];
 
     // Tailwind swaps the app & style files for pre-built tailwind
     // variants, and adds a vite config wiring up the plugin.
@@ -81,7 +81,9 @@ export const scaffoldViteTemplate = async (type: 'vite' | 'vite-ts', root: strin
         ['common/vscode/extensions.json', '.vscode/extensions.json'],
         ['common/_prettierignore', '.prettierignore'],
         prettier && ['common/_prettierrc', '.prettierrc'],
-        lefthook && [`common/lefthook${prettier ? '.prettier' : ''}.yml`, 'lefthook.yml'],
+        oxc && ['common/_oxfmtrc.json', '.oxfmtrc.json'],
+        oxc && ['common/_oxlintrc.json', '.oxlintrc.json'],
+        lefthook && [`common/lefthook${oxc ? '.oxc' : prettier ? '.prettier' : ''}.yml`, 'lefthook.yml'],
         [`${type}/index.html`, 'index.html'],
         [`${type}/src/main.${ext}`, `src/main.${ext}`],
         [`${type}/public/nord-logo.svg`, 'public/nord-logo.svg'],

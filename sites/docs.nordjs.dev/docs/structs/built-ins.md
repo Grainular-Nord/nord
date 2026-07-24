@@ -36,11 +36,12 @@ view.set(html`<p>Ready.</p>`);
 ```ts
 import { attr, $tag, html } from '@grainular/nord';
 
-const Action = () => html`${$tag({
-    as: 'button',
-    children: 'Save',
-    use: [attr({ type: 'button' })],
-})}`;
+const Action = () =>
+    html`${$tag({
+        as: 'button',
+        children: 'Save',
+        use: [attr({ type: 'button' })],
+    })}`;
 ```
 
 ## `$unsafeHtml`

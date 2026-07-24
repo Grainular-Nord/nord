@@ -22,32 +22,32 @@
         filter: drop-shadow(0 0 2px oklch(from var(--color-rose-500) l c h / 0.2));
     }
 
-    &[data-neighbors="1"] {
+    &[data-neighbors='1'] {
         --text-color: oklch(0.8 0.12 210);
     } /* Electric Blue */
-    &[data-neighbors="2"] {
+    &[data-neighbors='2'] {
         --text-color: oklch(0.82 0.14 170);
     } /* Neon Cyan/Teal */
-    &[data-neighbors="3"] {
+    &[data-neighbors='3'] {
         --text-color: oklch(0.85 0.12 120);
     } /* Minty Lime-Gold */
-    &[data-neighbors="4"] {
+    &[data-neighbors='4'] {
         --text-color: oklch(0.85 0.15 85);
     } /* Bright Amber */
-    &[data-neighbors="5"] {
+    &[data-neighbors='5'] {
         --text-color: oklch(0.78 0.18 60);
     } /* Deep Orange */
-    &[data-neighbors="6"] {
+    &[data-neighbors='6'] {
         --text-color: oklch(0.7 0.22 40);
     } /* Blood Orange */
-    &[data-neighbors="7"] {
+    &[data-neighbors='7'] {
         --text-color: oklch(0.6 0.25 25);
     } /* Deep Red */
-    &[data-neighbors="8"] {
+    &[data-neighbors='8'] {
         --text-color: oklch(0.5 0.28 15);
     } /* Dark Ember */
 
-    &[data-discovered="true"] {
+    &[data-discovered='true'] {
         background-color: oklch(from var(--color-stone-800) l c h / 0.8);
 
         & .cell-discovered {
@@ -59,13 +59,13 @@
         }
     }
 
-    &[data-discovered="true"][data-explosive="true"]:not([data-flagged="true"]) {
+    &[data-discovered='true'][data-explosive='true']:not([data-flagged='true']) {
         & .cell-explosive {
             display: block;
         }
     }
 
-    &[data-discovered="false"]:not([data-flagged="true"]) {
+    &[data-discovered='false']:not([data-flagged='true']) {
         cursor: pointer;
 
         &:hover {
@@ -77,7 +77,7 @@
         }
 
         &:before {
-            content: "";
+            content: '';
             background: var(--color-amber-600);
             width: var(--spacing);
             height: var(--spacing);
@@ -88,7 +88,7 @@
         }
     }
 
-    &[data-flagged="true"] {
+    &[data-flagged='true'] {
         cursor: pointer;
 
         & .cell-flagged {

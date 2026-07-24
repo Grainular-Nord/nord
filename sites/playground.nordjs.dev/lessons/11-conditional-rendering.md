@@ -31,6 +31,7 @@ Toggling `signedIn` to `false` in `main.ts` currently renders nothing. Add a `.$
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { $if, html, mount, on } from '@grainular/nord';
@@ -50,6 +51,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [lists](/12-lists) to render a reactive collection.

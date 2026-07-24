@@ -17,9 +17,7 @@ import { $await, html } from '@grainular/nord';
 
 const user = fetch('/api/user').then((response) => response.json() as Promise<{ name: string }>);
 
-const Profile = () => html`
-    ${$await(user).$then((value) => html`<h1>${value.name}</h1>`)}
-`;
+const Profile = () => html` ${$await(user).$then((value) => html`<h1>${value.name}</h1>`)} `;
 ```
 
 ## Pending content
@@ -68,7 +66,5 @@ const Settings = () =>
 ```ts
 import { $try, html } from '@grainular/nord';
 
-const SafePreview = () => html`
-    ${$try(() => renderPreview()).$catch(() => html`<p>Preview unavailable.</p>`)}
-`;
+const SafePreview = () => html` ${$try(() => renderPreview()).$catch(() => html`<p>Preview unavailable.</p>`)} `;
 ```

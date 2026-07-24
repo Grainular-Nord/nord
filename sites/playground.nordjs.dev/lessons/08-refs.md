@@ -34,6 +34,7 @@ Refs are an escape hatch for direct access, not a replacement for ordinary templ
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { createRef, html, mount, on, ref } from '@grainular/nord';
 
@@ -49,6 +50,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [lifecycle](/09-lifecycle) to connect behavior to an element's lifetime.

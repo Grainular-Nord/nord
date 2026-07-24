@@ -4,8 +4,17 @@ import { $each, $if, type ComponentFragment, html, on } from '@grainular/nord';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
 
-// biome-ignore format: simple associative list
-const tokenMap = new Map<string, string>([['keyword', 'keyword'],['function', 'function'],['string', 'string'],['punctuation', 'punctuation'],['operator', 'operator'],['number', 'number'],['class-name', 'function'],['builtin', 'keyword'],['comment', 'comment']]);
+const tokenMap = new Map<string, string>([
+    ['keyword', 'keyword'],
+    ['function', 'function'],
+    ['string', 'string'],
+    ['punctuation', 'punctuation'],
+    ['operator', 'operator'],
+    ['number', 'number'],
+    ['class-name', 'function'],
+    ['builtin', 'keyword'],
+    ['comment', 'comment'],
+]);
 
 // --- Highlighting ---
 //
@@ -44,9 +53,9 @@ const Highlight = ({ code, tokens }: { code: string; tokens: Record<string, Comp
     // string, which preserves whitespace inside code and pre
     // tags. Looks stupid but works.
     return html`
-<pre><code>${$each(() => token).$as((token) => {
-        return renderToken(token);
-    })}
+        <pre><code>${$each(() => token).$as((token) => {
+            return renderToken(token);
+        })}
 </code></pre>
     `;
 };
@@ -84,9 +93,25 @@ export const Counter = () => {
 export const Editor = ({ count }: { count: WritableGrain<number> }) => {
     // As fragments are just objects, we can easily create a fragment here
     // and pass it as prop to the Highlight component
-    const boundInput = html`<label style="display: contents;" aria-label="grain value"><input type="number" class="live-input" ${bind(count, 'input')}/></label>`;
+    const boundInput = html`<label style="display: contents;" aria-label="grain value"
+        ><input type="number" class="live-input" ${bind(count, 'input')}
+    /></label>`;
 
-    const icon = html`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+    const icon = html`<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-copy-icon lucide-copy"
+    >
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </svg>`;
     const copied = grain(false);
     const copy = () => {
         copied.set(true);
@@ -96,7 +121,12 @@ export const Editor = ({ count }: { count: WritableGrain<number> }) => {
 
     return html`
         <div class="editor">
-            <button class="icon-btn copy" ${on('click', copy)} disabled="${copied}" aria-label="Copy the source to clipboard">
+            <button
+                class="icon-btn copy"
+                ${on('click', copy)}
+                disabled="${copied}"
+                aria-label="Copy the source to clipboard"
+            >
                 ${$if(copied)
                     .$then(() => html`copied!`)
                     .$else(() => icon)}

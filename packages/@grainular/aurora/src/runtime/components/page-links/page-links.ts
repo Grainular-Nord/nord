@@ -7,7 +7,11 @@ const PageLink = (direction: 'prev' | 'next', link?: AuroraLink) => {
     if (!link) return null;
 
     return html`
-        <a class="aurora-page-link" data-direction="${direction}" href="${resolveSiteLink(link.link, context().base ?? '/')}">
+        <a
+            class="aurora-page-link"
+            data-direction="${direction}"
+            href="${resolveSiteLink(link.link, context().base ?? '/')}"
+        >
             <span>${direction === 'prev' ? 'Previous' : 'Next'}</span>
             <strong>${link.text}</strong>
         </a>
@@ -19,8 +23,7 @@ export const PageLinks = ({ prev, next }: AuroraPageLinks) => {
 
     return html`
         <nav class="aurora-page-links" aria-label="Previous and next pages">
-            ${PageLink('prev', prev)}
-            ${PageLink('next', next)}
+            ${PageLink('prev', prev)} ${PageLink('next', next)}
         </nav>
     `;
 };

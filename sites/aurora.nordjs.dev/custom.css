@@ -114,7 +114,7 @@
             box-shadow:
                 0.75rem 0 var(--aurora-text-subtle),
                 1.5rem 0 var(--aurora-text-subtle);
-            content: "";
+            content: '';
             opacity: 0.4;
         }
 
