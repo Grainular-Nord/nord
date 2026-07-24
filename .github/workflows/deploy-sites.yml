@@ -1,0 +1,121 @@
+name: Build and deploy sites
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+        inputs:
+            site:
+                description: Site to deploy
+                required: true
+                default: all
+                type: choice
+                options:
+                    - all
+                    - nord
+                    - docs
+                    - aurora
+                    - playground
+
+permissions:
+    contents: read
+
+concurrency:
+    group: deploy-sites-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: npm
+            - run: npm ci
+            - run: npm run build
+            - uses: actions/upload-artifact@v4
+              if: github.event_name == 'workflow_dispatch'
+              with:
+                  name: nordjs.dev
+                  path: sites/nordjs.dev/dist
+            - uses: actions/upload-artifact@v4
+              if: github.event_name == 'workflow_dispatch'
+              with:
+                  name: docs.nordjs.dev
+                  path: sites/docs.nordjs.dev/dist
+            - uses: actions/upload-artifact@v4
+              if: github.event_name == 'workflow_dispatch'
+              with:
+                  name: aurora.nordjs.dev
+                  path: sites/aurora.nordjs.dev/dist
+            - uses: actions/upload-artifact@v4
+              if: github.event_name == 'workflow_dispatch'
+              with:
+                  name: playground.nordjs.dev
+                  path: sites/playground.nordjs.dev/dist
+
+    deploy:
+        needs: build
+        if: github.event_name == 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Configure SSH
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.UPCLOUD_SSH_PRIVATE_KEY }}
+                  SSH_KNOWN_HOSTS: ${{ secrets.UPCLOUD_KNOWN_HOSTS }}
+              run: |
+                  install -m 700 -d ~/.ssh
+                  printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+                  printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+                  chmod 600 ~/.ssh/known_hosts
+            - uses: actions/download-artifact@v4
+              if: inputs.site == 'all' || inputs.site == 'nord'
+              with:
+                  name: nordjs.dev
+                  path: dist/nordjs.dev
+            - uses: actions/download-artifact@v4
+              if: inputs.site == 'all' || inputs.site == 'docs'
+              with:
+                  name: docs.nordjs.dev
+                  path: dist/docs.nordjs.dev
+            - uses: actions/download-artifact@v4
+              if: inputs.site == 'all' || inputs.site == 'aurora'
+              with:
+                  name: aurora.nordjs.dev
+                  path: dist/aurora.nordjs.dev
+            - uses: actions/download-artifact@v4
+              if: inputs.site == 'all' || inputs.site == 'playground'
+              with:
+                  name: playground.nordjs.dev
+                  path: dist/playground.nordjs.dev
+            - name: Deploy nordjs.dev
+              if: inputs.site == 'all' || inputs.site == 'nord'
+              env:
+                  DEPLOY_HOST: ${{ secrets.UPCLOUD_HOST }}
+                  DEPLOY_USER: ${{ secrets.UPCLOUD_USER }}
+                  DEPLOY_PATH: ${{ secrets.UPCLOUD_NORD_PATH }}
+              run: rsync -az --delete dist/nordjs.dev/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+            - name: Deploy docs.nordjs.dev
+              if: inputs.site == 'all' || inputs.site == 'docs'
+              env:
+                  DEPLOY_HOST: ${{ secrets.UPCLOUD_HOST }}
+                  DEPLOY_USER: ${{ secrets.UPCLOUD_USER }}
+                  DEPLOY_PATH: ${{ secrets.UPCLOUD_DOCS_PATH }}
+              run: rsync -az --delete dist/docs.nordjs.dev/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+            - name: Deploy aurora.nordjs.dev
+              if: inputs.site == 'all' || inputs.site == 'aurora'
+              env:
+                  DEPLOY_HOST: ${{ secrets.UPCLOUD_HOST }}
+                  DEPLOY_USER: ${{ secrets.UPCLOUD_USER }}
+                  DEPLOY_PATH: ${{ secrets.UPCLOUD_AURORA_PATH }}
+              run: rsync -az --delete dist/aurora.nordjs.dev/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+            - name: Deploy playground.nordjs.dev
+              if: inputs.site == 'all' || inputs.site == 'playground'
+              env:
+                  DEPLOY_HOST: ${{ secrets.UPCLOUD_HOST }}
+                  DEPLOY_USER: ${{ secrets.UPCLOUD_USER }}
+                  DEPLOY_PATH: ${{ secrets.UPCLOUD_PLAYGROUND_PATH }}
+              run: rsync -az --delete dist/playground.nordjs.dev/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"

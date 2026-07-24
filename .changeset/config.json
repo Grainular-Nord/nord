@@ -5,10 +5,27 @@
     { "repo": "grainular-nord/nord" }
   ],
   "commit": false,
-  "fixed": [["@grainular/grains", "@grainular/nord", "@grainular/custom-elements"]],
+  "fixed": [
+    [
+      "@grainular/create-nord",
+      "@grainular/custom-elements",
+      "@grainular/forms",
+      "@grainular/grains",
+      "@grainular/nord",
+      "@grainular/resource",
+      "@grainular/router",
+      "@grainular/silo",
+      "@grainular/styled"
+    ]
+  ],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@repository/*", "examples-nord-drum-sequencer", "examples-nord-tic-tac-toe"]
+  "ignore": [
+    "@repository/*",
+    "@grainular/codemirror",
+    "*.nordjs.dev",
+    "nord.dev"
+  ]
 }
