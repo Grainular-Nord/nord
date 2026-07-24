@@ -27,13 +27,12 @@
         "format:check": "oxfmt . --check",
         "dev": "turbo run dev --filter='./packages/**' --concurrency 20",
         "dev:sites": "turbo run docs:dev --filter='./sites/*' --concurrency 20",
-        "dev:examples": "turbo run dev:example --filter='./examples/*' --concurrency 20",
         "build": "turbo run build docs:build",
-        "build:examples": "turbo run build:example --filter='./examples/*'",
-        "test": "turbo run test"
+        "test": "turbo run test",
+        "version-packages": "changeset version",
+        "release": "changeset publish"
     },
     "workspaces": [
-        "examples/*",
         "packages/@grainular/*",
         "packages/@repository/*",
         "packages/*",
