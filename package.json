@@ -28,7 +28,6 @@
         "dev": "turbo run dev --filter='./packages/**' --concurrency 20",
         "dev:sites": "turbo run docs:dev --filter='./sites/*' --concurrency 20",
         "dev:examples": "turbo run dev:example --filter='./examples/*' --concurrency 20",
-        "dev:auxiliary": "turbo run dev --filter='./language-tools/*' --concurrency 20",
         "build": "turbo run build docs:build",
         "build:examples": "turbo run build:example --filter='./examples/*'",
         "test": "turbo run test"
@@ -38,7 +37,6 @@
         "packages/@grainular/*",
         "packages/@repository/*",
         "packages/*",
-        "language-tools/*",
         "sites/*"
     ]
 }
