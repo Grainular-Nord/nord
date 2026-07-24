@@ -34,6 +34,7 @@ Derived values are readonly and update automatically whenever a source grain cha
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { combined, derived, grain } from '@grainular/grains';
 import { html, mount } from '@grainular/nord';
@@ -53,6 +54,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [events](/06-events) to attach behavior directly to an element.

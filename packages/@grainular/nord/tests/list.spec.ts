@@ -161,12 +161,12 @@ describe('[Nørd Runtime] Lists', () => {
         const items = grain([a, b, c]);
 
         const List = () => html`
-        <ul>
-            ${$each(items)
-                .$withKey((item) => item.id)
-                .$as((item) => html`<li>${item.name}</li>`)}
-        </ul>
-    `;
+            <ul>
+                ${$each(items)
+                    .$withKey((item) => item.id)
+                    .$as((item) => html`<li>${item.name}</li>`)}
+            </ul>
+        `;
 
         mount(List, { to: document.querySelector('#app') });
 
@@ -190,12 +190,12 @@ describe('[Nørd Runtime] Lists', () => {
         ]);
 
         const List = () => html`
-        <ul>
-            ${$each(items)
-                .$withKey((i) => i.id)
-                .$as((i) => html`<li>${i.name}</li>`)}
-        </ul>
-    `;
+            <ul>
+                ${$each(items)
+                    .$withKey((i) => i.id)
+                    .$as((i) => html`<li>${i.name}</li>`)}
+            </ul>
+        `;
 
         mount(List, { to: document.querySelector('#app') });
 
@@ -215,10 +215,10 @@ describe('[Nørd Runtime] Lists', () => {
         const items = grain([{ name: 'A' }]);
 
         const List = () => html`
-        <ul>
-            ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
-        </ul>
-    `;
+            <ul>
+                ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
+            </ul>
+        `;
 
         mount(List, { to: document.querySelector('#app') });
 
@@ -234,10 +234,10 @@ describe('[Nørd Runtime] Lists', () => {
         const items = grain([{ name: 'A' }]);
 
         const List = () => html`
-        <ul>
-            ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
-        </ul>
-    `;
+            <ul>
+                ${$each(items).$as((i) => html`<li>${i.name}</li>`)}
+            </ul>
+        `;
 
         mount(List, { to: document.querySelector('#app') });
 

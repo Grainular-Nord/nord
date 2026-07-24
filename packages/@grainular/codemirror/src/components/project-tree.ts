@@ -120,22 +120,54 @@ export const EditorProjectTree = ({
         if (node.kind === 'directory') {
             const isCollapsed = collapsed(node.path);
             return html`<li data-grainular-editor="directory" data-collapsed="${isCollapsed}">
-                <button data-grainular-editor="directory-row" type="button" aria-expanded="${!isCollapsed}" ${on('click', () => isCollapsed.update((value) => !value))}>
+                <button
+                    data-grainular-editor="directory-row"
+                    type="button"
+                    aria-expanded="${!isCollapsed}"
+                    ${on('click', () => isCollapsed.update((value) => !value))}
+                >
                     <span data-grainular-editor="tree-chevron" aria-hidden="true">›</span>
-                    <svg data-grainular-editor="directory-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+                    <svg
+                        data-grainular-editor="directory-icon"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+                        />
+                    </svg>
                     <span>${node.name}</span>
                 </button>
-                <ul data-collapsed="${isCollapsed}">${$each(() => node.children).$as(TreeItem)}</ul>
+                <ul data-collapsed="${isCollapsed}">
+                    ${$each(() => node.children).$as(TreeItem)}
+                </ul>
             </li>`;
         }
         const { file } = node;
         return html`<li data-grainular-editor="file-row" data-active="${selected(file.path)}">
-            <button data-grainular-editor="file" type="button" title="${file.path}" ${on('click', () => activePath.set(file.path))}>
+            <button
+                data-grainular-editor="file"
+                type="button"
+                title="${file.path}"
+                ${on('click', () => activePath.set(file.path))}
+            >
                 <span data-grainular-editor="file-icon" aria-hidden="true">${iconFor(file.path)}</span>
                 ${$if(isRenaming(file.path))
                     .$then(
                         () =>
-                            html`<input data-grainular-editor="file-rename" value="${file.path}" aria-label="Rename ${file.path}" ${renameInput(file.path)} />`,
+                            html`<input
+                                data-grainular-editor="file-rename"
+                                value="${file.path}"
+                                aria-label="Rename ${file.path}"
+                                ${renameInput(file.path)}
+                            />`,
                     )
                     .$else(() => html`<span>${node.name}</span>`)}
             </button>
@@ -143,19 +175,79 @@ export const EditorProjectTree = ({
                 .$then(() => html``)
                 .$else(
                     () => html`<div data-grainular-editor="file-actions">
-                <button type="button" aria-label="Rename ${file.path}" title="Rename file" ${on('click', () => renamingPath.set(file.path))}>↳</button>
-                ${$if(hasMultipleFiles).$then(() => html`<button type="button" aria-label="Delete ${file.path}" title="Delete file" ${on('click', () => onDelete(file.path))}>×</button>`)}
-            </div>`,
+                        <button
+                            type="button"
+                            aria-label="Rename ${file.path}"
+                            title="Rename file"
+                            ${on('click', () => renamingPath.set(file.path))}
+                        >
+                            ↳
+                        </button>
+                        ${$if(hasMultipleFiles).$then(
+                            () =>
+                                html`<button
+                                    type="button"
+                                    aria-label="Delete ${file.path}"
+                                    title="Delete file"
+                                    ${on('click', () => onDelete(file.path))}
+                                >
+                                    ×
+                                </button>`,
+                        )}
+                    </div>`,
                 )}
         </li>`;
     };
 
     return html`<aside data-grainular-editor="project-tree" data-open="${open}" aria-label="Project files">
         <header>
-            <button data-grainular-editor="project-tree-toggle" type="button" aria-label="Toggle project files" title="Toggle project files" aria-pressed="${open}" ${on('click', () => open.update((value) => !value))}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /></svg></button>
+            <button
+                data-grainular-editor="project-tree-toggle"
+                type="button"
+                aria-label="Toggle project files"
+                title="Toggle project files"
+                aria-pressed="${open}"
+                ${on('click', () => open.update((value) => !value))}
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <rect width="18" height="18" x="3" y="3" rx="2" />
+                    <path d="M9 3v18" />
+                </svg>
+            </button>
             <span>Files</span>
-            <button data-grainular-editor="project-tree-add" type="button" aria-label="New file" title="New file" ${on('click', () => isCreating.set(true))}>+</button>
+            <button
+                data-grainular-editor="project-tree-add"
+                type="button"
+                aria-label="New file"
+                title="New file"
+                ${on('click', () => isCreating.set(true))}
+            >
+                +
+            </button>
         </header>
-        <ul>${$if(isCreating).$then(() => html`<li><input data-grainular-editor="file-new" type="text" placeholder="dir/file.ts" spellcheck="false" autocomplete="off" aria-label="New file name" ${newFileInput} /></li>`)}${$each(tree).$as(TreeItem)}</ul>
+        <ul>
+            ${$if(isCreating).$then(
+                () =>
+                    html`<li>
+                        <input
+                            data-grainular-editor="file-new"
+                            type="text"
+                            placeholder="dir/file.ts"
+                            spellcheck="false"
+                            autocomplete="off"
+                            aria-label="New file name"
+                            ${newFileInput}
+                        />
+                    </li>`,
+            )}${$each(tree).$as(TreeItem)}
+        </ul>
     </aside>`;
 };

@@ -21,7 +21,12 @@ export const App = ({ content, layouts, meta, slots }: AppProps) => {
             <a class="aurora-skip-link" href="#aurora-main-content">Skip to main content</a>
             <div class="aurora-background" aria-hidden="true"></div>
             ${slots?.header?.({}) ?? Header()}
-            <button class="aurora-navigation-backdrop" type="button" tabindex="-1" aria-label="Close navigation"></button>
+            <button
+                class="aurora-navigation-backdrop"
+                type="button"
+                tabindex="-1"
+                aria-label="Close navigation"
+            ></button>
             <div id="aurora-main-content" class="application-shell" tabindex="-1">
                 ${layout({ content: staticContent, meta })}
             </div>

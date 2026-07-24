@@ -29,13 +29,14 @@ const observeSize = mounted((node) => {
 
 Cleanup follows DOM connection, not a framework-owned unmount path — it still runs even if something removes the element through an ordinary DOM API.
 
-`mounted` is where a *resource's* lifetime gets tied to an element — a timer, an observer, a subscription. It's not where you'd update that element's content directly: a grain interpolated into the template already does that, and stays consistent with how every other lesson here binds state to the DOM.
+`mounted` is where a _resource's_ lifetime gets tied to an element — a timer, an observer, a subscription. It's not where you'd update that element's content directly: a grain interpolated into the template already does that, and stays consistent with how every other lesson here binds state to the DOM.
 
 :::Tip{title="Your task"}
 The `<time>` element in `main.ts` shows the time once and never updates. Start a `setInterval` inside `tick` that keeps the `time` grain current, and return a cleanup function that clears the interval. The template already interpolates `time` — you shouldn't need to touch any DOM node directly.
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { html, mount, mounted } from '@grainular/nord';
@@ -57,6 +58,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [custom directives](/10-custom-directives) to package this kind of behavior into a reusable function.

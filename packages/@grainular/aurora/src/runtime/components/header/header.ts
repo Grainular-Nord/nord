@@ -13,8 +13,7 @@ export const Header = () => {
             ${renderComponentHost(navigationToggleDefinition, NavigationToggle, {})}
             ${TopNavigation({ base, items: navigation })}
             <div class="aurora-header-actions">
-                ${renderComponentHost(themeToggleDefinition, ThemeToggle, {})}
-                ${$each(() => social).$as(SocialLink)}
+                ${renderComponentHost(themeToggleDefinition, ThemeToggle, {})} ${$each(() => social).$as(SocialLink)}
             </div>
         </header>
     `;

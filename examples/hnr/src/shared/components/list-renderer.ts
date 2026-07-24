@@ -15,8 +15,7 @@ export const ListRenderer = <T extends { id: number }>(props: ListRendererProps<
         ([state, data]) => state === 'pending' || data?.length === 0,
     );
 
-    return html`
-       ${$if(isLoading)
-           .$then(() => renderLoad())
-           .$else(() => html`${$each(rows).$as(renderItem)}`)}`;
+    return html` ${$if(isLoading)
+        .$then(() => renderLoad())
+        .$else(() => html`${$each(rows).$as(renderItem)}`)}`;
 };

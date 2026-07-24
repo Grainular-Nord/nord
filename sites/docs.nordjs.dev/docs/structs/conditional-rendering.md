@@ -18,9 +18,7 @@ import { $if, html } from '@grainular/nord';
 
 const signedIn = grain(false);
 
-const Account = () => html`
-    ${$if(signedIn).$then(() => html`<button>Open account</button>`)}
-`;
+const Account = () => html` ${$if(signedIn).$then(() => html`<button>Open account</button>`)} `;
 ```
 
 ## Else branches

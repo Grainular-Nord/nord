@@ -10,9 +10,7 @@ export const NotFound = ({ home, children }: NotFoundProps) => html`
         <div class="aurora-not-found-visual" aria-hidden="true">
             <span>4</span><span class="aurora-not-found-zero">Ø</span><span>4</span>
         </div>
-        <div class="aurora-not-found-content">
-            ${children}
-        </div>
+        <div class="aurora-not-found-content">${children}</div>
         <a class="aurora-not-found-home" href=${home}>Return home</a>
     </section>
 `;

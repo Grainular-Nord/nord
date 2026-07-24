@@ -3,12 +3,12 @@ title: Markdown
 description: Author Aurora pages with frontmatter, code fences, callouts, and components.
 layout: docs
 links:
-  prev:
-    text: Configuration
-    link: /configuration
-  next:
-    text: Components and islands
-    link: /islands
+    prev:
+        text: Configuration
+        link: /configuration
+    next:
+        text: Components and islands
+        link: /islands
 ---
 
 # Markdown
@@ -28,9 +28,9 @@ description: Add static or interactive components to Markdown.
 layout: docs
 robots: index,follow
 links:
-  next:
-    text: Layouts
-    link: /layouts
+    next:
+        text: Layouts
+        link: /layouts
 ---
 ```
 
@@ -111,6 +111,7 @@ Wrap related fences in `CodeGroup` to present them as tabs. Each fence title bec
 
 ````md
 :::CodeGroup{label="Install Aurora"}
+
 ```bash title="npm"
 npm install --save-dev @grainular/aurora
 ```
@@ -118,10 +119,12 @@ npm install --save-dev @grainular/aurora
 ```bash title="Bun"
 bun add --dev @grainular/aurora
 ```
+
 :::
 ````
 
 :::CodeGroup{label="Install Aurora"}
+
 ```bash title="npm"
 npm install --save-dev @grainular/aurora
 ```
@@ -129,6 +132,7 @@ npm install --save-dev @grainular/aurora
 ```bash title="Bun"
 bun add --dev @grainular/aurora
 ```
+
 :::
 
 Code groups use native radio controls and CSS, so switching tabs and keyboard navigation work without JavaScript. The shared Copy action copies the currently selected block.

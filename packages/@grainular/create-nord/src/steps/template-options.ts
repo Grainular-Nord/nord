@@ -55,9 +55,17 @@ const features = [
 
 const dependencies = [
     {
-        value: [{ name: 'prettier', version: '^3.7.4', dev: true }],
+        value: [{ name: 'prettier', version: '^3.9.5', dev: true }],
         label: 'Prettier',
         hint: 'formatting ⎔ https://prettier.io',
+    },
+    {
+        value: [
+            { name: 'oxfmt', version: '^0.60.0', dev: true },
+            { name: 'oxlint', version: '^1.75.0', dev: true },
+        ],
+        label: 'Oxfmt + Oxlint',
+        hint: 'formatting and linting ⎔ https://oxc.rs',
     },
     {
         value: [
@@ -127,7 +135,7 @@ export const templateOptions = async () => {
     );
 
     // Some additional dependencies we can install
-    // as well, like tailwind, prettier and the rest.
+    // as well, like Tailwind, Prettier, Oxfmt, and the rest.
     additionalDependencies.push(
         ...(await step(() =>
             multiselect({

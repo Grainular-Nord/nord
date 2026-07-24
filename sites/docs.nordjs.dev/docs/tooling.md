@@ -20,7 +20,7 @@ Install [Nørd for VS Code](https://marketplace.visualstudio.com/items?itemName=
 
 ## Formatting
 
-Use [Prettier](https://prettier.io/) for formatting Nørd templates. It is the recommended formatter until [Biome](https://biomejs.dev/) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) natively format tagged templates.
+Both [Prettier](https://prettier.io/) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) format Nørd templates. Oxfmt now formats the embedded HTML in tagged templates as well as the surrounding TypeScript, so it is a supported formatter for Nørd projects.
 
 ## Debugging
 

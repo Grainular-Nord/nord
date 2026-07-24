@@ -14,7 +14,7 @@
     &::before {
         grid-row: 1;
         grid-column: 1 / -1;
-        content: "";
+        content: '';
         background: color-mix(in srgb, var(--aurora-overlay), transparent 35%);
         border: 1px solid var(--aurora-border);
         border-radius: 0.5rem 0.5rem 0 0;

@@ -12,17 +12,14 @@ type PaginationProps = {
 
 export const Pagination = ({ current, onNext, onPrev, hasNextPage }: PaginationProps) => {
     return html`
-    ${StickyContainer({
-        children: html`
-            <button ${on('click', onPrev)} disabled="${derived(current, (current) => current <= 1)}">
-                ${Icon({ src: icons.chevronLeft })}
-                Previous
-            </button>
-            <span>Current Page: ${current}</span>
-            <button ${on('click', onNext)} disabled="${derived(hasNextPage, (nextPage) => !nextPage)}"> 
-                Next
-                ${Icon({ src: icons.chevronRight })}
-            </button>`,
-    })}
+        ${StickyContainer({
+            children: html` <button ${on('click', onPrev)} disabled="${derived(current, (current) => current <= 1)}">
+                    ${Icon({ src: icons.chevronLeft })} Previous
+                </button>
+                <span>Current Page: ${current}</span>
+                <button ${on('click', onNext)} disabled="${derived(hasNextPage, (nextPage) => !nextPage)}">
+                    Next ${Icon({ src: icons.chevronRight })}
+                </button>`,
+        })}
     `;
 };

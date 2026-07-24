@@ -79,9 +79,7 @@ For ordinary text and attributes, interpolate the subscribable directly instead.
 Directives compose by appearing together on the same element. Each owns its own setup and cleanup.
 
 ```ts title="search.ts"
-const Search = () => html`
-    <input ${autofocus} ${on('input', updateQuery)} type="search" />
-`;
+const Search = () => html` <input ${autofocus} ${on('input', updateQuery)} type="search" /> `;
 ```
 
 Keep directives narrow and name them for the behavior they add. A directive should not need a component wrapper unless it also owns markup or state composition.

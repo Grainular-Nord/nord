@@ -28,12 +28,12 @@ export default () => {
             }),
         })}
 
-        <div class="content"}>
+        <div class="content" }>
             ${ListRenderer({
                 resource: state.resource,
                 renderItem: (item, idx) => FeedItemCard({ ...item, rank: idx }),
                 renderLoad: () => html`${Loader()}`,
             })}
         </div>
-        `;
+    `;
 };

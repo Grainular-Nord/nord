@@ -1,55 +1,67 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/nord-logo.svg">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Favicons -->
+        <link rel="icon" type="image/svg+xml" href="/nord-logo.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Meta -->
-    <title>Nørd | Build apps, not bundles.</title>
-    <meta name="title" content="Nørd | Build apps, not bundles." />
-    <meta name="description" content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb. Granular reactivity made easy." />
-    <meta name="keywords" content="javascript, framework, reactivity, granular, nord, typescript, web development, lightweight" />
-    <meta name="author" content="Sebastian Heinz" />
+        <!-- Meta -->
+        <title>Nørd | Build apps, not bundles.</title>
+        <meta name="title" content="Nørd | Build apps, not bundles." />
+        <meta
+            name="description"
+            content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb. Granular reactivity made easy."
+        />
+        <meta
+            name="keywords"
+            content="javascript, framework, reactivity, granular, nord, typescript, web development, lightweight"
+        />
+        <meta name="author" content="Sebastian Heinz" />
 
-    <!-- OG -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://nordjs.dev/" />
-    <meta property="og:title" content="Nørd | Build apps, not bundles." />
-    <meta property="og:description" content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb." />
-    <meta property="og:image" content="https://nordjs.dev/og-image.png" />
+        <!-- OG -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://nordjs.dev/" />
+        <meta property="og:title" content="Nørd | Build apps, not bundles." />
+        <meta
+            property="og:description"
+            content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb."
+        />
+        <meta property="og:image" content="https://nordjs.dev/og-image.png" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://nordjs.dev/" />
-    <meta property="twitter:title" content="Nørd | Build apps, not bundles." />
-    <meta property="twitter:description" content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb." />
-    <meta property="twitter:image" content="https://nordjs.dev/og-image.png" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://nordjs.dev/" />
+        <meta property="twitter:title" content="Nørd | Build apps, not bundles." />
+        <meta
+            property="twitter:description"
+            content="The granular runtime for the modern web. 0 Dependencies. 0 Build steps. 9kb."
+        />
+        <meta property="twitter:image" content="https://nordjs.dev/og-image.png" />
 
-    <!-- Theme -->
-    <meta name="theme-color" content="#242933" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ECEFF4" media="(prefers-color-scheme: light)" />
-  </head>
-  <body>
-    <script>
-      // Retrieve the stored user preferred theme from 
-      // the local storage. We manually set the first 
-      // attribute to avoid FOUC
-      const stored = window.localStorage.getItem('nord.dev-theme') ?? null;
+        <!-- Theme -->
+        <meta name="theme-color" content="#242933" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ECEFF4" media="(prefers-color-scheme: light)" />
+    </head>
+    <body>
+        <script>
+            // Retrieve the stored user preferred theme from
+            // the local storage. We manually set the first
+            // attribute to avoid FOUC
+            const stored = window.localStorage.getItem('nord.dev-theme') ?? null;
 
-      // As fallback, we also retrieve the system preferred
-      // theme string and match it to dark / light
-      const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            // As fallback, we also retrieve the system preferred
+            // theme string and match it to dark / light
+            const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
-      // And then simply set the theme on the element. From
-      // there on out, the theme store itself takes over
-      document.documentElement.setAttribute('data-theme', stored ?? system);
-    </script>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+            // And then simply set the theme on the element. From
+            // there on out, the theme store itself takes over
+            document.documentElement.setAttribute('data-theme', stored ?? system);
+        </script>
+        <div id="app"></div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>

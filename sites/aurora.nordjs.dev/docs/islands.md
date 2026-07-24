@@ -3,12 +3,12 @@ title: Components and islands
 description: Render static Markdown components or activate independent Nørd islands.
 layout: docs
 links:
-  prev:
-    text: Markdown
-    link: /markdown
-  next:
-    text: Layouts
-    link: /layouts
+    prev:
+        text: Markdown
+        link: /markdown
+    next:
+        text: Layouts
+        link: /layouts
 ---
 
 # Components and islands
@@ -45,9 +45,7 @@ import { html } from '@grainular/nord';
 
 type VersionProps = { value: string };
 
-const Version = ({ value }: VersionProps) => html`
-    <span class="version">Current version: ${value}</span>
-`;
+const Version = ({ value }: VersionProps) => html` <span class="version">Current version: ${value}</span> `;
 
 export default Version;
 ```
@@ -61,7 +59,7 @@ components: [
         client: false,
         component: () => import('./src/components/version'),
     },
-]
+];
 ```
 
 The component can then be used from any selected Markdown file.
@@ -84,11 +82,7 @@ import { html, on } from '@grainular/nord';
 const Counter = () => {
     const count = grain(0);
 
-    return html`
-        <button ${on('click', () => count.update((value) => value + 1))}>
-            Count: ${count}
-        </button>
-    `;
+    return html` <button ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button> `;
 };
 
 export default Counter;

@@ -13,9 +13,7 @@ export const Board = () => {
 
     return html`
         <h1>${message}: ${player}</h1>
-        <div class="board">
-            ${$each(() => squares).$as((field) => Square({ field }))}
-        </div>
+        <div class="board">${$each(() => squares).$as((field) => Square({ field }))}</div>
         ${$if(derived(gameState, (state) => state.ended)).$then(
             () => html`<button ${on('click', () => handleResetGameClick())}>Restart Game</button>`,
         )}

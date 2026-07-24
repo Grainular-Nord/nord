@@ -14,7 +14,9 @@ const LandingHero = ({ children }: LandingHeroProps) => html`
             <h1>Aurora</h1>
             <p class="aurora-hero-tagline">Static pages, live islands.</p>
             <p class="aurora-hero-summary">Markdown becomes HTML. Nørd wakes up only what needs a browser.</p>
-            <a class="aurora-hero-link" href="/getting-started">Read the documentation <span aria-hidden="true">→</span></a>
+            <a class="aurora-hero-link" href="/getting-started"
+                >Read the documentation <span aria-hidden="true">→</span></a
+            >
         </div>
 
         <div class="aurora-hero-demo" aria-label="Markdown with a live Aurora island">

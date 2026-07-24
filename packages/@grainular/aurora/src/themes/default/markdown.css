@@ -26,7 +26,7 @@
             font-size: 0.72em;
             font-weight: 600;
             color: var(--aurora-text-faint);
-            content: "#" / "";
+            content: '#' / '';
             opacity: 0;
             transition:
                 color 140ms ease,
@@ -101,13 +101,13 @@
         text-underline-offset: 0.18em;
         overflow-wrap: anywhere;
 
-        &:is([href^="http://"], [href^="https://"])::after {
+        &:is([href^='http://'], [href^='https://'])::after {
             display: inline-block;
             margin-inline-start: 0.18em;
             font-size: 0.78em;
             line-height: 1;
             vertical-align: 0.08em;
-            content: "↗" / "external link";
+            content: '↗' / 'external link';
             text-decoration: none;
         }
 
@@ -160,7 +160,7 @@
     & .task-list-item {
         list-style: none;
 
-        & input[type="checkbox"] {
+        & input[type='checkbox'] {
             inline-size: 1rem;
             block-size: 1rem;
             margin: 0 0.5rem 0 0;
@@ -264,7 +264,7 @@
         box-shadow: 0 12px 28px -24px black;
 
         &.shiki {
-            /* biome-ignore lint/complexity/noImportantStyles: Shiki writes its background as an inline style. */
+            /* Shiki writes its background as an inline style. */
             background: var(--aurora-code) !important;
         }
 
@@ -338,7 +338,7 @@
         --aurora-flow-space: 2rem;
     }
 
-    /* biome-ignore lint/style/noDescendingSpecificity: Flow overrides intentionally follow component rhythm. */
+    /* Flow overrides intentionally follow component rhythm. */
     & > :is(h2, h3, h4, h5, h6) + * {
         --aurora-flow-space: 0.75rem;
     }
@@ -354,7 +354,7 @@
         margin-block: 0;
     }
 
-    /* biome-ignore lint/style/noDescendingSpecificity: The final flow rule must win over element margin resets. */
+    /* The final flow rule must win over element margin resets. */
     & > * + * {
         margin-block-start: var(--aurora-flow-space, 1rem);
     }

@@ -3,12 +3,12 @@ title: Getting started
 description: Set up a Nørd project or use Nørd directly in the browser.
 layout: docs
 links:
-  prev:
-    text: Overview
-    link: /
-  next:
-    text: Templates and components
-    link: /templates-and-components
+    prev:
+        text: Overview
+        link: /
+    next:
+        text: Templates and components
+        link: /templates-and-components
 ---
 
 # Getting started
@@ -86,9 +86,7 @@ Nørd also works without a package manager or build step. Its ESM bundle can be 
 
             const count = grain(0);
             const App = () => html`
-                <button ${on('click', () => count.update((value) => value + 1))}>
-                    Count: ${count}
-                </button>
+                <button ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button>
             `;
 
             mount(App, { to: document.querySelector('#app') });

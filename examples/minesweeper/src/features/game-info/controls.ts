@@ -17,16 +17,16 @@ export const Controls = () => {
     });
 
     return html`
-    <div class="flex flex-row items-center gap-3">
-        ${Button({
-            onClick: () => drawerState.toggle(),
-            children: Icon({ src: icons.gear, size: 16 }),
-        })}
-        ${Button({
-            onClick: () => gameState.reset(),
-            children: Icon({ src: icons.restart, size: 16 }),
-        })}
-        <div> ${status} </div>
-    </div>
+        <div class="flex flex-row items-center gap-3">
+            ${Button({
+                onClick: () => drawerState.toggle(),
+                children: Icon({ src: icons.gear, size: 16 }),
+            })}
+            ${Button({
+                onClick: () => gameState.reset(),
+                children: Icon({ src: icons.restart, size: 16 }),
+            })}
+            <div>${status}</div>
+        </div>
     `;
 };

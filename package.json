@@ -4,14 +4,14 @@
     "private": true,
     "packageManager": "npm@11.6.0",
     "devDependencies": {
-        "@biomejs/biome": "^2.4.15",
         "@changesets/changelog-github": "^0.5.0",
         "@changesets/cli": "^2.27.9",
         "@commitlint/cli": "^19.3.0",
         "@commitlint/config-conventional": "^19.2.2",
         "@types/bun": "^1.2.16",
         "lefthook": "^1.11.9",
-        "prettier": "^3.3.2",
+        "oxfmt": "^0.60.0",
+        "oxlint": "^1.75.0",
         "rolldown": "^1.2.0",
         "turbo": "^2.10.5",
         "typescript": "^7.0.2"
@@ -22,8 +22,9 @@
     "scripts": {
         "preci": "rm -rf node_modules",
         "ci": "npm ci",
-        "lint": "biome lint",
-        "format": "biome format --write",
+        "lint": "oxlint .",
+        "format": "oxfmt . --write",
+        "format:check": "oxfmt . --check",
         "dev": "turbo run dev --filter='./packages/**' --concurrency 20",
         "dev:sites": "turbo run docs:dev --filter='./sites/*' --concurrency 20",
         "dev:examples": "turbo run dev:example --filter='./examples/*' --concurrency 20",

@@ -14,10 +14,10 @@ export default () => {
     const message = derived(error, (error) => messages.get(error) ?? '404 - Not Found');
 
     return html`
-    <div class="error-page">
-        <div class="error-code">${message}</div>
-        <div>Oh no! Something went wrong.</div>
-        <a href="/feed/news">Go home</a>
-    </div>
+        <div class="error-page">
+            <div class="error-code">${message}</div>
+            <div>Oh no! Something went wrong.</div>
+            <a href="/feed/news">Go home</a>
+        </div>
     `;
 };

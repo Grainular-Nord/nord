@@ -28,12 +28,12 @@
             color: var(--aurora-text);
         }
 
-        &[aria-current="location"] {
+        &[aria-current='location'] {
             color: var(--aurora-text);
             font-weight: 650;
         }
 
-        &[data-level="3"] {
+        &[data-level='3'] {
             padding-inline-start: 0.75rem;
         }
     }

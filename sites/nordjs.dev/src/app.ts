@@ -6,11 +6,8 @@ import { Navigation } from './components/navigation';
 
 export const App = () => {
     return html`
-        ${Navigation()}
-        ${Aurora()}
-        <main>
-            ${Hero()}
-        </main>
+        ${Navigation()} ${Aurora()}
+        <main>${Hero()}</main>
         ${Footer()}
-   `;
+    `;
 };

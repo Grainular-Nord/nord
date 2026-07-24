@@ -1,5 +1,4 @@
 import { setAttribute } from '../internals/attribute-bindings';
-import type { Fragment } from '../internals/fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import { unwrap } from '../internals/unwrap';
 import { createDirective } from './create-directive';

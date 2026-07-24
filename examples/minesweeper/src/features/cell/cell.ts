@@ -12,7 +12,7 @@ export const Cell = ({ cell }: CellProps) => {
     };
 
     return html`
-        <button 
+        <button
             class="cell"
             data-discovered="${cell.discovered}"
             data-flagged="${cell.flagged}"
@@ -21,9 +21,13 @@ export const Cell = ({ cell }: CellProps) => {
             ${on('click', () => gameState.handleCellClick(cell))}
             ${on('contextmenu', flagCell)}
         >
-            <div class="cell-flagged">${Icon({ src: icons.flag, size: 16, fill: 'oklch(from var(--color-cyan-400) l c h / 0.6)' })}</div>
+            <div class="cell-flagged">
+                ${Icon({ src: icons.flag, size: 16, fill: 'oklch(from var(--color-cyan-400) l c h / 0.6)' })}
+            </div>
             <div class="cell-discovered">${cell.neighbors}</div>
-            <div class="cell-explosive">${Icon({ src: icons.bomb, size: 16, fill: 'oklch(from var(--color-rose-500) l c h / 0.6)' })}</div>
+            <div class="cell-explosive">
+                ${Icon({ src: icons.bomb, size: 16, fill: 'oklch(from var(--color-rose-500) l c h / 0.6)' })}
+            </div>
         </button>
     `;
 };

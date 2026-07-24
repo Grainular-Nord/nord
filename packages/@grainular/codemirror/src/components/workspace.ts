@@ -26,7 +26,11 @@ export const EditorWorkspace = ({
     slots?: EditorWorkspaceSlots;
     theme?: EditorTheme;
 }) =>
-    html`<section class="grainular-codemirror ${theme?.className ?? ''}" data-grainular-editor="workspace" style="${themeStyle(theme)}">
+    html`<section
+        class="grainular-codemirror ${theme?.className ?? ''}"
+        data-grainular-editor="workspace"
+        style="${themeStyle(theme)}"
+    >
         <header data-grainular-editor="toolbar">
             <div data-grainular-editor="toolbar-start">${slots.toolbarStart?.()}</div>
             <div data-grainular-editor="toolbar-end">${slots.toolbarEnd?.()}</div>
@@ -69,7 +73,13 @@ const CodeMirrorWorkspace = ({
     setup?: Fragment;
     theme?: EditorTheme;
 }) =>
-    html`<section class="grainular-codemirror" data-grainular-editor="workspace" data-layout="${layout}" style="${themeStyle(theme)}" ${setup}>
+    html`<section
+        class="grainular-codemirror"
+        data-grainular-editor="workspace"
+        data-layout="${layout}"
+        style="${themeStyle(theme)}"
+        ${setup}
+    >
         <div data-grainular-editor="workspace-body">
             ${EditorProjectTree({ activePath, files, onAdd, onDelete, onRename })}
             <main data-grainular-editor="editor">${editor}</main>

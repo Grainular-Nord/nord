@@ -27,9 +27,7 @@ Apply `ref` to the element that should populate the reference.
 ```ts title="search.ts"
 import { html, ref } from '@grainular/nord';
 
-const Search = () => html`
-    <input ${ref(searchInput)} type="search" placeholder="Search" />
-`;
+const Search = () => html` <input ${ref(searchInput)} type="search" placeholder="Search" /> `;
 ```
 
 Once Nørd hydrates the input, `searchInput.current` is that exact `HTMLInputElement`.

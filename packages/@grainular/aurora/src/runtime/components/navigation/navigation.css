@@ -75,7 +75,7 @@
             background: var(--aurora-overlay);
         }
 
-        &[aria-current="page"] {
+        &[aria-current='page'] {
             color: var(--aurora-accent-text);
         }
     }
@@ -148,7 +148,7 @@
             rotate: 180deg;
         }
 
-        &:not([open]):has([aria-current="page"]) > summary {
+        &:not([open]):has([aria-current='page']) > summary {
             color: var(--aurora-accent-text);
         }
     }

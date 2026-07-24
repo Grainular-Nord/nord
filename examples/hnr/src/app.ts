@@ -8,9 +8,8 @@ export const App = () => {
     const viewTransitionRef = createRef<HTMLElement>();
 
     return html`${Shell({
-        children: html`
-            <main ${ref(viewTransitionRef)}>
-                ${$outlet({ for: router, transitionElement: viewTransitionRef })}
-            </main>`,
+        children: html` <main ${ref(viewTransitionRef)}>
+            ${$outlet({ for: router, transitionElement: viewTransitionRef })}
+        </main>`,
     })}`;
 };

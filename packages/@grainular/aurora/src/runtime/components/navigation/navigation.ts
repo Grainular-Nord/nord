@@ -9,9 +9,7 @@ const NavigationLink = ({ active, label, path }: AuroraRuntimeNavigationItem & {
         : html`<a class="aurora-navigation-link" href="${path}">${label}</a>`;
 
 const NavigationChildren = (children: AuroraRuntimeNavigationItem[]): ComponentFragment => html`
-    <div class="aurora-navigation-children">
-        ${$each(() => children).$as(NavigationNode)}
-    </div>
+    <div class="aurora-navigation-children">${$each(() => children).$as(NavigationNode)}</div>
 `;
 
 const NavigationNode = (item: AuroraRuntimeNavigationItem): ComponentFragment => {
@@ -21,8 +19,7 @@ const NavigationNode = (item: AuroraRuntimeNavigationItem): ComponentFragment =>
 
     return html`
         <div class="aurora-navigation-item">
-            ${label}
-            ${item.children.length > 0 ? NavigationChildren(item.children) : null}
+            ${label} ${item.children.length > 0 ? NavigationChildren(item.children) : null}
         </div>
     `;
 };

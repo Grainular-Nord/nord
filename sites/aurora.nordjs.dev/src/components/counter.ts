@@ -12,9 +12,7 @@ const Counter = ({ label = 'A live Aurora island' }: CounterProps) => {
                 <strong>${label}</strong>
                 <span>Only this component activates in the browser.</span>
             </div>
-            <button type="button" ${on('click', () => count.update((value) => value + 1))}>
-                Count: ${count}
-            </button>
+            <button type="button" ${on('click', () => count.update((value) => value + 1))}>Count: ${count}</button>
         </div>
     `;
 };

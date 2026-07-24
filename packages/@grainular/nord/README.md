@@ -20,11 +20,7 @@ import { html, mount, on } from '@grainular/nord';
 const count = grain(0);
 
 // Define a component — any function returning an html template
-const App = () => html`
-    <button ${on('click', () => count.update(n => n + 1))}>
-        Count: ${count}
-    </button>
-`;
+const App = () => html` <button ${on('click', () => count.update((n) => n + 1))}>Count: ${count}</button> `;
 
 // Mount the component into the DOM
 mount(App, { to: document.querySelector('#app') });

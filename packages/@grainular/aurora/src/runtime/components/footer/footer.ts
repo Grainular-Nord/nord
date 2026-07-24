@@ -17,15 +17,13 @@ export const Footer = () => {
         <footer class="aurora-footer">
             <div class="aurora-footer-content">
                 <span>${config.text ?? ''}</span>
-                ${
-                    navigation.length === 0
-                        ? null
-                        : html`
+                ${navigation.length === 0
+                    ? null
+                    : html`
                           <nav class="aurora-footer-navigation" aria-label="Footer navigation">
                               ${$each(() => navigation).$as((item) => SiteLink(item, base))}
                           </nav>
-                      `
-                }
+                      `}
             </div>
         </footer>
     `;

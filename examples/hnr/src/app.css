@@ -23,12 +23,12 @@
     /* Config */
     --navigation-height: 4rem;
     --transition-speed: 0.2s; /* Explicitly defined since it was used but missing */
-    --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
-    --font-sans: "Inter", system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 /* Theme: Light */
-[data-theme="light"] {
+[data-theme='light'] {
     --bg-app: var(--nord-light-1);
     --bg-shade: var(--nord-light-2);
     --text-main: var(--nord-dark-2);
@@ -43,7 +43,7 @@
 }
 
 /* Theme: Dark */
-[data-theme="dark"] {
+[data-theme='dark'] {
     --bg-app: var(--nord-dark-1);
     --bg-shade: var(--nord-dark-2);
     --text-main: var(--nord-light-1);

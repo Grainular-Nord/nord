@@ -3,12 +3,12 @@ title: Routing
 description: Generate routes from Markdown paths and configure sidebar links independently.
 layout: docs
 links:
-  prev:
-    text: Getting started
-    link: /getting-started
-  next:
-    text: CLI and deployment
-    link: /cli
+    prev:
+        text: Getting started
+        link: /getting-started
+    next:
+        text: CLI and deployment
+        link: /cli
 ---
 
 # Routing
@@ -25,11 +25,11 @@ Markdown may live anywhere beneath the project root. A `docs/` directory is a co
 
 Routes are relative to the static directory before the glob:
 
-| Markdown file | Route |
-| --- | --- |
-| `docs/index.md` | `/` |
-| `docs/about.md` | `/about` |
-| `docs/guide/index.md` | `/guide` |
+| Markdown file           | Route            |
+| ----------------------- | ---------------- |
+| `docs/index.md`         | `/`              |
+| `docs/about.md`         | `/about`         |
+| `docs/guide/index.md`   | `/guide`         |
 | `docs/guide/install.md` | `/guide/install` |
 
 The content tree must contain an `index.md` that resolves to `/`. Aurora looks for `404.md` beside that file and emits it separately as `/404.html`.
@@ -37,10 +37,7 @@ The content tree must contain an `index.md` that resolves to `/`. Aurora looks f
 `content` can also be an array. The patterns form one content tree relative to their common directory.
 
 ```ts
-content: [
-    'docs/*.md',
-    'docs/guides/**/*.md',
-]
+content: ['docs/*.md', 'docs/guides/**/*.md'];
 ```
 
 ## Sidebar navigation

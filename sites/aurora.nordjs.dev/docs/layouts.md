@@ -3,12 +3,12 @@ title: Layouts
 description: Compose generated page content with built-in or custom Aurora layouts.
 layout: docs
 links:
-  prev:
-    text: Components and islands
-    link: /islands
-  next:
-    text: Styling
-    link: /styling
+    prev:
+        text: Components and islands
+        link: /islands
+    next:
+        text: Styling
+        link: /styling
 ---
 
 # Layouts
@@ -37,9 +37,7 @@ import type { AuroraLayoutProps } from '@grainular/aurora';
 import { html } from '@grainular/nord';
 
 const Landing = ({ content, meta }: AuroraLayoutProps) => html`
-    <main class="landing" aria-label="${meta.title}">
-        ${content}
-    </main>
+    <main class="landing" aria-label="${meta.title}">${content}</main>
 `;
 
 export default Landing;
@@ -104,10 +102,7 @@ import type { AuroraLayoutProps } from '@grainular/aurora';
 import { html } from '@grainular/nord';
 
 const Landing = ({ content, meta, slots }: AuroraLayoutProps) => html`
-    <main class="landing" aria-label="${meta.title}">
-        ${slots?.hero?.({}) ?? null}
-        ${content}
-    </main>
+    <main class="landing" aria-label="${meta.title}">${slots?.hero?.({}) ?? null} ${content}</main>
 `;
 
 export default Landing;

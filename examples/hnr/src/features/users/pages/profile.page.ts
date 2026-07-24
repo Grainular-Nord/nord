@@ -13,34 +13,25 @@ export default () => {
         ${PageHeader({
             label: derived(state.user, (user) => user?.id ?? ''),
             children: StickyContainer({
-                children: html`
-                <button ${on('click', () => navigation.back())}>
-                    ${Icon({ src: icons.chevronLeft })}
-                    Go Back
+                children: html` <button ${on('click', () => navigation.back())}>
+                    ${Icon({ src: icons.chevronLeft })} Go Back
                 </button>`,
             }),
         })}
 
-    <div class="content">
-        ${$if(derived(state.user, (user) => user !== null)).$then(() => {
-            // biome-ignore lint/style/noNonNullAssertion: Again, we checked, but ts not getting it
-            const { created, about, karma, submitted } = state.user()!;
-            return html`
-                <div class="clout-bar">
-                    <span class="item">Created: ${new Date(created * 1000).toLocaleDateString()}</span>
-                    <span class="item">
-                        ${Icon({ src: icons.celebration, size: 16 })}
-                        ${karma}</span>
-                    <span class="item">
-                        ${Icon({ src: icons.comment, size: 16 })}
-                        ${submitted?.length ?? 0}
-                    </span>
-                </div>
-                <div>
-                    ${$unsafeHtml(about ?? '')}
-                </div>
-            `;
-        })}
-    </div>
+        <div class="content">
+            ${$if(derived(state.user, (user) => user !== null)).$then(() => {
+                // The preceding conditional verifies the user exists.
+                const { created, about, karma, submitted } = state.user()!;
+                return html`
+                    <div class="clout-bar">
+                        <span class="item">Created: ${new Date(created * 1000).toLocaleDateString()}</span>
+                        <span class="item"> ${Icon({ src: icons.celebration, size: 16 })} ${karma}</span>
+                        <span class="item"> ${Icon({ src: icons.comment, size: 16 })} ${submitted?.length ?? 0} </span>
+                    </div>
+                    <div>${$unsafeHtml(about ?? '')}</div>
+                `;
+            })}
+        </div>
     `;
 };

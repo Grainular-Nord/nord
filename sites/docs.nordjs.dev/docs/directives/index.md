@@ -17,9 +17,7 @@ import { html, on } from '@grainular/nord';
 
 const increment = () => console.log('increment');
 
-const Counter = () => html`
-    <button ${on('click', increment)}>Increment</button>
-`;
+const Counter = () => html` <button ${on('click', increment)}>Increment</button> `;
 ```
 
 This keeps DOM behavior next to the element it affects. Directives target one element; use a [struct](/structs) when behavior owns a dynamic region of DOM instead.

@@ -29,12 +29,12 @@ user.data.subscribe((data) => console.log('user:', data));
 
 `resource(fetcher, deps?)` runs `fetcher` once immediately and again whenever any grain in `deps` changes, aborting an in-flight request before starting the next one. It exposes:
 
--   `state` / `idle` / `pending` / `error` — the current lifecycle as grains (`data` is only valid while `idle`)
--   `data` — the last resolved value
--   `refresh()` — manually re-run the fetcher
--   `abort()` — cancel the current request without changing `data`
--   `mutate(next)` — set `data` directly without fetching
--   `destroy()` — unsubscribe from dependencies and abort any in-flight request
+- `state` / `idle` / `pending` / `error` — the current lifecycle as grains (`data` is only valid while `idle`)
+- `data` — the last resolved value
+- `refresh()` — manually re-run the fetcher
+- `abort()` — cancel the current request without changing `data`
+- `mutate(next)` — set `data` directly without fetching
+- `destroy()` — unsubscribe from dependencies and abort any in-flight request
 
 ## Contributing
 

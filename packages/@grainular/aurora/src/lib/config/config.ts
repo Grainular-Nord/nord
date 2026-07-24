@@ -103,7 +103,7 @@ export type AuroraLayoutDefinition = {
 };
 
 export type AuroraComponentModule = {
-    // biome-ignore lint/suspicious/noExplicitAny: Markdown erases component prop types at the runtime boundary.
+    // Markdown erases component prop types at the runtime boundary.
     default: (props: any) => ComponentFragment;
 };
 

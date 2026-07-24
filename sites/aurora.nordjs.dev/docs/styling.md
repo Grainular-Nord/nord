@@ -3,12 +3,12 @@ title: Styling
 description: Extend Aurora’s default theme with ordinary imported CSS.
 layout: docs
 links:
-  prev:
-    text: Layouts
-    link: /layouts
-  next:
-    text: Generated files
-    link: /generated-files
+    prev:
+        text: Layouts
+        link: /layouts
+    next:
+        text: Generated files
+        link: /generated-files
 ---
 
 # Styling
@@ -60,7 +60,7 @@ Shiki emits semantic CSS variables rather than fixed colors. Override them along
 
 ```css
 @layer aurora.overrides {
-    html[data-theme="dark"] {
+    html[data-theme='dark'] {
         --aurora-syntax-foreground: var(--aurora-text);
         --aurora-syntax-token-keyword: deepskyblue;
         --aurora-syntax-token-string: palegreen;

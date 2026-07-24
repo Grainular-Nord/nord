@@ -9,7 +9,7 @@
     text-align: left;
     cursor: pointer;
 
-    &[data-level="0"] {
+    &[data-level='0'] {
         padding-left: 0;
     }
 
@@ -55,13 +55,13 @@
                 }
 
                 &:before {
-                    content: "+";
+                    content: '+';
                     font-size: 0.75rem;
                 }
             }
         }
     }
-    & [data-collapsed="true"] {
+    & [data-collapsed='true'] {
         display: none;
     }
 }

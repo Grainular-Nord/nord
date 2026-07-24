@@ -8,6 +8,7 @@ describe('[Nørd Runtime] Rendering', () => {
 
     test('should preserve template whitespace', () => {
         const value = 'value';
+        // oxfmt-ignore
         const App = () => html`<pre>first
     second
         ${value}

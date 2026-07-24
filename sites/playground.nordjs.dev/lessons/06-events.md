@@ -33,6 +33,7 @@ The listener is an ordinary function — it can read grains, update state, or ca
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="main.ts"
 import { grain } from '@grainular/grains';
 import { html, mount, on } from '@grainular/nord';
@@ -52,6 +53,7 @@ const App = () => html`
 
 mount(App, { to: document.querySelector('#app') });
 ```
+
 ::::
 
 Move on to [attributes](/07-attributes) to keep an element's attributes in sync with a grain.

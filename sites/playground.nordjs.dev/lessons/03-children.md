@@ -34,6 +34,7 @@ export const Card = ({ title, children }: CardProps) => html`
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="card.ts"
 import { html, type PropsWithChildren } from '@grainular/nord';
 
@@ -46,6 +47,7 @@ export const Card = ({ title, children }: CardProps) => html`
     </section>
 `;
 ```
+
 ::::
 
 Move on to [grains](/04-grains) for the state that actually changes over time.

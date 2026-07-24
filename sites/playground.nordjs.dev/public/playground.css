@@ -8,7 +8,7 @@
     --playground-border: #253044;
 }
 
-:root[data-theme="light"] {
+:root[data-theme='light'] {
     color-scheme: light;
     --playground-background: #f1f4f8;
     --playground-surface: #fff;
@@ -125,7 +125,7 @@ button:disabled {
     border-radius: 2px;
 }
 
-[data-done="true"] {
+[data-done='true'] {
     color: var(--playground-muted);
     text-decoration: line-through;
 }

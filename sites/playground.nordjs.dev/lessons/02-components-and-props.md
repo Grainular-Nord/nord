@@ -30,6 +30,7 @@ export const Greeting: PureComponent<GreetingProps> = ({ name, punctuation = '!'
 :::
 
 ::::Details{title="Reveal solution"}
+
 ```ts title="greeting.ts"
 import { html, type PureComponent } from '@grainular/nord';
 
@@ -39,6 +40,7 @@ export const Greeting: PureComponent<GreetingProps> = ({ name, punctuation = '!'
     <h1>Hej, ${name}${punctuation}</h1>
 `;
 ```
+
 ::::
 
 Move on to [children](/03-children) to see how a component accepts rendered content, not just plain values.
