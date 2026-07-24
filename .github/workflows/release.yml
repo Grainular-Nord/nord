@@ -1,24 +1,57 @@
-# We use this action to release all packages
-# to npm after running through the release
-# ci process of linting, building, testing
-# and generating changesets
-
 name: Release packages
 
 on:
+    pull_request:
     push:
-        branches:
-            - main
+        branches: [main]
+
+permissions:
+    contents: read
+
+concurrency:
+    group: release-packages-${{ github.ref }}
+    cancel-in-progress: false
 
 jobs:
-    lint:
-        name: Lint
+    verify:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
                   node-version: 24
+                  cache: npm
             - run: npm ci
             - run: npm run format:check
             - run: npm run lint
+            - run: npm test
+            - run: npm run build
+
+    release:
+        name: Version or publish packages
+        needs: verify
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  registry-url: https://registry.npmjs.org
+                  cache: npm
+            - run: npm ci
+            - uses: changesets/action@v1
+              with:
+                  version: npm run version-packages
+                  publish: npm run release
+                  commit: 'chore: version packages'
+                  title: 'chore: version packages'
+                  createGithubReleases: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
