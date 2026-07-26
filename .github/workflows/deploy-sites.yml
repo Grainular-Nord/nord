@@ -1,8 +1,6 @@
 name: Build and deploy sites
 
 on:
-    push:
-        branches: [main]
     workflow_dispatch:
         inputs:
             site:
@@ -78,7 +76,6 @@ jobs:
 
     deploy:
         needs: build-sites
-        if: github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
             - name: Configure SSH
@@ -91,6 +88,34 @@ jobs:
                   chmod 600 ~/.ssh/id_ed25519
                   printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
                   chmod 600 ~/.ssh/known_hosts
+            - name: Validate deployment paths
+              env:
+                  SITE: ${{ inputs.site }}
+                  NORD_PATH: ${{ secrets.UPCLOUD_NORD_PATH }}
+                  DOCS_PATH: ${{ secrets.UPCLOUD_DOCS_PATH }}
+                  AURORA_PATH: ${{ secrets.UPCLOUD_AURORA_PATH }}
+                  PLAYGROUND_PATH: ${{ secrets.UPCLOUD_PLAYGROUND_PATH }}
+              run: |
+                  set -eu
+                  validate_path() {
+                      if [ -z "$2" ] || [ "$2" = "/" ]; then
+                          echo "$1 deployment path is missing or points at the server root."
+                          exit 1
+                      fi
+                  }
+
+                  case "$SITE" in
+                      all)
+                          validate_path nord "$NORD_PATH"
+                          validate_path docs "$DOCS_PATH"
+                          validate_path aurora "$AURORA_PATH"
+                          validate_path playground "$PLAYGROUND_PATH"
+                          ;;
+                      nord) validate_path nord "$NORD_PATH" ;;
+                      docs) validate_path docs "$DOCS_PATH" ;;
+                      aurora) validate_path aurora "$AURORA_PATH" ;;
+                      playground) validate_path playground "$PLAYGROUND_PATH" ;;
+                  esac
             - uses: actions/download-artifact@v4
               if: inputs.site == 'all' || inputs.site == 'nord'
               with:
