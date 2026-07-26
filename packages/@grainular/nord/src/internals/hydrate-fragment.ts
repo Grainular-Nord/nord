@@ -7,11 +7,11 @@ import type { ComponentFragment } from '../component/component-fragment';
  * @param fragment
  */
 export const hydrateFragment = (fragment: ComponentFragment) => {
-    const template = document.createElement('template');
+    const container = document.createDocumentFragment();
     const anchor = new Comment();
 
-    template.content.append(anchor);
+    container.append(anchor);
     fragment.hydrate(anchor);
 
-    return Array.from(template.content.childNodes) as Element[];
+    return Array.from(container.childNodes);
 };
