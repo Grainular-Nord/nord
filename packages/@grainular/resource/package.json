@@ -44,6 +44,6 @@
         "url": "git+https://github.com/grainular/nord.git"
     },
     "peerDependencies": {
-        "@grainular/grains": "*"
+        "@grainular/grains": "^2.0.0"
     }
 }

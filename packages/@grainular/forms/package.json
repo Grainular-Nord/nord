@@ -15,6 +15,8 @@
     },
     "unpkg": "./dist/browser/index.iife.js",
     "devDependencies": {
+        "@grainular/grains": "*",
+        "@grainular/nord": "*",
         "@repository/config": "*",
         "@types/bun": "latest",
         "tsdown": "^0.22.13",
@@ -40,8 +42,8 @@
         "url": "git+https://github.com/grainular/nord.git"
     },
     "peerDependencies": {
-        "@grainular/nord": "*",
-        "@grainular/grains": "*"
+        "@grainular/nord": "^2.0.0",
+        "@grainular/grains": "^2.0.0"
     }
 
 }

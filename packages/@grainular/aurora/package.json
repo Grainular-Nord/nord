@@ -22,11 +22,14 @@
     }
   },
   "devDependencies": {
+    "@grainular/grains": "*",
+    "@grainular/nord": "*",
     "@types/bun": "latest",
     "@types/node": "^25.0.3",
     "vite": "^7.3.1",
     "@tsdown/css": "^0.22.13",
-    "tsdown": "^0.22.13"
+    "tsdown": "^0.22.13",
+    "typescript": "^7"
   },
   "dependencies": {
     "@shikijs/rehype": "^4.0.2",
@@ -37,8 +40,8 @@
   "peerDependencies": {
     "typescript": "^7",
     "vite": "^7 || ^8",
-    "@grainular/nord": "*",
-    "@grainular/grains": "*"
+    "@grainular/nord": "^2.0.0",
+    "@grainular/grains": "^2.0.0"
   },
   "scripts": {
     "dev": "tsdown --watch",
