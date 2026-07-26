@@ -56,7 +56,7 @@
   "license": "MIT",
   "repository": {
       "type": "git",
-      "url": "git+https://github.com/grainular/nord.git"
+      "url": "git+https://github.com/Grainular-Nord/nord.git"
   },
   "publishConfig": {
     "access": "public"
