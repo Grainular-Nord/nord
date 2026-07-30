@@ -28,8 +28,8 @@
         "typescript": "^7.0.2"
     },
     "peerDependencies": {
-        "@grainular/grains": "^2.0.0",
-        "@grainular/nord": "^2.0.0"
+        "@grainular/grains": "^3.0.0",
+        "@grainular/nord": "^3.0.0"
     },
     "devDependencies": {
         "@grainular/grains": "*",
