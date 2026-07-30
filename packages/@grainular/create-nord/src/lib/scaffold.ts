@@ -40,6 +40,7 @@ const copyEntries = async (root: string, name: string, entries: Entry[]) => {
 const mergePackageJson = async (type: string, root: string, ctx: ScaffoldContext) => {
     const source = await readFile(join(templatesDir, type, 'package.json'), 'utf-8');
     const pkg = JSON.parse(source.replaceAll('{{name}}', ctx.name));
+    const usesOxc = ctx.additionalDependencies.flat().some(({ name }) => name === 'oxfmt');
 
     if (ctx.useRolldown) {
         pkg.dependencies.vite = 'npm:rolldown-vite@7.2.5';
@@ -48,6 +49,15 @@ const mergePackageJson = async (type: string, root: string, ctx: ScaffoldContext
 
     for (const { name, version, dev } of ctx.additionalDependencies.flat()) {
         (dev ? pkg.devDependencies : pkg.dependencies)[name] = version;
+    }
+
+    if (usesOxc) {
+        Object.assign(pkg.scripts, {
+            format: 'oxfmt . --write',
+            'format:check': 'oxfmt . --check',
+            lint: 'oxlint .',
+            'lint:fix': 'oxlint --fix .',
+        });
     }
 
     await mkdir(root, { recursive: true });

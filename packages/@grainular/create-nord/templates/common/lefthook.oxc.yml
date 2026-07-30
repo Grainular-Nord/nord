@@ -2,7 +2,7 @@ pre-commit:
     parallel: true
     commands:
         oxfmt:
-            glob: '*.{js,ts,json,md,yml,yaml}'
+            glob: '*.{js,ts,json,md,yml,yaml,html,css}'
             run: npx oxfmt --write {staged_files} --no-error-on-unmatched-pattern
             stage_fixed: true
         oxlint:

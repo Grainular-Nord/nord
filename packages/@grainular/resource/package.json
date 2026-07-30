@@ -15,6 +15,7 @@
     },
     "unpkg": "./dist/browser/index.iife.js",
     "devDependencies": {
+        "@grainular/grains": "*",
         "@repository/config": "*",
         "@types/bun": "latest",
         "@vitest/coverage-v8": "^4.1.10",
