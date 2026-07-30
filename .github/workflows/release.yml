@@ -25,7 +25,7 @@ jobs:
             - run: npm run format:check
             - run: npm run lint
             - run: npm test
-            - run: npm run build
+            - run: npm run build:packages
 
     release:
         name: Version or publish packages

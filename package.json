@@ -27,7 +27,9 @@
         "format:check": "oxfmt . --check",
         "dev": "turbo run dev --filter='./packages/**' --concurrency 20",
         "dev:sites": "turbo run docs:dev --filter='./sites/*' --concurrency 20",
-        "build": "turbo run build docs:build",
+        "build": "npm run build:packages",
+        "build:packages": "turbo run build --filter='./packages/**'",
+        "build:sites": "turbo run docs:build --filter='./sites/*' --only",
         "test": "turbo run test",
         "version-packages": "changeset version",
         "release": "changeset publish"
