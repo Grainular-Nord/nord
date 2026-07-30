@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.1.0",
   "name": "@grainular/create-nord",
   "description": "Scaffold your Nørd App with ease.",
   "packageManager": "npm@11.6.0",
@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Grainular-Nord/nord.git"
+    "type": "git",
+    "url": "git+https://github.com/Grainular-Nord/nord.git"
   }
 }

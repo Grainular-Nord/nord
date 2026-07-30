@@ -1,6 +1,6 @@
 {
     "name": "@grainular/forms",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "type": "module",
     "packageManager": "npm@11.6.0",
     "main": "./dist/cjs/index.cjs",
@@ -39,11 +39,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-      "url": "git+https://github.com/Grainular-Nord/nord.git"
+        "url": "git+https://github.com/Grainular-Nord/nord.git"
     },
     "peerDependencies": {
         "@grainular/nord": "^2.0.0",
         "@grainular/grains": "^2.0.0"
     }
-
 }
