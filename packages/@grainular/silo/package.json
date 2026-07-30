@@ -1,6 +1,6 @@
 {
     "name": "@grainular/silo",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "type": "module",
     "packageManager": "npm@11.6.0",
     "main": "./dist/cjs/index.cjs",
