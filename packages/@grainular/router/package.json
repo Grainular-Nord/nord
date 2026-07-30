@@ -15,14 +15,16 @@
     },
     "unpkg": "./dist/browser/index.iife.js",
     "devDependencies": {
+        "@grainular/grains": "*",
+        "@grainular/nord": "*",
         "@repository/config": "*",
         "@types/bun": "latest",
         "tsdown": "^0.22.13",
         "typescript": "7.0.2"
     },
     "peerDependencies": {
-        "@grainular/nord": "*",
-        "@grainular/grains": "*"
+        "@grainular/nord": "^2.0.0",
+        "@grainular/grains": "^2.0.0"
     },
     "scripts": {
         "dev": "tsdown --watch",

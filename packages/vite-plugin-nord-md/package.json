@@ -14,6 +14,7 @@
     }
   },
   "devDependencies": {
+    "@grainular/nord": "*",
     "@repository/config": "*",
     "@types/bun": "latest",
     "@types/mdast": "^4.0.4",
@@ -35,7 +36,7 @@
     "vfile-matter": "^5.0.1"
   },
   "peerDependencies": {
-    "@grainular/nord": "*"
+    "@grainular/nord": "^2.0.0"
   },
   "scripts": {
     "dev": "tsdown --watch",
