@@ -2,6 +2,7 @@
 title: Nørd Overview
 description: Nørd's core ideas and a quick tour of its rendering API.
 layout: docs
+lastUpdated: true
 links:
     next:
         text: Getting started

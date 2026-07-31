@@ -2,6 +2,7 @@
 title: Styling
 description: Extend Aurora’s default theme with ordinary imported CSS.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Layouts

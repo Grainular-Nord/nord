@@ -2,6 +2,14 @@
 title: Portals
 description: Render content into another part of the document.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Refs and lifecycle
+        link: /directives/refs-and-lifecycle
+    next:
+        text: Creating directives
+        link: /directives/custom
 ---
 
 # Portals

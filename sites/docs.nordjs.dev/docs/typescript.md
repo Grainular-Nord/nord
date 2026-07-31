@@ -2,6 +2,14 @@
 title: TypeScript
 description: Type Nørd components, props, fragments, directives, and refs.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Lifecycle and cleanup
+        link: /lifecycle-and-cleanup
+    next:
+        text: Directives
+        link: /directives
 ---
 
 # TypeScript

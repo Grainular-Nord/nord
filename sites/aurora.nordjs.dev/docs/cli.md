@@ -2,6 +2,7 @@
 title: CLI and deployment
 description: Run Aurora in development, build static output, and preview deployment artifacts.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Routing

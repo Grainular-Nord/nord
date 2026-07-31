@@ -2,6 +2,14 @@
 title: Refs and lifecycle
 description: Access mounted elements and connect behavior to their lifetime.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Events and attributes
+        link: /directives/events-and-attributes
+    next:
+        text: Portals
+        link: /directives/portals
 ---
 
 # Refs and lifecycle

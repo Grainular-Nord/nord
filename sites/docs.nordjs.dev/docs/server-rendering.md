@@ -2,6 +2,14 @@
 title: Server rendering
 description: Generate static HTML with Nørd and activate independent client applications.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Creating structs
+        link: /structs/custom
+    next:
+        text: Tooling
+        link: /tooling
 ---
 
 # Server rendering

@@ -2,6 +2,14 @@
 title: Lifecycle and cleanup
 description: Attach resources to DOM lifetime and clean them up reliably.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Reactivity and grains
+        link: /reactivity
+    next:
+        text: TypeScript
+        link: /typescript
 ---
 
 # Lifecycle and cleanup

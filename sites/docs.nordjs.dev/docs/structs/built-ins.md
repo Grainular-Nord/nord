@@ -2,6 +2,14 @@
 title: Other built-in structs
 description: Use Nørd’s lower-level rendering and element structs.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Async rendering
+        link: /structs/async-rendering
+    next:
+        text: Creating structs
+        link: /structs/custom
 ---
 
 # Other built-in structs

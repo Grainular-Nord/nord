@@ -2,6 +2,7 @@
 title: Markdown
 description: Author Aurora pages with frontmatter, code fences, callouts, and components.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Configuration

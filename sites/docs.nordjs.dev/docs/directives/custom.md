@@ -2,6 +2,14 @@
 title: Creating directives
 description: Build reusable DOM behavior with createDirective.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Portals
+        link: /directives/portals
+    next:
+        text: Control flow
+        link: /structs
 ---
 
 # Creating directives

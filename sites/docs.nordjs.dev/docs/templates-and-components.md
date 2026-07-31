@@ -2,6 +2,14 @@
 title: Templates and components
 description: Build Nørd interfaces from tagged templates and ordinary functions.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Getting started
+        link: /getting-started
+    next:
+        text: Reactivity and grains
+        link: /reactivity
 ---
 
 # Templates and components

@@ -2,6 +2,7 @@
 title: Components and islands
 description: Render static Markdown components or activate independent Nørd islands.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Markdown

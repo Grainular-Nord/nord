@@ -2,6 +2,7 @@
 title: Configuration
 description: Configure site metadata, routes, components, layouts, Markdown, and Vite.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: CLI and deployment

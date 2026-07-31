@@ -2,6 +2,14 @@
 title: Control flow
 description: Control dynamic DOM regions with conditions, lists, and asynchronous work.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Creating directives
+        link: /directives/custom
+    next:
+        text: Conditional rendering
+        link: /structs/conditional-rendering
 ---
 
 # Control flow

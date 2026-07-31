@@ -2,6 +2,14 @@
 title: Tooling
 description: Editors, formatting, debugging, and browser tools for Nørd projects.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Server rendering
+        link: /server-rendering
+    next:
+        text: API reference
+        link: /api-reference
 ---
 
 # Tooling
