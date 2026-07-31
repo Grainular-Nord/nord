@@ -35,6 +35,17 @@ Nord exposes DOM functionality through two complementary primitives:
 
 Both can be extended with `createDirective` and `createStruct` for custom primitives.
 
+## Performance
+
+Nørd favors fine-grained DOM updates. Once a fragment exists, a reactive change updates only the bound DOM location—without re-running components, diffing a virtual tree, or replacing surrounding nodes.
+
+That trade-off is most visible when creating very large tables or lists: because templates are parsed at runtime rather than compiled ahead of time, bulk row creation is not its fastest path. Surgical updates to existing DOM are where Nørd performs best.
+
+- [JS Benchmarks results](https://jsbenchmarks.com/) are available now.
+- [js-framework-benchmark results](https://krausest.github.io/js-framework-benchmark/) are also available.
+
+Benchmark results vary with browser version, hardware, and benchmark methodology. Use them to understand workload-specific trade-offs rather than as a universal ranking.
+
 > Full documentation at [docs.nordjs.dev](https://docs.nordjs.dev).
 
 ## Contributing
