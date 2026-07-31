@@ -37,6 +37,17 @@ Nørd is a small reactive framework for building web interfaces with JavaScript 
 
 Nørd is a good fit for applications that benefit from reactive UI without taking on a compiler pipeline or a broad framework runtime. It can be dropped into an existing page, used for independently activated islands, or used to build a complete client application. The focus is a compact, readable API that leaves the browser platform and application architecture in view.
 
+## Performance trade-offs
+
+Nørd is optimized for fine-grained updates: once a fragment exists, a reactive value changes only the DOM location that uses it. There is no component re-run, virtual-DOM diff, or replacement of the surrounding tree.
+
+The complementary trade-off is initial bulk creation. Templates are parsed at runtime rather than compiled ahead of time, so creating a very large number of rows is not Nørd's fastest workload. Updating existing rows surgically is where it performs best.
+
+- [JS Benchmarks results](https://jsbenchmarks.com/) are available now.
+- [js-framework-benchmark results](https://krausest.github.io/js-framework-benchmark/) are also available.
+
+Benchmark results vary with the browser, hardware, and methodology. Treat them as workload-specific evidence rather than a universal framework ranking.
+
 ## Ecosystem
 
 Nørd's core is deliberately small. Companion packages add focused capabilities without becoming part of the runtime:
