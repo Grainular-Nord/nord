@@ -2,6 +2,14 @@
 title: Creating structs
 description: Build custom dynamic DOM regions with createStruct.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Other built-ins
+        link: /structs/built-ins
+    next:
+        text: Server rendering
+        link: /server-rendering
 ---
 
 # Creating structs

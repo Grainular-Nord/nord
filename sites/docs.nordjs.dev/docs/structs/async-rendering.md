@@ -2,6 +2,14 @@
 title: Async rendering
 description: Represent pending, resolved, and failed asynchronous work.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Lists
+        link: /structs/lists
+    next:
+        text: Other built-ins
+        link: /structs/built-ins
 ---
 
 # Async rendering

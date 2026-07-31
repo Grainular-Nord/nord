@@ -2,6 +2,14 @@
 title: Conditional rendering
 description: Render branches with $if and $switch.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Control flow
+        link: /structs
+    next:
+        text: Lists
+        link: /structs/lists
 ---
 
 # Conditional rendering

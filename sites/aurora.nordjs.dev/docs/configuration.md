@@ -2,6 +2,7 @@
 title: Configuration
 description: Configure site metadata, routes, components, layouts, Markdown, and Vite.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: CLI and deployment
@@ -87,7 +88,7 @@ page: {
 
 `language`, `themeColor`, and `head` are global-only. `head` is trusted markup; use it only with content controlled by the application.
 
-Page-specific `title`, `description`, `robots`, `layout`, and previous or next links belong in Markdown frontmatter.
+Page-specific `title`, `description`, `robots`, `layout`, `lastUpdated`, and previous or next links belong in Markdown frontmatter.
 
 ```yaml
 ---
@@ -100,10 +101,11 @@ links:
     next:
         text: Markdown
         link: /markdown
+lastUpdated: true
 ---
 ```
 
-Aurora combines the page title with `site.title` for the document `<title>`. A page description overrides the shared site description. The built-in `docs` layout renders configured previous and next links beneath the page content; either direction may be omitted.
+Aurora combines the page title with `site.title` for the document `<title>`. A page description overrides the shared site description. Set `lastUpdated` to `true` to display that page’s UTC generation time at the bottom of a built-in layout; it defaults to `false`. Custom layouts receive the same ISO 8601 value as `lastUpdated` in their layout props. The built-in `docs` layout renders configured previous and next links beneath the page content; either direction may be omitted.
 
 ## Content and routing
 

@@ -2,6 +2,7 @@
 title: Large Language Model Documentation
 description: Documentation resources for LLMs and AI agents.
 layout: docs
+lastUpdated: true
 ---
 
 # Large Language Model Documentation

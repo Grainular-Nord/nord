@@ -2,6 +2,7 @@
 title: Getting started
 description: Install Aurora and build a minimal static site from Markdown.
 layout: docs
+lastUpdated: true
 links:
     next:
         text: Routing

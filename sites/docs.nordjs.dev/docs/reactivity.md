@@ -2,6 +2,14 @@
 title: Reactivity and grains
 description: Connect subscribable values and grains to the DOM.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Templates and components
+        link: /templates-and-components
+    next:
+        text: Lifecycle and cleanup
+        link: /lifecycle-and-cleanup
 ---
 
 # Reactivity and grains

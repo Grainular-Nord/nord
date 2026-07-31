@@ -2,6 +2,14 @@
 title: Directives
 description: Apply behavior and DOM properties directly to rendered elements.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: TypeScript
+        link: /typescript
+    next:
+        text: Events and attributes
+        link: /directives/events-and-attributes
 ---
 
 # Directives

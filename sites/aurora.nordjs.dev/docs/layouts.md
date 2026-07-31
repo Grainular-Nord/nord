@@ -2,6 +2,7 @@
 title: Layouts
 description: Compose generated page content with built-in or custom Aurora layouts.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Components and islands

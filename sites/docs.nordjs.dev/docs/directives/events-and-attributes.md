@@ -2,6 +2,14 @@
 title: Events and attributes
 description: Register event listeners and apply reactive attributes.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Directives
+        link: /directives
+    next:
+        text: Refs and lifecycle
+        link: /directives/refs-and-lifecycle
 ---
 
 # Events and attributes

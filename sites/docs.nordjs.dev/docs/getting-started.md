@@ -2,6 +2,7 @@
 title: Getting started
 description: Set up a Nørd project or use Nørd directly in the browser.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Overview

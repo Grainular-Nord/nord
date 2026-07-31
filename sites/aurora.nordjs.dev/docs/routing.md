@@ -2,6 +2,7 @@
 title: Routing
 description: Generate routes from Markdown paths and configure sidebar links independently.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Getting started

@@ -2,6 +2,11 @@
 title: API reference
 description: Reference for Nørd’s public application, directive, struct, and component APIs.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Tooling
+        link: /tooling
 ---
 
 # API reference

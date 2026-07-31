@@ -2,6 +2,7 @@
 title: Generated files
 description: Understand Aurora search, LLM text, metadata, and 404 output.
 layout: docs
+lastUpdated: true
 links:
     prev:
         text: Styling

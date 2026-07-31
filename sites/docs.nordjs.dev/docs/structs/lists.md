@@ -2,6 +2,14 @@
 title: Lists
 description: Render reactive collections efficiently with $each.
 layout: docs
+lastUpdated: true
+links:
+    prev:
+        text: Conditional rendering
+        link: /structs/conditional-rendering
+    next:
+        text: Async rendering
+        link: /structs/async-rendering
 ---
 
 # Lists
