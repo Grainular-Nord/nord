@@ -1,6 +1,6 @@
 {
   "name": "@grainular/aurora",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "type": "module",
   "packageManager": "npm@11.6.0",
   "main": "./dist/cjs/index.cjs",
@@ -49,14 +49,14 @@
     "prepublishOnly": "tsdown"
   },
   "files": [
-      "dist",
-      "README.md",
-      "LICENSE.md"
+    "dist",
+    "README.md",
+    "LICENSE.md"
   ],
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Grainular-Nord/nord.git"
+    "type": "git",
+    "url": "git+https://github.com/Grainular-Nord/nord.git"
   },
   "publishConfig": {
     "access": "public"
