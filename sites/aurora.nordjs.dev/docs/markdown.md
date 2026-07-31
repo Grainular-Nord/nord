@@ -40,9 +40,10 @@ Page frontmatter supports:
 - `description`, used for page metadata.
 - `robots`, written to the page’s robots meta tag.
 - `layout`, selecting a built-in or configured layout.
+- `lastUpdated`, displaying this page’s UTC generation time when set to `true`.
 - `links.prev` and `links.next`, rendered beneath the built-in docs layout.
 
-Document-wide `language`, `themeColor`, and additional head markup belong in `aurora.config.ts`.
+Document-wide `language`, `themeColor`, and additional head markup belong in `aurora.config.ts`. `lastUpdated` is a frontmatter-only setting and defaults to `false`.
 
 ## Standard Markdown
 

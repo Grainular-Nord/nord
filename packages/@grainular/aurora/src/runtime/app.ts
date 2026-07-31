@@ -6,11 +6,12 @@ import { Header } from './components/header/header';
 export type AppProps = {
     content: ComponentFragment;
     meta: AuroraPageMeta;
+    lastUpdated?: string;
     layouts: Map<string, AuroraLayoutModule['default']>;
     /** Resolved overrides for the header and footer. */
     slots?: Record<string, AuroraComponentModule['default']>;
 };
-export const App = ({ content, layouts, meta, slots }: AppProps) => {
+export const App = ({ content, lastUpdated, layouts, meta, slots }: AppProps) => {
     // The built-in `page` layout is always registered, so the fallback chain
     // resolves even when `meta.layout` names an unknown layout.
     const layout = (layouts.get(meta.layout ?? 'page') ?? layouts.get('page'))!;
@@ -28,7 +29,7 @@ export const App = ({ content, layouts, meta, slots }: AppProps) => {
                 aria-label="Close navigation"
             ></button>
             <div id="aurora-main-content" class="application-shell" tabindex="-1">
-                ${layout({ content: staticContent, meta })}
+                ${layout({ content: staticContent, meta, lastUpdated })}
             </div>
             ${slots?.footer?.({}) ?? Footer()}
         </div>

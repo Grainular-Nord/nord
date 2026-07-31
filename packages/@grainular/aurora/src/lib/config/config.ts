@@ -54,6 +54,8 @@ export type AuroraPageMeta = {
     description?: string;
     robots?: string;
     layout?: string;
+    /** Displays the UTC generation time for this page. Defaults to `false`. */
+    lastUpdated?: boolean;
     links?: AuroraPageLinks;
 };
 
@@ -85,6 +87,8 @@ export type AuroraSearchEntry = {
 export type AuroraLayoutProps = {
     content: ComponentFragment;
     meta: AuroraPageMeta;
+    /** UTC generation time for the current page, when `lastUpdated` is enabled. */
+    lastUpdated?: string;
     /** Resolved region overrides, called by the layout in place of its defaults. */
     slots?: Record<string, AuroraComponentModule['default']>;
 };

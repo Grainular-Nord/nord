@@ -75,3 +75,10 @@
         }
     }
 }
+
+.aurora-last-updated {
+    margin-block: 2rem 0;
+    font-size: 0.875rem;
+    text-align: end;
+    color: var(--aurora-text-faint);
+}

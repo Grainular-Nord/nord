@@ -8,7 +8,7 @@ import Search from '../components/search/search';
 import { searchDefinition } from '../components/search/search-definition';
 import { context } from '../store/context';
 
-export const Docs: AuroraLayoutModule['default'] = ({ content, meta, slots }) => {
+export const Docs: AuroraLayoutModule['default'] = ({ content, lastUpdated, meta, slots }) => {
     const { base = '/', search } = context();
 
     return html`
@@ -21,6 +21,10 @@ export const Docs: AuroraLayoutModule['default'] = ({ content, meta, slots }) =>
             <main class="application-content docs">
                 ${slots?.beforeContent?.({ meta }) ?? null} ${content}
                 ${slots?.pageLinks?.({ meta }) ?? (meta.links && PageLinks(meta.links))}
+                ${lastUpdated &&
+                html`<p class="aurora-last-updated">
+                    Last updated <time datetime=${lastUpdated}>${lastUpdated}</time>
+                </p>`}
             </main>
             ${slots?.outline?.({}) ?? renderComponentHost(outlineDefinition, Outline, {})}
         </div>

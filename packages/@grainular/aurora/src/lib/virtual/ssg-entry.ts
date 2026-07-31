@@ -43,6 +43,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
 
         const site = auroraConfig.site ?? {};
         const page = auroraConfig.page ?? {};
+        const generatedAt = new Date().toISOString();
         const search = ${JSON.stringify(config.search)};
         const buildBase = ${JSON.stringify(base)};
         const deploymentRoot = ${JSON.stringify(deploymentRoot)};
@@ -95,6 +96,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
         });
 
         const renderPage = ({ path, linkPath = path, meta, content, fileName, status }) => {
+            const lastUpdated = meta.lastUpdated === true ? generatedAt : undefined;
             const routes = resolveNavigation(navigationTree, path, linkPath);
             const siteConfig = { ...site, base: routeHref('/', linkPath), routes, search };
             context.set(siteConfig);
@@ -119,7 +121,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
             return {
                 path,
                 ...(fileName ? { fileName } : {}),
-                markup: renderToString(() => App({ meta, content, layouts, slots: shellSlots })),
+                markup: renderToString(() => App({ meta, content, lastUpdated, layouts, slots: shellSlots })),
                 head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page }, social)),
                 language: page.language ?? 'en',
                 ...(status ? { status } : {})
