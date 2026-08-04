@@ -1,5 +1,5 @@
 import { defineConfig } from '@grainular/aurora';
-import analytics from './analytics.txt' with { type: 'text' };
+import analytics from './analytics.txt?raw';
 import './custom.css';
 
 // Aurora also evaluates this config module client-side (client-entry.ts
