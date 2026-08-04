@@ -85,7 +85,7 @@ export default defineConfig({
                 generateBundle(_options, bundle) {
                     if (process.env.VITE_ANALYTICS !== 'true') return;
 
-                    const key = process.env.VITE_ANALYTICS_PLAYGROUND_KEY;
+                    const key = process.env.VITE_ANALYTICS_AURORA_KEY;
                     const endpoint = process.env.VITE_ANALYTICS_ENDPOINT;
                     if (!key || !endpoint) return;
 
