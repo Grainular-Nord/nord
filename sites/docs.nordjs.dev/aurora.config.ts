@@ -1,4 +1,5 @@
 import { defineConfig } from '@grainular/aurora';
+import analytics from './analytics.txt' with { type: 'text' };
 import './custom.css';
 import { EcosystemPopover } from './src/components/ecosystem-popover';
 
@@ -119,5 +120,32 @@ export default defineConfig({
             text: 'Released under the MIT License. Copyright © 2023–2026 Sebastian Heinz.',
             navigation: [{ text: 'LLM Documentation', link: '/llms' }],
         },
+    },
+
+    // Small analytics plugin
+    vite: {
+        plugins: [
+            {
+                name: 'analytics',
+                apply: 'build',
+                enforce: 'post',
+                generateBundle(_options, bundle) {
+                    if (process.env.VITE_ANALYTICS !== 'true') return;
+
+                    const key = process.env.VITE_ANALYTICS_DOCS_KEY;
+                    const endpoint = process.env.VITE_ANALYTICS_ENDPOINT;
+                    if (!key || !endpoint) return;
+
+                    const script = `<script data-site="${key}" data-endpoint="${endpoint}">${analytics}</script>`;
+
+                    for (const asset of Object.values(bundle)) {
+                        if (asset.type !== 'asset' || !asset.fileName.endsWith('.html')) continue;
+                        if (typeof asset.source !== 'string') continue;
+
+                        asset.source = asset.source.replace('</head>', `${script}\n</head>`);
+                    }
+                },
+            },
+        ],
     },
 });

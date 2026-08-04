@@ -53,6 +53,12 @@ jobs:
                   cache: npm
             - run: npm ci
             - run: npm run build:sites
+              env:
+                  VITE_ANALYTICS: 'true'
+                  VITE_ANALYTICS_ENDPOINT: ${{ vars.VITE_ANALYTICS_ENDPOINT }}
+                  VITE_ANALYTICS_DOCS_KEY: ${{ vars.VITE_ANALYTICS_DOCS_KEY }}
+                  VITE_ANALYTICS_AURORA_KEY: ${{ vars.VITE_ANALYTICS_AURORA_KEY }}
+                  VITE_ANALYTICS_PLAYGROUND_KEY: ${{ vars.VITE_ANALYTICS_PLAYGROUND_KEY }}
             - uses: actions/upload-artifact@v4
               if: github.event_name == 'workflow_dispatch'
               with:
