@@ -1,3 +1,4 @@
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { createIdentifier } from './identifier';
 
 /**
@@ -31,5 +32,8 @@ export type Fragment = {
      *
      * @param target
      */
-    hydrate: (target: Node, def?: { binding?: (value: unknown) => void; scope?: string }) => void;
+    hydrate: (
+        target: Node,
+        def: { binding?: (value: unknown) => void; scope?: string; lifecycle: LifecycleObserver },
+    ) => void;
 };

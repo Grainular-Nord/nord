@@ -93,7 +93,7 @@ type EachStruct<T> = {
 export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T> => {
     const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>) =>
         createStruct(
-            (anchor) => {
+            (anchor, lifecycle) => {
                 const indexed = new Map<unknown, Settable<number>>();
                 const cache = new Map<unknown, { nodes: Node[] }>();
                 let prevKeys: unknown[] = [];
@@ -102,7 +102,7 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                     const reactiveIdx = settable(idx);
                     indexed.set(keyFn(item), reactiveIdx);
                     return {
-                        nodes: hydrateFragment(render(item, reactiveIdx, arr)),
+                        nodes: hydrateFragment(render(item, reactiveIdx, arr), lifecycle),
                     };
                 };
 

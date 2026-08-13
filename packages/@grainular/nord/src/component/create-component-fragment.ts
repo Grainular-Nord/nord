@@ -40,7 +40,7 @@ export const createComponentFragment = (template: string[], fragments: Fragment[
 
             // Hydrate the component template using the fragment,
             // the available fragments and scope the nodes if required
-            for (const { fragment, args } of hydrateComponentTemplate(template, fragments, def?.scope)) {
+            for (const { fragment, args } of hydrateComponentTemplate(template, fragments, def)) {
                 fragment.hydrate(...args);
             }
 

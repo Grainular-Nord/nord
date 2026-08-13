@@ -1,4 +1,3 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
 import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
@@ -81,21 +80,21 @@ type SwitchStruct<T> = {
  */
 export const $switch = <T>(condition: Subscribable<T> | (() => T)): SwitchStruct<T> => {
     let defaultFragment: () => ComponentFragment;
-    const current = new Set<Element>();
+    const current = new Set<Node>();
     const cases = new Map<T, () => ComponentFragment>();
 
     const struct = createStruct(
-        (node) => {
+        (node, lifecycle) => {
             const render = (value: T) => {
                 // Get the initial fragment and clear the current
                 // set and nodes, so that all unmount run correctly
                 const fragment = cases.get(value) ?? defaultFragment;
-                disconnectNodes([...current.values()]);
+                lifecycle.disconnectNodes([...current.values()]);
                 current.clear();
 
                 // Hydrate the nodes, assign them to the nodes
                 // set, and render them to the current anchor
-                const nodes = hydrateFragment(fragment());
+                const nodes = hydrateFragment(fragment(), lifecycle);
                 node.before(...nodes);
                 for (const node of nodes) current.add(node);
             };
