@@ -1,4 +1,4 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { ComponentFragment } from '../component/component-fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
@@ -57,19 +57,19 @@ export const $await = <T>(source: Promise<T> | T) => {
         $then: (template: (value: T) => ComponentFragment) => {
             let pendingFragment: () => ComponentFragment;
             let errorFragment: (error: Error) => ComponentFragment;
-            let resolvedNodes: Element[] = [];
+            let resolvedNodes: Node[] = [];
 
             const struct = createStruct(
-                (root: Comment) => {
-                    const initialNodes = pendingFragment ? hydrateFragment(pendingFragment()) : [];
+                (root: Comment, lifecycle: LifecycleObserver) => {
+                    const initialNodes = pendingFragment ? hydrateFragment(pendingFragment(), lifecycle) : [];
                     root.before(...initialNodes);
                     (source instanceof Promise ? source : Promise.resolve(source))
                         .then((result) => {
                             // Make sure the node is still connected
                             if (!root.isConnected) return;
 
-                            const nodes = hydrateFragment(template(result));
-                            disconnectNodes(initialNodes);
+                            const nodes = hydrateFragment(template(result), lifecycle);
+                            lifecycle.disconnectNodes(initialNodes);
                             root.before(...nodes);
                             resolvedNodes = nodes;
                         })
@@ -77,19 +77,19 @@ export const $await = <T>(source: Promise<T> | T) => {
                             if (!root.isConnected) return;
                             // Disconnect the current nodes
                             // regardless if new nodes exist
-                            disconnectNodes(initialNodes);
+                            lifecycle.disconnectNodes(initialNodes);
 
                             // Create the new error state nodes,
                             // or clear the nodes entirely
                             if (errorFragment) {
-                                const nodes = hydrateFragment(errorFragment(error));
+                                const nodes = hydrateFragment(errorFragment(error), lifecycle);
                                 root.before(...nodes);
                                 resolvedNodes = nodes;
                             }
                         });
 
                     return () => {
-                        disconnectNodes(resolvedNodes);
+                        lifecycle.disconnectNodes(resolvedNodes);
                     };
                 },
                 // For our SSR snapshot, we only render the Pending nodes if they

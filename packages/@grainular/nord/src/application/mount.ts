@@ -1,5 +1,5 @@
 import type { PureComponent } from '../component/component-types';
-import { lifecycleObserver } from './lifecycle-observer';
+import { LifecycleObserver } from './lifecycle-observer';
 
 type MountOptions = {
     to: DocumentFragment | Element | null | undefined;
@@ -46,8 +46,9 @@ export const mount = (component: PureComponent, { to: target }: MountOptions) =>
 
     // Start the lifecycle and hydrate
     // the component.
-    lifecycleObserver.start(target);
-    component().hydrate(anchor);
+    const lifecycle = new LifecycleObserver();
+    lifecycle.start(target);
+    component().hydrate(anchor, { lifecycle });
 
     // Update the nodes and render the application
     // to the actual dom. This will remove all
@@ -57,6 +58,6 @@ export const mount = (component: PureComponent, { to: target }: MountOptions) =>
 
     // Return a cleanup fn.
     return () => {
-        lifecycleObserver.disconnect();
+        lifecycle.disconnect();
     };
 };

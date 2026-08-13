@@ -1,4 +1,4 @@
-import { lifecycleObserver } from '../application/lifecycle-observer';
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 
@@ -39,16 +39,18 @@ import { createIdentifier } from '../internals/identifier';
  * html`<input ${autofocus} type="text" />`;
  * ```
  */
-export const createDirective = <T extends Element = Element>(handler: (node: T) => void | (() => void)): Fragment => {
+export const createDirective = <T extends Element = Element>(
+    handler: (node: T, lifecycle: LifecycleObserver) => void | (() => void),
+): Fragment => {
     const fragmentId = createIdentifier();
     return {
         fragmentId: fragmentId,
         resolve: () => fragmentId.get(),
         render: () => '',
-        hydrate: (node: Node) => {
+        hydrate: (node: Node, { lifecycle }) => {
             if (node instanceof Element) {
-                const onDestroy = handler(node as T);
-                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+                const onDestroy = handler(node as T, lifecycle);
+                if (onDestroy) lifecycle.trackUnmount(node, onDestroy);
             }
         },
     } satisfies Fragment;

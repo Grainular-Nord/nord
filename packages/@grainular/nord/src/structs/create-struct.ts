@@ -1,4 +1,4 @@
-import { lifecycleObserver } from '../application/lifecycle-observer';
+import { LifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 /**
@@ -52,7 +52,7 @@ import { createIdentifier } from '../internals/identifier';
  * ```
  */
 export const createStruct = (
-    struct: (node: Comment) => void | (() => void),
+    struct: (node: Comment, lifecycle: LifecycleObserver) => void | (() => void),
     snapshot: () => string = () => '',
 ): Fragment => {
     const fragmentId = createIdentifier();
@@ -60,10 +60,10 @@ export const createStruct = (
         fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => snapshot(),
-        hydrate: (node: Node) => {
+        hydrate: (node: Node, { lifecycle }) => {
             if (node instanceof Comment) {
-                const onDestroy = struct(node);
-                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+                const onDestroy = struct(node, lifecycle);
+                if (onDestroy) lifecycle.trackUnmount(node, onDestroy);
             }
         },
     };

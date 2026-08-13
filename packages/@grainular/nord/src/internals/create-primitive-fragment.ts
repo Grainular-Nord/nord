@@ -9,7 +9,7 @@ export const createPrimitiveFragment = (fragmentValue: boolean | string | number
         fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue),
-        hydrate: (node: Node, { binding } = {}) => {
+        hydrate: (node: Node, { binding }) => {
             // Hydrate the node depending of it's type
             if (node instanceof Comment) {
                 return node.replaceWith(new Text(String(fragmentValue)));
