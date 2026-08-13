@@ -32,6 +32,23 @@ const Search = () => html`<input ${autofocus} type="search" />`;
 
 The handler runs while Nørd hydrates the element. Use `mounted` instead when behavior must wait until the element is connected to the document.
 
+## Rendering static attributes
+
+Pass an optional second callback when a directive also needs to contribute attributes during server rendering. Its return value is written into the host element's opening tag; the browser handler still runs normally when the page is mounted.
+
+```ts title="current-page.ts"
+const currentPage = createDirective(
+    (link) => {
+        link.setAttribute('aria-current', 'page');
+    },
+    () => 'aria-current="page"',
+);
+
+const Navigation = () => html`<a href="/docs" ${currentPage}>Documentation</a>`;
+```
+
+Return complete, valid attribute markup. The snapshot is raw HTML output, so escape any dynamic attribute values yourself; for ordinary known attributes, direct template interpolation is usually clearer.
+
 ## Accepting values
 
 Wrap `createDirective` in a function to create a directive with configuration.

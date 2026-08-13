@@ -36,21 +36,26 @@ import { createDirective } from './create-directive';
  */
 
 export const attr = (dict: Record<PropertyKey, unknown>) => {
-    return createDirective((node) => {
-        const subscribers = new Set<(() => void) | void>();
+    return createDirective(
+        (node) => {
+            const subscribers = new Set<(() => void) | void>();
 
-        for (const [key, value] of Object.entries(dict)) {
-            setAttribute(node, key, unwrap(value));
-            if (isSubscribableValue(value)) {
-                const sub = value.subscribe((value) => setAttribute(node, key, value));
-                subscribers.add(sub);
+            for (const [key, value] of Object.entries(dict)) {
+                setAttribute(node, key, unwrap(value));
+                if (isSubscribableValue(value)) {
+                    const sub = value.subscribe((value) => setAttribute(node, key, value));
+                    subscribers.add(sub);
+                }
             }
-        }
 
-        return () => {
-            for (const fn of Array.from(subscribers)) {
-                fn?.();
-            }
-        };
-    });
+            return () => {
+                for (const fn of Array.from(subscribers)) {
+                    fn?.();
+                }
+            };
+        },
+        // The snapshot here should be correct for about 95% of attributes, but will incorrectly
+        // parse boolean attributes.
+        () => Object.entries(dict).reduce((acc, [key, value]) => `${acc} ${key}="${value}"`, ''),
+    );
 };
