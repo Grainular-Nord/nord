@@ -1,4 +1,3 @@
-import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
 import { createDirective } from './create-directive';
 
@@ -32,7 +31,7 @@ import { createDirective } from './create-directive';
  * ```
  */
 export const mounted = (run: (element: Element) => () => void): Fragment => {
-    return createDirective((node: Element) => {
-        lifecycleObserver.trackMount(node, () => run(node));
+    return createDirective((node: Element, lifecycle) => {
+        lifecycle.trackMount(node, () => run(node));
     });
 };

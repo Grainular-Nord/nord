@@ -1,3 +1,4 @@
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import { createAttributeBinding } from '../internals/attribute-bindings';
 import type { Fragment } from '../internals/fragment';
 import { identifierRegex } from '../internals/identifier';
@@ -18,7 +19,11 @@ type HydrationWorkUnit = { fragment: Fragment; args: Parameters<Fragment['hydrat
  * The previous implementation used a TreeWalker, however benchmarking showed
  * that iterating manually is actually faster then the native implementation.
  */
-export const hydrateComponentTemplate = (node: Node, fragments: Fragment[], scope?: string) => {
+export const hydrateComponentTemplate = (
+    node: Node,
+    fragments: Fragment[],
+    def: { scope?: string; lifecycle: LifecycleObserver },
+) => {
     const hydrationUnits: HydrationWorkUnit[] = [];
     iterateNodes(node, (current) => {
         // Comments are handled by finding the
@@ -33,7 +38,7 @@ export const hydrateComponentTemplate = (node: Node, fragments: Fragment[], scop
                 const fragment = fragments[idx];
 
                 if (fragment) {
-                    hydrationUnits.push({ fragment, args: [current] });
+                    hydrationUnits.push({ fragment, args: [current, def] });
                 }
             }
         }
@@ -50,7 +55,7 @@ export const hydrateComponentTemplate = (node: Node, fragments: Fragment[], scop
                     const fragment = fragments[idx];
 
                     if (fragment) {
-                        hydrationUnits.push({ fragment, args: [current] });
+                        hydrationUnits.push({ fragment, args: [current, def] });
                         current.removeAttribute(name);
                     }
 
@@ -68,15 +73,15 @@ export const hydrateComponentTemplate = (node: Node, fragments: Fragment[], scop
 
                         if (fragment) {
                             const binding = createAttributeBinding(current, name, match, matches);
-                            hydrationUnits.push({ fragment, args: [current, { binding }] });
+                            hydrationUnits.push({ fragment, args: [current, { binding, ...def }] });
                         }
                     }
                 }
             }
 
             // Apply Scope
-            if (scope) {
-                current.setAttribute(scope, '');
+            if (def.scope) {
+                current.setAttribute(def.scope, '');
             }
         }
     });

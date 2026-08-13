@@ -1,4 +1,4 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
 import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
@@ -82,10 +82,10 @@ type IfStruct = {
  * ```
  */
 export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStruct => {
-    const nodes = new Map<boolean, () => Element[]>();
+    const nodes = new Map<boolean, () => Node[]>();
 
-    const struct = (fulfilled: () => ComponentFragment) => {
-        nodes.set(true, () => hydrateFragment(fulfilled()));
+    const struct = (fulfilled: () => ComponentFragment, lifecycle: LifecycleObserver) => {
+        nodes.set(true, () => hydrateFragment(fulfilled(), lifecycle));
         const initial = conditional();
 
         return (root: Comment) => {
@@ -100,7 +100,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
                     if (value === previousValue) return;
                     previousValue = value;
 
-                    disconnectNodes(evaluated);
+                    lifecycle.disconnectNodes(evaluated);
                     evaluated = nodes.get(value)?.() ?? [];
                     root.before(...evaluated);
                 });
@@ -110,15 +110,25 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
 
     return {
         $then: (fulfilled: () => ComponentFragment) => {
-            const snapshot = () => (conditional() ? fulfilled().render() : '');
-            const structFn = struct(fulfilled);
-
-            return Object.assign(createStruct(structFn, snapshot), {
-                $else: (show: () => ComponentFragment) => {
-                    nodes.set(false, () => hydrateFragment(show()));
-                    return createStruct(structFn, () => (!conditional() ? show().render() : fulfilled().render()));
+            return Object.assign(
+                createStruct(
+                    (node, lifecycle) => {
+                        return struct(fulfilled, lifecycle)(node);
+                    },
+                    () => (conditional() ? fulfilled().render() : ''),
+                ),
+                {
+                    $else: (show: () => ComponentFragment) => {
+                        return createStruct(
+                            (node, lifecycle) => {
+                                nodes.set(false, () => hydrateFragment(show(), lifecycle));
+                                return struct(fulfilled, lifecycle)(node);
+                            },
+                            () => (!conditional() ? show().render() : fulfilled().render()),
+                        );
+                    },
                 },
-            });
+            );
         },
     };
 };

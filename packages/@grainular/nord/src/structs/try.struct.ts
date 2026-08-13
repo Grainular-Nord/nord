@@ -1,4 +1,3 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
 import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
@@ -55,19 +54,19 @@ export const $try = (render: () => ComponentFragment): TryStruct => {
     return {
         $catch: (fallback: (error: unknown) => ComponentFragment) => {
             return createStruct(
-                (node) => {
-                    let nodes: Element[] = [];
+                (node, lifecycle) => {
+                    let nodes: Node[] = [];
 
                     try {
-                        nodes = hydrateFragment(render());
+                        nodes = hydrateFragment(render(), lifecycle);
                     } catch (e: unknown) {
-                        nodes = hydrateFragment(fallback(e));
+                        nodes = hydrateFragment(fallback(e), lifecycle);
                     } finally {
                         node.replaceWith(...nodes);
                     }
 
                     return () => {
-                        disconnectNodes(nodes);
+                        lifecycle.disconnectNodes(nodes);
                         nodes = [];
                     };
                 },

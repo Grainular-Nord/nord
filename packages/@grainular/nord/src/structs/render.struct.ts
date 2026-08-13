@@ -1,4 +1,3 @@
-import { disconnectNodes } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
 import type { ComponentFragment } from '../component/component-fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
@@ -41,14 +40,14 @@ import { createStruct } from './create-struct';
  */
 export const $render = (source: Subscribable<ComponentFragment>) => {
     return createStruct(
-        (node) => {
-            let nodes: Element[] = [];
+        (node, lifecycle) => {
+            let nodes: Node[] = [];
 
             const render = (maybeFragment: (() => ComponentFragment) | ComponentFragment) => {
-                disconnectNodes(nodes);
+                lifecycle.disconnectNodes(nodes);
 
                 const fragment = typeof maybeFragment === 'function' ? maybeFragment() : maybeFragment;
-                nodes = hydrateFragment(fragment);
+                nodes = hydrateFragment(fragment, lifecycle);
 
                 node.before(...nodes);
             };
@@ -58,7 +57,7 @@ export const $render = (source: Subscribable<ComponentFragment>) => {
 
             return () => {
                 ondestroy?.();
-                disconnectNodes(nodes);
+                lifecycle.disconnectNodes(nodes);
                 nodes = [];
             };
         },

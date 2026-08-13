@@ -63,15 +63,15 @@ export const $tag = <T extends keyof HTMLElementTagNameMap>(
     { as, children, use = [] }: TagOpts<T>,
     onMount?: (node: HTMLElementTagNameMap[T]) => (() => void) | void,
 ) => {
-    return createStruct((node) => {
+    return createStruct((node, lifecycle) => {
         const element = document.createElement(as);
-        element.append(...hydrateFragment(templateParser`${children}`));
+        element.append(...hydrateFragment(templateParser`${children}`, lifecycle));
 
         // Hydrate the fragment from the passed elements
         // This will directly register any eventual cleanup
         // that triggers once the node is removed from the DOM
         for (const fragment of use) {
-            fragment.hydrate(element);
+            fragment.hydrate(element, { lifecycle });
         }
 
         node.replaceWith(element);

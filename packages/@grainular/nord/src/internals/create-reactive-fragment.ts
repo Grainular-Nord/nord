@@ -1,4 +1,3 @@
-import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
 import type { Fragment } from './fragment';
 import { createIdentifier } from './identifier';
@@ -11,7 +10,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
         fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
         render: () => String(fragmentValue() ?? ''),
-        hydrate: (node: Node, { binding } = {}) => {
+        hydrate: (node: Node, { binding, lifecycle }) => {
             if (node instanceof Comment) {
                 const text = new Text(String(fragmentValue() ?? ''));
                 node.replaceWith(text);
@@ -20,7 +19,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
                     text.textContent = String(value ?? '');
                 });
 
-                if (onDestroy) lifecycleObserver.trackUnmount(text, onDestroy);
+                if (onDestroy) lifecycle.trackUnmount(text, onDestroy);
             }
 
             if (node instanceof Element) {
@@ -30,7 +29,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
                     binding?.(value ?? '');
                 });
 
-                if (onDestroy) lifecycleObserver.trackUnmount(node, onDestroy);
+                if (onDestroy) lifecycle.trackUnmount(node, onDestroy);
             }
         },
     };
