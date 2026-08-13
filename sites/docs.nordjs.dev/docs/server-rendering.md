@@ -39,6 +39,10 @@ const document = `<!doctype html>
 </html>`;
 ```
 
+:::Caution
+`renderToString` escapes interpolated values during serialization, but cannot guarantee that malicious JavaScript is stripped. If you include user generated values in serialization, make sure to sanitize them accordingly.
+:::
+
 ## Static generation
 
 Static generation is the natural use of server rendering: evaluate each route during a build, then write the resulting document to the output directory. The browser receives ordinary HTML that works before JavaScript loads.
