@@ -1,3 +1,4 @@
+import { escapeHtml } from './escape-html';
 import type { Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
@@ -8,7 +9,7 @@ export const createPrimitiveFragment = (fragmentValue: boolean | string | number
     return {
         fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
-        render: () => String(fragmentValue),
+        render: () => escapeHtml(fragmentValue),
         hydrate: (node: Node, { binding } = {}) => {
             // Hydrate the node depending of it's type
             if (node instanceof Comment) {

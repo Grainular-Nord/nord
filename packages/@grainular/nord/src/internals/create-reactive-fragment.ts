@@ -1,5 +1,6 @@
 import { lifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
+import { escapeHtml } from './escape-html';
 import type { Fragment } from './fragment';
 import { createIdentifier } from './identifier';
 
@@ -10,7 +11,7 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
     return {
         fragmentId: fragmentId,
         resolve: () => `<!--${fragmentId.get()}-->`,
-        render: () => String(fragmentValue() ?? ''),
+        render: () => escapeHtml(fragmentValue()),
         hydrate: (node: Node, { binding } = {}) => {
             if (node instanceof Comment) {
                 const text = new Text(String(fragmentValue() ?? ''));
