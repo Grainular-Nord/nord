@@ -27,6 +27,10 @@ import { createIdentifier } from '../internals/identifier';
  * with the target element on hydration. May return a cleanup function that runs
  * when the element is removed from the DOM.
  *
+ * @param {() => string } [snapshot] - A optional function called
+ * when the application is server side serialized. should render out
+ * a set of attribute to render
+ *
  * @returns {Fragment} A fragment representing the directive, attachable to
  * elements in a template.
  *
@@ -41,12 +45,13 @@ import { createIdentifier } from '../internals/identifier';
  */
 export const createDirective = <T extends Element = Element>(
     handler: (node: T, lifecycle: LifecycleObserver) => void | (() => void),
+    snapshot?: () => string,
 ): Fragment => {
     const fragmentId = createIdentifier();
     return {
         fragmentId: fragmentId,
         resolve: () => fragmentId.get(),
-        render: () => '',
+        render: () => snapshot?.() ?? '',
         hydrate: (node: Node, { lifecycle }) => {
             if (node instanceof Element) {
                 const onDestroy = handler(node as T, lifecycle);
