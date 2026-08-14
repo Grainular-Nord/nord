@@ -1,6 +1,6 @@
 import { grain } from '@grainular/grains';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { $each, html, mount } from '../src';
+import { $each, html, mount, renderToString } from '../src';
 import { setup } from './setup';
 
 describe('[Nørd Runtime] Lists', () => {
@@ -228,6 +228,60 @@ describe('[Nørd Runtime] Lists', () => {
         items.set([]);
 
         expect(list?.childElementCount).toBe(0);
+    });
+
+    test('should render an empty fallback and replace it when items are added', () => {
+        const items = grain<string[]>([]);
+
+        const List = () => html`
+            <ul>
+                ${$each(items)
+                    .$as((item) => html`<li>${item}</li>`)
+                    .$empty(() => html`<li class="empty">Nothing here.</li>`)}
+            </ul>
+        `;
+
+        mount(List, { to: document.querySelector('#app') });
+
+        const list = document.querySelector('ul');
+        expect(list?.textContent?.trim()).toBe('Nothing here.');
+        expect(list?.querySelector('.empty')).not.toBeNull();
+
+        items.set(['A', 'B']);
+
+        expect(list?.querySelector('.empty')).toBeNull();
+        expect(Array.from(list?.children ?? []).map((node) => node.textContent)).toEqual(['A', 'B']);
+    });
+
+    test('should restore the empty fallback when all items are removed', () => {
+        const items = grain(['A']);
+
+        const List = () => html`
+            <ul>
+                ${$each(items)
+                    .$as((item) => html`<li>${item}</li>`)
+                    .$empty(() => html`<li class="empty">Nothing here.</li>`)}
+            </ul>
+        `;
+
+        mount(List, { to: document.querySelector('#app') });
+        items.set([]);
+
+        const list = document.querySelector('ul');
+        expect(list?.textContent?.trim()).toBe('Nothing here.');
+        expect(list?.childElementCount).toBe(1);
+    });
+
+    test('should render the empty fallback in a static snapshot', () => {
+        const List = () => html`
+            <ul>
+                ${$each(() => [])
+                    .$as((item: string) => html`<li>${item}</li>`)
+                    .$empty(() => html`<li>Nothing here.</li>`)}
+            </ul>
+        `;
+
+        expect(renderToString(List)).toContain('<li>Nothing here.</li>');
     });
 
     test('should replace node when identity changes', () => {
