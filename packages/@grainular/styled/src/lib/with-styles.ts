@@ -39,9 +39,9 @@ export const withStyles = (template: () => ComponentFragment, styles: () => Styl
 
     return {
         ...templateResult,
-        hydrate: (target: Node) => {
+        hydrate: (target: Node, { lifecycle }) => {
             const scope = scopeStyles(styleResult);
-            templateResult.hydrate(target, { scope });
+            templateResult.hydrate(target, { scope, lifecycle });
         },
     };
 };
