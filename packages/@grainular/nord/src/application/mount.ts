@@ -1,5 +1,5 @@
 import type { PureComponent } from '../component/component-types';
-import { LifecycleObserver } from './lifecycle-observer';
+import { createLifecycleObserver } from './lifecycle-observer';
 
 type MountOptions = {
     to: DocumentFragment | Element | null | undefined;
@@ -46,7 +46,7 @@ export const mount = (component: PureComponent, { to: target }: MountOptions) =>
 
     // Start the lifecycle and hydrate
     // the component.
-    const lifecycle = new LifecycleObserver();
+    const lifecycle = createLifecycleObserver();
     lifecycle.start(target);
     component().hydrate(anchor, { lifecycle });
 

@@ -1,4 +1,4 @@
-import { LifecycleObserver } from '../application/lifecycle-observer';
+import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { Fragment } from '../internals/fragment';
 import { createIdentifier } from '../internals/identifier';
 /**
