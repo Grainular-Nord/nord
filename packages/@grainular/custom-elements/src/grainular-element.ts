@@ -1,5 +1,5 @@
 import { type ComponentFragment, mount } from '@grainular/nord';
-import { ContextState } from './context-state';
+import { createContext } from './context-state';
 import type { CustomElementDefinition } from './custom-element-definition';
 import type { CustomElementStyles } from './custom-element-styles';
 
@@ -12,7 +12,7 @@ export abstract class GrainularElement<T extends Lowercase<string> = never> exte
     #onUnmount?: () => void;
     #useShadow = true;
     #isConnected = false;
-    state: ContextState<T>;
+    state: ReturnType<typeof createContext<T>>;
     styles: CustomElementStyles;
 
     constructor(
@@ -27,7 +27,7 @@ export abstract class GrainularElement<T extends Lowercase<string> = never> exte
         this.#onMount = onMount;
         this.#onUnmount = onUnmount;
         this.#useShadow = scoped;
-        this.state = new ContextState(attributes);
+        this.state = createContext(attributes.map((key) => key.toLocaleLowerCase() as Lowercase<string>));
         this.styles = styles;
     }
 
@@ -39,7 +39,6 @@ export abstract class GrainularElement<T extends Lowercase<string> = never> exte
         // before initializing it again.
         if (this.#isConnected || this.#cleanup) {
             this.onDestroy();
-            this.#isConnected = false;
         }
 
         let target: ShadowRoot | Element = this;
@@ -61,9 +60,11 @@ export abstract class GrainularElement<T extends Lowercase<string> = never> exte
     // Callback centralizing all cleanup and destroy
     // functionality.
     protected onDestroy() {
+        this.#isConnected = false;
         this.#onUnmount?.();
+
         this.#cleanup?.();
-        this.state.clear();
+        this.#cleanup = null;
     }
 
     /**
