@@ -1,36 +1,28 @@
 type AttributeState<T extends Lowercase<string>> = Record<T, string | null>;
 
-export class ContextState<T extends Lowercase<string>> {
-    private state = {} as AttributeState<T>;
-    private subscribers = new Set<(state: AttributeState<T>) => void>();
-    constructor(keys: T[]) {
-        for (const key of keys) this.state[key] = null;
-    }
+export const createContext = <T extends Lowercase<string>>(keys: T[]) => {
+    let value = Object.fromEntries(keys.map((key) => [key, null])) as AttributeState<T>;
+    const subscribers = new Set<(state: AttributeState<T>) => void>();
 
-    subscribe(subscriber: (state: AttributeState<T>) => void) {
-        this.subscribers.add(subscriber);
-        subscriber(this.state);
+    const update = (updater: (state: AttributeState<T>) => AttributeState<T>) => {
+        // No point in checking Object.is, as we will basically always create a new object, not mutate it
+        // (And mutating it would also then not trigger update, so mäh)
+        value = updater(value);
+        for (const subscriber of Array.from(subscribers)) subscriber(value);
+    };
 
-        return () => {
-            this.subscribers.delete(subscriber);
-        };
-    }
-    set(partial: Partial<AttributeState<T>>) {
-        this.update((state) => ({ ...state, ...partial }));
-    }
+    const set = (partial: Partial<AttributeState<T>>) => {
+        update((state) => ({ ...state, ...partial }));
+    };
 
-    update(updater: (state: AttributeState<T>) => AttributeState<T>) {
-        this.state = updater(this.state);
-        for (const subscriber of this.subscribers) {
-            subscriber(this.state);
-        }
-    }
+    return Object.assign(() => value, {
+        set,
+        update,
+        subscribe: (subscriber: (state: AttributeState<T>) => void) => {
+            subscribers.add(subscriber);
+            return () => subscribers.delete(subscriber);
+        },
+    });
+};
 
-    get() {
-        return this.state;
-    }
-
-    clear() {
-        this.subscribers.clear();
-    }
-}
+export type ContextState<T extends Lowercase<string>> = ReturnType<typeof createContext<T>>;

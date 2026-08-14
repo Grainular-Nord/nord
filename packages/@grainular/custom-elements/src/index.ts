@@ -16,13 +16,14 @@ export const createCustomElement = <T extends Lowercase<string> = never>(
     if (customElements.get(selector)) return;
 
     const styleSheet = new CustomElementStyles(styles);
+    const attributes = opts.attributes?.map((entry) => entry.toLowerCase()) || [];
 
     // We can directly define the element by extending the abstract grainular element
     customElements.define(
         selector,
         class extends GrainularElement<T> {
             static get observedAttributes() {
-                return opts.attributes?.map((entry) => entry.toLowerCase()) || [];
+                return attributes;
             }
 
             constructor() {
@@ -39,8 +40,12 @@ export const createCustomElement = <T extends Lowercase<string> = never>(
             }
 
             attributeChangedCallback(name: T, _: string | null, newValue: string | null) {
-                this.state.set({ [name]: newValue } as Record<T, string | null>);
+                if (!Object.is(this.state()[name], newValue)) {
+                    this.state.set({ [name]: newValue } as Record<T, string | null>);
+                }
             }
         },
     );
 };
+
+export type { ContextState } from './context-state';
