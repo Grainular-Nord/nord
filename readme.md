@@ -1,54 +1,33 @@
-> 📚 Full documentation is available at [docs.nordjs.dev](https://docs.nordjs.dev).
-
 ## 🎯 Tenets of Nord
 
-Nord is a lightweight, reactive JavaScript framework for building single-page applications. Its design is determined by simplicity, performance, and developer-first ergonomics.
+Nørd is a minimal, reactive javascript library for building UI. It's main design ideas are simplicity, dx and staying as close to the browser as possible. Nørd therefore commits to a set of Tenets, that are non negotiable.
+
+> More can always be said. The full documentation is available at [docs.nordjs.dev](https://docs.nordjs.dev)
 
 ---
 
-### 🚀 Core Philosophy
+### Philosophy
 
-- **Nord is a JavaScript library for building reactive single-page applications.**
-- **Nord is dependency-free**, with zero third-party runtime dependencies.
-- **Nord embraces TypeScript**, but does not require it.
-- **Nord is a pure runtime framework**, and can run entirely without build tools.
-- **Nord embraces modern DX tools**, like Vite, even though they are optional.
-- **Nord is well tested**, with high coverage across its core primitives.
-- **Nord is fast**, competitive with other frameworks
-
----
-
-### ⚙️ Architecture & Reactivity
-
-- **Nord uses grains (signals) as reactive primitives**, but does not enforce them. Any subscribable that exposes a `subscribe` function can be used.
-- **Nord surgically updates DOM nodes** based on grain changes — no re-rendering, virtual DOM, or diffing involved.
-- **Nord utilizes a component-based architecture**, enabling composition through reactive building blocks.
-- **Nord abstracts DOM logic**, but exposes it via directives for advanced control.
+- **Nørd** is a JavaScript library for building reactive UI.
+- **Nørds** runtime is dependency free, with 0 third party runtime dependencies.
+- **Nørd** fully embraces TypeScript, but can be used without.
+- **Nørd** does not require any build tools, but can still seamlessly integrate into modern setups.
+- **Nørds** performance is not an afterthought, with effort spend on making it competitive.
+- **Nørd** is small and focused. We aim for a sub 10kb runtime at all times, fully tree shakable.
 
 ---
 
-### 📦 Feature Integrations
+### Architecture & Reactivity
 
-- **Nord provides first-class modules** for HTTP, forms, routing, and internationalization (i18n).
-- **Nord commits to a minimal core runtime**, under 10KB, extendable through optional modules.
-
----
-
-### 🌐 Rendering & SSR
-
-- **Nord is completely SSR ready**
-- **Nord is performant by default**, utilizing stable templates and fine-grained updates to eliminate rerendering entirely.
-
----
-
-### 🛠️ Developer Experience
-
-- **Nord utilizes tagged template literals instead of JSX**, keeping it dependency-free and standards-aligned.
-- **Nord provides modern devtools**, including an IDE extensions for an elevated development experience.
+- **Nørd** does not prescribe a reactive primitive. A `Subscribable` interface is exposed and needs to be fulfilled.
+- **Nørd** does surgically update the DOM, there is no diffing, rerendering or virtual DOM.
+- **Nørd** uses ordinary functions and closures to express state and UI.
+- **Nørd** allows to declarative compose UI, but allows for imperative access to the DOM.
+- **Nørd** uses browser features where possible, instead of reinventing the whell.
 
 ## Why Nørd?
 
-Modern frontend development has drifted far from the browser. Frameworks reinvent what browsers already do well - reactivity, templating, styling - then ship megabytes of JavaScript to recreate it. Nørd takes the opposite approach: work with the browser, not against it. A minimal API surface is all that's needed.
+Nørd tries to answer the question: What is the minimal set of primitives required to build reactive UI declaratively. Modern browsers offer many features that can be utilized to build a minimal runtime, and working with the browser means less JavaScript shipped. Nørd works with the browser, not against it.
 
 ## API Design
 
@@ -436,25 +415,4 @@ export const App = () => {
 };
 
 mount(App, { to: document.querySelector('main#app') });
-```
-
-### Web Component Ready
-
-```ts
-import { createCustomElement } from '@grainular/custom-elements';
-import { html } from '@grainular/nord';
-import { grain } from '@grainular/grains';
-
-const Counter = () => {
-    const count = grain(0);
-
-    const handleClick = () => count.set(count() + 1);
-
-    return html` <button ${on('click', handleClick)}>
-        ${count}
-        <button></button>
-    </button>`;
-};
-
-export default createCustomElement(() => Counter(), { selector: 'nord-counter' });
 ```
