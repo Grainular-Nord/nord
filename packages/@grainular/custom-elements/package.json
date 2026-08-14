@@ -1,6 +1,6 @@
 {
     "name": "@grainular/custom-elements",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "type": "module",
     "packageManager": "npm@11.6.0",
     "main": "./dist/cjs/index.cjs",

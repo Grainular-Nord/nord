@@ -1,5 +1,11 @@
 # @grainular/nord
 
+## 2.2.1
+
+### Patch Changes
+
+- [#156](https://github.com/Grainular-Nord/nord/pull/156) [`6e4e6cc`](https://github.com/Grainular-Nord/nord/commit/6e4e6cccc67b7b4daf9ec3a9048df0207b295a85) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Resolves an issue where during server side evaluation the mutation observer would not be available, even though it's never used
+
 ## 2.2.0
 
 ### Minor Changes
