@@ -68,16 +68,17 @@ Adding an item renders one new fragment. Removing an item disconnects its nodes 
 
 ## Empty collections
 
-`$each` renders nothing for an empty array. Pair it with a derived boolean and `$if` when the empty state needs its own markup.
+`$each` renders nothing for an empty array by default. Chain `.$empty` after
+`.$as` when the list owns its empty-state markup. The fallback is removed when
+items are added and restored when they are all removed.
 
 ```ts
-import { derived } from '@grainular/grains';
-
-const hasNoTasks = derived(tasks, (items) => items.length === 0);
-
 const Tasks = () => html`
-    ${$if(hasNoTasks)
-        .$then(() => html`<p>No tasks yet.</p>`)
-        .$else(() => TaskList())}
+    <ul>
+        ${$each(tasks)
+            .$withKey((task) => task.id)
+            .$as((task) => html`<li>${task.title}</li>`)
+            .$empty(() => html`<li>No tasks yet.</li>`)}
+    </ul>
 `;
 ```

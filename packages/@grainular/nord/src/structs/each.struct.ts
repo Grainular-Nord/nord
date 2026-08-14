@@ -30,6 +30,12 @@ import { createStruct } from './create-struct';
 
 type KeyFn<T> = (entry: T) => unknown;
 type RenderFn<T> = (entry: T, idx: Subscribable<number>, arr: T[]) => ComponentFragment;
+type EmptyRenderFn = () => ComponentFragment;
+
+type EachFragment = Fragment & {
+    /** Renders a fallback whenever the source array is empty. */
+    $empty: (render: EmptyRenderFn) => Fragment;
+};
 
 type EachStruct<T> = {
     /**
@@ -38,7 +44,7 @@ type EachStruct<T> = {
      * primitives or lists that may contain duplicate values — use `$withKey`
      * instead.
      */
-    $as: (render: RenderFn<T>) => Fragment;
+    $as: (render: RenderFn<T>) => EachFragment;
 
     /**
      * Provides a key function for stable item identity across reconciliation.
@@ -53,7 +59,7 @@ type EachStruct<T> = {
          * the value returned from `$withKey`. This is the safest way to render
          * any list and should be preferred in most cases.
          */
-        $as: (render: RenderFn<T>) => Fragment;
+        $as: (render: RenderFn<T>) => EachFragment;
     };
 };
 
@@ -66,8 +72,8 @@ type EachStruct<T> = {
  * subscribable that returns the current list of items.
  *
  * @returns {EachStruct<T>} An object with `$as` and `$withKey` methods for
- * specifying how items are keyed and rendered. See each method for guidance
- * on when to use which.
+ * specifying how items are keyed and rendered. The result of `$as` may be
+ * chained with `$empty` to render a fallback for an empty source.
  *
  * @example
  * ```ts
@@ -77,6 +83,7 @@ type EachStruct<T> = {
  * html`${$each(users)
  *     .$withKey(user => user.id)
  *     .$as((user) => html`<li>${user.name}</li>`)
+ *     .$empty(() => html`<li>No users yet.</li>`)
  * }`;
  * ```
  *
@@ -91,12 +98,15 @@ type EachStruct<T> = {
  * ```
  */
 export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T> => {
-    const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>) =>
-        createStruct(
+    const createEach = (keyFn: (value: T) => unknown, render: RenderFn<T>): EachFragment => {
+        let emptyFragment: EmptyRenderFn | undefined;
+
+        const struct = createStruct(
             (anchor, lifecycle) => {
                 const indexed = new Map<unknown, Settable<number>>();
                 const cache = new Map<unknown, { nodes: Node[] }>();
                 let prevKeys: unknown[] = [];
+                let emptyNodes: Node[] = [];
 
                 const create = (item: T, idx: number, arr: T[]) => {
                     const reactiveIdx = settable(idx);
@@ -148,6 +158,21 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                         }
                     }
 
+                    if (items.length === 0) {
+                        if (emptyNodes.length === 0 && emptyFragment) {
+                            emptyNodes = hydrateFragment(emptyFragment(), lifecycle);
+                            anchor.before(...emptyNodes);
+                        }
+
+                        prevKeys = [];
+                        return;
+                    }
+
+                    if (emptyNodes.length > 0) {
+                        lifecycle.disconnectNodes(emptyNodes);
+                        emptyNodes = [];
+                    }
+
                     const seq = getLIS(sources);
                     let j = seq.length - 1;
                     let cursor: Node = anchor;
@@ -187,14 +212,25 @@ export const $each = <T>(source: (() => T[]) | Subscribable<T[]>): EachStruct<T>
                         cache.forEach(({ nodes }) => {
                             removeNodes(nodes);
                         });
+                        lifecycle.disconnectNodes(emptyNodes);
                     };
                 }
             },
-            () =>
-                source()
-                    .map((value, idx, arr) => render(value, settable(idx), arr).render())
-                    .join(''),
+            () => {
+                const items = source();
+                return items.length > 0
+                    ? items.map((value, idx, arr) => render(value, settable(idx), arr).render()).join('')
+                    : (emptyFragment?.().render() ?? '');
+            },
         );
+
+        return Object.assign(struct, {
+            $empty: (render: EmptyRenderFn) => {
+                emptyFragment = render;
+                return struct;
+            },
+        });
+    };
 
     return {
         $as: (render: RenderFn<T>) => createEach((value) => value, render),
