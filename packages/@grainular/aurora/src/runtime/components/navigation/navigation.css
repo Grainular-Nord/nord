@@ -54,7 +54,7 @@
         gap: 0.35rem;
     }
 
-    & .aurora-navigation-item {
+    & :is(.aurora-navigation-root, .aurora-navigation-item) {
         min-inline-size: 0;
     }
 
@@ -78,6 +78,10 @@
         &[aria-current='page'] {
             color: var(--aurora-accent-text);
         }
+    }
+
+    & .aurora-navigation-root > .aurora-navigation-link {
+        font-weight: 600;
     }
 
     & .aurora-navigation-group-label {
@@ -125,10 +129,26 @@
                 background: var(--aurora-overlay);
             }
 
-            &:focus-visible {
+            &:focus-visible,
+            &:has(> .aurora-navigation-summary-link:focus-visible) {
                 color: var(--aurora-accent-text);
                 outline: 2px solid var(--aurora-accent);
                 outline-offset: 1px;
+            }
+
+            & > .aurora-navigation-summary-link {
+                flex: 1;
+                min-inline-size: 0;
+                color: inherit;
+                text-decoration: none;
+
+                &:focus-visible {
+                    outline: none;
+                }
+            }
+
+            &:has(> .aurora-navigation-summary-link[aria-current='page']) {
+                color: var(--aurora-accent-text);
             }
         }
 
