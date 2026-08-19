@@ -31,7 +31,7 @@
         "build:packages": "turbo run build --filter='./packages/**'",
         "build:sites": "turbo run docs:build --filter='./sites/*' --only",
         "test": "turbo run test",
-        "version-packages": "changeset version",
+        "version-packages": "changeset version && npm run format",
         "release": "changeset publish"
     },
     "workspaces": [
