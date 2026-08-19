@@ -79,7 +79,13 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
             return {
                 path,
                 ...(fileName ? { fileName } : {}),
-                markup: renderToString(() => App({ meta, content, lastUpdated, layouts, slots: shellSlots })),
+                markup: renderToString(() => App({
+                    meta,
+                    content,
+                    lastUpdated,
+                    layouts,
+                    slots: shellSlots
+                })),
                 head: renderToString(() => $pageMeta({ ...resolvedMeta, ...page }, social)),
                 language: page.language ?? 'en',
                 ...(status ? { status } : {})

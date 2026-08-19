@@ -38,7 +38,8 @@ export const Docs: AuroraLayoutModule['default'] = ({ content, lastUpdated, meta
                 ${slots?.pageLinks?.({ meta }) ?? (meta.links && PageLinks(meta.links))}
                 ${PageDetails({ source: meta.source, lastUpdated })}
             </main>
-            ${slots?.outline?.({}) ?? renderComponentHost(outlineDefinition, Outline, {})}
+            ${slots?.outline?.({ meta }) ??
+            renderComponentHost(outlineDefinition, Outline, { headings: meta.headings ?? [] })}
         </div>
         ${slots?.beforeFooter?.({ meta }) ?? null}
     `;
