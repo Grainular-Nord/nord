@@ -1,6 +1,5 @@
 import type { AuroraComponentDefinition, AuroraSlots } from '../config/config';
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
-import { AURORA_STYLES_ID } from '../plugin/constants';
 
 const importPattern = /(?:import|__vite_ssr_dynamic_import__)\(\s*["'`]([^"'`]+)["'`]\s*\)/;
 
@@ -31,8 +30,7 @@ const clientComponents = (config: ResolvedAuroraConfig) =>
         .map(componentImport)
         .join(',\n');
 
-export const createClientEntry = (config: ResolvedAuroraConfig, production: boolean) => `
-    ${production ? `import ${JSON.stringify(AURORA_STYLES_ID)};` : ''}
+export const createClientEntry = (config: ResolvedAuroraConfig) => `
     import { activateComponents, builtInComponents } from "@grainular/aurora/runtime";
 
     const configuredComponents = [${clientComponents(config)}];

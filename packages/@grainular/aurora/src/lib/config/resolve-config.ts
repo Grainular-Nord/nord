@@ -21,6 +21,7 @@ export type ResolvedAuroraConfig = Omit<AuroraConfig, 'content' | 'navigation' |
     content: ResolvedContentRoute[];
     navigationTree: ResolvedNavigationItem[];
     notFoundSource?: string;
+    styles: string[];
     vite: UserConfig;
     search: boolean;
 };
@@ -69,6 +70,7 @@ export const resolveConfig = async (
     config: AuroraConfig = {},
     root = process.cwd(),
     configFile?: string,
+    styles: string[] = [],
 ): Promise<ResolvedAuroraConfig> => {
     const resolvedRoot = resolve(root);
     const contentPatterns = [config.content ?? 'index.md'].flat();
@@ -85,6 +87,7 @@ export const resolveConfig = async (
         content,
         navigationTree: resolveNavigation(config.navigation),
         ...(existsSync(notFoundSource) ? { notFoundSource } : {}),
+        styles,
         vite: config.vite ?? {},
         search: config.search ?? false,
         llms: config.llms ?? true,

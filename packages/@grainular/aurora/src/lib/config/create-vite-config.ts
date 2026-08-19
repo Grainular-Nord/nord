@@ -35,7 +35,7 @@ export const createViteConfig = (config: ResolvedAuroraConfig, overrides: Inline
             pluginAuroraLinks(),
             ...(config.search ? [pluginAuroraSearch()] : []),
             pluginAuroraSitemap(config),
-            pluginAuroraCss(),
+            pluginAuroraCss(config),
         ],
     };
 };
