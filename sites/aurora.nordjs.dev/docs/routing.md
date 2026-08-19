@@ -62,6 +62,47 @@ export default defineConfig({
 
 A page can exist without appearing in navigation, and a navigation entry can link to any authored site path.
 
+### Route-specific sidebars
+
+Add `root` to top-level navigation items when different sections of a site need different sidebar views. Items sharing a root are rendered together whenever the current route is at or below that root.
+
+```ts title="aurora.config.ts"
+export default defineConfig({
+    content: 'docs/**/*.md',
+    navigation: [
+        {
+            root: '/',
+            label: 'Guide',
+            children: [
+                { path: '/', label: 'Overview' },
+                { path: '/getting-started', label: 'Getting started' },
+            ],
+        },
+        {
+            root: '/',
+            path: '/ecosystem',
+            label: 'Ecosystem',
+        },
+        {
+            root: '/ecosystem',
+            path: '/ecosystem/resource',
+            label: 'Resource',
+        },
+        {
+            root: '/ecosystem',
+            path: '/ecosystem/router',
+            label: 'Router',
+        },
+    ],
+});
+```
+
+The standard routes render both entries rooted at `/`. Visiting `/ecosystem` or any nested route instead renders the Resource and Router entries rooted at `/ecosystem`.
+
+When multiple roots match, Aurora selects the most specific one. For example, `/ecosystem/router/hooks` prefers `/ecosystem/router` over `/ecosystem` and `/`. Root matching follows complete path segments, so `/api` does not match `/apix`.
+
+If the current route does not match any configured root, Aurora renders the complete navigation. Configurations without `root` therefore retain the default behavior.
+
 ## Site links
 
 Write root-relative links in Markdown and configuration:

@@ -19,6 +19,8 @@ export { SiteLink } from './components/primitives/site-link';
 export { Search } from './components/search/search';
 // Runtime features
 export { createSearch, type SearchResult } from './features/search/create-search';
+export { createSsgRuntime } from './lib/create-ssg-runtime';
+export { parseConfig } from './lib/parse-config';
 export { builtInLayouts } from './layouts/built-in-layouts';
 // Prebuilt layouts
 export { Docs } from './layouts/docs';

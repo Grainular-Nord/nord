@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { glob } from 'node:fs/promises';
 import { basename, dirname, relative, resolve } from 'node:path';
 import type { UserConfig } from 'vite';
+import { normalizeRoutePath } from '../path/normalize-route-path';
 import type { AuroraConfig, AuroraNavigationItem } from './config';
 
 export type ResolvedContentRoute = {
@@ -22,11 +23,6 @@ export type ResolvedAuroraConfig = Omit<AuroraConfig, 'content' | 'navigation' |
     notFoundSource?: string;
     vite: UserConfig;
     search: boolean;
-};
-
-const normalizePath = (path: string) => {
-    const normalized = `/${path}`.replace(/\/{2,}/g, '/');
-    return normalized.length > 1 ? normalized.replace(/\/$/, '') : normalized;
 };
 
 const patternRoot = (root: string, pattern: string) => {
@@ -51,7 +47,7 @@ export const resolveContent = async (patterns: string[], root: string) => {
         if (basename(source) === '404.md') continue;
 
         const name = relative(contentRoot, source).replaceAll('\\', '/').replace(/\.md$/, '');
-        const route = name === 'index' ? '/' : normalizePath(name.replace(/\/index$/, ''));
+        const route = name === 'index' ? '/' : normalizeRoutePath(name.replace(/\/index$/, ''));
         routes.set(route, { source, path: route });
     }
 
@@ -65,7 +61,7 @@ export const resolveContent = async (patterns: string[], root: string) => {
 const resolveNavigation = (items: AuroraNavigationItem[] = []): ResolvedNavigationItem[] =>
     items.map((item) => ({
         ...item,
-        ...('path' in item ? { path: normalizePath(item.path!) } : {}),
+        ...('path' in item ? { path: normalizeRoutePath(item.path!) } : {}),
         children: resolveNavigation(item.children ?? []),
     }));
 
