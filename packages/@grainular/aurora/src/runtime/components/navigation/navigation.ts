@@ -8,6 +8,11 @@ const NavigationLink = ({ active, label, path }: AuroraRuntimeNavigationItem & {
         ? html`<a class="aurora-navigation-link" href="${path}" aria-current="page">${label}</a>`
         : html`<a class="aurora-navigation-link" href="${path}">${label}</a>`;
 
+const NavigationSummaryLink = ({ active, label, path }: AuroraRuntimeNavigationItem & { path: string }) =>
+    active
+        ? html`<a class="aurora-navigation-summary-link" href="${path}" aria-current="page">${label}</a>`
+        : html`<a class="aurora-navigation-summary-link" href="${path}">${label}</a>`;
+
 const NavigationChildren = (children: AuroraRuntimeNavigationItem[]): ComponentFragment => html`
     <div class="aurora-navigation-children">${$each(() => children).$as(NavigationNode)}</div>
 `;
@@ -25,12 +30,16 @@ const NavigationNode = (item: AuroraRuntimeNavigationItem): ComponentFragment =>
 };
 
 const NavigationRoot = (item: AuroraRuntimeNavigationItem) => {
-    if (item.path) return NavigationNode(item);
+    if (item.path && item.children.length === 0) {
+        return html`<div class="aurora-navigation-root">${NavigationLink({ ...item, path: item.path })}</div>`;
+    }
+
+    const label = item.path ? NavigationSummaryLink({ ...item, path: item.path }) : html`<span>${item.label}</span>`;
 
     return html`
-        <details class="aurora-navigation-group" open>
+        <details class="aurora-navigation-root aurora-navigation-group" open>
             <summary>
-                <span>${item.label}</span>
+                ${label}
                 <svg class="aurora-navigation-group-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m6 9 6 6 6-6"></path>
                 </svg>
