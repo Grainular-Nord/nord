@@ -58,6 +58,8 @@ export type AuroraPageMeta = {
     description?: string;
     robots?: string;
     layout?: string;
+    /** External URL rendered as a See source link by the built-in docs layout. */
+    source?: string;
     /** Displays the UTC generation time for this page. Defaults to `false`. */
     lastUpdated?: boolean;
     links?: AuroraPageLinks;
