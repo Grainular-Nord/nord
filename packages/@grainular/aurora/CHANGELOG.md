@@ -1,5 +1,11 @@
 # @grainular/aurora
 
+## 2.3.1
+
+### Patch Changes
+
+- [`0ba295b`](https://github.com/Grainular-Nord/nord/commit/0ba295b0101c03d6cf4a732a41b7de8dacd776b3) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Ensure CSS imported from `aurora.config.ts` is included in the client bundle.
+
 ## 2.3.0
 
 ### Minor Changes
