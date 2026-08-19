@@ -76,9 +76,30 @@
     }
 }
 
-.aurora-last-updated {
+.aurora-page-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
     margin-block: 2rem 0;
     font-size: 0.875rem;
-    text-align: end;
     color: var(--aurora-text-faint);
+
+    & .aurora-source-link {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        color: var(--aurora-text-muted);
+        text-decoration: none;
+
+        &:is(:hover, :focus-visible) {
+            color: var(--aurora-accent-text);
+        }
+    }
+
+    & .aurora-last-updated {
+        margin: 0 0 0 auto;
+        text-align: end;
+    }
 }
