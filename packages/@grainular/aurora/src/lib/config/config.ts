@@ -24,6 +24,8 @@ export type AuroraFooterConfig = {
 };
 
 export type AuroraNavigationLink = {
+    /** Selects this top-level item for routes at or below this root. */
+    root?: string;
     /** Link rendered in the sidebar. */
     path: string;
     /** Human-readable label exposed to the application navigation. */
@@ -33,6 +35,8 @@ export type AuroraNavigationLink = {
 };
 
 export type AuroraNavigationGroup = {
+    /** Selects this top-level item for routes at or below this root. */
+    root?: string;
     /** Human-readable label for this navigation group. */
     label: string;
     /** Nested links or groups contained by this group. */
@@ -137,7 +141,7 @@ export type AuroraContext = NonNullable<AuroraConfig['site']> & {
 export type AuroraConfig = {
     /** Markdown files used to generate pages. Routes are inferred from file paths. */
     content?: string | string[];
-    /** Static sidebar links. */
+    /** Static sidebar links. Top-level items can be grouped into route-specific views with `root`. */
     navigation?: AuroraNavigationItem[];
     /** Components available to Markdown. `client` controls browser activation. */
     components?: AuroraComponentDefinition[];

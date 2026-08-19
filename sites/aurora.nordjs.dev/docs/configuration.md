@@ -130,6 +130,8 @@ navigation: [
 
 Top-level navigation groups are collapsible. Children may contain further links or groups without a fixed nesting limit. Navigation paths do not need to correspond to Markdown sources, allowing links to generated pages or other site locations.
 
+Top-level items can also define a `root` to create route-specific sidebar views. Items with the same root form one view, and Aurora selects the most specific root containing the current route. Without roots, the complete navigation is rendered as before.
+
 See [Routing](/routing) for path inference, recursive sidebar groups, and site links.
 
 ## Components and layouts

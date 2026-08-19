@@ -1,6 +1,5 @@
 import type { ResolvedAuroraConfig } from '../config/resolve-config';
 import { AURORA_CONFIG_ID } from '../plugin/constants';
-import { deploymentUrl } from '../url/deployment-url';
 
 const contentImports = (config: ResolvedAuroraConfig) =>
     config.content
@@ -20,34 +19,17 @@ const notFoundImport = (config: ResolvedAuroraConfig) =>
         ? `import { meta as notFoundMeta, content as notFoundContent } from ${JSON.stringify(config.notFoundSource)};`
         : 'const notFoundMeta = {}; const notFoundContent = null;';
 
-const runtimeNavigation = (config: ResolvedAuroraConfig) => {
-    const serialize = (item: (typeof config.navigationTree)[number]): Record<string, unknown> => ({
-        label: item.label,
-        ...('path' in item && item.path ? { path: item.path } : {}),
-        children: item.children.map(serialize),
-    });
-
-    return config.navigationTree.map(serialize);
-};
-
 export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
-    const navigationTree = runtimeNavigation(config);
-    const deploymentRoot = config.site?.url ? deploymentUrl(config.site.url, base).href : '';
-
     return `
         import { renderToString } from "@grainular/nord";
-        import { $pageMeta, App, builtInLayouts, context, DefaultNotFoundContent, NotFound, renderComponentHost } from "@grainular/aurora/runtime";
+        import { $pageMeta, App, builtInLayouts, context, createSsgRuntime, DefaultNotFoundContent, NotFound, parseConfig, renderComponentHost } from "@grainular/aurora/runtime";
         import auroraConfig from ${JSON.stringify(AURORA_CONFIG_ID)};
         ${contentImports(config)}
         ${notFoundImport(config)}
 
-        const site = auroraConfig.site ?? {};
-        const page = auroraConfig.page ?? {};
+        const { navigation, page, search, site } = parseConfig(auroraConfig);
+        const runtime = createSsgRuntime({ navigation, search, site }, ${JSON.stringify(base)});
         const generatedAt = new Date().toISOString();
-        const search = ${JSON.stringify(config.search)};
-        const buildBase = ${JSON.stringify(base)};
-        const deploymentRoot = ${JSON.stringify(deploymentRoot)};
-        const navigationTree = ${JSON.stringify(navigationTree)};
         const sourcePages = [${sourcePages(config)}];
 
         // A slot is resolved once, like a layout, then wrapped as a host so
@@ -72,33 +54,9 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
         ));
         const shellSlots = await resolveSlots(auroraConfig.slots, 'app');
 
-        const routeHref = (targetPath, currentPath) => {
-            if (buildBase === './' || buildBase === '') {
-                const depth = currentPath === '/' ? 0 : currentPath.slice(1).split('/').length;
-                const prefix = '../'.repeat(depth);
-                const target = targetPath === '/' ? '' : targetPath.slice(1);
-                return prefix + target || './';
-            }
-
-            const prefix = buildBase.endsWith('/') ? buildBase : buildBase + '/';
-            return targetPath === '/' ? prefix : prefix + targetPath.slice(1);
-        };
-
-        const resolveNavigation = (items, currentPath, linkPath) => items.map((item) => {
-            const children = resolveNavigation(item.children, currentPath, linkPath);
-            const active = item.path === currentPath;
-            return {
-                label: item.label,
-                ...(item.path ? { path: routeHref(item.path, linkPath) } : {}),
-                active,
-                children
-            };
-        });
-
         const renderPage = ({ path, linkPath = path, meta, content, fileName, status }) => {
             const lastUpdated = meta.lastUpdated === true ? generatedAt : undefined;
-            const routes = resolveNavigation(navigationTree, path, linkPath);
-            const siteConfig = { ...site, base: routeHref('/', linkPath), routes, search };
+            const siteConfig = runtime.resolveSiteConfig(path, linkPath);
             context.set(siteConfig);
             const title = [meta.title, siteConfig.title].filter(Boolean).join(" | ");
             const resolvedMeta = {
@@ -108,12 +66,12 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
             };
             const social = {
                 siteName: siteConfig.title,
-                url: deploymentRoot
-                    ? new URL(path === '/' ? '' : path.slice(1), deploymentRoot).href
+                url: runtime.deploymentRoot
+                    ? new URL(path === '/' ? '' : path.slice(1), runtime.deploymentRoot).href
                     : undefined,
                 image: siteConfig.image
-                    ? deploymentRoot
-                        ? new URL(siteConfig.image.replace(/^\\//, ''), deploymentRoot).href
+                    ? runtime.deploymentRoot
+                        ? new URL(siteConfig.image.replace(/^\\//, ''), runtime.deploymentRoot).href
                         : siteConfig.image
                     : undefined
             };
@@ -148,7 +106,7 @@ export const createSsgEntry = (config: ResolvedAuroraConfig, base: string) => {
                 ...(notFoundMeta ?? {})
             },
             content: NotFound({
-                home: routeHref('/', '/'),
+                home: runtime.routeHref('/', '/'),
                 children: notFoundContent ?? DefaultNotFoundContent()
             })
         });
