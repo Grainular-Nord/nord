@@ -21,3 +21,12 @@ export {
     type AuroraStaticPage,
     defineConfig,
 } from './lib/config/config';
+export {
+    type AuroraBuildOptions,
+    type AuroraDevOptions,
+    type AuroraDevServer,
+    type AuroraPreviewOptions,
+    build,
+    dev,
+    preview,
+} from './lib/commands';

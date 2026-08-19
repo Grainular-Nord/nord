@@ -24,6 +24,24 @@ aurora dev [root] [--host [host]] [--port number] [--open] [--mode mode]
 
 The default root is the current directory. The server reloads Markdown pages and restarts when `aurora.config.ts` changes.
 
+## Programmatic API
+
+The CLI commands are also available from the package entry point:
+
+```ts
+import { build, dev, preview } from '@grainular/aurora';
+
+const development = await dev({ root: './docs', port: 3000 });
+await development.close();
+
+await build({ root: './docs', mode: 'production' });
+
+const production = await preview({ root: './docs', port: 4173 });
+await production.close();
+```
+
+`dev` returns a handle whose `server` property always points to the active Vite server, including after Aurora restarts it for a config change. `build` resolves when the production output is complete, and `preview` returns Vite’s preview server.
+
 ## Production build
 
 ```bash
