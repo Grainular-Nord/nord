@@ -60,7 +60,7 @@ export const pluginAuroraCore = (config: ResolvedAuroraConfig): Plugin => {
             if (id === AURORA_CLIENT_ENTRY) return resolvedClientEntry;
         },
         load(id) {
-            if (id === resolvedClientEntry) return createClientEntry(command === 'build');
+            if (id === resolvedClientEntry) return createClientEntry(config, command === 'build');
         },
         configureServer(server) {
             server.middlewares.use(devPageMiddleware(server, base));
