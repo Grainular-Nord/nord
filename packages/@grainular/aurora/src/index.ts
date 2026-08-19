@@ -4,6 +4,7 @@ export {
     type AuroraConfig,
     type AuroraContext,
     type AuroraFooterConfig,
+    type AuroraHeading,
     type AuroraLayoutDefinition,
     type AuroraLayoutModule,
     type AuroraLayoutProps,

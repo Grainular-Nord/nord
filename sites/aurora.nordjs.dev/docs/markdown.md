@@ -50,7 +50,7 @@ Document-wide `language`, `themeColor`, and additional head markup belong in `au
 
 Aurora supports CommonMark and GitHub Flavored Markdown: headings, emphasis, links, blockquotes, ordered and unordered lists, task lists, tables, autolinks, and strikethrough.
 
-All headings receive stable, deduplicated IDs and permanent links. The default docs layout builds its page outline from level-one through level-three headings in the browser.
+All headings receive stable, deduplicated IDs and permanent links. The default docs layout builds a two-level page outline from level-two sections and their level-three headings. Pages without that hierarchy do not render an outline.
 
 Use ordinary Markdown links between pages:
 

@@ -17,7 +17,20 @@
         letter-spacing: 0.08em;
     }
 
+    & ul {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    & li {
+        min-inline-size: 0;
+    }
+
     & a {
+        display: block;
         padding: 0.28rem 0;
         font-size: 0.76rem;
         line-height: 1.35;
@@ -32,10 +45,10 @@
             color: var(--aurora-text);
             font-weight: 650;
         }
+    }
 
-        &[data-level='3'] {
-            padding-inline-start: 0.75rem;
-        }
+    & .aurora-outline-children {
+        padding-inline-start: 0.75rem;
     }
 
     @container aurora-shell (width < 64rem) {

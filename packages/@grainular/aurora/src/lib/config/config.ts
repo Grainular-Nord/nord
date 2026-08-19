@@ -53,6 +53,12 @@ export type AuroraRuntimeNavigationItem = {
     children: AuroraRuntimeNavigationItem[];
 };
 
+export type AuroraHeading = {
+    level: number;
+    id?: string;
+    label: string;
+};
+
 export type AuroraPageMeta = {
     title?: string;
     description?: string;
@@ -63,6 +69,8 @@ export type AuroraPageMeta = {
     /** Displays the UTC generation time for this page. Defaults to `false`. */
     lastUpdated?: boolean;
     links?: AuroraPageLinks;
+    /** Headings extracted from the compiled Markdown content. */
+    headings?: AuroraHeading[];
 };
 
 export type AuroraPageConfig = {
