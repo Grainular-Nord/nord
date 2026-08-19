@@ -8,6 +8,7 @@ import { type PluggableList, unified } from 'unified';
 import 'vfile-matter';
 import { matter } from 'vfile-matter';
 import type { NodeData } from '..';
+import { collectHeadings, type MarkdownHeading } from './collect-headings';
 import { createOutputFile } from './create-output-file';
 import { remarkPluginComponents } from './remark-plugin-components';
 
@@ -18,6 +19,7 @@ export const parseMarkdown = async (
     remarkPlugins: PluggableList,
     rehypePlugins: PluggableList,
 ) => {
+    const headings: MarkdownHeading[] = [];
     const processor = unified()
         .use(remarkParse)
         .use(remarkGfm)
@@ -33,13 +35,14 @@ export const parseMarkdown = async (
         // Other plugins
         .use(remarkRehype)
         .use(rehypePlugins)
+        .use(collectHeadings(headings))
         .use(rehypeStringify);
 
     const { data, value } = await processor.process(code);
     const props = (data.matter ?? {}) as Record<PropertyKey, unknown>;
 
     return {
-        code: createOutputFile(String(value), props, components, nodes),
+        code: createOutputFile(String(value), props, headings, components, nodes),
         map: null,
     };
 };

@@ -1,9 +1,11 @@
 import type { NodeData } from '..';
+import type { MarkdownHeading } from './collect-headings';
 import { escapeHtmlString } from './escape-html-string';
 
 export const createOutputFile = (
     content: string,
     meta: Record<PropertyKey, unknown>,
+    headings: MarkdownHeading[],
     components: Map<string, string>,
     nodes: Map<string, NodeData>,
 ) => {
@@ -29,7 +31,7 @@ import { html } from "@grainular/nord";
 ${componentEntries.join('')}
 
 // Content (Frontmatter & Fragment)
-export const meta = ${JSON.stringify(meta)};
+export const meta = ${JSON.stringify({ ...meta, headings })};
 export const content = html\`${template}\`;
 `;
 };
