@@ -7,7 +7,6 @@ export type Dependency = { name: string; version: string; dev: boolean };
 export type ScaffoldContext = {
     name: string;
     additionalDependencies: Dependency[][];
-    useRolldown: boolean;
 };
 
 // A copy entry maps a path inside the templates directory to its
@@ -35,17 +34,12 @@ const copyEntries = async (root: string, name: string, entries: Entry[]) => {
 };
 
 // The package.json is the only file that is adapted beyond token
-// substitution: selected dependencies and the optional rolldown
-// override are merged into the parsed template before writing.
+// substitution: selected dependencies are merged into the parsed
+// template before writing.
 const mergePackageJson = async (type: string, root: string, ctx: ScaffoldContext) => {
     const source = await readFile(join(templatesDir, type, 'package.json'), 'utf-8');
     const pkg = JSON.parse(source.replaceAll('{{name}}', ctx.name));
     const usesOxc = ctx.additionalDependencies.flat().some(({ name }) => name === 'oxfmt');
-
-    if (ctx.useRolldown) {
-        pkg.dependencies.vite = 'npm:rolldown-vite@7.2.5';
-        pkg.overrides = { vite: 'npm:rolldown-vite@7.2.5' };
-    }
 
     for (const { name, version, dev } of ctx.additionalDependencies.flat()) {
         (dev ? pkg.devDependencies : pkg.dependencies)[name] = version;

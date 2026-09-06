@@ -7,7 +7,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "vite": "latest",
+        "vite": "^8.2.2",
         "@grainular/nord": "latest",
         "@grainular/grains": "latest"
     },
