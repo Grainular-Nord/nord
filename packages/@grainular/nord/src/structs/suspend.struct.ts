@@ -1,4 +1,4 @@
-import type { ComponentFragment } from '../component/component-fragment';
+import type { Fragment } from '../internals/fragment';
 import { $await } from './await.struct';
 
 /**
@@ -22,13 +22,13 @@ import { $await } from './await.struct';
  * Creates a struct that renders an async component with required pending and
  * error states.
  *
- * @param {() => Promise<ComponentFragment> | ComponentFragment} component - A
- * function returning the component fragment to render, either synchronously or
+ * @param {() => Promise<Fragment> | Fragment} component - A
+ * function returning the fragment to render, either synchronously or
  * as a promise.
  * @param {object} options - Required fallback states.
- * @param {() => ComponentFragment} options.pending - Rendered while the
+ * @param {() => Fragment} options.pending - Rendered while the
  * component is resolving.
- * @param {(err: Error | string | null) => ComponentFragment} options.error -
+ * @param {(err: Error | string | null) => Fragment} options.error -
  * Rendered if the component rejects.
  *
  * @returns {Fragment} A struct fragment that renders the resolved component,
@@ -47,8 +47,8 @@ import { $await } from './await.struct';
  */
 
 export const $suspend = (
-    component: () => Promise<ComponentFragment> | ComponentFragment,
-    { pending, error }: { pending: () => ComponentFragment; error: (err: Error | string | null) => ComponentFragment },
+    component: () => Promise<Fragment> | Fragment,
+    { pending, error }: { pending: () => Fragment; error: (err: Error | string | null) => Fragment },
 ) => {
     return $await(component())
         .$then((fragment) => fragment)

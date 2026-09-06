@@ -1,5 +1,5 @@
 import type { LifecycleObserver } from '../application/lifecycle-observer';
-import type { ComponentFragment } from '../component/component-fragment';
+import type { Fragment } from './fragment';
 
 /**
  * Method to hydrate a fragment and retrieve it's
@@ -7,7 +7,7 @@ import type { ComponentFragment } from '../component/component-fragment';
  *
  * @param fragment
  */
-export const hydrateFragment = (fragment: ComponentFragment, lifecycle: LifecycleObserver): Node[] => {
+export const hydrateFragment = (fragment: Fragment, lifecycle: LifecycleObserver): Node[] => {
     const container = document.createDocumentFragment();
     const anchor = new Comment();
 

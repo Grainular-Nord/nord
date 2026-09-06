@@ -1,8 +1,8 @@
 import { type Grain, combined, derived } from '@grainular/grains';
-import { $if, type ComponentFragment } from '@grainular/nord';
+import { $if, type Fragment } from '@grainular/nord';
 import type { Control } from '../lib/control';
 
-type ErrorRenderer = (errors: Grain<string>) => ComponentFragment;
+type ErrorRenderer = (errors: Grain<string>) => Fragment;
 type ControlErrorOptions = {
     showOn?: 'touched' | 'always';
 };
