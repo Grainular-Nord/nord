@@ -1,6 +1,5 @@
 import type { LifecycleObserver } from '../application/lifecycle-observer';
 import type { Subscribable } from '../application/subscribable';
-import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
@@ -29,13 +28,13 @@ type IfThenStruct = {
      * Specifies the template to render when the condition is `false`.
      * If omitted, nothing is rendered for the false state.
      *
-     * @param {() => ComponentFragment} show - A function returning the
+     * @param {() => Fragment} show - A function returning the
      * template to render when the condition is false.
      *
      * @returns {Fragment} A struct fragment that renders either the `$then`
      * or `$else` template depending on the current condition.
      */
-    $else: (show: () => ComponentFragment) => Fragment;
+    $else: (show: () => Fragment) => Fragment;
 };
 
 type IfStruct = {
@@ -43,12 +42,12 @@ type IfStruct = {
      * Specifies the template to render when the condition is `true`.
      * Can be chained with `.$else` to specify a fallback for the false state.
      *
-     * @param {() => ComponentFragment} fulfilled - A function returning the
+     * @param {() => Fragment} fulfilled - A function returning the
      * template to render when the condition is true.
      *
      * @returns {IfThenStruct & Fragment} A struct fragment, chainable with `.$else`.
      */
-    $then: (fulfilled: () => ComponentFragment) => IfThenStruct & Fragment;
+    $then: (fulfilled: () => Fragment) => IfThenStruct & Fragment;
 };
 
 /**
@@ -84,7 +83,7 @@ type IfStruct = {
 export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStruct => {
     const nodes = new Map<boolean, () => Node[]>();
 
-    const struct = (fulfilled: () => ComponentFragment, lifecycle: LifecycleObserver) => {
+    const struct = (fulfilled: () => Fragment, lifecycle: LifecycleObserver) => {
         nodes.set(true, () => hydrateFragment(fulfilled(), lifecycle));
         const initial = conditional();
 
@@ -95,7 +94,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
             root.before(...evaluated);
 
             if (isSubscribableValue(conditional)) {
-                return conditional.subscribe((value) => {
+                const unsubscribe = conditional.subscribe((value) => {
                     // If no changes, do not recreate
                     if (value === previousValue) return;
                     previousValue = value;
@@ -104,12 +103,23 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
                     evaluated = nodes.get(value)?.() ?? [];
                     root.before(...evaluated);
                 });
+
+                return () => {
+                    unsubscribe();
+                    lifecycle.disconnectNodes(evaluated);
+                    evaluated = [];
+                };
             }
+
+            return () => {
+                lifecycle.disconnectNodes(evaluated);
+                evaluated = [];
+            };
         };
     };
 
     return {
-        $then: (fulfilled: () => ComponentFragment) => {
+        $then: (fulfilled: () => Fragment) => {
             return Object.assign(
                 createStruct(
                     (node, lifecycle) => {
@@ -118,7 +128,7 @@ export const $if = (conditional: Subscribable<boolean> | (() => boolean)): IfStr
                     () => (conditional() ? fulfilled().render() : ''),
                 ),
                 {
-                    $else: (show: () => ComponentFragment) => {
+                    $else: (show: () => Fragment) => {
                         return createStruct(
                             (node, lifecycle) => {
                                 nodes.set(false, () => hydrateFragment(show(), lifecycle));

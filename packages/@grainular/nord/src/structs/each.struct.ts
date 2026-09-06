@@ -1,5 +1,4 @@
 import type { Subscribable } from '../application/subscribable';
-import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
@@ -29,8 +28,8 @@ import { createStruct } from './create-struct';
  */
 
 type KeyFn<T> = (entry: T) => unknown;
-type RenderFn<T> = (entry: T, idx: Subscribable<number>, arr: T[]) => ComponentFragment;
-type EmptyRenderFn = () => ComponentFragment;
+type RenderFn<T> = (entry: T, idx: Subscribable<number>, arr: T[]) => Fragment;
+type EmptyRenderFn = () => Fragment;
 
 type EachFragment = Fragment & {
     /** Renders a fallback whenever the source array is empty. */

@@ -1,10 +1,9 @@
-import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
 /**
- * `$try` is a struct for rendering a component fragment with a guaranteed
+ * `$try` is a struct for rendering a fragment with a guaranteed
  * error boundary. If the render function throws, the fallback provided via
  * `.$catch` is rendered instead. Both the render and fallback are also
  * evaluated during SSR.
@@ -24,20 +23,20 @@ type TryStruct = {
      * Specifies the fallback template rendered if the render function throws.
      * Terminates the chain and returns the struct fragment.
      *
-     * @param {(error: unknown) => ComponentFragment} fallback - A function
+     * @param {(error: unknown) => Fragment} fallback - A function
      * receiving the thrown error and returning the fallback template.
      *
      * @returns {Fragment} A struct fragment that renders the main template
      * or the fallback if an error is thrown.
      */
-    $catch: (fallback: (error: unknown) => ComponentFragment) => Fragment;
+    $catch: (fallback: (error: unknown) => Fragment) => Fragment;
 };
 
 /**
  * Creates a struct that renders a template inside an error boundary, falling
  * back to a provided template if the render throws.
  *
- * @param {() => ComponentFragment} render - A function returning the template
+ * @param {() => Fragment} render - A function returning the template
  * to attempt to render.
  *
  * @returns {TryStruct} An object with a `.$catch` method to specify the
@@ -50,9 +49,9 @@ type TryStruct = {
  * }`;
  * ```
  */
-export const $try = (render: () => ComponentFragment): TryStruct => {
+export const $try = (render: () => Fragment): TryStruct => {
     return {
-        $catch: (fallback: (error: unknown) => ComponentFragment) => {
+        $catch: (fallback: (error: unknown) => Fragment) => {
             return createStruct(
                 (node, lifecycle) => {
                     let nodes: Node[] = [];

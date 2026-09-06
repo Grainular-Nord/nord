@@ -1,5 +1,4 @@
 import type { Subscribable } from '../application/subscribable';
-import type { ComponentFragment } from '../component/component-fragment';
 import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
@@ -31,14 +30,14 @@ import { createStruct } from './create-struct';
  * Each `.$case` call returns a new `SwitchStruct` allowing further cases to
  * be chained. `.$default` terminates the chain and returns the struct fragment.
  */
-type CaseFn<T> = (value: T, render: () => ComponentFragment) => SwitchStruct<T>;
+type CaseFn<T> = (value: T, render: () => Fragment) => SwitchStruct<T>;
 type SwitchStruct<T> = {
     /**
      * Adds a case to the switch. If the condition matches `value`, the
      * provided template is rendered. Multiple cases can be chained.
      *
      * @param {T} value - The value to match against the condition.
-     * @param {() => ComponentFragment} render - The template to render on match.
+     * @param {() => Fragment} render - The template to render on match.
      */
     $case: CaseFn<T>;
 
@@ -46,11 +45,11 @@ type SwitchStruct<T> = {
      * Specifies the fallback template rendered when no case matches.
      * Terminates the chain and returns the struct fragment.
      *
-     * @param {() => ComponentFragment} render - The fallback template.
+     * @param {() => Fragment} render - The fallback template.
      *
      * @returns {Fragment} The struct fragment ready to use in a template.
      */
-    $default: (render: () => ComponentFragment) => Fragment;
+    $default: (render: () => Fragment) => Fragment;
 };
 
 /**
@@ -79,9 +78,9 @@ type SwitchStruct<T> = {
  * ```
  */
 export const $switch = <T>(condition: Subscribable<T> | (() => T)): SwitchStruct<T> => {
-    let defaultFragment: () => ComponentFragment;
+    let defaultFragment: () => Fragment;
     const current = new Set<Node>();
-    const cases = new Map<T, () => ComponentFragment>();
+    const cases = new Map<T, () => Fragment>();
 
     const struct = createStruct(
         (node, lifecycle) => {
@@ -120,12 +119,12 @@ export const $switch = <T>(condition: Subscribable<T> | (() => T)): SwitchStruct
 
     // Compose the elements for the respective return way
 
-    const $default = (render: () => ComponentFragment) => {
+    const $default = (render: () => Fragment) => {
         defaultFragment = render;
         return struct;
     };
 
-    const $case: CaseFn<T> = (value: T, render: () => ComponentFragment) => {
+    const $case: CaseFn<T> = (value: T, render: () => Fragment) => {
         cases.set(value, render);
         return {
             $case,

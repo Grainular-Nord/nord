@@ -1,10 +1,10 @@
+import type { Fragment } from '../internals/fragment';
 import type { Subscribable } from '../application/subscribable';
-import type { ComponentFragment } from '../component/component-fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
 /**
- * `$render` is a struct that renders a `ComponentFragment` held by a
+ * `$render` is a struct that renders a `Fragment` held by a
  * `Subscribable`, replacing the current nodes whenever the fragment changes.
  *
  * ```ts
@@ -19,11 +19,11 @@ import { createStruct } from './create-struct';
  */
 
 /**
- * Creates a struct that reactively renders a `ComponentFragment` from a
+ * Creates a struct that reactively renders a `Fragment` from a
  * subscribable source.
  *
- * @param {Subscribable<ComponentFragment>} source - A subscribable whose
- * value is the `ComponentFragment` to render. The rendered output is updated
+ * @param {Subscribable<Fragment>} source - A subscribable whose
+ * value is the `Fragment` to render. The rendered output is updated
  * whenever the source emits a new fragment.
  *
  * @returns {Fragment} A struct fragment that renders and tracks the current
@@ -38,12 +38,12 @@ import { createStruct } from './create-struct';
  * view.set(html`<p>Updated</p>`);
  * ```
  */
-export const $render = (source: Subscribable<ComponentFragment>) => {
+export const $render = (source: Subscribable<Fragment>) => {
     return createStruct(
         (node, lifecycle) => {
             let nodes: Node[] = [];
 
-            const render = (maybeFragment: (() => ComponentFragment) | ComponentFragment) => {
+            const render = (maybeFragment: (() => Fragment) | Fragment) => {
                 lifecycle.disconnectNodes(nodes);
 
                 const fragment = typeof maybeFragment === 'function' ? maybeFragment() : maybeFragment;

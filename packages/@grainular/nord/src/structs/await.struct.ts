@@ -1,5 +1,5 @@
+import type { Fragment } from '../internals/fragment';
 import type { LifecycleObserver } from '../application/lifecycle-observer';
-import type { ComponentFragment } from '../component/component-fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
@@ -38,8 +38,8 @@ import { createStruct } from './create-struct';
  *
  * @returns An object with a `$then` method to specify the resolved template.
  * The result of `$then` can be further chained with:
- * - `.$pending(() => ComponentFragment)` — rendered while the promise is pending.
- * - `.$catch((error: Error) => ComponentFragment)` — rendered if the promise rejects.
+ * - `.$pending(() => Fragment)` — rendered while the promise is pending.
+ * - `.$catch((error: Error) => Fragment)` — rendered if the promise rejects.
  *
  * @example
  * ```ts
@@ -54,9 +54,9 @@ import { createStruct } from './create-struct';
  */
 export const $await = <T>(source: Promise<T> | T) => {
     return {
-        $then: (template: (value: T) => ComponentFragment) => {
-            let pendingFragment: () => ComponentFragment;
-            let errorFragment: (error: Error) => ComponentFragment;
+        $then: (template: (value: T) => Fragment) => {
+            let pendingFragment: () => Fragment;
+            let errorFragment: (error: Error) => Fragment;
             let resolvedNodes: Node[] = [];
 
             const struct = createStruct(
@@ -99,14 +99,14 @@ export const $await = <T>(source: Promise<T> | T) => {
                 },
             );
 
-            const startNodes = (template: () => ComponentFragment) => {
+            const startNodes = (template: () => Fragment) => {
                 pendingFragment = template;
                 return Object.assign(struct, {
                     $catch: errorNodes,
                 });
             };
 
-            const errorNodes = (template: (error: Error) => ComponentFragment) => {
+            const errorNodes = (template: (error: Error) => Fragment) => {
                 errorFragment = (error: Error) => template(error);
                 return Object.assign(struct, {
                     $pending: startNodes,
