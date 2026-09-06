@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@shikijs/rehype": "^4.0.2",
-    "shiki": "^4.0.2",
+    "shiki": "^4.4.3",
     "unist-util-visit": "^5.0.0",
     "vite-plugin-nord-md": "*"
   },
