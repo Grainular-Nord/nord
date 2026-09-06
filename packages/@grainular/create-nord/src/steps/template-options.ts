@@ -1,5 +1,5 @@
 import { styleText } from 'node:util';
-import { confirm, multiselect, select } from '@clack/prompts';
+import { multiselect, select } from '@clack/prompts';
 import { step } from '../utils/step';
 
 const templates = [
@@ -86,7 +86,6 @@ export const templateOptions = async () => {
     // We check which template type should be
     // created for the user. Depending on the
     // type, different packages will be installed
-    let useRolldown = false;
     const additionalDependencies = [];
     const type = await step(() =>
         select({
@@ -105,17 +104,7 @@ export const templateOptions = async () => {
     // and we return early with the rest of
     // the data as default.
     if (type.includes('browser')) {
-        return { type, additionalDependencies: [], useRolldown };
-    }
-
-    // If a vite template was selected, we want to
-    // check if rolldown-vite should be used.
-    if (type.includes('vite')) {
-        useRolldown = await step(() =>
-            confirm({
-                message: 'Use rolldown-vite (Experimental)?',
-            }),
-        );
+        return { type, additionalDependencies: [] };
     }
 
     // Features to add to the install
@@ -151,5 +140,5 @@ export const templateOptions = async () => {
         )),
     );
 
-    return { type, additionalDependencies, useRolldown };
+    return { type, additionalDependencies };
 };

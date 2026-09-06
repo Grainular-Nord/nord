@@ -23,7 +23,7 @@ intro(styleText(['bold'], `🚀 Hej! Scaffolding a new Nørd Application: ${vers
 // as well as the correct template type and
 // all other information required.
 const { path, name } = await projectDetails();
-const { type, additionalDependencies, useRolldown } = await templateOptions();
+const { type, additionalDependencies } = await templateOptions();
 
 // We can then invoke the correct template creator
 switch (type) {
@@ -31,10 +31,10 @@ switch (type) {
         await createBrowserTemplate({ path, name });
         break;
     case 'vite':
-        await createViteTemplate('vite', { path, name, additionalDependencies, useRolldown });
+        await createViteTemplate('vite', { path, name, additionalDependencies });
         break;
     case 'vite-ts':
-        await createViteTemplate('vite-ts', { path, name, additionalDependencies, useRolldown });
+        await createViteTemplate('vite-ts', { path, name, additionalDependencies });
         break;
 }
 
