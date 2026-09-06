@@ -13,12 +13,18 @@ const PageDetails = ({ source, lastUpdated }: { source?: string; lastUpdated?: s
 
     return html`
         <footer class="aurora-page-details">
-            ${source &&
-            html`<a class="aurora-source-link" href="${source}" rel="noopener noreferrer" target="_blank">
-                See source
-            </a>`}
-            ${lastUpdated &&
-            html`<p class="aurora-last-updated">Last updated <time datetime=${lastUpdated}>${lastUpdated}</time></p>`}
+            ${
+                source &&
+                html`<a class="aurora-source-link" href="${source}" rel="noopener noreferrer" target="_blank">
+                    See source
+                </a>`
+            }
+            ${
+                lastUpdated &&
+                html`<p class="aurora-last-updated">
+                    Last updated <time datetime=${lastUpdated}>${lastUpdated}</time>
+                </p>`
+            }
         </footer>
     `;
 };
@@ -28,18 +34,22 @@ export const Docs: AuroraLayoutModule['default'] = ({ content, lastUpdated, meta
 
     return html`
         <div class="aurora-docs-layout">
-            ${slots?.search?.({}) ??
-            (search
-                ? renderComponentHost(searchDefinition, Search, { index: `${base}aurora-search.json`, base })
-                : null)}
+            ${
+                slots?.search?.({}) ??
+                (search
+                    ? renderComponentHost(searchDefinition, Search, { index: `${base}aurora-search.json`, base })
+                    : null)
+            }
             ${slots?.sidebar?.({}) ?? Navigation()}
             <main class="application-content docs">
                 ${slots?.beforeContent?.({ meta }) ?? null} ${content}
                 ${slots?.pageLinks?.({ meta }) ?? (meta.links && PageLinks(meta.links))}
                 ${PageDetails({ source: meta.source, lastUpdated })}
             </main>
-            ${slots?.outline?.({ meta }) ??
-            renderComponentHost(outlineDefinition, Outline, { headings: meta.headings ?? [] })}
+            ${
+                slots?.outline?.({ meta }) ??
+                renderComponentHost(outlineDefinition, Outline, { headings: meta.headings ?? [] })
+            }
         </div>
         ${slots?.beforeFooter?.({ meta }) ?? null}
     `;
