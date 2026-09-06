@@ -18,7 +18,7 @@
     "@repository/config": "*",
     "@types/bun": "latest",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.9.1",
+    "@types/node": "^26.4.1",
     "tsdown": "^0.22.13",
     "typescript": "~7.0.2",
     "vite": "^7.3.3"
