@@ -10,8 +10,16 @@ updates:
           - '/packages/@grainular/create-nord/templates/vite-ts'
       schedule:
           interval: monthly
+      open-pull-requests-limit: 1
+      groups:
+          npm-dependencies:
+              patterns: ['*']
 
     - package-ecosystem: github-actions
       directory: '/'
       schedule:
           interval: monthly
+      open-pull-requests-limit: 1
+      groups:
+          github-actions:
+              patterns: ['*']
