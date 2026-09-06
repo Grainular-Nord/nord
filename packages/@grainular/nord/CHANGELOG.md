@@ -1,5 +1,15 @@
 # @grainular/nord
 
+## 2.3.0
+
+### Minor Changes
+
+- [#177](https://github.com/Grainular-Nord/nord/pull/177) [`04c29d1`](https://github.com/Grainular-Nord/nord/commit/04c29d138a1fc8b396df2d69f23c67f29f8379c9) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Enable providing a generic to mounted to declare what element is being mounted
+
+- [#176](https://github.com/Grainular-Nord/nord/pull/176) [`bd8c0ce`](https://github.com/Grainular-Nord/nord/commit/bd8c0ce5d9a2ac5a465e5efce0689c20e16b5cf9) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Enables directly interpolation of array fragments inside the template parsing. This aligns the array operation API with the rest of the already possible logic in the template
+
+- [#178](https://github.com/Grainular-Nord/nord/pull/178) [`76a074f`](https://github.com/Grainular-Nord/nord/commit/76a074f6938624550d85e48b8f9a3056102d9077) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Widens the current ComponentFragment requirement to just Fragment, allowing better composition of primitives
+
 ## 2.2.1
 
 ### Patch Changes
