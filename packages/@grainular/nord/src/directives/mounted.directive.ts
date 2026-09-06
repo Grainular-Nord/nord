@@ -30,8 +30,8 @@ import { createDirective } from './create-directive';
  * html`<div ${mounted((node) => console.log('mounted', node))}>Hello</div>`;
  * ```
  */
-export const mounted = (run: (element: Element) => () => void): Fragment => {
-    return createDirective((node: Element, lifecycle) => {
+export const mounted = <T extends Element>(run: (element: T) => () => void): Fragment => {
+    return createDirective<T>((node, lifecycle) => {
         lifecycle.trackMount(node, () => run(node));
     });
 };
