@@ -26,14 +26,14 @@ jobs:
     build-packages:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
               with:
                   node-version: 24
                   cache: npm
             - run: npm ci
             - run: npm run build:packages
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               with:
                   name: package-dist
                   path: packages/**/dist
@@ -42,12 +42,12 @@ jobs:
         needs: build-packages
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/download-artifact@v4
+            - uses: actions/checkout@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: package-dist
                   path: packages
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7
               with:
                   node-version: 24
                   cache: npm
@@ -59,22 +59,22 @@ jobs:
                   VITE_ANALYTICS_DOCS_KEY: ${{ vars.VITE_ANALYTICS_DOCS_KEY }}
                   VITE_ANALYTICS_AURORA_KEY: ${{ vars.VITE_ANALYTICS_AURORA_KEY }}
                   VITE_ANALYTICS_PLAYGROUND_KEY: ${{ vars.VITE_ANALYTICS_PLAYGROUND_KEY }}
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               if: github.event_name == 'workflow_dispatch'
               with:
                   name: nordjs.dev
                   path: sites/nordjs.dev/dist
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               if: github.event_name == 'workflow_dispatch'
               with:
                   name: docs.nordjs.dev
                   path: sites/docs.nordjs.dev/dist
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               if: github.event_name == 'workflow_dispatch'
               with:
                   name: aurora.nordjs.dev
                   path: sites/aurora.nordjs.dev/dist
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               if: github.event_name == 'workflow_dispatch'
               with:
                   name: playground.nordjs.dev
@@ -122,22 +122,22 @@ jobs:
                       aurora) validate_path aurora "$AURORA_PATH" ;;
                       playground) validate_path playground "$PLAYGROUND_PATH" ;;
                   esac
-            - uses: actions/download-artifact@v4
+            - uses: actions/download-artifact@v8
               if: inputs.site == 'all' || inputs.site == 'nord'
               with:
                   name: nordjs.dev
                   path: dist/nordjs.dev
-            - uses: actions/download-artifact@v4
+            - uses: actions/download-artifact@v8
               if: inputs.site == 'all' || inputs.site == 'docs'
               with:
                   name: docs.nordjs.dev
                   path: dist/docs.nordjs.dev
-            - uses: actions/download-artifact@v4
+            - uses: actions/download-artifact@v8
               if: inputs.site == 'all' || inputs.site == 'aurora'
               with:
                   name: aurora.nordjs.dev
                   path: dist/aurora.nordjs.dev
-            - uses: actions/download-artifact@v4
+            - uses: actions/download-artifact@v8
               if: inputs.site == 'all' || inputs.site == 'playground'
               with:
                   name: playground.nordjs.dev
