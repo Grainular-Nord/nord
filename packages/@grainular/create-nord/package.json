@@ -7,8 +7,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@repository/config": "*",
-    "@types/node": "^25.9.1",
-    "tsdown": "^0.22.13",
+    "@types/node": "^26.4.1",
+    "tsdown": "^0.23.0",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {

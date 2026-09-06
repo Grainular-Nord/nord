@@ -18,10 +18,10 @@
     "@repository/config": "*",
     "@types/bun": "latest",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^25.9.1",
-    "tsdown": "^0.22.13",
+    "@types/node": "^26.4.1",
+    "tsdown": "^0.23.0",
     "typescript": "~7.0.2",
-    "vite": "^7.3.3"
+    "vite": "^8.2.2"
   },
   "dependencies": {
     "mdast-util-directive": "^3.1.0",
