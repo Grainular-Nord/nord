@@ -143,6 +143,22 @@ Standard HTML boolean attributes follow HTML presence semantics. A truthy `disab
 
 Grains are the default reactive values in these docs, but Nørd accepts any compatible subscribable. Continue with [Reactivity and grains](/reactivity) for writable state, derived values, and integrating other reactive sources.
 
+## Inline template logic
+
+As templates are evaluated only once, logic executed within template interpolation can be used to render static segments. For example, a static array can be iterated directly inside the template, without the need for `$each`.
+
+```ts
+const List = () => {
+    const items = [1, 2, 3];
+
+    return html`<ul>
+        ${items.map((value) => html`<li>${value}</li>`)}
+    </ul>`;
+};
+```
+
+The same is possible for conditional interpolation, or any other JavaScript logic directly in the template.
+
 ## Familiar patterns that do not apply
 
 Nørd resembles the platform more than component frameworks with compiler transforms or render loops. Do not carry these patterns across unchanged:
