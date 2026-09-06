@@ -416,3 +416,11 @@ export const App = () => {
 
 mount(App, { to: document.querySelector('main#app') });
 ```
+
+## Contributing
+
+Contributions are welcome and appreciated, take a look at the [contribution guide](./contributing.md).
+
+## License
+
+**Nørd** is licensed under the MIT License
