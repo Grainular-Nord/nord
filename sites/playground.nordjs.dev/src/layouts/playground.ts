@@ -7,8 +7,10 @@ const Playground = ({ meta }: AuroraLayoutProps) => {
 
     return html`
         <div class="playground-layout">
-            ${playground &&
-            EditorHost({ ...playground, controls: { ...playground.controls, download: true, share: true } })}
+            ${
+                playground &&
+                EditorHost({ ...playground, controls: { ...playground.controls, download: true, share: true } })
+            }
         </div>
     `;
 };

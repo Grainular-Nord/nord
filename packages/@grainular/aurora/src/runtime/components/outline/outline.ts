@@ -26,13 +26,15 @@ const createSections = (headings: AuroraHeading[]): OutlineSection[] => {
 const OutlineSectionView = ({ children, href, label }: OutlineSection) => html`
     <li>
         <a href="${href}">${label}</a>
-        ${children.length > 0
-            ? html`<ul class="aurora-outline-children">
-                  ${$each(() => children).$as(
-                      ({ href, label }: OutlineLink) => html`<li><a href="${href}">${label}</a></li>`,
-                  )}
-              </ul>`
-            : null}
+        ${
+            children.length > 0
+                ? html`<ul class="aurora-outline-children">
+                      ${$each(() => children).$as(
+                          ({ href, label }: OutlineLink) => html`<li><a href="${href}">${label}</a></li>`,
+                      )}
+                  </ul>`
+                : null
+        }
     </li>
 `;
 

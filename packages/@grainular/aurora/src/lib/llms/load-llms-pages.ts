@@ -30,5 +30,5 @@ export const loadLlmsPages = async (config: ResolvedAuroraConfig): Promise<LlmsP
     return pages
         .filter(({ include }) => include)
         .sort((left, right) => (order.get(left.path) ?? Infinity) - (order.get(right.path) ?? Infinity))
-        .map(({ include: _, ...page }) => page);
+        .map(({ ...page }) => page);
 };
