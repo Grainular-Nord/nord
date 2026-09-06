@@ -6,6 +6,36 @@ import { setup } from './setup';
 describe('[Nørd Runtime] Lists', () => {
     beforeEach(() => setup());
 
+    test('should inline render a static list directly in the template', () => {
+        // Setup test items
+        const items = [1, 2, 3];
+        const List = () => {
+            return html`<ul>
+                ${items.map((value) => html`<li>Test ${value}</li>`)}
+            </ul>`;
+        };
+
+        mount(List, { to: document.querySelector('#app') });
+
+        // Assert that the list was rendered correctly
+        const listElement = document.querySelector('#app')?.firstElementChild;
+        expect(listElement?.tagName).toBe('UL');
+
+        // Assert that the correct amount of children is present
+        expect(listElement?.childElementCount).toBe(3);
+        expect(Array.from(listElement?.children ?? [])).toBeInstanceOf(Array);
+
+        // Assert the individual elements
+        expect(listElement?.children.item(0)?.tagName).toBe('LI');
+        expect(listElement?.children.item(0)?.textContent).toBe('Test 1');
+
+        expect(listElement?.children.item(1)?.tagName).toBe('LI');
+        expect(listElement?.children.item(1)?.textContent).toBe('Test 2');
+
+        expect(listElement?.children.item(2)?.tagName).toBe('LI');
+        expect(listElement?.children.item(2)?.textContent).toBe('Test 3');
+    });
+
     test('should create and render a list of static items', () => {
         // Setup the list items and component
         const items = [{ name: 'Test 1' }, { name: 'Test 2' }, { name: 'Test 3' }];
