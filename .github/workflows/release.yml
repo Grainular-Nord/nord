@@ -24,7 +24,7 @@ jobs:
                   node-version: 24
                   cache: npm
             - run: npm ci
-            - run: npx changeset status
+            - run: npx changeset status --since=origin/main
             - run: npm run format:check
             - run: npm run lint
             - run: npm test
