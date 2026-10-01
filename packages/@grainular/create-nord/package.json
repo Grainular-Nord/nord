@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@repository/config": "*",
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.6.3",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2"
   },
@@ -20,7 +20,7 @@
     "templates"
   ],
   "dependencies": {
-    "@clack/prompts": "^1.5.0"
+    "@clack/prompts": "^1.8.1"
   },
   "scripts": {
     "cli": "bun ./src/index.ts",
