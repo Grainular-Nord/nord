@@ -18,13 +18,13 @@
     "@repository/config": "*",
     "@types/bun": "latest",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^26.4.1",
-    "tsdown": "^0.23.0",
+    "@types/node": "^26.6.6",
+    "tsdown": "^0.23.3",
     "typescript": "~7.0.2",
-    "vite": "^8.2.2"
+    "vite": "^8.3.5"
   },
   "dependencies": {
-    "mdast-util-directive": "^3.1.0",
+    "mdast-util-directive": "^3.1.1",
     "rehype-stringify": "^10.0.1",
     "remark-directive": "^4.0.0",
     "remark-frontmatter": "^5.0.0",
@@ -32,7 +32,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.2.0",
     "vfile-matter": "^5.0.1"
   },
   "peerDependencies": {
