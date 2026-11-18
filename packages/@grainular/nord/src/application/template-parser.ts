@@ -21,7 +21,7 @@ const parseTemplateFragment = (
         case isSubscribableValue(fragment):
             return createReactiveFragment(fragment);
         case isPrimitiveValue(fragment) || fragment == null:
-            return createPrimitiveFragment(fragment ?? '');
+            return createPrimitiveFragment(fragment);
         default:
             return fragment;
     }
