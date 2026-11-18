@@ -1,4 +1,4 @@
-import { setAttribute } from '../internals/attribute-bindings';
+import { renderAttribute, setAttribute } from '../internals/attribute-bindings';
 import { isSubscribableValue } from '../internals/is-subscribable-value';
 import { unwrap } from '../internals/unwrap';
 import { createDirective } from './create-directive';
@@ -54,8 +54,9 @@ export const attr = (dict: Record<PropertyKey, unknown>) => {
                 }
             };
         },
-        // The snapshot here should be correct for about 95% of attributes, but will incorrectly
-        // parse boolean attributes.
-        () => Object.entries(dict).reduce((acc, [key, value]) => `${acc} ${key}="${value}"`, ''),
+        () =>
+            Object.entries(dict)
+                .map(([key, value]) => renderAttribute(key, unwrap(value)))
+                .join(''),
     );
 };

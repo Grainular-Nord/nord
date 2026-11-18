@@ -77,6 +77,10 @@ const SaveButton = ({ saving }: { saving: Subscribable<boolean> }) => html`
 
 HTML boolean attributes use presence semantics: a truthy `disabled` produces `disabled`, while a falsy value removes it. ARIA attributes are ordinary string attributes, so `aria-busy` becomes `"true"` or `"false"`.
 
+An `attr` value of `null` or `undefined` removes the attribute; a reactive value restores it when it becomes defined again. Direct attribute interpolation follows the same rule when the interpolation is the entire value.
+
+For SSR, use `attr` when nullish or boolean attributes must be omitted. Direct interpolations are rendered as text without attribute-specific handling, so their SSR output can differ from the mounted DOM.
+
 ## Native DOM properties
 
 `attr` deliberately writes attributes. Many HTML attributes reflect to a DOM property, but some browser APIs are property-only or have different semantics. Use a custom directive or a ref when you need the property itself.

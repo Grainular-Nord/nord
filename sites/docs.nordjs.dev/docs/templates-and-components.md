@@ -141,6 +141,10 @@ const Toggle = () => html`
 
 Standard HTML boolean attributes follow HTML presence semantics. A truthy `disabled`, `checked`, `hidden`, or `required` binding renders the empty attribute; a falsy value removes it. Other attributes, including ARIA attributes, are serialized as ordinary strings, so `aria-pressed` becomes `"true"` or `"false"`.
 
+When an attribute's entire interpolated value is `null` or `undefined`, Nørd removes the attribute. A reactive binding restores it when its value becomes defined again. In a mixed value such as `class="prefix ${value}"`, a nullish interpolation contributes an empty string instead.
+
+During SSR, direct interpolations are rendered as text without attribute-specific handling. A static nullish value produces an empty string, while a reactive nullish value produces `"null"` or `"undefined"`; boolean attributes are also rendered as text. Use the [`attr` directive](/directives/events-and-attributes) when SSR must omit nullish or falsy boolean attributes.
+
 Grains are the default reactive values in these docs, but Nørd accepts any compatible subscribable. Continue with [Reactivity and grains](/reactivity) for writable state, derived values, and integrating other reactive sources.
 
 ## Inline template logic

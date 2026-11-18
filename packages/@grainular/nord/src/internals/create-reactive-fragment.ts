@@ -24,10 +24,10 @@ export const createReactiveFragment = (fragmentValue: Subscribable): Fragment =>
             }
 
             if (node instanceof Element) {
-                binding?.(fragmentValue() ?? '');
+                binding?.(fragmentValue());
 
                 const onDestroy = fragmentValue.subscribe((value) => {
-                    binding?.(value ?? '');
+                    binding?.(value);
                 });
 
                 if (onDestroy) lifecycle.trackUnmount(node, onDestroy);
