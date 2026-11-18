@@ -17,15 +17,18 @@ export const Hero = () => {
     const count = grain(0);
 
     return withStyles(
-        () => html` <section class="hero">
-            <div class="hero-text">
-                <h1>Nørd</h1>
-                <div>Build apps, not bundles.</div>
-                <div class="sub-text">${tags[Math.floor(Math.random() * tags.length) * 1]}</div>
-                <a class="docs-link" href="https://docs.nordjs.dev" rel="noopener noreferrer">Read the Docs &rarr;</a>
-            </div>
-            <div class="hero-code">${Editor({ count })} ${Counter({ count })}</div>
-        </section>`,
+        () =>
+            html` <section class="hero">
+                <div class="hero-text">
+                    <h1>Nørd</h1>
+                    <div>Build apps, not bundles.</div>
+                    <div class="sub-text">${tags[Math.floor(Math.random() * tags.length) * 1]}</div>
+                    <a class="docs-link" href="https://docs.nordjs.dev" rel="noopener noreferrer"
+                        >Read the Docs &rarr;</a
+                    >
+                </div>
+                <div class="hero-code">${Editor({ count })} ${Counter({ count })}</div>
+            </section>`,
         () => css`
             .hero {
                 display: flex;

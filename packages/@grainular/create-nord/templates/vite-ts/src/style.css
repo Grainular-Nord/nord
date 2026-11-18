@@ -12,12 +12,7 @@ body {
     margin: 0;
     background: oklch(0.135 0.008 250);
     color: oklch(0.94 0.003 250);
-    font-family:
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        'Segoe UI',
-        sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 .scaffold {

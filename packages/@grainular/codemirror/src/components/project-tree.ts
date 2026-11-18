@@ -174,27 +174,28 @@ export const EditorProjectTree = ({
             ${$if(isRenaming(file.path))
                 .$then(() => html``)
                 .$else(
-                    () => html`<div data-grainular-editor="file-actions">
-                        <button
-                            type="button"
-                            aria-label="Rename ${file.path}"
-                            title="Rename file"
-                            ${on('click', () => renamingPath.set(file.path))}
-                        >
-                            ↳
-                        </button>
-                        ${$if(hasMultipleFiles).$then(
-                            () =>
-                                html`<button
-                                    type="button"
-                                    aria-label="Delete ${file.path}"
-                                    title="Delete file"
-                                    ${on('click', () => onDelete(file.path))}
-                                >
-                                    ×
-                                </button>`,
-                        )}
-                    </div>`,
+                    () =>
+                        html`<div data-grainular-editor="file-actions">
+                            <button
+                                type="button"
+                                aria-label="Rename ${file.path}"
+                                title="Rename file"
+                                ${on('click', () => renamingPath.set(file.path))}
+                            >
+                                ↳
+                            </button>
+                            ${$if(hasMultipleFiles).$then(
+                                () =>
+                                    html`<button
+                                        type="button"
+                                        aria-label="Delete ${file.path}"
+                                        title="Delete file"
+                                        ${on('click', () => onDelete(file.path))}
+                                    >
+                                        ×
+                                    </button>`,
+                            )}
+                        </div>`,
                 )}
         </li>`;
     };
