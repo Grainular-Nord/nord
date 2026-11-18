@@ -52,6 +52,8 @@ const Action = () =>
     })}`;
 ```
 
+During server rendering, `$tag` renders its children and the snapshots provided by its directives. DOM handlers and the mount callback run only in the browser. HTML void elements, such as `input`, render without a closing tag or children.
+
 ## `$unsafeHtml`
 
 `$unsafeHtml` inserts a raw HTML string. It does not sanitize its input, so only use it for markup your application fully controls.

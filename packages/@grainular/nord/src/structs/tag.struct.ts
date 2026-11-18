@@ -4,6 +4,23 @@ import type { Fragment } from '../internals/fragment';
 import { hydrateFragment } from '../internals/hydrate-fragment';
 import { createStruct } from './create-struct';
 
+const voidElements = new Set([
+    'area',
+    'base',
+    'br',
+    'col',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
+]);
+
 /**
  * `$tag` is a struct for dynamically creating a typed HTML element with
  * children, directives, and an optional mount callback. It is primarily
@@ -63,18 +80,31 @@ export const $tag = <T extends keyof HTMLElementTagNameMap>(
     { as, children, use = [] }: TagOpts<T>,
     onMount?: (node: HTMLElementTagNameMap[T]) => (() => void) | void,
 ) => {
-    return createStruct((node, lifecycle) => {
-        const element = document.createElement(as);
-        element.append(...hydrateFragment(templateParser`${children}`, lifecycle));
+    return createStruct(
+        (node, lifecycle) => {
+            const element = document.createElement(as);
+            element.append(...hydrateFragment(templateParser`${children}`, lifecycle));
 
-        // Hydrate the fragment from the passed elements
-        // This will directly register any eventual cleanup
-        // that triggers once the node is removed from the DOM
-        for (const fragment of use) {
-            fragment.hydrate(element, { lifecycle });
-        }
+            // Hydrate the fragment from the passed elements
+            // This will directly register any eventual cleanup
+            // that triggers once the node is removed from the DOM
+            for (const fragment of use) {
+                fragment.hydrate(element, { lifecycle });
+            }
 
-        node.replaceWith(element);
-        return onMount?.(element);
-    });
+            node.replaceWith(element);
+            return onMount?.(element);
+        },
+        () => {
+            const directives = serializeDirectives(use);
+            const openingTag = `<${as}${directives ? ` ${directives}` : ''}>`;
+            if (voidElements.has(as)) return openingTag;
+            return `${openingTag}${templateParser`${children}`.render()}</${as}>`;
+        },
+    );
 };
+
+function serializeDirectives(fragments: Fragment[]) {
+    const rendered = fragments.map(({ render }) => render()?.trim());
+    return rendered.filter(Boolean).join(' ');
+}
