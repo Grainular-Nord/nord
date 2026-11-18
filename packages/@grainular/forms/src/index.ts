@@ -1,4 +1,5 @@
 export { bind } from './directives/bind.directive';
+export { multiselect } from './lib/multiselect';
 export { control, type Control } from './lib/control';
 export type { ControlList } from './lib/control-list';
 export { form, type Form } from './lib/form';

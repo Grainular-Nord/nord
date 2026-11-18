@@ -29,6 +29,26 @@ if (validate()) submit(value());
 
 Controls bind to inputs via the `bind` directive inside a Nord template, and validators (`required`, `email`, `min`, `maxLength`, `pattern`, …) write into a control's `errors` grain when its value is invalid.
 
+For a single `<select multiple>` backed by a string array, use the `multiselect` directive:
+
+```ts
+import { form, multiselect } from '@grainular/forms';
+import { html } from '@grainular/nord';
+
+const preferences = form({ topics: ['news'] });
+
+const Topics = () => html`
+    <select multiple ${multiselect(preferences.controls.topics)}>
+        <option value="news">News</option>
+        <option value="events">Events</option>
+    </select>
+`;
+```
+
+The directive exposes its single control as `topics.control`, with its own `touched`, `dirty`, `disabled`, and `errors` state. Its value is synchronized with the list: selection changes replace the list using its `set` method, and programmatic list changes update the select. Selections are strings, matching the browser's option values.
+
+The wrapper's control state is separate from the list items' state. Use `topics.control.reset()` to reset the control and list value.
+
 ## Contributing
 
 Contributions to Nørd are always welcome! Whether it's bug reports, feature requests, or code contributions, please read our [contribution guidelines](../../../contributing.md) for more information on getting involved.
