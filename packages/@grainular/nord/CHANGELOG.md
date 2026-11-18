@@ -1,5 +1,15 @@
 # @grainular/nord
 
+## 2.4.0
+
+### Minor Changes
+
+- [#200](https://github.com/Grainular-Nord/nord/pull/200) [`ef76cbc`](https://github.com/Grainular-Nord/nord/commit/ef76cbc658709f1e08ac7bfe0bbe19f3e696ce61) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Remove attributes whose complete bound value is `null` or `undefined` and restore them when the value becomes defined. Nullish values in mixed attributes render as empty segments. The `attr` directive now applies the same attribute rules in SSR, including boolean attributes and escaping. Direct attribute interpolation in SSR retains its existing text-based behavior.
+
+### Patch Changes
+
+- [#202](https://github.com/Grainular-Nord/nord/pull/202) [`b504e35`](https://github.com/Grainular-Nord/nord/commit/b504e354ca7e0a90f2610e771aca9cb85c284aeb) Thanks [@IamSebastianDev](https://github.com/IamSebastianDev)! - Render `$tag` elements, their children, and directive snapshots during server-side rendering, including HTML void elements.
+
 ## 2.3.0
 
 ### Minor Changes
