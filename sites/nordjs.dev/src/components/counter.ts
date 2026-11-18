@@ -13,10 +13,11 @@ export const Counter = ({ count }: { count: WritableGrain<number> }) => {
     };
 
     return withStyles(
-        () => html` <button class="counter" ${on('click', increment)}>
-            <span>Click to +</span>
-            ${count}
-        </button>`,
+        () =>
+            html` <button class="counter" ${on('click', increment)}>
+                <span>Click to +</span>
+                ${count}
+            </button>`,
         () => css`
             .counter {
                 position: absolute;
